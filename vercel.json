@@ -1,10 +1,25 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/$1" }
-  ],
   "headers": [
     {
+      "source": "/vampires/(rules|rules_eng)\\.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
       "source": "/(rules|rules_eng)\\.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/vampires/(main|creation-wizard|i18n-dictionary|i18n-runtime|supabase|vtm-health|vtm-humanity)\\.js",
       "headers": [
         {
           "key": "Cache-Control",

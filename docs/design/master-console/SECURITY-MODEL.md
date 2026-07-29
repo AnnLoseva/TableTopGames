@@ -2,7 +2,7 @@
 
 ## Фактическая авторизация сегодня
 
-React-клиент создаётся с публичным anon key (`lib/supabase.ts`). Регистрация и
+React-клиент создаётся с публичным anon key (`games/vampires/lib/supabase.ts`). Регистрация и
 login работают напрямую с `public.users`: браузер кодирует пароль через `btoa`,
 сравнивает `username + password_hash` в публичном select и сохраняет `{id,
 username}` в `vtm-chat-user`/`vtm-sheet-user`. Это не Supabase Auth session,
@@ -75,7 +75,7 @@ cross-room ids, storage paths, RPC и realtime subscribe. Только посл�
 
 ## Реализованная persistence foundation
 
-`supabase/master_console_persistence.sql` определяет `chronicles`,
+`games/vampires/supabase/master_console_persistence.sql` определяет `chronicles`,
 `chronicle_members` и master-only таблицы. Их RLS опирается только на
 `auth.uid()` и membership role; anon privileges отозваны. Первичная chronicle и
 первый master назначаются service role/администратором — self-claim комнаты не

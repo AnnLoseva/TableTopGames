@@ -1,6 +1,6 @@
 # React Table Edit Protocol
 
-Applies to: `modules/table/*`, `modules/chat/*`, and `modules/music/*`.
+Applies to: `games/vampires/modules/table/*`, `games/vampires/modules/chat/*`, and `games/vampires/modules/music/*`.
 
 Read `../subsystems/game-table.md` first (and `music-and-media.md` /
 `dice-and-rolls.md` if relevant).
@@ -9,19 +9,19 @@ Read `../subsystems/game-table.md` first (and `music-and-media.md` /
 1. **Do not grow `GameTable.tsx`.** It is already ~9k lines. New sizeable behavior
    goes into a child component, a hook, or a lib module — not inline.
 2. **Where things belong:**
-   - UI → a component in `modules/table/components/*`, `modules/chat/components/*`,
-     or `modules/music/components/*`.
-   - Table types/constants/mappers → `modules/table/*` (canonical).
-   - Table utils (media/layer/scene) → `modules/table/utils/*`.
-   - VTM rules → `core/systems/vtm5/rules/*` (pure).
+   - UI → a component in `games/vampires/modules/table/components/*`, `games/vampires/modules/chat/components/*`,
+     or `games/vampires/modules/music/components/*`.
+   - Table types/constants/mappers → `games/vampires/modules/table/*` (canonical).
+   - Table utils (media/layer/scene) → `games/vampires/modules/table/utils/*`.
+   - VTM rules → `games/vampires/core/vtm5/rules/*` (pure).
 3. **Never hardcode Supabase table/bucket names.** Import from
-   `modules/table/constants.ts`. Changing a
+   `games/vampires/modules/table/constants.ts`. Changing a
    name is a schema change — see `supabase-edit-protocol.md`.
 4. **Respect the room/role model.** Keep master-only actions gated; keep state
    keyed by `room`; don't leak master controls to players.
 5. **Keep realtime consistent.** Subscriptions/state must stay coherent per room;
    avoid duplicate handlers and update loops.
-6. **Map through `modules/table/mappers.ts`** for Supabase row ↔ app conversions;
+6. **Map through `games/vampires/modules/table/mappers.ts`** for Supabase row ↔ app conversions;
    don't inline ad-hoc mapping.
 
 ## After the change — verify
@@ -35,5 +35,5 @@ Read `../subsystems/game-table.md` first (and `music-and-media.md` /
 
 ## Update docs?
 Only per `../UPDATE-RULES.md` — e.g. a changed table data model
-(`modules/table/types.ts`) or a new subsystem-level behavior warrants a subsystem
+(`games/vampires/modules/table/types.ts`) or a new subsystem-level behavior warrants a subsystem
 doc update (and possibly a `../DECISIONS.md` entry).

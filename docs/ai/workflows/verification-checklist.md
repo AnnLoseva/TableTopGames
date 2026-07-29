@@ -38,8 +38,8 @@ what each command does.
 ## Match the check to the area
 | Changed area | Minimum checks |
 |---|---|
-| `core/systems/vtm5/rules/*` / disciplines | lint + discipline scripts + affected mechanic |
-| `modules/table/*` | lint (+ build) + table smoke tests |
+| `games/vampires/core/vtm5/rules/*` / disciplines | lint + discipline scripts + affected mechanic |
+| `games/vampires/modules/table/*` | lint (+ build) + table smoke tests |
 | Legacy `public/*` | iframe flow smoke tests |
 | Supabase schema | build + master/player room flow + character save/load |
 | Rules JSON | `audit:disciplines` (+ `validate:disciplines`) |

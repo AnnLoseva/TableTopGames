@@ -1,0 +1,51 @@
+@import "../modules/ui/vtm-theme/tokens.css";
+@import "../modules/ui/vtm-theme/controls.css";
+@import "../modules/master-console/master-console.css";
+
+:root {
+  --v-red: #ff3131;
+  --v-orange: #ff9500;
+  --v-grey: #2a2a2a;
+  --v-bg: #0a0a0a;
+  --v-panel: #111;
+  color-scheme: dark;
+}
+
+html {
+  background: #080506;
+}
+
+body {
+  background: #080506;
+  color: #f4eadf;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* Единый красный скроллбар для VTM-раздела. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--v-red) rgba(10, 5, 6, 0.9);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 5, 6, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a11212, var(--v-red));
+  border-radius: 6px;
+  border: 2px solid #080506;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--v-red);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

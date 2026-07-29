@@ -6,15 +6,15 @@ the canvas and organized into layers within scenes, plus a music system with
 local-audio and YouTube sources, synced across the room.
 
 ## Main files
-- Music UI/logic: `modules/music/components/MusicPlayer.tsx`,
-  `modules/music/MusicSyncEngine.ts`, `modules/music/types.ts`,
-  `modules/music/utils.ts`.
+- Music UI/logic: `games/vampires/modules/music/components/MusicPlayer.tsx`,
+  `games/vampires/modules/music/MusicSyncEngine.ts`, `games/vampires/modules/music/types.ts`,
+  `games/vampires/modules/music/utils.ts`.
 - Persistent global player mount:
-  `modules/music/components/GlobalMusicEngineMount.tsx` in `app/layout.tsx`.
-- Music adapters: `modules/music/adapters/localAudioAdapter.ts`,
-  `modules/music/adapters/youtubeAdapter.ts`.
-- Table media/layers: `modules/table/components/{canvas,media,layers,scenes}/*`.
-- Media/layer/scene helpers: `modules/table/utils/{media-utils,layer-utils,scene-utils}.ts`.
+  `games/vampires/modules/music/components/GlobalMusicEngineMount.tsx` in `app/layout.tsx`.
+- Music adapters: `games/vampires/modules/music/adapters/localAudioAdapter.ts`,
+  `games/vampires/modules/music/adapters/youtubeAdapter.ts`.
+- Table media/layers: `games/vampires/modules/table/components/{canvas,media,layers,scenes}/*`.
+- Media/layer/scene helpers: `games/vampires/modules/table/utils/{media-utils,layer-utils,scene-utils}.ts`.
 - Data: `table_images`, `table_music`, `table_music_library`,
   `table_scene_music`, `media_studio_layers`; buckets `table-images` + music
   bucket (see `supabase-persistence.md`).
@@ -23,16 +23,17 @@ local-audio and YouTube sources, synced across the room.
 - Media items live on the tldraw canvas (`TableCanvas.tsx`) and are grouped into
   **layers** inside a **scene**. Visibility is scene/layer driven.
 - Root layer drop target id is `ROOT_LAYER_DROP_ID` (`__root__`) in
-  `modules/table/constants.ts`.
-- Use `modules/table/utils/{layer,scene,media}-utils.ts` for placement/visibility logic —
+  `games/vampires/modules/table/constants.ts`.
+- Use `games/vampires/modules/table/utils/{layer,scene,media}-utils.ts` for placement/visibility logic —
   don't reimplement inline in `GameTable.tsx`.
 
 ## Music system
 - `MusicSyncEngine.ts` coordinates playback state across the room (realtime).
 - Adapters abstract the source: local uploaded audio vs YouTube. Each has its own
   loading, seeking, and error behavior.
-- `GlobalMusicEngineMount` keeps the hidden engine mounted from the root layout,
-  so playback survives App Router navigation.
+- `GlobalMusicEngineMount` keeps the hidden engine mounted from
+  `app/(vampires)/layout.tsx`, so playback survives VTM navigation without
+  mounting on Pathfinder routes.
 - Persistence: current music via `table_music`, per-scene via `table_scene_music`,
   a reusable library via `table_music_library`; audio files in the music bucket.
 
@@ -53,7 +54,7 @@ local-audio and YouTube sources, synced across the room.
 ## Safe edit protocol
 1. Read `../workflows/react-table-edit-protocol.md`.
 2. Keep source-specific logic inside the adapters; keep placement logic in
-   `modules/table/utils/*`.
+   `games/vampires/modules/table/utils/*`.
 3. Preserve gesture-gated playback.
 4. Verify: open the music panel in `/table`, load local + YouTube, confirm
    play/seek and that scene switching shows the right media/layers.

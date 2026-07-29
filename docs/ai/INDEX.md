@@ -41,13 +41,13 @@ This is the catalog of the project's AI context. Every agent starts here after
 
 - `subsystems/legacy-character-sheet.md` — the iframe sheet: `old-sheet.html`, `main.js`, `supabase.js`, wizard, health/humanity JS, i18n JS
 - `subsystems/character-sheet-bridge.md` — Next ↔ iframe bridge (`/character-sheet`)
-- `subsystems/game-table.md` — `modules/table/GameTable.tsx` and table components/hooks
-- `subsystems/vtm-mechanics.md` — `core/systems/vtm5/rules/*` (pure rules)
+- `subsystems/game-table.md` — `games/vampires/modules/table/GameTable.tsx` and table components/hooks
+- `subsystems/vtm-mechanics.md` — `games/vampires/core/vtm5/rules/*` (pure rules)
 - `subsystems/rules-data.md` — `rules.json` / `rules_eng.json`
 - `subsystems/supabase-persistence.md` — DB tables, buckets, save/load
-- `subsystems/music-and-media.md` — `modules/music/*`, table media/layers
+- `subsystems/music-and-media.md` — `games/vampires/modules/music/*`, table media/layers
 - `subsystems/dice-and-rolls.md` — rolls, rouse checks, overlays
-- `subsystems/i18n.md` — RU/EN naming, `lib/i18n/*` and legacy i18n JS
+- `subsystems/i18n.md` — RU/EN naming, `games/vampires/lib/i18n/*` and legacy i18n JS
 - `subsystems/pathfinder2-sheet.md` — isolated `/pathfinder2/sheet` creator, local draft and pf2.ru source links
 
 See also the older RU overview at `../architecture.md`.

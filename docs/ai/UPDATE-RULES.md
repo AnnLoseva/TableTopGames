@@ -12,7 +12,7 @@ long-term docs stable; keep `CURRENT-STATE.md` short.
 | New VTM mechanic | `subsystems/vtm-mechanics.md`, maybe `DECISIONS.md` | Yes | Note tests; check legacy duplicate |
 | Move logic legacy → TS | `ARCHITECTURE-MAP.md` (Known duplication), `DECISIONS.md` | Yes | Record what moved and what remains duplicated |
 | Change iframe bridge | `subsystems/character-sheet-bridge.md`, `DECISIONS.md` | Yes | Params/localStorage/postMessage are a contract |
-| Change table layer/data model | `subsystems/game-table.md`, `modules/table/types.ts` docs, maybe `DECISIONS.md` | Yes | Shared contract |
+| Change table layer/data model | `subsystems/game-table.md`, `games/vampires/modules/table/types.ts` docs, maybe `DECISIONS.md` | Yes | Shared contract |
 | Change music/media system | `subsystems/music-and-media.md` | Yes | Adapters, buckets, autoplay behavior |
 | New systemic risk | `RISKS.md` | Yes | One row + mitigation |
 | Architectural decision | `DECISIONS.md` | Yes | Use the decision template |

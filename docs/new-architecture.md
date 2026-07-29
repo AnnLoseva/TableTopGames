@@ -16,16 +16,16 @@
 | Слой | Папка | Ответственность | Не должен знать |
 |------|-------|-----------------|-----------------|
 | **Infrastructure** | `core/infrastructure/` | Низкоуровневые контракты: result types, ids, clocks, logging, storage abstractions | VTM-правила, React, feature-модули |
-| **Hub** | `core/hub/` | Хроники, регистрация систем и модулей, bootstrap runtime | Правила конкретной игры, Supabase feature-запросы |
-| **Game Systems** | `core/systems/{id}/` | Чистые правила + адаптеры для модулей | React, DOM, Supabase |
-| **Modules** | `modules/{id}/` | UI, hooks, API, realtime, storage конкретной фичи | Правила других игровых систем |
+| **Hub** | `core/hub/` | Хроники, регистрация систем и модулей, game-neutral contracts | Правила конкретной игры, Supabase feature-запросы |
+| **Game Systems** | `games/{game}/core/{id}/` | Чистые правила + адаптеры для модулей | React, DOM, Supabase |
+| **Modules** | `games/vampires/modules/{id}/` | UI, hooks, API, realtime, storage конкретной фичи | Правила других игровых систем |
 
 Дополнительные зоны (не слои Hub, но важны):
 
-- **`app/`** — тонкие route shells Next.js App Router.
-- **`components/`** — переходная зона; runtime-модули живут в `modules/*`.
-- **`lib/`** — shared infra (`supabase`, `i18n`).
-- **`public/`** — legacy character sheet (vanilla JS, iframe).
+- **`app/(vampires)/`** — URL-neutral VTM route group and providers.
+- **`app/pathfinder2/`** — isolated Pathfinder route shells.
+- **`games/vampires/lib/`** — VTM Supabase client and i18n.
+- **`public/vampires/`** — legacy VTM character sheet and assets (vanilla JS, iframe).
 
 ---
 
@@ -33,29 +33,29 @@
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
-│  app/layout.tsx, app/*/page.tsx          (route shells)         │
+│  app/layout.tsx + game-owned route groups (route shells)        │
 └────────────────────────────┬────────────────────────────────────┘
                              │
 ┌────────────────────────────▼────────────────────────────────────┐
 │  core/hub/                                                      │
-│  createVtm5ChronicleHub() → register systems + modules          │
-│  bootstrapChronicleRuntime(chronicle) → wire adapters            │
+│  game-neutral chronicle/module/system registry contracts        │
 └────────────┬───────────────────────────────┬────────────────────┘
              │                               │
 ┌────────────▼────────────┐    ┌─────────────▼────────────────────┐
-│  core/systems/vtm5/     │    │  modules/                        │
-│  rules/*  (pure TS)     │    │  table, chat, music, rolls,      │
-│  adapters/*             │───►│  master-console + 6 feature mods │
-│  createVtm5SystemCore() │    │  api/, hooks/, components/       │
+│  games/vampires/core/   │    │  games/vampires/modules/        │
+│  VTM preset + bootstrap │    │  table, chat, music, rolls,      │
+│  vtm5/rules/* (pure TS) │    │  master-console + 6 feature mods │
+│  vtm5/adapters/*        │───►│  api/, hooks/, components/       │
+│  createVtm5SystemCore() │    │                                 │
 └─────────────────────────┘    └──────────────┬───────────────────┘
                                               │
 ┌─────────────────────────────────────────────▼───────────────────┐
 │  core/infrastructure/  (placeholder)                              │
-│  lib/supabase.ts, lib/i18n/*                                      │
+│  games/vampires/lib/supabase.ts, games/vampires/lib/i18n/*    │
 └───────────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────▼───────────────────────────────────┐
-│  Supabase (tables, buckets, realtime) + public/ legacy sheet    │
+│  Supabase + public/vampires/ legacy sheet and assets            │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -74,14 +74,14 @@ bootstrapChronicleRuntime(hub, chronicle)
   → ChronicleRuntime { chronicle, resolved, adapters }
 ```
 
-**Runtime:** `app/table/page.tsx` → `TableRoute` → `bootstrapTableForRoom(room)` →
+**Runtime:** `app/(vampires)/table/page.tsx` → `TableRoute` → `bootstrapTableForRoom(room)` →
 `GameTable`. Адаптеры VTM5 активны до монтирования оркестратора.
 
 ---
 
 ## Game System Core (VTM5)
 
-Путь: `core/systems/vtm5/`
+Путь: `games/vampires/core/vtm5/`
 
 | Часть | Содержимое | Статус |
 |-------|------------|--------|
@@ -94,7 +94,7 @@ bootstrapChronicleRuntime(hub, chronicle)
 
 - без React, DOM, `window`, Supabase, Next.js;
 - UI вызывает core (через адаптеры), core не вызывает UI;
-- legacy-дубликаты (`public/vtm-health.js`, `public/vtm-humanity.js`) синхронизировать осознанно.
+- legacy-дубликаты (`public/vampires/vtm-health.js`, `public/vampires/vtm-humanity.js`) синхронизировать осознанно.
 
 ---
 
@@ -107,10 +107,10 @@ bootstrapChronicleRuntime(hub, chronicle)
 | `types.ts` | `GameSystem`, `Module`, `Chronicle`, `ModuleRegistration`, `ChronicleHub` |
 | `registry.ts` | `createHubRegistry()` — регистрация и резолв модулей |
 | `hub.ts` | `createChronicleHub()` |
-| `presets.ts` | `createVtm5ChronicleHub()` — preset для VTM5 |
-| `chronicle-runtime.ts` | `bootstrapChronicleRuntime()` — проводка адаптеров |
 
 Hub не содержит VTM-правил и не делает Supabase-запросов.
+VTM-specific preset and adapter wiring live in
+`games/vampires/core/{presets,chronicle-runtime}.ts`.
 
 ---
 
@@ -118,14 +118,14 @@ Hub не содержит VTM-правил и не делает Supabase-зап�
 
 | Модуль | Путь | Lifecycle | Что перенесено |
 |--------|------|-----------|----------------|
-| **home** | `modules/home/` | active | HomeRoute, MainScreen, module-definition |
-| **table** | `modules/table/` | active | types, constants, mappers, utils, api/*, hooks/*, components (modals, controls), system-adapter, configure |
-| **chat** | `modules/chat/` | active | api, hooks, ChatPanel |
-| **music** | `modules/music/` | active | player, sync engine, adapters (YouTube, local audio), global mount |
-| **rolls** | `modules/rolls/` | active | utils, hooks, DiceRollOverlay, system-adapter, configure |
-| **character-sheet** | `modules/character-sheet/` | active | legacy bridge, CharacterSheetRoute, screen component |
-| **journal** | `modules/journal/` | active | JournalRoute, JournalPage, JournalPanel, editor |
-| **reference** | `modules/reference/` | active | ReferenceRoute, ReferencePage, sidebar, markdown |
+| **home** | `games/vampires/modules/home/` | active | HomeRoute, MainScreen, module-definition |
+| **table** | `games/vampires/modules/table/` | active | types, constants, mappers, utils, api/*, hooks/*, components (modals, controls), system-adapter, configure |
+| **chat** | `games/vampires/modules/chat/` | active | api, hooks, ChatPanel |
+| **music** | `games/vampires/modules/music/` | active | player, sync engine, adapters (YouTube, local audio), global mount |
+| **rolls** | `games/vampires/modules/rolls/` | active | utils, hooks, DiceRollOverlay, system-adapter, configure |
+| **character-sheet** | `games/vampires/modules/character-sheet/` | active | legacy bridge, CharacterSheetRoute, screen component |
+| **journal** | `games/vampires/modules/journal/` | active | JournalRoute, JournalPage, JournalPanel, editor |
+| **reference** | `games/vampires/modules/reference/` | active | ReferenceRoute, ReferencePage, sidebar, markdown |
 
 ### Контракт модуля
 
@@ -139,10 +139,10 @@ Hub не содержит VTM-правил и не делает Supabase-зап�
 Модули с игровой механикой принимают адаптер от системы:
 
 ```ts
-// modules/table
+// games/vampires/modules/table
 configureTableModule(adapter: TableSystemAdapter)
 
-// modules/rolls
+// games/vampires/modules/rolls
 configureRollsModule(adapter: RollsSystemAdapter)
 ```
 
@@ -152,11 +152,11 @@ configureRollsModule(adapter: RollsSystemAdapter)
 
 1. **Создать границу до переноса кода** — `types.ts`, `module-definition.ts`, README.
 2. **Определить `ModuleRegistration`** и зарегистрировать в Hub preset или `createChronicleHub({ modules: [...] })`.
-3. **Если модуль использует правила игры** — описать `*SystemAdapter` в модуле; реализацию положить в `core/systems/{id}/adapters/`.
-4. **Supabase I/O** — только в `modules/{id}/api/`, через constants + mappers модуля.
-5. **React state** — в `modules/{id}/hooks/`, не в route shells.
-6. **UI** — в `modules/{id}/components/`; route shell импортирует один entry-компонент.
-7. **Не импортировать** `@/core/systems/vtm5/rules/*` напрямую, если есть адаптер (целевое правило; table пока на переходе).
+3. **Если модуль использует правила игры** — описать `*SystemAdapter` в модуле; реализацию положить в `games/{game}/core/{id}/adapters/`.
+4. **Supabase I/O** — только в `games/vampires/modules/{id}/api/`, через constants + mappers модуля.
+5. **React state** — в `games/vampires/modules/{id}/hooks/`, не в route shells.
+6. **UI** — в `games/vampires/modules/{id}/components/`; route shell импортирует один entry-компонент.
+7. **Не импортировать** `@/games/vampires/core/vtm5/rules/*` напрямую, если есть адаптер (целевое правило; table пока на переходе).
 8. **Удалённые старые пути** — после переноса не добавлять новые re-export shim’ы без отдельной задачи на совместимость.
 9. **Проверки** — `npm run lint` + `npm run build` после каждого значимого шага.
 10. **Не менять** Supabase table/bucket names и shape сохранённых данных без migration note.
@@ -164,7 +164,7 @@ configureRollsModule(adapter: RollsSystemAdapter)
 ### Шаблон нового модуля
 
 ```text
-modules/my-feature/
+games/vampires/modules/my-feature/
   types.ts              # MyFeatureModule = Module<'my-feature', 'vtm5'>
   module-definition.ts  # myFeatureModuleDefinition
   system-adapter.ts     # (если нужны правила игры)
@@ -179,28 +179,28 @@ modules/my-feature/
 
 ## Правила добавления новых игровых систем
 
-1. **Создать** `core/systems/{systemId}/` с `types.ts`, `rules/`, `adapters/`.
+1. **Создать** отдельный game domain и `games/{game}/core/{systemId}/` с `types.ts`, `rules/`, `adapters/`.
 2. **Зарегистрировать** `GameSystem` в Hub: `{ id, name, version?, rulesNamespace }`.
 3. **Реализовать адаптеры** под контракты существующих модулей (`TableSystemAdapter`, `RollsSystemAdapter`, …).
 4. **Экспортировать** `create{SystemId}SystemCore()` по образцу `createVtm5SystemCore()`.
-5. **Добавить preset** в `core/hub/presets.ts` (например `createDnd5eChronicleHub()`).
-6. **Расширить** `bootstrapChronicleRuntime()` веткой для нового `systemId`.
+5. **Добавить game-specific preset** рядом с системой, не в shared `core/hub/`.
+6. **Расширить game-specific runtime bootstrap** веткой для нового `systemId`.
 7. **Обновить** `supportedSystems` в module definitions затронутых модулей.
-8. **Не трогать** VTM5 rules при добавлении другой системы — только новая папка в `core/systems/`.
+8. **Не трогать** VTM5 rules при добавлении другой системы — использовать новый game domain.
 
 ---
 
-## Текущий статус миграции (2026-07-02)
+## Текущий статус миграции (2026-07-29)
 
 ### ✅ Сделано
 
 | Область | Детали |
 |---------|--------|
-| VTM5 rules core | `core/systems/vtm5/rules/*` — health, humanity, damage, derived-stats, disciplines |
+| VTM5 rules core | `games/vampires/core/vtm5/rules/*` — health, humanity, damage, derived-stats, disciplines |
 | VTM5 adapters | table + rolls адаптеры, `createVtm5SystemCore()` |
-| Hub foundation | registry, `createChronicleHub`, `createVtm5ChronicleHub`, `bootstrapChronicleRuntime` |
+| Hub foundation | shared registry + `createChronicleHub`; VTM preset/bootstrap in `games/vampires/core/*` |
 | Table module | api (scene, layer, roll, character, music, realtime), hooks (session, scenes, layers, rolls, realtime), utils, key components |
-| Table Supabase | все table-запросы вынесены из `GameTable.tsx` в `modules/table/api/` |
+| Table Supabase | все table-запросы вынесены из `GameTable.tsx` в `games/vampires/modules/table/api/` |
 | Chat module | api, hooks, ChatPanel |
 | Music module | player, sync, adapters, global engine mount |
 | Home module | HomeRoute, MainScreen, module-definition |
@@ -211,13 +211,13 @@ modules/my-feature/
 
 | Область | Детали |
 |---------|--------|
-| `modules/table/GameTable.tsx` | ~6.9k строк — оркестратор; UI-панели в `modules/table/components/*` |
+| `games/vampires/modules/table/GameTable.tsx` | ~2.8k строк — оркестратор; UI-панели в `games/vampires/modules/table/components/*` |
 | Прямые импорты VTM5 в GameTable | только `import type`; runtime — через adapters |
-| Character state helpers | ✅ `modules/table/utils/character-state.ts` |
-| Rolls factory | ✅ `modules/rolls/hooks/useQuickRollFactory.ts` |
+| Character state helpers | ✅ `games/vampires/modules/table/utils/character-state.ts` |
+| Rolls factory | ✅ `games/vampires/modules/rolls/hooks/useQuickRollFactory.ts` |
 | Hub preset | ✅ home + table + chat + music + rolls + character-sheet + journal + reference |
 | Infrastructure | `core/infrastructure/` — placeholder |
-| Legacy iframe (`public/main.js`) | не мигрирован; bridge в `modules/character-sheet/legacy/` |
+| Legacy iframe (`public/vampires/main.js`) | не мигрирован; bridge в `games/vampires/modules/character-sheet/legacy/` |
 
 ### ⬜ Не начато / позже
 
@@ -227,7 +227,7 @@ modules/my-feature/
 | Master reveals / whispers API | будущий `master-api` |
 | Полный rolls UI module | отделение от table |
 | React character sheet | замена legacy iframe |
-| Синхронизация legacy JS | `public/vtm-health.js` ↔ TS core |
+| Синхронизация legacy JS | `public/vampires/vtm-health.js` ↔ TS core |
 | DI / runtime registry | полноценная оркестрация Hub |
 
 ---
@@ -235,13 +235,13 @@ modules/my-feature/
 ## Legacy-зона (не трогать широкими PR)
 
 ```text
-/character-sheet → CharacterSheetScreen → iframe /old-sheet.html
-  → public/main.js, public/supabase.js, public/vtm-*.js
+/character-sheet → CharacterSheetScreen → iframe /vampires/old-sheet.html
+  → public/vampires/main.js, public/vampires/supabase.js, public/vtm-*.js
   ← postMessage { type: 'vtm-character-saved', characterId }
 ```
 
 Маршруты `/`, `/character-sheet`, `/table`, `/journal`, `/reference` — стабильны.
-`app/table/page.tsx` по-прежнему рендерит `GameTable` без изменений контракта.
+`app/(vampires)/table/page.tsx` по-прежнему рендерит `GameTable` без изменений контракта.
 
 ---
 
@@ -274,4 +274,4 @@ npm run test:disciplines
 - [`ai/CURRENT-STATE.md`](./ai/CURRENT-STATE.md) — краткий статус для агентов
 - [`ai/ARCHITECTURE-MAP.md`](./ai/ARCHITECTURE-MAP.md) — runtime-карта файлов
 - [`core/hub/README.md`](../core/hub/README.md) — границы Hub
-- [`modules/table/README.md`](../modules/table/README.md) — статус table module
+- [`games/vampires/modules/table/README.md`](../games/vampires/modules/table/README.md) — статус table module

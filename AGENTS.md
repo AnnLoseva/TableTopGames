@@ -37,26 +37,26 @@ the files that subsystem names.
    Reading everything is a mistake, not diligence.
 3. **Understand the subsystem before changing it.** Every subsystem has a doc in
    `docs/ai/subsystems/`. Read it first.
-4. **Legacy is load-bearing.** `public/main.js` (~11k lines),
-   `public/old-sheet.html` (~5k lines) and the iframe bridge run the real
+4. **Legacy is load-bearing.** `public/vampires/main.js` (~11k lines),
+   `public/vampires/old-sheet.html` (~5k lines) and the iframe bridge run the real
    character sheet. Follow `docs/ai/workflows/legacy-edit-protocol.md`. No broad
    refactors without an explicit task for it.
 5. **The game table is an orchestrator, not a dumping ground.**
-   `components/table/GameTable.tsx` (~9k lines) must not grow. Extract UI into
-   components, shared logic into `lib/table/*`, rules into
-   `core/systems/vtm5/rules/*`. See
+   `games/vampires/modules/table/GameTable.tsx` must not grow. Extract UI into
+   its owning VTM module and rules into
+   `games/vampires/core/vtm5/rules/*`. See
    `docs/ai/workflows/react-table-edit-protocol.md`.
-6. **VTM mechanics stay pure.** Logic in `core/systems/vtm5/rules/*` must be
+6. **VTM mechanics stay pure.** Logic in `games/vampires/core/vtm5/rules/*` must be
    framework-independent and testable. See
    `docs/ai/workflows/vtm-mechanics-edit-protocol.md`. If you change
-   `core/systems/vtm5/rules/health/index.ts` or `humanity/index.ts`, check
-   whether the legacy duplicate (`public/vtm-health.js`,
-   `public/vtm-humanity.js`) needs the same change.
+   `games/vampires/core/vtm5/rules/health/index.ts` or `humanity/index.ts`, check
+   whether the legacy duplicate (`public/vampires/vtm-health.js`,
+   `public/vampires/vtm-humanity.js`) needs the same change.
 7. **Supabase contracts are shared state.** Never rename tables/buckets or change
    the shape of saved data casually. Follow
    `docs/ai/workflows/supabase-edit-protocol.md` and record schema changes in
    `docs/ai/DECISIONS.md`.
-8. **Rules data is a data layer.** `public/rules.json` / `rules_eng.json` hold
+8. **Rules data is a data layer.** `public/vampires/rules.json` / `rules_eng.json` hold
    clans, skills, disciplines, merits, flaws, predator types. Do not put UI logic
    there and mind RU/EN name drift.
 9. **Keep docs honest.** Record architectural/contract/route/mechanic changes and

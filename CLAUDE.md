@@ -7,17 +7,17 @@ repository. The shared protocol, reading order, and rules live in `AGENTS.md` an
 ## Claude-specific notes
 
 - **You are good at reading large files and mapping architecture.** Use that:
-  when a task touches `public/main.js`, `public/old-sheet.html`, or
+  when a task touches `public/vampires/main.js`, `public/vampires/old-sheet.html`, or
   `components/table/GameTable.tsx`, read the relevant region and summarize the
   data flow before editing.
 - **Do not rewrite monoliths without a dedicated task.** "This file is too big"
   is not permission to refactor it. Large refactors of `main.js`,
   `old-sheet.html`, or `GameTable.tsx` require an explicit, separate task.
 - **Read the workflow before editing a critical file.** Before touching
-  `public/main.js` / `public/old-sheet.html` → `docs/ai/workflows/legacy-edit-protocol.md`.
+  `public/vampires/main.js` / `public/vampires/old-sheet.html` → `docs/ai/workflows/legacy-edit-protocol.md`.
   Before touching `components/table/GameTable.tsx` →
   `docs/ai/workflows/react-table-edit-protocol.md`. Before touching
-  `core/systems/vtm5/rules/*` → `docs/ai/workflows/vtm-mechanics-edit-protocol.md`.
+  `games/vampires/core/vtm5/rules/*` → `docs/ai/workflows/vtm-mechanics-edit-protocol.md`.
 - **Record long-term architectural decisions** in `docs/ai/DECISIONS.md` using
   the template in `docs/ai/templates/decision-entry-template.md`. One entry per
   real decision — not per bug.

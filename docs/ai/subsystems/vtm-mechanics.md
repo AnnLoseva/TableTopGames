@@ -5,7 +5,7 @@ Pure, framework-independent VTM V5 rules logic. These modules take data and
 return data — no React, no DOM, no Supabase. They are the intended single source
 of truth as logic migrates out of the legacy sheet.
 
-## Modules (`core/systems/vtm5/rules/*`)
+## Modules (`games/vampires/core/vtm5/rules/*`)
 - `health/index.ts` — health/damage tracker (superficial/aggravated, max,
   impaired, physical state for vampire/mortal/ghoul/thinblood/custom).
 - `humanity/index.ts` — humanity, stains, remorse.
@@ -24,7 +24,7 @@ of truth as logic migrates out of the legacy sheet.
 
 ## Actor adapter
 
-`core/systems/vtm5/adapters/actors.ts` normalizes display vitals and simple
+`games/vampires/core/vtm5/adapters/actors.ts` normalizes display vitals and simple
 trait-based roll pools for linked and compact actors. It remains pure and does
 not know about React, Supabase or master-console UI.
 
@@ -33,7 +33,7 @@ not know about React, Supabase or master-console UI.
 damage application. Damage has severity (superficial/aggravated), a target
 (health/willpower), and options (source, weapon tags, armor, halving, margin…).
 Physical states include healthy/impaired/torpor/dead. **Legacy duplicate:**
-`public/vtm-health.js` — keep behavior aligned.
+`public/vampires/vtm-health.js` — keep behavior aligned.
 
 ## Willpower
 Willpower damage is modeled via the same damage/target machinery (`target:
@@ -43,8 +43,8 @@ Willpower damage is modeled via the same damage/target machinery (`target:
 ## Humanity / stains / remorse
 `humanity/index.ts` handles the humanity track, stains, and remorse resolution
 (`applyRemorseCheckResult` — dice rolling stays in UI). Table quick-preview uses
-`modules/rolls/utils/remorse-roll.ts` on top of the same core function.
-**Legacy duplicate:** `public/vtm-humanity.js` (includes `applyRemorseCheckResult`).
+`games/vampires/modules/rolls/utils/remorse-roll.ts` on top of the same core function.
+**Legacy duplicate:** `public/vampires/vtm-humanity.js` (includes `applyRemorseCheckResult`).
 Guarded by `npm run test:vtm-parity`.
 
 ## Derived stats
@@ -58,9 +58,9 @@ The discipline layer loads rules from the JSON data, validates them against
 `engine/index.ts`. This is the most test-covered area — use the scripts below.
 
 ## Legacy duplication
-- `core/systems/vtm5/rules/health/index.ts` ↔ `public/vtm-health.js`
-- `core/systems/vtm5/rules/humanity/index.ts` ↔ `public/vtm-humanity.js`
-- discipline cost/effect parsing ↔ legacy parsing in `public/main.js`
+- `games/vampires/core/vtm5/rules/health/index.ts` ↔ `public/vampires/vtm-health.js`
+- `games/vampires/core/vtm5/rules/humanity/index.ts` ↔ `public/vampires/vtm-humanity.js`
+- discipline cost/effect parsing ↔ legacy parsing in `public/vampires/main.js`
   (`legacy-cost-parser.ts` exists to bridge old cost strings)
 
 When you change one side, decide whether the other must change too, and record

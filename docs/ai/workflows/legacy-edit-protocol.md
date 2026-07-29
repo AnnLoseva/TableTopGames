@@ -1,9 +1,9 @@
 # Legacy Edit Protocol
 
-Applies to: `public/main.js`, `public/old-sheet.html`, `public/supabase.js`,
-`public/creation-wizard.js`, `public/vtm-health.js`, `public/vtm-humanity.js`,
-`public/i18n-runtime.js`, `public/i18n-dictionary.js`, and the bridge shell
-`modules/character-sheet/components/CharacterSheetScreen.tsx`.
+Applies to: `public/vampires/main.js`, `public/vampires/old-sheet.html`, `public/vampires/supabase.js`,
+`public/vampires/creation-wizard.js`, `public/vampires/vtm-health.js`, `public/vampires/vtm-humanity.js`,
+`public/vampires/i18n-runtime.js`, `public/vampires/i18n-dictionary.js`, and the bridge shell
+`games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx`.
 
 Read `../subsystems/legacy-character-sheet.md` and
 `../subsystems/character-sheet-bridge.md` first.
@@ -12,7 +12,7 @@ Read `../subsystems/legacy-character-sheet.md` and
 1. **No large refactor without a dedicated task.** These files are big and
    un-bundled; "cleaning up" is out of scope for a feature/bug task.
 2. **Grep before touching globals.** No module scope protects you — search all of
-   `public/` for every variable/function/event name you change (e.g. the `vtm-*`
+   `public/vampires/` for every variable/function/event name you change (e.g. the `vtm-*`
    window signals, `charactersListCache`).
 3. **Do not break URL params.** `room`, `role`, `characterId`, `new` are a
    contract with the React shell.
@@ -36,8 +36,8 @@ Read `../subsystems/legacy-character-sheet.md` and
 5. Navigate sheet → `/table` → room/role preserved.
 
 If you edited `vtm-health.js` / `vtm-humanity.js`, also check whether
-`core/systems/vtm5/rules/health/index.ts` /
-`core/systems/vtm5/rules/humanity/index.ts` need the same change (see
+`games/vampires/core/vtm5/rules/health/index.ts` /
+`games/vampires/core/vtm5/rules/humanity/index.ts` need the same change (see
 `vtm-mechanics-edit-protocol.md`).
 
 ## Update docs?

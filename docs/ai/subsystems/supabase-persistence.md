@@ -7,16 +7,16 @@ realtime room sync. Its schema is a **contract** shared by the React table and
 the legacy sheet — undocumented drift breaks save/load and sync everywhere.
 
 ## Main files
-- `lib/supabase.ts` — the React/Next Supabase client.
-- `public/supabase.js` — the legacy client + `characters` CRUD (create/update/
+- `games/vampires/lib/supabase.ts` — the React/Next Supabase client.
+- `public/vampires/supabase.js` — the legacy client + `characters` CRUD (create/update/
   load/list, with `charactersListCache`).
-- `modules/table/constants.ts` — centralizes table + bucket names + keys.
-- `modules/table/mappers.ts` — maps Supabase rows ↔ app objects.
-- `supabase/*.sql` — table definitions, RLS policies, and storage bucket setup.
-  `supabase/patch_character_data.sql` defines the character autosave patch RPC.
+- `games/vampires/modules/table/constants.ts` — centralizes table + bucket names + keys.
+- `games/vampires/modules/table/mappers.ts` — maps Supabase rows ↔ app objects.
+- `games/vampires/supabase/*.sql` — table definitions, RLS policies, and storage bucket setup.
+  `games/vampires/supabase/patch_character_data.sql` defines the character autosave patch RPC.
 
 ## Tables and buckets
-Tables (from `modules/table/constants.ts` and `supabase/*.sql`):
+Tables (from `games/vampires/modules/table/constants.ts` and `games/vampires/supabase/*.sql`):
 
 | Table | Used by | Purpose |
 |---|---|---|
@@ -64,16 +64,16 @@ Tables (from `modules/table/constants.ts` and `supabase/*.sql`):
 
 Storage buckets: `table-images` (constant `TABLE_IMAGE_BUCKET`), a music bucket,
 and `character-portraits` (portraits + touchstone images; see
-`supabase/character_portraits_storage.sql`). RLS/permissions in
-`supabase/{users_characters_rls,media_storage_permissions,character_portraits_storage}.sql`.
+`games/vampires/supabase/character_portraits_storage.sql`). RLS/permissions in
+`games/vampires/supabase/{users_characters_rls,media_storage_permissions,character_portraits_storage}.sql`.
 
 **Images are never embedded as base64 in rows.** Portraits/touchstone images go
-through `uploadPortraitDataUrl` (`public/supabase.js`) into `character-portraits`;
+through `uploadPortraitDataUrl` (`public/vampires/supabase.js`) into `character-portraits`;
 `characters.data` and `table_chat_messages.character_image` hold public URLs
 (base64 only as upload-failure fallback). See the 2026-07-07 DECISIONS entry.
 
 ## Character persistence
-Handled by the **legacy** `public/supabase.js` against the `characters` table
+Handled by the **legacy** `public/vampires/supabase.js` against the `characters` table
 (the React table also reads `characters` to load player sheets). Saving emits the
 `vtm-character-saved` postMessage back to the bridge (see
 `character-sheet-bridge.md`). Changing the character row shape affects both
@@ -82,19 +82,19 @@ layers.
 Legacy autosave patching uses the `vtm_patch_character_data(p_id, p_user_id,
 p_patch)` RPC when deployed. The RPC deep-merges object keys atomically in
 Postgres and replaces arrays/scalars/nulls whole, matching `mergeCharacterPatch`
-in `public/supabase.js`; the browser keeps a select+merge+update fallback while
+in `public/vampires/supabase.js`; the browser keeps a select+merge+update fallback while
 the SQL is not deployed.
 
 ## Table persistence
 `GameTable.tsx` reads/writes most `table_*` tables and subscribes to a per-room
-realtime channel (`table-room:{room}`). Chat is handled by `modules/chat/*`
-against `table_chat_messages`. Names must come from `modules/table/constants.ts`;
+realtime channel (`table-room:{room}`). Chat is handled by `games/vampires/modules/chat/*`
+against `table_chat_messages`. Names must come from `games/vampires/modules/table/constants.ts`;
 row mapping belongs in the relevant module/API.
 
 ## Master console persistence
 
-`supabase/master_console_persistence.sql` is the schema/RLS contract;
-`modules/master-console/persistence/*` owns constants, types, validation and
+`games/vampires/supabase/master_console_persistence.sql` is the schema/RLS contract;
+`games/vampires/modules/master-console/persistence/*` owns constants, types, validation and
 mappers. APIs and Realtime hooks are in the adjacent `api/` and `hooks/`
 directories. Every subscription is filtered by `room` and cleaned up on effect
 teardown. These tables revoke anon access and require Supabase Auth plus a
@@ -102,7 +102,7 @@ teardown. These tables revoke anon access and require Supabase Auth plus a
 legacy localStorage password gate. Initial chronicle/master provisioning is an
 administrator/service-role operation.
 
-Actor persistence is defined separately in `supabase/chronicle_actors.sql` and
+Actor persistence is defined separately in `games/vampires/supabase/chronicle_actors.sql` and
 depends on the master foundation. A partial unique index prevents linking the
 same `characters.id` twice within one chronicle. Linked character data is loaded
 from `characters` on hydration and is never copied wholesale into the actor row.
@@ -143,7 +143,7 @@ same `source_name`. This makes the new text immediately available to every
 member and to the existing DeepSeek chronicle-search tool without giving the
 model or browser any general database capability.
 
-Player uploads use the separate `supabase/personal_chronicles.sql` contract.
+Player uploads use the separate `games/vampires/supabase/personal_chronicles.sql` contract.
 The browser stores the entire normalized source as ordered raw chunks before AI
 work starts. `personal-chronicle-processor` performs one authenticated DeepSeek
 operation per request, writes each cleaned chunk immediately, then creates a
@@ -160,16 +160,16 @@ Images/media → `table_images` + `table-images` bucket; music → `table_music`
 `media_studio_layers`. See `music-and-media.md`.
 
 ## Schema drift risks
-- Renaming a table/bucket without updating `constants.ts` + `supabase/*.sql` +
+- Renaming a table/bucket without updating `constants.ts` + `games/vampires/supabase/*.sql` +
   both clients breaks that feature.
 - Changing a row's columns/shape without a migration note breaks save/load.
-- Two clients (`lib/supabase.ts`, `public/supabase.js`) can diverge in config.
+- Two clients (`games/vampires/lib/supabase.ts`, `public/vampires/supabase.js`) can diverge in config.
 - RLS changes can silently block anon/authenticated access.
 
 ## Safe edit protocol
 1. Read `../workflows/supabase-edit-protocol.md`.
 2. Never rename tables/buckets casually. Change name in `constants.ts`, both
-   clients, mappers, and `supabase/*.sql` together.
+   clients, mappers, and `games/vampires/supabase/*.sql` together.
 3. Never change saved-data shape without a migration note in `DECISIONS.md`.
 4. Verify master and player room flow after any change.
 

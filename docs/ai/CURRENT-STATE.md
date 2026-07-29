@@ -5,7 +5,10 @@
 
 ## Current development focus
 - **TableTopGames / Pathfinder 2 foundation (2026-07-29)** — the product now
-  has explicit `games/vampires` and `games/pathfinder2` boundaries. The unlisted
+  has explicit `games/vampires` and `games/pathfinder2` boundaries. All VTM-only
+  implementation now lives in `games/vampires`, `app/(vampires)` and
+  `public/vampires`; compatibility rewrites preserve former root asset URLs.
+  The unlisted
   `/pathfinder2/sheet` route provides a six-step local character draft with
   contextual `pf2.ru` links; it intentionally has no Supabase persistence yet.
 - **Game table lite (2026-07-18)** — scene stage/background on `table_scenes`,
@@ -20,8 +23,8 @@
   Route entry now requires a live Supabase Auth session plus master membership;
   the local password remains only a compatibility lock. Production provisioning
   for new chronicles/members remains operator-owned.
-- **Legacy character sheet phase** — iframe sheet (`public/main.js` +
-  `old-sheet.html`) stays load-bearing; bridge in `modules/character-sheet/`.
+- **Legacy character sheet phase** — iframe sheet (`public/vampires/main.js` +
+  `old-sheet.html`) stays load-bearing; bridge in `games/vampires/modules/character-sheet/`.
 - Hub + Modules architecture is **mostly complete** (`GameTable.tsx` ~2.6k lines —
   do not grow for master features).
 - Run `npm run test:vtm-parity` after health/humanity edits; `npm run test:master-console`
@@ -30,24 +33,28 @@
 ## What is stable enough
 - Routes `/`, `/character-sheet`, `/table`, `/journal`, `/reference`,
   `/library/chronicles`, `/master`, `/pathfinder2/sheet` — all thin
-  `app/*/page.tsx` wrappers over game-owned route entries.
+  App Router wrappers over game-owned route entries. VTM wrappers are grouped in
+  `app/(vampires)` without changing their public URLs.
 - The iframe character sheet loads, saves and loads characters.
 - The game table renders and syncs a room via Supabase.
-- `core/systems/vtm5/rules/*` pure modules (health, humanity, damage, derived stats, disciplines).
-- `modules/chat/*` owns text chat auth, message history, realtime delivery and UI.
-- `modules/music/*` owns shared room music playback, adapters and the persistent
-  root engine mount.
-- `modules/table/*` owns table orchestrator, data layer, APIs, hooks, utils,
+- `games/vampires/core/vtm5/rules/*` pure modules (health, humanity, damage, derived stats, disciplines).
+- `games/vampires/modules/chat/*` owns text chat auth, message history, realtime delivery and UI.
+- `games/vampires/modules/music/*` owns shared room music playback, adapters and
+  the persistent mount in `app/(vampires)/layout.tsx`.
+- `games/vampires/modules/table/*` owns table orchestrator, data layer, APIs, hooks, utils,
   panels/modals (`RollHistoryPanel`, `LayerContextMenuPanel`, `MediaPreviewModal`,
   etc.); deprecated component and `lib/table/*` shims have been removed.
 
 ## What is fragile
-- `public/main.js` (~11k lines) — legacy sheet logic monolith.
-- `public/old-sheet.html` (~5k lines) — legacy sheet markup/styles.
-- `modules/table/GameTable.tsx` (~2.6k lines) — still wires many hooks inline.
-- **Duplicated VTM logic**: `vtm-health.js` / `vtm-humanity.js` must stay aligned with
-  `core/` — guarded by `npm run test:vtm-parity` (discipline parsing in `main.js` still manual).
-- The **iframe bridge** between `/character-sheet` and `/old-sheet.html`
+- `public/vampires/main.js` (~11k lines) — legacy sheet logic monolith.
+- `public/vampires/old-sheet.html` (~5k lines) — legacy sheet markup/styles.
+- `games/vampires/modules/table/GameTable.tsx` (~2.6k lines) — still wires many hooks inline.
+- **Duplicated VTM logic**: `public/vampires/vtm-health.js` /
+  `public/vampires/vtm-humanity.js` must stay aligned with
+  `games/vampires/core/vtm5/rules/*` — guarded by `npm run test:vtm-parity`
+  (discipline parsing in `public/vampires/main.js` is still manual).
+- The **iframe bridge** between `/character-sheet` and
+  `/vampires/old-sheet.html` (`/old-sheet.html` remains a compatibility alias)
   (query params, localStorage, `vtm-character-saved` postMessage).
 - RU/EN trait & discipline names across `rules.json` / `rules_eng.json` / i18n.
 
@@ -57,21 +64,22 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 
 ## Next likely tasks
 - Finish subsystem documentation and keep it accurate.
-- Gradually extract logic out of `public/main.js` (small steps, explicit tasks).
+- Gradually extract logic out of `public/vampires/main.js` (small steps, explicit tasks).
 - Sync full sheet ↔ quick sheet representations.
 - Character creation wizard improvements.
 - Humanity / stains / remorse flow.
 - Improve Supabase persistence robustness.
 
 ## Do not touch casually
-- `public/main.js`, `public/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.
-- `modules/table/GameTable.tsx` — read `workflows/react-table-edit-protocol.md`.
+- `public/vampires/main.js`, `public/vampires/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.
+- `games/vampires/modules/table/GameTable.tsx` — read `workflows/react-table-edit-protocol.md`.
 - Supabase table/bucket names & saved-data shape — read `workflows/supabase-edit-protocol.md`.
-- `public/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
+- `public/vampires/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
 
 ## Last updated
-2026-07-29 — TableTopGames rename and game boundaries; isolated Pathfinder 2
-  character creator at `/pathfinder2/sheet`.
+2026-07-29 — VTM implementation consolidated under `games/vampires`,
+  `app/(vampires)` and `public/vampires` with stable public routes and legacy
+  asset rewrites; isolated Pathfinder 2 creator remains at `/pathfinder2/sheet`.
   Earlier: Game table lite: scene stage/background, character tokens above
   media, character controllers, geometric player visibility (see DECISIONS).
   Earlier: `/library/chronicles` now separates official history from

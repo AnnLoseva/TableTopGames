@@ -17,11 +17,11 @@ type FileInfo = {
 const root = process.cwd()
 const ignoredDirs = new Set(['node_modules', '.next', '.git', '.claude', '.codex-tools', '.vercel', 'coverage', 'dist', 'out'])
 const ignoredExactPaths = new Set([
-  'public/rules.json',
-  'public/rules_eng.json',
-  'public/reference/VtM_v5_new.md',
-  'public/reference/VtM_v5_new_eng.md',
-  'public/reference/vtm-v5',
+  'public/vampires/rules.json',
+  'public/vampires/rules_eng.json',
+  'public/vampires/reference/VtM_v5_new.md',
+  'public/vampires/reference/VtM_v5_new_eng.md',
+  'public/vampires/reference/vtm-v5',
 ])
 const textExtensions = new Set([
   '.css',
@@ -53,7 +53,7 @@ function toProjectPath(absolutePath: string) {
 
 function isIgnored(projectPath: string) {
   if (ignoredExactPaths.has(projectPath)) return true
-  if (/^public\/reference\/.*\.(md|pdf)$/i.test(projectPath)) return true
+  if (/^public\/vampires\/reference\/.*\.(md|pdf)$/i.test(projectPath)) return true
   return false
 }
 
@@ -78,10 +78,10 @@ function onlyEmptyTodoModule(content: string) {
 
 function categoryFor(projectPath: string, extension: string, content: string | undefined): Category {
   if (content !== undefined && (content.trim() === '' || onlyEmptyTodoModule(content))) return 'empty'
-  if (/^public\/(main|supabase|vtm-health|vtm-humanity|creation-wizard|i18n-runtime|i18n-dictionary)\.js$/.test(projectPath)) {
+  if (/^public\/vampires\/(main|supabase|vtm-health|vtm-humanity|creation-wizard|i18n-runtime|i18n-dictionary)\.js$/.test(projectPath)) {
     return 'legacy'
   }
-  if (projectPath === 'public/old-sheet.html' || projectPath.startsWith('public/legacy-sheet/')) return 'legacy'
+  if (projectPath === 'public/vampires/old-sheet.html' || projectPath.startsWith('public/legacy-sheet/')) return 'legacy'
   if (styleExtensions.has(extension) || /Styles\.tsx$/.test(projectPath)) return 'style'
   if (sourceExtensions.has(extension)) return 'source'
   if (dataExtensions.has(extension)) return 'data'
@@ -201,6 +201,7 @@ function findPotentiallyUnusedFiles(files: FileInfo[]) {
     .filter(file => file.category === 'source' || file.category === 'style')
     .filter(file => !file.path.startsWith('app/'))
     .filter(file => !file.path.startsWith('scripts/'))
+    .filter(file => !file.path.startsWith('games/vampires/scripts/'))
     .filter(file => !file.path.startsWith('public/'))
     .filter(file => !rootEntrypoints.has(file.path))
     .filter(file => !file.path.endsWith('.d.ts'))
@@ -225,7 +226,7 @@ async function main() {
   console.log('# Project structure audit')
   console.log('')
   console.log(`Scanned files: ${files.length}`)
-  console.log(`Ignored: ${[...ignoredExactPaths].join(', ')}, public/reference/*.md, ${[...ignoredDirs].join(', ')}`)
+  console.log(`Ignored: ${[...ignoredExactPaths].join(', ')}, public/vampires/reference/*.md, ${[...ignoredDirs].join(', ')}`)
   console.log('')
   console.log('## Largest files')
   console.log(formatTable(largestFiles))
@@ -243,7 +244,7 @@ async function main() {
   console.log(formatList(publicCodeFiles))
   console.log('')
   console.log('## Potentially unused files')
-  console.log('Heuristic: source/style files outside app, scripts, and public with no local import found.')
+  console.log('Heuristic: source/style files outside app, game scripts, and public with no local import found.')
   console.log(formatList(potentiallyUnused))
 }
 

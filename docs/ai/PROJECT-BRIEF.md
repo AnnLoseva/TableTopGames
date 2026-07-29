@@ -45,13 +45,13 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 - **Supabase** (`@supabase/supabase-js`, `@supabase/ssr`) for DB + storage
 - **tldraw** (table canvas), **three** (3D), **framer-motion** (animation)
 - **TipTap** (journal editor), **react-markdown / remark-gfm** (reference)
-- Legacy character sheet: **vanilla HTML/CSS/JS** in `public/` (no build step)
+- Legacy character sheet: **vanilla HTML/CSS/JS** in `public/vampires/` (no build step)
 
 ## Core routes
 | Route | Renders | Notes |
 |---|---|---|
 | `/` | `HomeRoute` → `MainScreen` | Landing / entry (character & room selection) |
-| `/character-sheet` | `CharacterSheetScreen` → iframe `/old-sheet.html` | The full legacy sheet |
+| `/character-sheet` | `CharacterSheetScreen` → iframe `/vampires/old-sheet.html` | The full legacy sheet |
 | `/table` | `GameTable` | The shared campaign room |
 | `/journal` | Journal editor | Rich-text journal |
 | `/reference` | Reference pages | Markdown rules reference |
@@ -61,7 +61,7 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 | `/old` | redirect | Legacy redirect → `/character-sheet` |
 
 ## Main data sources
-- **`public/rules.json` / `public/rules_eng.json`** — clans, skills, disciplines,
+- **`public/vampires/rules.json` / `public/vampires/rules_eng.json`** — clans, skills, disciplines,
   merits, flaws, predator types (RU + EN). The rules data layer.
 - **Supabase tables** — `characters`, `users`, `table_rolls`,
   `table_chat_messages`, `table_images`, `table_scenes`, `table_scene_music`,
@@ -86,5 +86,5 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 ## Design direction
 Each game owns its visual language: dark blood-red VTM and parchment/forest
 Pathfinder 2. Keep the current VTM UI stable. Evolve gradually from the legacy
-monolith toward modular React + `core/systems/vtm5/rules/*` rules, in small safe
+monolith toward modular React + `games/vampires/core/vtm5/rules/*` rules, in small safe
 steps — without abrupt rewrites or UI regressions.

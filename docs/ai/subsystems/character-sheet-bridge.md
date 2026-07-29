@@ -7,11 +7,12 @@ an iframe and reports back when a character is saved. This contract is small but
 load-bearing — breaking it loses characters or role state.
 
 ## Route
-- `/character-sheet` → `modules/character-sheet/CharacterSheetRoute.tsx` →
-  `modules/character-sheet/components/CharacterSheetScreen.tsx`.
-- Bridge helpers: `modules/character-sheet/legacy/{params,events,bridge}.ts`.
-- The shell renders `<iframe src="/old-sheet.html?...">`.
-- `/old` (`app/old/page.tsx`) is a legacy redirect to `/character-sheet`,
+- `/character-sheet` → `games/vampires/modules/character-sheet/CharacterSheetRoute.tsx` →
+  `games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx`.
+- Bridge helpers: `games/vampires/modules/character-sheet/legacy/{params,events,bridge}.ts`.
+- The shell renders `<iframe src="/vampires/old-sheet.html?...">`.
+  `/old-sheet.html` remains a compatibility rewrite for old saved links.
+- `/old` (`app/(vampires)/old/page.tsx`) is a legacy redirect to `/character-sheet`,
   preserving `room`.
 
 ## Query params (shell ⇄ iframe)
@@ -25,7 +26,7 @@ Read by the shell from `window.location.search`, then forwarded to the iframe:
 | `new` | `1` = start a brand-new character | absent |
 
 The shell composes the iframe URL as
-`/old-sheet.html?room=&role=[&characterId=][&new=1]`. When starting a new
+`/vampires/old-sheet.html?room=&role=[&characterId=][&new=1]`. When starting a new
 character it clears the creation draft
 (`localStorage['vtm-character-creation-draft-v2']`), sets `new=1`, and remounts
 the iframe via a `key` change.
@@ -55,7 +56,7 @@ the iframe via a `key` change.
 ## Safe edit protocol
 1. Read `../workflows/legacy-edit-protocol.md`.
 2. Treat params, localStorage keys, and the postMessage shape as a **contract**:
-   change them only with a matching change in `public/main.js` and a
+   change them only with a matching change in `public/vampires/main.js` and a
    `DECISIONS.md` entry.
 3. Keep the origin check.
 4. Verify: `/character-sheet?new=1` (create → save → URL gains `characterId`),

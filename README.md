@@ -53,17 +53,20 @@ Infrastructure → Hub → Game Systems → Modules
 | Layer | Path | Role |
 |-------|------|------|
 | Infrastructure | `core/infrastructure/` | Low-level shared contracts (placeholder) |
-| Hub | `core/hub/` | Chronicle setup, module/system registry, runtime bootstrap |
+| Hub | `core/hub/` | Game-neutral chronicle, module and system registry contracts |
 | Game Domains | `games/{vampires,pathfinder2}/` | Game-specific route boundary and Pathfinder 2 implementation |
-| Game Systems | `core/systems/vtm5/` | Pure VTM5 rules + adapters for modules |
-| Modules | `modules/*/` | Feature areas: table, chat, music, rolls, … |
+| Game Systems | `games/vampires/core/vtm5/` | Pure VTM5 rules + adapters for modules |
+| Modules | `games/vampires/modules/*/` | Feature areas: table, chat, music, rolls, … |
 
 **Full documentation:** [`docs/new-architecture.md`](docs/new-architecture.md)
 
-Quick bootstrap example (not yet wired into routes):
+VTM runtime bootstrap:
 
 ```ts
-import { bootstrapChronicleRuntime, createVtm5ChronicleHub } from '@/core/hub'
+import {
+  bootstrapChronicleRuntime,
+  createVtm5ChronicleHub,
+} from '@/games/vampires/core'
 
 const hub = createVtm5ChronicleHub()
 const runtime = bootstrapChronicleRuntime(hub, {
@@ -77,19 +80,18 @@ const runtime = bootstrapChronicleRuntime(hub, {
 ### Key folders
 
 - `app/` — Next.js route shells
-- `games/vampires/` — VTM route facades over the load-bearing implementation
+- `app/(vampires)/` — URL-neutral App Router group for VTM routes and providers
+- `games/vampires/` — VTM modules, mechanics, client helpers, scripts and Supabase files
 - `games/pathfinder2/` — isolated Pathfinder 2 sheet and local rules guide
-- `components/` — screens and `GameTable` orchestrator (transition)
-- `modules/table/` — table data layer, API, hooks, components
-- `modules/chat/`, `modules/music/` — extracted feature modules
-- `core/systems/vtm5/rules/` — framework-independent VTM5 mechanics
-- `lib/table/` — compatibility shims → `@/modules/table`
-- `public/` — legacy character sheet (`main.js`, `old-sheet.html`)
+- `games/vampires/modules/table/` — table data layer, API, hooks, components
+- `games/vampires/modules/chat/`, `games/vampires/modules/music/` — extracted feature modules
+- `games/vampires/core/vtm5/rules/` — framework-independent VTM5 mechanics
+- `public/vampires/` — legacy character sheet and VTM static assets
 
 ### Legacy sheet
 
-The full character sheet runs as vanilla JS inside an iframe (`public/old-sheet.html`).
-Do not rewrite `public/main.js` in wide PRs — see `docs/architecture.md`.
+The full character sheet runs as vanilla JS inside an iframe (`public/vampires/old-sheet.html`).
+Do not rewrite `public/vampires/main.js` in wide PRs — see `docs/architecture.md`.
 
 ## Docs
 

@@ -6,26 +6,26 @@ merits, flaws, and predator types. It is **data, not logic** — no UI or behavi
 belongs here (see the `DECISIONS.md` entry).
 
 ## Main files
-- `public/rules.json` — Russian rules data (~34k lines). The primary source.
-- `public/rules_eng.json` — English rules data (~8.8k lines).
+- `public/vampires/rules.json` — Russian rules data (~34k lines). The primary source.
+- `public/vampires/rules_eng.json` — English rules data (~8.8k lines).
 
 Both are static files loaded directly by the legacy sheet and by
-`core/systems/vtm5/rules/disciplines/rules-loader/index.ts`.
+`games/vampires/core/vtm5/rules/disciplines/rules-loader/index.ts`.
 
 ## Language issues
 - RU and EN files must stay **structurally parallel**; an entry present in one
   should exist in the other.
 - **Identity is by stable IDs, not display names.** Never key logic on a
   translated label — Russian and English names differ and will mismatch. Use the
-  stable identifiers and `lib/i18n/ruleNames.ts` for display mapping.
+  stable identifiers and `games/vampires/lib/i18n/ruleNames.ts` for display mapping.
 - Adding content means adding it to *both* files with matching IDs.
 
 ## Consumers
-- Legacy sheet: `public/main.js` reads rules for rendering and mechanics.
-- `core/systems/vtm5/rules/disciplines/rules-loader/index.ts` →
+- Legacy sheet: `public/vampires/main.js` reads rules for rendering and mechanics.
+- `games/vampires/core/vtm5/rules/disciplines/rules-loader/index.ts` →
   `schema/index.ts` / `engine/index.ts` for the
   discipline engine.
-- `lib/i18n/ruleNames.ts` for display-name ↔ id mapping.
+- `games/vampires/lib/i18n/ruleNames.ts` for display-name ↔ id mapping.
 - Audit/validate scripts (`audit:disciplines`, `validate:disciplines`).
 
 ## Safe edit protocol

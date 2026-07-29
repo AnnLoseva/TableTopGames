@@ -2,24 +2,24 @@
 
 ## Purpose
 The full VTM V5 character sheet users actually fill in. It is a standalone,
-vanilla HTML/CSS/JS app in `public/`, served as a static page and embedded in the
+vanilla HTML/CSS/JS app in `public/vampires/`, served as a static page and embedded in the
 React app via an iframe (see `character-sheet-bridge.md`). No build step, no
 bundler — files load directly in the browser.
 
 ## Main files
-- `public/old-sheet.html` (~5k lines) — markup, layout, inline styles, DOM hooks.
-- `public/main.js` (~11k lines) — the sheet logic: state, rendering, save/load,
+- `public/vampires/old-sheet.html` (~5k lines) — markup, layout, inline styles, DOM hooks.
+- `public/vampires/main.js` (~11k lines) — the sheet logic: state, rendering, save/load,
   section handling, mechanics glue, event wiring.
-- `public/supabase.js` — legacy Supabase client + character CRUD against the
+- `public/vampires/supabase.js` — legacy Supabase client + character CRUD against the
   `characters` table (create/update/load/list, with a `charactersListCache`).
-- `public/creation-wizard.js` (~1.4k lines) — guided character creation.
-- `public/vtm-health.js` — legacy health/damage tracker (duplicate of
-  `core/systems/vtm5/rules/health/index.ts`).
-- `public/vtm-humanity.js` — legacy humanity/stains/remorse (duplicate of
-  `core/systems/vtm5/rules/humanity/index.ts`).
-- `public/i18n-runtime.js` — legacy translation runtime.
-- `public/i18n-dictionary.js` — legacy translation strings.
-- Reads `public/rules.json` / `public/rules_eng.json` for rules data.
+- `public/vampires/creation-wizard.js` (~1.4k lines) — guided character creation.
+- `public/vampires/vtm-health.js` — legacy health/damage tracker (duplicate of
+  `games/vampires/core/vtm5/rules/health/index.ts`).
+- `public/vampires/vtm-humanity.js` — legacy humanity/stains/remorse (duplicate of
+  `games/vampires/core/vtm5/rules/humanity/index.ts`).
+- `public/vampires/i18n-runtime.js` — legacy translation runtime.
+- `public/vampires/i18n-dictionary.js` — legacy translation strings.
+- Reads `public/vampires/rules.json` / `public/vampires/rules_eng.json` for rules data.
 
 ## Data flow
 ```text
@@ -39,7 +39,7 @@ Observed signals include: `vtm-sheet-ready`, `vtm-character-loaded`,
 `vtm-char-type`, `vtm-mortal-template`, `vtm-sheet-section`, `vtm-table-rolls`,
 `vtm-table-last-roll`, `vtm-chat-user` / `vtm-sheet-user`, and the
 `charactersListCache` cache in `supabase.js`. **Before renaming or repurposing a
-global, grep the whole `public/` folder for it** — usages are not
+global, grep the whole `public/vampires/` folder for it** — usages are not
 import-tracked.
 
 ## Dangerous areas
@@ -53,7 +53,7 @@ import-tracked.
 
 ## How to edit safely
 1. Read `workflows/legacy-edit-protocol.md`.
-2. Grep `public/` for every use of any global you touch.
+2. Grep `public/vampires/` for every use of any global you touch.
 3. Make the smallest localized change; do not restructure the file.
 4. Do not change URL params, save/load shape, creation flow, or i18n keys as a
    side effect.
@@ -61,8 +61,8 @@ import-tracked.
    confirm `characterId` appears in the URL (postMessage worked), reload.
 
 ## What should eventually move to TypeScript
-- Health and humanity mechanics → already mirrored in `core/systems/vtm5/rules/*`; converge there.
-- Discipline cost/effect parsing → `core/systems/vtm5/rules/disciplines/*`.
+- Health and humanity mechanics → already mirrored in `games/vampires/core/vtm5/rules/*`; converge there.
+- Discipline cost/effect parsing → `games/vampires/core/vtm5/rules/disciplines/*`.
 - Character data typing and Supabase access → shared with `lib/*`.
 These moves require **explicit tasks** and `DECISIONS.md` entries — not drive-by
 refactors.
