@@ -1,11 +1,1 @@
-[
-  {
-    "file": "dedup",
-    "index": null,
-    "name": "traveler-s-chair",
-    "conflictId": "traveler-s-chair",
-    "missingFields": [],
-    "reason": "Duplicate — kept most complete (score 20 vs 0)",
-    "ownerAction": "Merge entries"
-  }
-]
+[]

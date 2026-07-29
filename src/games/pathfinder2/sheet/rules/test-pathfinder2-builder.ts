@@ -11,7 +11,11 @@ import {
   v4DraftToRuntime,
 } from '../data/migration-v4'
 import { createDefaultPathfinder2DraftV4 } from '../data/v4'
-import { getFeatById } from '../data/selectors'
+import {
+  getAttributeFilterValues,
+  getFeatById,
+  matchesAttributeFilter,
+} from '../data/selectors'
 import type {
   Pathfinder2AncestryRule,
   Pathfinder2BackgroundRule,
@@ -228,6 +232,22 @@ function validDraft(): Pathfinder2CharacterDraft {
 }
 
 const tests: Array<[string, () => void]> = [
+  ['Фильтр характеристик использует фиксированные повышения народа', () => {
+    assert.deepEqual(
+      getAttributeFilterValues(catalog.ancestries[0]),
+      ['constitution', 'wisdom'],
+    )
+    assert.equal(matchesAttributeFilter(catalog.ancestries[0], 'intelligence'), false)
+    assert.equal(matchesAttributeFilter(catalog.ancestries[1], 'intelligence'), false)
+  }],
+  ['Фильтр характеристик использует варианты предыстории', () => {
+    assert.equal(matchesAttributeFilter(catalog.backgrounds[0], 'wisdom'), true)
+    assert.equal(matchesAttributeFilter(catalog.backgrounds[0], 'intelligence'), false)
+  }],
+  ['Фильтр характеристик использует ключевую характеристику класса', () => {
+    assert.equal(matchesAttributeFilter(catalog.classes[0], 'intelligence'), true)
+    assert.equal(matchesAttributeFilter(catalog.classes[0], 'strength'), false)
+  }],
   ['Все характеристики начинают с +0', () => {
     const result = calculateAttributeModifiers(createDefaultPathfinder2Draft(), catalog)
     assert.deepEqual(Object.values(result.modifiers), [0, 0, 0, 0, 0, 0])

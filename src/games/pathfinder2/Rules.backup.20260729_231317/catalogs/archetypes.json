@@ -1,0 +1,7293 @@
+{
+  "schemaVersion": 1,
+  "id": "archetypes",
+  "title": "Pathfinder 2 Archetypes",
+  "version": "2026-07",
+  "source": "https://pf2.ru/archetypes",
+  "license": null,
+  "entries": [
+    {
+      "id": "mortal-herald",
+      "name": "Смертный вестник",
+      "slug": "mortal herald",
+      "feats": [
+        {
+          "name": "Посвящение в Смертные вестники",
+          "id": "mortal-herald-dedication",
+          "level": 12
+        },
+        {
+          "name": "Воплощение домена",
+          "id": "domain-embodiment",
+          "level": 14
+        },
+        {
+          "name": "Побойся бога 4",
+          "id": "fear-of-god",
+          "level": 14
+        },
+        {
+          "name": "Вспышка вездесущности 1",
+          "id": "flash-of-omnipresence",
+          "level": 14
+        },
+        {
+          "name": "Оружие вестника 1",
+          "id": "herald-s-weapon",
+          "level": 14
+        },
+        {
+          "name": "Вознесение смертного",
+          "id": "mortal-ascension",
+          "level": 14
+        },
+        {
+          "name": "Защитить верующих 1",
+          "id": "shield-the-faithful",
+          "level": 14
+        },
+        {
+          "name": "Наказать 2",
+          "id": "chastise",
+          "level": 16
+        },
+        {
+          "name": "Объявить табу 2",
+          "id": "declare-anathema",
+          "level": 16
+        },
+        {
+          "name": "Сакральное пикирование 2",
+          "id": "dive-of-the-divine",
+          "level": 16
+        },
+        {
+          "name": "Последующее сокрушение 1",
+          "id": "following-smite",
+          "level": 16
+        },
+        {
+          "name": "Скинуть оковы",
+          "id": "free-from-bonds",
+          "level": 16
+        },
+        {
+          "name": "Исцеляющее убежище",
+          "id": "healing-sanctuary",
+          "level": 16
+        },
+        {
+          "name": "Геральдическое провозглашение 1",
+          "id": "heraldic-proclamation",
+          "level": 16
+        },
+        {
+          "name": "Невидимая рука",
+          "id": "invisible-hand",
+          "level": 16
+        },
+        {
+          "name": "Ясное предостережение 5",
+          "id": "premonition-of-clarity",
+          "level": 16
+        },
+        {
+          "name": "Божественный источник 1",
+          "id": "deific-font",
+          "level": 18
+        },
+        {
+          "name": "Сакральное присутствие 1",
+          "id": "divine-presence",
+          "level": 18
+        },
+        {
+          "name": "Вечная отповедь",
+          "id": "eternal-bane",
+          "level": 18
+        },
+        {
+          "name": "Вечное благословение",
+          "id": "eternal-blessing",
+          "level": 18
+        },
+        {
+          "name": "Глаза бога",
+          "id": "eyes-of-god",
+          "level": 18
+        },
+        {
+          "name": "Вспышка всеведения 4",
+          "id": "flash-of-omniscience",
+          "level": 18
+        },
+        {
+          "name": "Пик славы 2",
+          "id": "glory-on-high",
+          "level": 18
+        },
+        {
+          "name": "Наставляющие слова 1",
+          "id": "guiding-words",
+          "level": 18
+        },
+        {
+          "name": "Отмеченный для упрёка 1",
+          "id": "marked-for-rebuke",
+          "level": 18
+        },
+        {
+          "name": "Воскреситель",
+          "id": "resurrectionist",
+          "level": 18
+        },
+        {
+          "name": "Встать за павших 5",
+          "id": "stand-for-the-fallen",
+          "level": 18
+        },
+        {
+          "name": "Божественное возвышение",
+          "id": "divine-apex",
+          "level": 20
+        },
+        {
+          "name": "Облегчить бремя 2",
+          "id": "ease-the-burden",
+          "level": 20
+        },
+        {
+          "name": "Войти в сакральное пространство",
+          "id": "enter-divine-realm",
+          "level": 20
+        },
+        {
+          "name": "Вспышка всемогущества 4",
+          "id": "flash-of-omipotence",
+          "level": 20
+        },
+        {
+          "name": "Удар вестника 2",
+          "id": "herald-s-strike",
+          "level": 20
+        },
+        {
+          "name": "Момент апофеоза",
+          "id": "moment-of-apotheosis",
+          "level": 20
+        },
+        {
+          "name": "Общая ясность",
+          "id": "shared-clarity",
+          "level": 20
+        },
+        {
+          "name": "Искра бессмертия",
+          "id": "spark-of-immortality",
+          "level": 20
+        },
+        {
+          "name": "Крепкий орешек",
+          "id": "diehard",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "id": "acrobat",
+      "name": "Акробат",
+      "slug": "acrobat",
+      "feats": [
+        {
+          "name": "Посвящение в акробаты",
+          "id": "acrobat-dedication",
+          "level": 2
+        },
+        {
+          "name": "Змеиная гибкость",
+          "id": "contortionist",
+          "level": 4
+        },
+        {
+          "name": "Быстрое протискивание",
+          "id": "quick-squeeze",
+          "level": 1
+        },
+        {
+          "name": "Ловкое уклонение 5",
+          "id": "dodge-away",
+          "level": 6
+        },
+        {
+          "name": "Грациозный прыгун",
+          "id": "graceful-leaper",
+          "level": 7
+        },
+        {
+          "name": "Перекат с ударом 1",
+          "id": "tumbling-strike",
+          "level": 8
+        },
+        {
+          "name": "Перекат с подсечкой 4",
+          "id": "tumbling-opportunist",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "artillerist",
+      "name": "Артиллерист",
+      "slug": "artillerist",
+      "feats": [
+        {
+          "name": "Посвящение в артиллеристы",
+          "id": "artillerist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Названная артиллерия",
+          "id": "named-artillery",
+          "level": 4
+        },
+        {
+          "name": "Неукомплектованность",
+          "id": "shorthanded",
+          "level": 4
+        },
+        {
+          "name": "Угловой выстрел",
+          "id": "cannon-corner-shot",
+          "level": 6
+        },
+        {
+          "name": "Полевая артиллерия 1",
+          "id": "field-artillery",
+          "level": 6
+        },
+        {
+          "name": "Живые боеприпасы",
+          "id": "live-ammunition",
+          "level": 8
+        },
+        {
+          "name": "Мастер осадной инженерии",
+          "id": "master-siege-engineer",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "archaeologist",
+      "name": "Археолог",
+      "slug": "archaeologist",
+      "feats": [
+        {
+          "name": "Посвящение в археологи",
+          "id": "archaeologist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Наука о магии",
+          "id": "magical-scholastics",
+          "level": 4
+        },
+        {
+          "name": "Наука о поселениях",
+          "id": "settlement-scholastics",
+          "level": 4
+        },
+        {
+          "name": "Дополнительные знания",
+          "id": "additional-lore",
+          "level": 1
+        },
+        {
+          "name": "Поиск ловушек",
+          "id": "trap-finder",
+          "level": 4
+        },
+        {
+          "name": "Наука об опознании",
+          "id": "scholastic-identification",
+          "level": 7
+        },
+        {
+          "name": "Удача археолога 4",
+          "id": "archaeologist-s-luck",
+          "level": 8
+        },
+        {
+          "name": "Замедление ловушки 5",
+          "id": "delay-trap",
+          "level": 10
+        },
+        {
+          "name": "Улучшенная наука о магии",
+          "id": "greater-magical-scholastics",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "assassin",
+      "name": "Ассасин",
+      "slug": "assassin",
+      "feats": [
+        {
+          "name": "Посвящение в ассасины",
+          "id": "assassin-dedication",
+          "level": 2
+        },
+        {
+          "name": "Эксперт подлых ударов",
+          "id": "expert-backstabber",
+          "level": 4
+        },
+        {
+          "name": "Устойчивость к яду",
+          "id": "poison-resistance",
+          "level": 4
+        },
+        {
+          "name": "Внезапная атака",
+          "id": "surprise-attack",
+          "level": 4
+        },
+        {
+          "name": "Отравленное оружие 1",
+          "id": "poison-weapon",
+          "level": 6
+        },
+        {
+          "name": "Ангел смерти",
+          "id": "angel-of-death",
+          "level": 10
+        },
+        {
+          "name": "Улучшенное отравленное оружие",
+          "id": "improved-poison-weapon",
+          "level": 10
+        },
+        {
+          "name": "Покушение 2",
+          "id": "assassinate",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "red-mantis-assassin",
+      "name": "Ассасин Красного богомола",
+      "slug": "red mantis assassin",
+      "feats": [
+        {
+          "name": "Посвящение в ассасины Красного богомола",
+          "id": "red-mantis-assassin-dedication",
+          "level": 2
+        },
+        {
+          "name": "Двойной финт 2",
+          "id": "twin-feint",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания Красного богомола",
+          "id": "basic-red-mantis-magic",
+          "level": 4
+        },
+        {
+          "name": "Быстрое выхватывание 1",
+          "id": "quick-draw",
+          "level": 4
+        },
+        {
+          "name": "Коварное нападение 2",
+          "id": "underhanded-assault",
+          "level": 4
+        },
+        {
+          "name": "Багровый саван 1",
+          "id": "crimson-shroud",
+          "level": 6
+        },
+        {
+          "name": "Отравленное оружие 1",
+          "id": "poison-weapon",
+          "level": 6
+        },
+        {
+          "name": "Заклинание школы Красного богомола",
+          "id": "red-mantis-school-spell",
+          "level": 6
+        },
+        {
+          "name": "Двойная уловка",
+          "id": "twin-distraction",
+          "level": 6
+        },
+        {
+          "name": "Хватка Ачакека",
+          "id": "achaekek-s-grip",
+          "level": 8
+        },
+        {
+          "name": "Сплочённость",
+          "id": "gang-up",
+          "level": 8
+        },
+        {
+          "name": "Форма богомола",
+          "id": "mantis-form",
+          "level": 8
+        },
+        {
+          "name": "Продвинутое заклинание школы",
+          "id": "advanced-school-spell",
+          "level": 10
+        },
+        {
+          "name": "Размытие 5",
+          "id": "fading",
+          "level": 10
+        },
+        {
+          "name": "Удар в спину 5",
+          "id": "opportune-backstab",
+          "level": 10
+        },
+        {
+          "name": "Экспертные заклинания Красного богомола",
+          "id": "expert-red-mantis-magic",
+          "level": 12
+        },
+        {
+          "name": "Подготовка Вернаи",
+          "id": "vernai-training",
+          "level": 12
+        },
+        {
+          "name": "Молитвенное нападение 1",
+          "id": "prayer-attack",
+          "level": 14
+        },
+        {
+          "name": "Мастерские заклинания Красного богомола",
+          "id": "master-red-mantis-magic",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "bastion",
+      "name": "Бастион",
+      "slug": "bastion",
+      "feats": [
+        {
+          "name": "Посвящение в бастионы",
+          "id": "bastion-dedication",
+          "level": 2
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Рефлекторная защита",
+          "id": "reactive-shield",
+          "level": 1
+        },
+        {
+          "name": "Обезоруживающий блок 4",
+          "id": "disarming-block",
+          "level": 4
+        },
+        {
+          "name": "Проворная рука с щитом",
+          "id": "nimble-shield-hand",
+          "level": 6
+        },
+        {
+          "name": "Перемещение за щитом",
+          "id": "shielded-stride",
+          "level": 6
+        },
+        {
+          "name": "Реакция щитоносца",
+          "id": "reflexive-shield",
+          "level": 8
+        },
+        {
+          "name": "Щитоносец",
+          "id": "shield-warden",
+          "level": 8
+        },
+        {
+          "name": "Разрушительный блок",
+          "id": "destructive-block",
+          "level": 10
+        },
+        {
+          "name": "Быстрый блок щитом",
+          "id": "quick-shield-block",
+          "level": 10
+        },
+        {
+          "name": "Зеркальный щит 5",
+          "id": "mirror-shield",
+          "level": 12
+        },
+        {
+          "name": "Спасение щита",
+          "id": "shield-salvation",
+          "level": 12
+        },
+        {
+          "name": "Улучшенная реакция щитоносца",
+          "id": "improved-reflexive-shield",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "blessed-one",
+      "name": "Благословенный",
+      "slug": "blessed one",
+      "feats": [
+        {
+          "name": "Посвящение в благословенные",
+          "id": "blessed-one-dedication",
+          "level": 2
+        },
+        {
+          "name": "Жертва благословенного",
+          "id": "blessed-sacrifice",
+          "level": 4
+        },
+        {
+          "name": "Избавление",
+          "id": "mercy",
+          "level": 6
+        },
+        {
+          "name": "Заклинание благословенного 1",
+          "id": "blessed-spell",
+          "level": 8
+        },
+        {
+          "name": "Улучшенное избавление",
+          "id": "greater-mercy",
+          "level": 10
+        },
+        {
+          "name": "Очищение благословенного 5",
+          "id": "blessed-denial",
+          "level": 12
+        },
+        {
+          "name": "Избавление от недуга",
+          "id": "affliction-mercy",
+          "level": 14
+        },
+        {
+          "name": "Живительное касание",
+          "id": "rejuvenating-touch",
+          "level": 20
+        },
+        {
+          "name": "Окончательное избавление",
+          "id": "ultimate-mercy",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "weapon-improviser",
+      "name": "Боец-импровизатор",
+      "slug": "weapon improviser",
+      "feats": [
+        {
+          "name": "Посвящение в бойцы-импровизаторы",
+          "id": "weapon-improviser-dedication",
+          "level": 2
+        },
+        {
+          "name": "Импровизированная затрещина",
+          "id": "improvised-pummel",
+          "level": 4
+        },
+        {
+          "name": "Неожиданный удар",
+          "id": "surprise-strike",
+          "level": 6
+        },
+        {
+          "name": "Импровизированный критический удар",
+          "id": "improvised-critical",
+          "level": 8
+        },
+        {
+          "name": "Импровизированный удар 1",
+          "id": "makeshift-strike",
+          "level": 8
+        },
+        {
+          "name": "Раскалывающий удар (боец-импровизатор) 5",
+          "id": "shattering-strike-weapon-improviser-",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "dual-weapon-warrior",
+      "name": "Боец парным оружием",
+      "slug": "dual-weapon warrior",
+      "feats": [
+        {
+          "name": "Посвящение в бойцы парным оружием",
+          "id": "dual-weapon-warrior-dedication",
+          "level": 2
+        },
+        {
+          "name": "Двойной взмах",
+          "id": "double-slice",
+          "level": 1
+        },
+        {
+          "name": "Парный метатель",
+          "id": "dual-thrower",
+          "level": 4
+        },
+        {
+          "name": "Парная перезарядка",
+          "id": "dual-weapon-reload",
+          "level": 4
+        },
+        {
+          "name": "Быстрое выхватывание 1",
+          "id": "quick-draw",
+          "level": 4
+        },
+        {
+          "name": "Парное парирование 1",
+          "id": "twin-parry",
+          "level": 6
+        },
+        {
+          "name": "Срез шкуры 1",
+          "id": "flensing-slice",
+          "level": 8
+        },
+        {
+          "name": "Парный натиск 2",
+          "id": "dual-weapon-blitz",
+          "level": 10
+        },
+        {
+          "name": "Парная контратака 5",
+          "id": "twin-riposte",
+          "level": 12
+        },
+        {
+          "name": "Парный размах",
+          "id": "dual-onslaught",
+          "level": 14
+        },
+        {
+          "name": "Улучшенная парная контратака (Воин)",
+          "id": "improved-twin-riposte-fighter-",
+          "level": 16
+        },
+        {
+          "name": "Парный шквал 1",
+          "id": "two-weapon-flurry",
+          "level": 16
+        },
+        {
+          "name": "Парная защита (воин) 1",
+          "id": "twinned-defense-fighter-",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "wrestler",
+      "name": "Борец",
+      "slug": "wrestler",
+      "feats": [
+        {
+          "name": "Посвящение в борцы",
+          "id": "wrestler-dedication",
+          "level": 2
+        },
+        {
+          "name": "Борец с титанами",
+          "id": "titan-wrestler",
+          "level": 1
+        },
+        {
+          "name": "Боевой захват 1",
+          "id": "combat-grab",
+          "level": 4
+        },
+        {
+          "name": "Сокрушительный захват",
+          "id": "crushing-grab",
+          "level": 4
+        },
+        {
+          "name": "Освобождающий приём 5",
+          "id": "disengaging-twist",
+          "level": 4
+        },
+        {
+          "name": "Крушитель суставов 1",
+          "id": "elbow-breaker",
+          "level": 4
+        },
+        {
+          "name": "Удар с зацепом 1",
+          "id": "snagging-strike",
+          "level": 4
+        },
+        {
+          "name": "Суплекс 1",
+          "id": "suplex",
+          "level": 4
+        },
+        {
+          "name": "Контактный удар 5",
+          "id": "clinch-strike",
+          "level": 6
+        },
+        {
+          "name": "Захват на бегу 2",
+          "id": "running-tackle",
+          "level": 8
+        },
+        {
+          "name": "Удушение 1",
+          "id": "strangle",
+          "level": 8
+        },
+        {
+          "name": "Подавляющий захват 1",
+          "id": "submission-hold",
+          "level": 8
+        },
+        {
+          "name": "Бросок во вращении 1",
+          "id": "whirling-throw",
+          "level": 8
+        },
+        {
+          "name": "Бросок в прыжке 2",
+          "id": "aerial-piledriver",
+          "level": 10
+        },
+        {
+          "name": "Спинолом 1",
+          "id": "spinebreaker",
+          "level": 10
+        },
+        {
+          "name": "Неумолимая хватка",
+          "id": "inescapable-grasp",
+          "level": 12
+        },
+        {
+          "name": "Разоблачение формы 1",
+          "id": "form-lock",
+          "level": 14
+        },
+        {
+          "name": "Богокрушитель 3",
+          "id": "godbreaker",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "vigilante",
+      "name": "Вигилант",
+      "slug": "vigilante",
+      "feats": [
+        {
+          "name": "Посвящение в вигиланты",
+          "id": "vigilante-dedication",
+          "level": 2
+        },
+        {
+          "name": "Скрытая магия",
+          "id": "hidden-magic",
+          "level": 4
+        },
+        {
+          "name": "Маскировка подручного",
+          "id": "minion-guise",
+          "level": 4
+        },
+        {
+          "name": "Быстрое выхватывание 1",
+          "id": "quick-draw",
+          "level": 4
+        },
+        {
+          "name": "Убежище вигиланта",
+          "id": "safe-house",
+          "level": 4
+        },
+        {
+          "name": "Публичная слава",
+          "id": "social-purview",
+          "level": 4
+        },
+        {
+          "name": "Посвящение в Волшебники",
+          "id": "wizard-dedication",
+          "level": 1
+        },
+        {
+          "name": "Внезапное появление 1",
+          "id": "startling-appearance",
+          "level": 6
+        },
+        {
+          "name": "Быстрое переодевание",
+          "id": "quick-change",
+          "level": 7
+        },
+        {
+          "name": "Собственная правда",
+          "id": "subjective-truth",
+          "level": 7
+        },
+        {
+          "name": "Множество обликов",
+          "id": "many-guises",
+          "level": 8
+        },
+        {
+          "name": "Зловещее появление",
+          "id": "frightening-appearance",
+          "level": 12
+        },
+        {
+          "name": "Шокирующее появление",
+          "id": "stunning-appearance",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "viking",
+      "name": "Викинг",
+      "slug": "viking",
+      "feats": [
+        {
+          "name": "Посвящение в викинги",
+          "id": "viking-dedication",
+          "level": 2
+        },
+        {
+          "name": "Дополнительные знания",
+          "id": "additional-lore",
+          "level": 1
+        },
+        {
+          "name": "Бросок и натиск 2",
+          "id": "hurling-charge",
+          "level": 4
+        },
+        {
+          "name": "Рефлекторная защита 5",
+          "id": "reactive-shield",
+          "level": 4
+        },
+        {
+          "name": "Оружие викингов",
+          "id": "viking-weapon-familiarity",
+          "level": 4
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Второй щит 4",
+          "id": "second-shield",
+          "level": 6
+        },
+        {
+          "name": "Перемещение за щитом",
+          "id": "shielded-stride",
+          "level": 6
+        },
+        {
+          "name": "Специалист По Оружию Викингов",
+          "id": "viking-weapon-specialist",
+          "level": 6
+        },
+        {
+          "name": "Броситься в битву 2",
+          "id": "into-the-fray",
+          "level": 8
+        },
+        {
+          "name": "Быстрый блок щитом",
+          "id": "quick-shield-block",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "trick-driver",
+      "name": "Водитель-трюкач",
+      "slug": "trick driver",
+      "feats": [
+        {
+          "name": "Посвящение в водители-трюкачи",
+          "id": "trick-driver-dedication",
+          "level": 2
+        },
+        {
+          "name": "Скоростной водитель",
+          "id": "express-driver",
+          "level": 2
+        },
+        {
+          "name": "Управляемый занос 1 - 3",
+          "id": "power-slide",
+          "level": 4
+        },
+        {
+          "name": "Взять штурвал 1",
+          "id": "take-the-wheel",
+          "level": 4
+        },
+        {
+          "name": "Дави на газ!",
+          "id": "push-it",
+          "level": 7
+        },
+        {
+          "name": "Дорожное убийство",
+          "id": "roadkill",
+          "level": 10
+        },
+        {
+          "name": "Проездная атака 1 - 3",
+          "id": "drive-by-attack",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "gladiator",
+      "name": "Гладиатор",
+      "slug": "gladiator",
+      "feats": [
+        {
+          "name": "Посвящение в гладиаторы",
+          "id": "gladiator-dedication",
+          "level": 2
+        },
+        {
+          "name": "Впечатляющее исполнение",
+          "id": "impressive-performance",
+          "level": 1
+        },
+        {
+          "name": "Дополнительные знания",
+          "id": "additional-lore",
+          "level": 1
+        },
+        {
+          "name": "Крутые приёмы",
+          "id": "fancy-moves",
+          "level": 4
+        },
+        {
+          "name": "Игра на публику 5",
+          "id": "play-to-the-crowd",
+          "level": 4
+        },
+        {
+          "name": "Показная драка",
+          "id": "stage-fighting",
+          "level": 4
+        },
+        {
+          "name": "Обращение со зрелищным оружием",
+          "id": "performative-weapons-training",
+          "level": 6
+        },
+        {
+          "name": "Выбор следующей цели",
+          "id": "call-your-shot",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "mauler",
+      "name": "Громила",
+      "slug": "mauler",
+      "feats": [
+        {
+          "name": "Посвящение в громилы",
+          "id": "mauler-dedication",
+          "level": 2
+        },
+        {
+          "name": "Нокдаун 2",
+          "id": "slam-down",
+          "level": 4
+        },
+        {
+          "name": "Сокрушительный удар 2",
+          "id": "vicious-swing",
+          "level": 4
+        },
+        {
+          "name": "Расчистка пути 2",
+          "id": "clear-the-way",
+          "level": 6
+        },
+        {
+          "name": "Толкающий взмах 5",
+          "id": "shoving-sweep",
+          "level": 8
+        },
+        {
+          "name": "Улучшенный нокдаун",
+          "id": "crashing-slam",
+          "level": 12
+        },
+        {
+          "name": "Жестокое добивание 1",
+          "id": "brutal-finish",
+          "level": 14
+        },
+        {
+          "name": "Удар-землетрясение 3",
+          "id": "hammer-quake",
+          "level": 14
+        },
+        {
+          "name": "Ошарашивающий взмах 3",
+          "id": "unbalancing-sweep",
+          "level": 14
+        },
+        {
+          "name": "Удар лавины 3",
+          "id": "avalanche-strike",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "dandy",
+      "name": "Денди",
+      "slug": "dandy",
+      "feats": [
+        {
+          "name": "Посвящение в денди",
+          "id": "dandy-dedication",
+          "level": 2
+        },
+        {
+          "name": "Отвлекающая лесть 5",
+          "id": "distracting-flattery",
+          "level": 4
+        },
+        {
+          "name": "Знание сплетен",
+          "id": "gossip-lore",
+          "level": 4
+        },
+        {
+          "name": "Сомнительные знания",
+          "id": "dubious-knowledge",
+          "level": 1
+        },
+        {
+          "name": "Вымышленные связи",
+          "id": "fabricated-connections",
+          "level": 7
+        },
+        {
+          "name": "Завсегдатай вечеринок",
+          "id": "party-crasher",
+          "level": 7
+        }
+      ]
+    },
+    {
+      "id": "overwatch",
+      "name": "Дозорный",
+      "slug": "overwatch",
+      "feats": [
+        {
+          "name": "Посвящение в дозорные",
+          "id": "overwatch-dedication",
+          "level": 2
+        },
+        {
+          "name": "Подзорная модификация",
+          "id": "spyglass-modification",
+          "level": 4
+        },
+        {
+          "name": "Быстрое вмешательство 5",
+          "id": "swift-intervention",
+          "level": 6
+        },
+        {
+          "name": "Сокрушитель титанов",
+          "id": "topple-giants",
+          "level": 8
+        },
+        {
+          "name": "Расширение Ауры Дозорного",
+          "id": "wide-overwatch",
+          "level": 10
+        },
+        {
+          "name": "Упреждение 5",
+          "id": "forewarn",
+          "level": 12
+        },
+        {
+          "name": "Контрольная башня",
+          "id": "control-tower",
+          "level": 14
+        },
+        {
+          "name": "Совмещение 5",
+          "id": "converge",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "spirit-warrior",
+      "name": "Духовный воитель",
+      "slug": "spirit warrior",
+      "feats": [
+        {
+          "name": "Посвящение в духовные воители",
+          "id": "spirit-warrior-dedication",
+          "level": 2
+        },
+        {
+          "name": "Клятва защитника от кайдзю",
+          "id": "kaiju-defense-oath",
+          "level": 4
+        },
+        {
+          "name": "Клятва священных земель",
+          "id": "sacred-wilds-oath",
+          "level": 4
+        },
+        {
+          "name": "Клятва погибели обманщиков",
+          "id": "tricksterbane-oath",
+          "level": 4
+        },
+        {
+          "name": "Разрезая небо, сокрушая землю",
+          "id": "cutting-heaven-crushing-earth",
+          "level": 6
+        },
+        {
+          "name": "Ладонь отражающего потока",
+          "id": "flowing-palm-deflection",
+          "level": 6
+        },
+        {
+          "name": "Дух клинка 1",
+          "id": "spirit-of-the-blade",
+          "level": 6
+        },
+        {
+          "name": "Световая волна клинка 2",
+          "id": "sword-light-wave",
+          "level": 6
+        },
+        {
+          "name": "Божественная ладонь 1",
+          "id": "gods-palm",
+          "level": 8
+        },
+        {
+          "name": "Оберегающий импульс 2",
+          "id": "sheltering-pulse",
+          "level": 8
+        },
+        {
+          "name": "Непревзойдённое отражение 5",
+          "id": "transcendent-deflection",
+          "level": 10
+        },
+        {
+          "name": "Перехватывающая рука",
+          "id": "intercepting-hand",
+          "level": 12
+        },
+        {
+          "name": "Меч запечатывания 2",
+          "id": "sword-of-sealing",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "duelist",
+      "name": "Дуэлянт",
+      "slug": "duelist",
+      "feats": [
+        {
+          "name": "Посвящение в дуэлянты",
+          "id": "duelist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Быстрое выхватывание",
+          "id": "quick-draw",
+          "level": 1
+        },
+        {
+          "name": "Дуэльное парирование (воин) 1",
+          "id": "dueling-parry-fighter-",
+          "level": 4
+        },
+        {
+          "name": "Вызов на дуэль 1",
+          "id": "duelist-s-challenge",
+          "level": 4
+        },
+        {
+          "name": "Разоружающая стойка 1",
+          "id": "disarming-stance",
+          "level": 8
+        },
+        {
+          "name": "Самоотверженное парирование",
+          "id": "selfless-parry",
+          "level": 8
+        },
+        {
+          "name": "Дуэльная контратака",
+          "id": "dueling-riposte",
+          "level": 1
+        },
+        {
+          "name": "Разоружающий залом 1",
+          "id": "disarming-twist",
+          "level": 12
+        },
+        {
+          "name": "Знаток дуэльного искусства",
+          "id": "student-of-the-dueling-arts",
+          "level": 12
+        },
+        {
+          "name": "Дуэльный танец (воин) 1",
+          "id": "dueling-dance-fighter-",
+          "level": 14
+        },
+        {
+          "name": "Улучшенная дуэльная контратака",
+          "id": "improved-dueling-riposte",
+          "level": 14
+        },
+        {
+          "name": "Смещающая контратака",
+          "id": "guiding-riposte",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "starlit-sentinel",
+      "name": "Звёздный страж",
+      "slug": "starlit sentinel",
+      "feats": [
+        {
+          "name": "Посвящение в звёздные стражи",
+          "id": "starlit-sentinel-dedication",
+          "level": 2
+        },
+        {
+          "name": "Особая техника стража",
+          "id": "special-sentinel-technique",
+          "level": 4
+        },
+        {
+          "name": "Величественное провозглашение 2",
+          "id": "majestic-proclamation",
+          "level": 8
+        },
+        {
+          "name": "Клинок сердца 1",
+          "id": "blade-of-the-heart",
+          "level": 10
+        },
+        {
+          "name": "Отчаянное желание",
+          "id": "desperate-wish",
+          "level": 12
+        },
+        {
+          "name": "Орбита стража",
+          "id": "sentinel-s-orbit",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "wild-mimic",
+      "name": "Зверомимик",
+      "slug": "wild mimic",
+      "feats": [
+        {
+          "name": "Посвящение в зверомимики",
+          "id": "wild-mimic-dedication",
+          "level": 2
+        },
+        {
+          "name": "Понимание животных (следопыт)",
+          "id": "animal-empathy-ranger-",
+          "level": 4
+        },
+        {
+          "name": "Стойка журавля 1",
+          "id": "crane-stance",
+          "level": 4
+        },
+        {
+          "name": "Мимикрия свирепости 5",
+          "id": "ferocity-mimicry",
+          "level": 4
+        },
+        {
+          "name": "Стойка Гориллы 1",
+          "id": "gorilla-stance",
+          "level": 4
+        },
+        {
+          "name": "Мимикрия раздирания 1",
+          "id": "rend-mimicry",
+          "level": 4
+        },
+        {
+          "name": "Стойка тигра 1",
+          "id": "tiger-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка волка 1",
+          "id": "wolf-stance",
+          "level": 4
+        },
+        {
+          "name": "Электрогенез 2",
+          "id": "electrogenesis",
+          "level": 6
+        },
+        {
+          "name": "Первобытные пропорции",
+          "id": "primal-proportions",
+          "level": 6
+        },
+        {
+          "name": "Дикая речь",
+          "id": "wild-speech",
+          "level": 6
+        },
+        {
+          "name": "Взмах журавлиного крыла 5",
+          "id": "crane-flutter",
+          "level": 8
+        },
+        {
+          "name": "Приспособляемость к окружающей среде",
+          "id": "environmental-adaptability",
+          "level": 7
+        },
+        {
+          "name": "Удары О Грудь 1",
+          "id": "gorilla-pound",
+          "level": 8
+        },
+        {
+          "name": "Удар тигра 2",
+          "id": "tiger-slash",
+          "level": 8
+        },
+        {
+          "name": "Волчье сбивание 2",
+          "id": "wolf-drag",
+          "level": 8
+        },
+        {
+          "name": "Мимикрия окаменяющего взгляда 2",
+          "id": "petrifying-gaze-mimicry",
+          "level": 10
+        },
+        {
+          "name": "Мимикрия затаптывания 3",
+          "id": "trample-mimicry",
+          "level": 10
+        },
+        {
+          "name": "Мимикрия рыка 2",
+          "id": "roar-mimicry",
+          "level": 12
+        },
+        {
+          "name": "Мимикрия наскока 1",
+          "id": "pounce-mimicry",
+          "level": 14
+        },
+        {
+          "name": "Экстренная регенерация 5",
+          "id": "emergency-regeneration",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "celebrity",
+      "name": "Знаменитость",
+      "slug": "celebrity",
+      "feats": [
+        {
+          "name": "Посвящение в знаменитости",
+          "id": "celebrity-dedication",
+          "level": 2
+        },
+        {
+          "name": "Без устали 5",
+          "id": "never-tire",
+          "level": 4
+        },
+        {
+          "name": "Завораживающий взгляд 2",
+          "id": "mesmerizing-gaze",
+          "level": 6
+        },
+        {
+          "name": "Привлечение внимания 1",
+          "id": "command-attention",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "thlipit-contestant",
+      "name": "Игрок в тлипит",
+      "slug": "thlipit contestant",
+      "feats": [
+        {
+          "name": "Посвящение в игроки в тлипит",
+          "id": "thlipit-contestant-dedication",
+          "level": 2
+        },
+        {
+          "name": "Мухобойка",
+          "id": "fly-swat",
+          "level": 4
+        },
+        {
+          "name": "Арканящая плеть 1",
+          "id": "lassoing-lash",
+          "level": 4
+        },
+        {
+          "name": "Борец с титанами",
+          "id": "titan-wrestler",
+          "level": 1
+        },
+        {
+          "name": "Выпад 1",
+          "id": "lunge",
+          "level": 4
+        },
+        {
+          "name": "Мощная плеть 1",
+          "id": "powerful-lash",
+          "level": 6
+        },
+        {
+          "name": "Нокдаун 2",
+          "id": "slam-down",
+          "level": 6
+        },
+        {
+          "name": "Сбивание падающего плода 5",
+          "id": "snap-falling-fruit",
+          "level": 6
+        },
+        {
+          "name": "Маятниковый прыжок 1",
+          "id": "levered-swing",
+          "level": 8
+        },
+        {
+          "name": "Отхлебнуть 1",
+          "id": "slurp-up",
+          "level": 8
+        },
+        {
+          "name": "Защита хвостом 5",
+          "id": "tail-guard",
+          "level": 8
+        },
+        {
+          "name": "Финт с пращей 5",
+          "id": "slingshot-maneuver",
+          "level": 10
+        },
+        {
+          "name": "Улучшенный нокдаун",
+          "id": "crashing-slam",
+          "level": 12
+        },
+        {
+          "name": "Рефлекторный захват 1",
+          "id": "reflexive-grapple",
+          "level": 12
+        },
+        {
+          "name": "Раскручивающий бросок 3",
+          "id": "spinning-release",
+          "level": 14
+        },
+        {
+          "name": "Вихревая дробилка 3",
+          "id": "whirling-clobber",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "rivethun-involutionist",
+      "name": "Инволюционист Риветуна",
+      "slug": "rivethun involutionist",
+      "feats": [
+        {
+          "name": "Посвящение в Инволюционисты Риветуна",
+          "id": "rivethun-involutionist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания Риветуна",
+          "id": "basic-rivethun-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Духовный верный зверь",
+          "id": "spirit-companion",
+          "level": 4
+        },
+        {
+          "name": "Взрослый верный зверь",
+          "id": "mature-animal-companion-druid-",
+          "level": 6
+        },
+        {
+          "name": "Верный зверь",
+          "id": "animal-companion",
+          "level": 1
+        },
+        {
+          "name": "Невероятный зверь (друид)",
+          "id": "incredible-companion-druid-",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания Риветуна",
+          "id": "expert-rivethun-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Специализированный духовный зверь",
+          "id": "specialized-spirit-companion",
+          "level": 14
+        },
+        {
+          "name": "Мастерские заклинания Риветуна",
+          "id": "master-rivethun-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "cavalier",
+      "name": "Кавалерист",
+      "slug": "cavalier",
+      "feats": [
+        {
+          "name": "Знамя кавалериста",
+          "id": "cavalier-s-banner",
+          "level": 2
+        },
+        {
+          "name": "Посвящение в кавалеристы",
+          "id": "cavalier-dedication",
+          "level": 2
+        },
+        {
+          "name": "Кавалерийский натиск 2",
+          "id": "cavalier-s-charge",
+          "level": 4
+        },
+        {
+          "name": "Впечатляющий скакун",
+          "id": "impressive-mount",
+          "level": 4
+        },
+        {
+          "name": "Быстрый скакун 1",
+          "id": "quick-mount",
+          "level": 4
+        },
+        {
+          "name": "Защита скакуна 5",
+          "id": "defend-mount",
+          "level": 6
+        },
+        {
+          "name": "Верховой щитоносец",
+          "id": "mounted-shield",
+          "level": 6
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Невероятный скакун",
+          "id": "incredible-mount",
+          "level": 8
+        },
+        {
+          "name": "Натиск с затаптыванием 3",
+          "id": "trampling-charge",
+          "level": 10
+        },
+        {
+          "name": "Вышибание из седла 1",
+          "id": "unseat",
+          "level": 10
+        },
+        {
+          "name": "Специализированный скакун",
+          "id": "specialized-mount",
+          "level": 14
+        },
+        {
+          "name": "Легендарный наездник",
+          "id": "legendary-rider",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "marshal",
+      "name": "Командир",
+      "slug": "marshal",
+      "feats": [
+        {
+          "name": "Посвящение в командиры",
+          "id": "marshal-dedication",
+          "level": 2
+        },
+        {
+          "name": "Пугающая стойка командира 1",
+          "id": "dread-marshal-stance",
+          "level": 4
+        },
+        {
+          "name": "Вдохновляющая стойка командира 1",
+          "id": "inspiring-marshal-stance",
+          "level": 4
+        },
+        {
+          "name": "Возьми себя в руки! 1",
+          "id": "snap-out-of-it-",
+          "level": 4
+        },
+        {
+          "name": "Держись крепче! 1",
+          "id": "steel-yourself-",
+          "level": 4
+        },
+        {
+          "name": "Стойка стратега 1",
+          "id": "strategist-stance",
+          "level": 4
+        },
+        {
+          "name": "Речёвка марширующих 1",
+          "id": "cadence-call",
+          "level": 6
+        },
+        {
+          "name": "Вдохновляющий натиск 2",
+          "id": "rallying-charge",
+          "level": 6
+        },
+        {
+          "name": "Спиной к спине",
+          "id": "back-to-back",
+          "level": 8
+        },
+        {
+          "name": "Знай своего врага 1",
+          "id": "know-your-enemy",
+          "level": 8
+        },
+        {
+          "name": "Внеочередная атака 5",
+          "id": "reactive-strike",
+          "level": 8
+        },
+        {
+          "name": "В бой! 1 / 2",
+          "id": "to-battle-",
+          "level": 8
+        },
+        {
+          "name": "Занять позиции! 2",
+          "id": "form-up-",
+          "level": 10
+        },
+        {
+          "name": "Опрокидывание врага 5",
+          "id": "topple-foe",
+          "level": 10
+        },
+        {
+          "name": "Координированный натиск 2",
+          "id": "coordinated-charge",
+          "level": 12
+        },
+        {
+          "name": "Гамбит генерала 3",
+          "id": "general-s-gambit",
+          "level": 12
+        },
+        {
+          "name": "Тактический марш",
+          "id": "tactical-cadence",
+          "level": 14
+        },
+        {
+          "name": "Внеочередная цель 5",
+          "id": "target-of-opportunity",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "winged-warrior",
+      "name": "Крылатый воитель",
+      "slug": "winged warrior",
+      "feats": [
+        {
+          "name": "Посвящение в крылатые воители",
+          "id": "winged-warrior-dedication",
+          "level": 2
+        },
+        {
+          "name": "Боевые крылья",
+          "id": "battering-wings",
+          "level": 4
+        },
+        {
+          "name": "Порывистое заклинание 1",
+          "id": "gusting-spell",
+          "level": 4
+        },
+        {
+          "name": "Крылатый рикошет 2",
+          "id": "wing-bounce",
+          "level": 4
+        },
+        {
+          "name": "Блик солнечной птицы 1",
+          "id": "sunbird-glare",
+          "level": 6
+        },
+        {
+          "name": "Режущие перья 2",
+          "id": "feathered-flechettes",
+          "level": 8
+        },
+        {
+          "name": "Сбросить с небес 2",
+          "id": "pluck-from-the-sky",
+          "level": 8
+        },
+        {
+          "name": "Толчок крыльями 1",
+          "id": "wing-shove",
+          "level": 8
+        },
+        {
+          "name": "Соколиное пике 2",
+          "id": "falcon-swoop",
+          "level": 10
+        },
+        {
+          "name": "Перенаправляющая тяга 5",
+          "id": "redirecting-draft",
+          "level": 10
+        },
+        {
+          "name": "Реяние 4",
+          "id": "smooth-hover",
+          "level": 12
+        },
+        {
+          "name": "Громоподобное приземление 1",
+          "id": "thunderous-landing",
+          "level": 12
+        },
+        {
+          "name": "Бомбардировка 2",
+          "id": "bombing-run",
+          "level": 14
+        },
+        {
+          "name": "Падение метеорита 1",
+          "id": "cratering-drop",
+          "level": 16
+        },
+        {
+          "name": "Звуковой удар 2",
+          "id": "sonic-strafe",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "cultivator",
+      "name": "Культиватор",
+      "slug": "cultivator",
+      "feats": [
+        {
+          "name": "Посвящение в культиваторы",
+          "id": "cultivator-dedication",
+          "level": 2
+        },
+        {
+          "name": "Бессмертная лёгкость",
+          "id": "immortal-lightness",
+          "level": 4
+        },
+        {
+          "name": "Лотос над тиной",
+          "id": "lotus-above-the-mud",
+          "level": 6
+        },
+        {
+          "name": "Три чистых вдоха",
+          "id": "three-clear-breaths",
+          "level": 6
+        },
+        {
+          "name": "Контроль дыхания",
+          "id": "breath-control",
+          "level": 1
+        },
+        {
+          "name": "Крепкий орешек",
+          "id": "diehard",
+          "level": 1
+        },
+        {
+          "name": "Быстрое восстановление",
+          "id": "fast-recovery",
+          "level": 1
+        },
+        {
+          "name": "Дальновидность",
+          "id": "canny-acumen",
+          "level": 1
+        },
+        {
+          "name": "Быстроногий",
+          "id": "fleet",
+          "level": 1
+        },
+        {
+          "name": "Живучесть",
+          "id": "toughness",
+          "level": 1
+        },
+        {
+          "name": "Встреча глицинии и пиона 4",
+          "id": "wisteria-and-peony-reunion",
+          "level": 6
+        },
+        {
+          "name": "Проницательный взор культиватора",
+          "id": "cultivator-s-keen-eye",
+          "level": 8
+        },
+        {
+          "name": "Прозрение на тропе призраков",
+          "id": "ghost-path-epiphany",
+          "level": 10
+        },
+        {
+          "name": "Три горсти росы",
+          "id": "three-pecks-of-dew",
+          "level": 10
+        },
+        {
+          "name": "Горькое возвышение учёного",
+          "id": "the-bitter-scholar-s-promotion",
+          "level": 16
+        },
+        {
+          "name": "Бессмертный достигает вершины",
+          "id": "the-immortal-attains-the-summit",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "scrounger",
+      "name": "Кустарь",
+      "slug": "scrounger",
+      "feats": [
+        {
+          "name": "Посвящение в кустари",
+          "id": "scrounger-dedication",
+          "level": 2
+        },
+        {
+          "name": "Обратное проектирование",
+          "id": "reverse-engineering",
+          "level": 4
+        },
+        {
+          "name": "Качественные Самоделки",
+          "id": "high-quality-scrounger",
+          "level": 6
+        },
+        {
+          "name": "Магический кустарь",
+          "id": "magical-scrounger",
+          "level": 6
+        },
+        {
+          "name": "Магическое ремесло",
+          "id": "magical-crafting",
+          "level": 1
+        },
+        {
+          "name": "Экспертная разборка",
+          "id": "expert-disassembly",
+          "level": 7
+        }
+      ]
+    },
+    {
+      "id": "linguist",
+      "name": "Лингвист",
+      "slug": "linguist",
+      "feats": [
+        {
+          "name": "Посвящение в лингвисты",
+          "id": "linguist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Обучение языкам",
+          "id": "multilingual",
+          "level": 1
+        },
+        {
+          "name": "Межъязыковой шифр",
+          "id": "multilingual-cipher",
+          "level": 4
+        },
+        {
+          "name": "Обучение фонетике",
+          "id": "phonetic-training",
+          "level": 4
+        },
+        {
+          "name": "Перевод на слух 5",
+          "id": "spot-translate",
+          "level": 4
+        },
+        {
+          "name": "Анализ идиолекта",
+          "id": "analyze-idiolect",
+          "level": 6
+        },
+        {
+          "name": "Распознать шибболеты",
+          "id": "read-shibboleths",
+          "level": 7
+        },
+        {
+          "name": "Общение на пальцах",
+          "id": "crude-communication",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "archer",
+      "name": "Лучник",
+      "slug": "archer",
+      "feats": [
+        {
+          "name": "Посвящение в лучники",
+          "id": "archer-dedication",
+          "level": 2
+        },
+        {
+          "name": "Содействующий выстрел 1",
+          "id": "assisting-shot",
+          "level": 4
+        },
+        {
+          "name": "Первоклассный арбалетчик 1",
+          "id": "crossbow-ace",
+          "level": 4
+        },
+        {
+          "name": "Стрельба вблизи 1",
+          "id": "point-blank-stance",
+          "level": 4
+        },
+        {
+          "name": "Быстрый выстрел 1",
+          "id": "quick-shot",
+          "level": 4
+        },
+        {
+          "name": "Обращение С Экзотическими Луками",
+          "id": "advanced-bow-training",
+          "level": 6
+        },
+        {
+          "name": "Ужасающий арбалет 1",
+          "id": "crossbow-terror",
+          "level": 6
+        },
+        {
+          "name": "Двойной выстрел 2",
+          "id": "double-shot",
+          "level": 6
+        },
+        {
+          "name": "Прощальный выстрел 2",
+          "id": "parting-shot",
+          "level": 6
+        },
+        {
+          "name": "Перезарядка на ходу 1",
+          "id": "running-reload",
+          "level": 6
+        },
+        {
+          "name": "Прицел лучника 2",
+          "id": "archer-s-aim",
+          "level": 8
+        },
+        {
+          "name": "Тройной выстрел",
+          "id": "triple-shot",
+          "level": 8
+        },
+        {
+          "name": "Стойка подвижного стрелка 1",
+          "id": "mobile-shot-stance",
+          "level": 10
+        },
+        {
+          "name": "Беспрепятственный выстрел 2",
+          "id": "unobstructed-shot",
+          "level": 10
+        },
+        {
+          "name": "Скорострельная стойка 1",
+          "id": "multishot-stance",
+          "level": 18
+        },
+        {
+          "name": "Невероятный залп 3",
+          "id": "impossible-volley",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "talisman-dabbler",
+      "name": "Любитель талисманов",
+      "slug": "talisman dabbler",
+      "feats": [
+        {
+          "name": "Посвящение в любители талисманов",
+          "id": "talisman-dabbler-dedication",
+          "level": 2
+        },
+        {
+          "name": "Быстрое закрепление талисмана",
+          "id": "quick-fix",
+          "level": 4
+        },
+        {
+          "name": "Быстрое закрепление",
+          "id": "rapid-affixture",
+          "level": 1
+        },
+        {
+          "name": "Большой любитель",
+          "id": "deeper-dabbler",
+          "level": 8
+        },
+        {
+          "name": "Талисманный мудрец",
+          "id": "talismanic-sage",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "martial-artist",
+      "name": "Мастер боевых искусств",
+      "slug": "martial artist",
+      "feats": [
+        {
+          "name": "Посвящение в мастера боевых искусств",
+          "id": "martial-artist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Стойка журавля 1",
+          "id": "crane-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка дракона 1",
+          "id": "dragon-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка Гориллы 1",
+          "id": "gorilla-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка горы 1",
+          "id": "mountain-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка стремительного козла 1",
+          "id": "rushing-goat-stance",
+          "level": 4
+        },
+        {
+          "name": "Спотыкающаяся стойка 1",
+          "id": "stumbling-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка тигра 1",
+          "id": "tiger-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка парящего лепестка 1",
+          "id": "twisting-petal-stance",
+          "level": 4
+        },
+        {
+          "name": "Стойка волка 1",
+          "id": "wolf-stance",
+          "level": 4
+        },
+        {
+          "name": "Удар вдогонку 1",
+          "id": "follow-up-strike",
+          "level": 6
+        },
+        {
+          "name": "Адамантиновое тело 5",
+          "id": "adamantine-body",
+          "level": 8
+        },
+        {
+          "name": "Продвинутое монашеское оружие",
+          "id": "advanced-monastic-weaponry",
+          "level": 8
+        },
+        {
+          "name": "Монашеское оружие",
+          "id": "monastic-weaponry",
+          "level": 1
+        },
+        {
+          "name": "Взмах журавлиного крыла 5",
+          "id": "crane-flutter",
+          "level": 8
+        },
+        {
+          "name": "Драконий рык 1",
+          "id": "dragon-roar",
+          "level": 8
+        },
+        {
+          "name": "Увечащий удар 2",
+          "id": "grievous-blow",
+          "level": 8
+        },
+        {
+          "name": "Моментальный натиск 2",
+          "id": "momentous-charge",
+          "level": 8
+        },
+        {
+          "name": "Горная твердыня 1",
+          "id": "mountain-stronghold",
+          "level": 8
+        },
+        {
+          "name": "Удар тигра 2",
+          "id": "tiger-slash",
+          "level": 8
+        },
+        {
+          "name": "Волчье сбивание 2",
+          "id": "wolf-drag",
+          "level": 8
+        },
+        {
+          "name": "Весенний порыв 5",
+          "id": "scattering-in-spring",
+          "level": 10
+        },
+        {
+          "name": "Таран пяти богов 3",
+          "id": "five-gods-ram",
+          "level": 14
+        },
+        {
+          "name": "Путь железа 3",
+          "id": "path-of-iron",
+          "level": 14
+        },
+        {
+          "name": "Вихрь в летней грозе 3",
+          "id": "whirling-in-the-summer-storm",
+          "level": 14
+        },
+        {
+          "name": "Горное землетрясение 1",
+          "id": "mountain-quake",
+          "level": 16
+        },
+        {
+          "name": "Эхо насилия 4",
+          "id": "echoing-violence",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "medic",
+      "name": "Медик",
+      "slug": "medic",
+      "feats": [
+        {
+          "name": "Посвящение в медики",
+          "id": "medic-dedication",
+          "level": 2
+        },
+        {
+          "name": "Медицина в бою",
+          "id": "battle-medicine",
+          "level": 1
+        },
+        {
+          "name": "Визит доктора 1 / 2",
+          "id": "doctor-s-visitation",
+          "level": 4
+        },
+        {
+          "name": "Лечение состояния",
+          "id": "treat-condition",
+          "level": 1
+        },
+        {
+          "name": "Легендарный медик",
+          "id": "legendary-medic",
+          "level": 1
+        },
+        {
+          "name": "Комплексный уход",
+          "id": "holistic-care",
+          "level": 6
+        },
+        {
+          "name": "Реанимация 3",
+          "id": "resuscitate",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "unexpected-sharpshooter",
+      "name": "Непредсказуемый стрелок",
+      "slug": "unexpected sharpshooter",
+      "feats": [
+        {
+          "name": "Посвящение в непредсказуемые стрелки",
+          "id": "unexpected-sharpshooter-dedication",
+          "level": 2
+        },
+        {
+          "name": "обаятельный лжец",
+          "id": "charming-liar",
+          "level": 2
+        },
+        {
+          "name": "краснобай",
+          "id": "confabulator",
+          "level": 2
+        },
+        {
+          "name": "удача полурослика",
+          "id": "halfling-luck",
+          "level": 2
+        },
+        {
+          "name": "коготь предвестника",
+          "id": "harbinger-s-claw",
+          "level": 2
+        },
+        {
+          "name": "Лицом в землю! 5",
+          "id": "hit-the-dirt-",
+          "level": 4
+        },
+        {
+          "name": "Удачное уклонение 5",
+          "id": "lucky-escape",
+          "level": 4
+        },
+        {
+          "name": "Рискованная перезарядка 1",
+          "id": "risky-reload",
+          "level": 4
+        },
+        {
+          "name": "Без обид",
+          "id": "no-hard-feelings",
+          "level": 6
+        },
+        {
+          "name": "Невероятная удача",
+          "id": "unbelievable-luck",
+          "level": 8
+        },
+        {
+          "name": "Я так и хотел сделать 1",
+          "id": "i-meant-to-do-that",
+          "level": 10
+        },
+        {
+          "name": "Хитрый выстрел 2",
+          "id": "trick-shot",
+          "level": 10
+        },
+        {
+          "name": "Невероятное уклонение",
+          "id": "unbelievable-escape",
+          "level": 10
+        },
+        {
+          "name": "Цепная реакция 3",
+          "id": "chain-reaction",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "ostilli-host",
+      "name": "Носитель остилли",
+      "slug": "ostilli host",
+      "feats": [
+        {
+          "name": "Посвящение в носители остилли",
+          "id": "ostilli-host-dedication",
+          "level": 2
+        },
+        {
+          "name": "Успокаивающая пульсация",
+          "id": "soothing-pulse",
+          "level": 4
+        },
+        {
+          "name": "Осязаемый магический отклик",
+          "id": "tactile-magic-feedback",
+          "level": 4
+        },
+        {
+          "name": "Универсальная мутация",
+          "id": "versatile-mutation",
+          "level": 4
+        },
+        {
+          "name": "Маскирующая пульсация",
+          "id": "cloaking-pulse",
+          "level": 6
+        },
+        {
+          "name": "Отражающая пульсация",
+          "id": "deflecting-pulse",
+          "level": 6
+        },
+        {
+          "name": "Дальнобойная мутация",
+          "id": "propulsive-mutation",
+          "level": 6
+        },
+        {
+          "name": "Цепная мутация",
+          "id": "chaining-mutation",
+          "level": 8
+        },
+        {
+          "name": "Смертоносная мутация",
+          "id": "deadly-mutation",
+          "level": 8
+        },
+        {
+          "name": "Пожирание заклинаний",
+          "id": "spell-swallow",
+          "level": 10
+        },
+        {
+          "name": "Распыляющая мутация",
+          "id": "spraying-mutation",
+          "level": 10
+        },
+        {
+          "name": "Клеточная реконструкция 5",
+          "id": "cellular-reconstruction",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "werecreature",
+      "name": "Оборотень",
+      "slug": "werecreature",
+      "feats": [
+        {
+          "name": "Посвящение в оборотни",
+          "id": "werecreature-dedication",
+          "level": 2
+        },
+        {
+          "name": "Живучесть",
+          "id": "toughness",
+          "level": 1
+        },
+        {
+          "name": "Звериная быстрота",
+          "id": "animal-fleetness",
+          "level": 4
+        },
+        {
+          "name": "Звериная стойкость",
+          "id": "beastkin-resilience",
+          "level": 4
+        },
+        {
+          "name": "Дикие чувства",
+          "id": "feral-senses",
+          "level": 4
+        },
+        {
+          "name": "Таран рогами 2",
+          "id": "antler-rush",
+          "level": 6
+        },
+        {
+          "name": "Медвежьи объятия 2",
+          "id": "bear-hug",
+          "level": 6
+        },
+        {
+          "name": "Смертельное вращение 1",
+          "id": "death-roll",
+          "level": 6
+        },
+        {
+          "name": "Эхолокация",
+          "id": "echolocation",
+          "level": 6
+        },
+        {
+          "name": "Ужасающая симметрия 1",
+          "id": "fearful-symmetry",
+          "level": 6
+        },
+        {
+          "name": "Безумное пиршество",
+          "id": "feeding-frenzy",
+          "level": 6
+        },
+        {
+          "name": "Стайный",
+          "id": "pack-attack",
+          "level": 6
+        },
+        {
+          "name": "Чумная крыса",
+          "id": "plague-rat",
+          "level": 6
+        },
+        {
+          "name": "Несущийся кабан 5",
+          "id": "rushing-boar",
+          "level": 6
+        },
+        {
+          "name": "Загнанный зверь 2",
+          "id": "cornered-animal",
+          "level": 8
+        },
+        {
+          "name": "Заживление оборотня 1",
+          "id": "feral-mending",
+          "level": 8
+        },
+        {
+          "name": "Ужасающая трансформация 1",
+          "id": "terrifying-transformation",
+          "level": 8
+        },
+        {
+          "name": "Ты пахнешь неправильно",
+          "id": "you-don-t-smell-right",
+          "level": 8
+        },
+        {
+          "name": "Чудовищный размер 2",
+          "id": "dire-growth",
+          "level": 10
+        },
+        {
+          "name": "Дикий рывок 1",
+          "id": "feral-lunge",
+          "level": 10
+        },
+        {
+          "name": "Звериная цепкость 2",
+          "id": "feral-scramble",
+          "level": 10
+        },
+        {
+          "name": "Дикий бросок 2",
+          "id": "feral-toss",
+          "level": 10
+        },
+        {
+          "name": "Прикосновение безумия",
+          "id": "touch-of-lunacy",
+          "level": 10
+        },
+        {
+          "name": "Трансформация в движении 1",
+          "id": "pouncing-transformation",
+          "level": 12
+        },
+        {
+          "name": "Общая волна 2",
+          "id": "shared-tide",
+          "level": 12
+        },
+        {
+          "name": "Неубиваемый зверь",
+          "id": "undying-beast",
+          "level": 12
+        },
+        {
+          "name": "Крылья луны",
+          "id": "wings-of-the-moon",
+          "level": 12
+        },
+        {
+          "name": "Быстрое превращение 4",
+          "id": "rapid-hybridization",
+          "level": 14
+        },
+        {
+          "name": "Шкура в шрамах",
+          "id": "scarred-hide",
+          "level": 14
+        },
+        {
+          "name": "Сила природы",
+          "id": "force-of-nature",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "poisoner",
+      "name": "Отравитель",
+      "slug": "poisoner",
+      "feats": [
+        {
+          "name": "Посвящение в отравители",
+          "id": "poisoner-dedication",
+          "level": 2
+        },
+        {
+          "name": "Отравитель с духовым ружьём",
+          "id": "blowgun-poisoner",
+          "level": 4
+        },
+        {
+          "name": "Устойчивость к яду",
+          "id": "poison-resistance",
+          "level": 4
+        },
+        {
+          "name": "Сноровка отравителя 1",
+          "id": "poisoner-s-twist",
+          "level": 4
+        },
+        {
+          "name": "Продвинутое создание ядов",
+          "id": "advanced-poisoncraft",
+          "level": 6
+        },
+        {
+          "name": "Отравитель-Эксперт",
+          "id": "expert-poisoner",
+          "level": 6
+        },
+        {
+          "name": "Ядовитая одежда",
+          "id": "poison-coat",
+          "level": 6
+        },
+        {
+          "name": "Отравленное оружие 1",
+          "id": "poison-weapon",
+          "level": 6
+        },
+        {
+          "name": "Стойкие токсины",
+          "id": "tenacious-toxins",
+          "level": 6
+        },
+        {
+          "name": "Выработанный иммунитет 5",
+          "id": "acquired-tolerance",
+          "level": 8
+        },
+        {
+          "name": "Липкий яд",
+          "id": "sticky-poison",
+          "level": 8
+        },
+        {
+          "name": "Улучшенное отравленное оружие",
+          "id": "improved-poison-weapon",
+          "level": 10
+        },
+        {
+          "name": "Меткий отравитель",
+          "id": "pinpoint-poisoner",
+          "level": 10
+        },
+        {
+          "name": "Химическое заражение",
+          "id": "chemical-contagion",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "bounty-hunter",
+      "name": "Охотник за головами",
+      "slug": "bounty hunter",
+      "feats": [
+        {
+          "name": "Посвящение в охотники за головами",
+          "id": "bounty-hunter-dedication",
+          "level": 2
+        },
+        {
+          "name": "Охотник на чудовищ",
+          "id": "monster-hunter",
+          "level": 1
+        },
+        {
+          "name": "Команда охотников",
+          "id": "posse",
+          "level": 4
+        },
+        {
+          "name": "Инструменты охотника",
+          "id": "tools-of-the-trade",
+          "level": 4
+        },
+        {
+          "name": "Держать темп 5",
+          "id": "keep-pace",
+          "level": 6
+        },
+        {
+          "name": "Внеочередной захват 5",
+          "id": "opportunistic-grapple",
+          "level": 8
+        },
+        {
+          "name": "Вторая добыча",
+          "id": "double-prey",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "sterling-dynamo",
+      "name": "Первоклассное динамо",
+      "slug": "sterling dynamo",
+      "feats": [
+        {
+          "name": "Посвящение в первоклассные динамо",
+          "id": "sterling-dynamo-dedication",
+          "level": 2
+        },
+        {
+          "name": "Модульное динамо",
+          "id": "modular-dynamo",
+          "level": 4
+        },
+        {
+          "name": "Поршневой удар 2",
+          "id": "piston-punch",
+          "level": 6
+        },
+        {
+          "name": "Стазийское сокрушение 2",
+          "id": "stasian-smash",
+          "level": 8
+        },
+        {
+          "name": "Вой звериного динамо 2",
+          "id": "beast-dynamo-howl",
+          "level": 10
+        },
+        {
+          "name": "Конструкт динамо",
+          "id": "golem-dynamo",
+          "level": 12
+        },
+        {
+          "name": "Парящее динамо",
+          "id": "soaring-dynamo",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "pirate",
+      "name": "Пират",
+      "slug": "pirate",
+      "feats": [
+        {
+          "name": "Посвящение в пираты",
+          "id": "pirate-dedication",
+          "level": 2
+        },
+        {
+          "name": "Дополнительные знания",
+          "id": "additional-lore",
+          "level": 1
+        },
+        {
+          "name": "Противостояние",
+          "id": "antagonize",
+          "level": 4
+        },
+        {
+          "name": "Пиратская боевая подготовка",
+          "id": "pirate-combat-training",
+          "level": 4
+        },
+        {
+          "name": "Лазание в бою",
+          "id": "combat-climber",
+          "level": 1
+        },
+        {
+          "name": "Подводный мародёр",
+          "id": "underwater-marauder",
+          "level": 1
+        },
+        {
+          "name": "Лазание по вантам",
+          "id": "rope-runner",
+          "level": 4
+        },
+        {
+          "name": "Ты следующий 5",
+          "id": "you-re-next",
+          "level": 4
+        },
+        {
+          "name": "Прогулка по доске 2",
+          "id": "walk-the-plank",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "pistol-phenom",
+      "name": "Пистольный феномен",
+      "slug": "pistol phenom",
+      "feats": [
+        {
+          "name": "Посвящение в пистольные феномены",
+          "id": "pistol-phenom-dedication",
+          "level": 2
+        },
+        {
+          "name": "Вращение пистоля",
+          "id": "pistol-twirl",
+          "level": 1
+        },
+        {
+          "name": "Пороховой вызов 1",
+          "id": "gunpowder-gauntlet",
+          "level": 4
+        },
+        {
+          "name": "Меч и пистоль",
+          "id": "sword-and-pistol",
+          "level": 4
+        },
+        {
+          "name": "Блестящая пуля 1",
+          "id": "dazzling-bullet",
+          "level": 6
+        },
+        {
+          "name": "Огонь под ногами 1",
+          "id": "hot-foot",
+          "level": 8
+        },
+        {
+          "name": "Пыл феномена",
+          "id": "phenom-s-verve",
+          "level": 10
+        },
+        {
+          "name": "Руки вверх 2",
+          "id": "reach-for-the-sky",
+          "level": 12
+        },
+        {
+          "name": "Хитрый выстрел 2",
+          "id": "trick-shot",
+          "level": 12
+        },
+        {
+          "name": "Вихревой нокдаун 2",
+          "id": "whirling-knockdown",
+          "level": 14
+        },
+        {
+          "name": "Шоумен",
+          "id": "showstopper",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "beastmaster",
+      "name": "Повелитель зверей",
+      "slug": "beastmaster",
+      "feats": [
+        {
+          "name": "Посвящение в повелители зверей",
+          "id": "beastmaster-dedication",
+          "level": 2
+        },
+        {
+          "name": "Дополнительный верный зверь",
+          "id": "additional-companion",
+          "level": 4
+        },
+        {
+          "name": "Понимание животных (следопыт)",
+          "id": "animal-empathy-ranger-",
+          "level": 4
+        },
+        {
+          "name": "Излечение Животного",
+          "id": "heal-animal",
+          "level": 4
+        },
+        {
+          "name": "Начальное заклинание заступника",
+          "id": "initiate-warden",
+          "level": 4
+        },
+        {
+          "name": "Взрослый зверь повелителя",
+          "id": "mature-beastmaster-companion",
+          "level": 4
+        },
+        {
+          "name": "Дух зверя",
+          "id": "spirit-of-the-beast",
+          "level": 4
+        },
+        {
+          "name": "Продвинутое заклинание заступника",
+          "id": "advanced-warden",
+          "level": 6
+        },
+        {
+          "name": "Транс повелителя зверей",
+          "id": "beastmaster-s-trance",
+          "level": 6
+        },
+        {
+          "name": "Звериная защита",
+          "id": "bestial-protection",
+          "level": 6
+        },
+        {
+          "name": "Выкрик зверю",
+          "id": "companion-s-cry",
+          "level": 6
+        },
+        {
+          "name": "Природная точность",
+          "id": "nature-s-precision",
+          "level": 6
+        },
+        {
+          "name": "Быстрый страж 4",
+          "id": "swift-guardian",
+          "level": 6
+        },
+        {
+          "name": "Вожак стаи",
+          "id": "lead-the-pack",
+          "level": 1
+        },
+        {
+          "name": "Цепкая выносливость",
+          "id": "tenacious-endurance",
+          "level": 6
+        },
+        {
+          "name": "Невероятный зверь повелителя",
+          "id": "incredible-beastmaster-companion",
+          "level": 8
+        },
+        {
+          "name": "Движение стаи 2",
+          "id": "pack-movement",
+          "level": 8
+        },
+        {
+          "name": "Узы повелителя зверей",
+          "id": "beastmaster-bond",
+          "level": 10
+        },
+        {
+          "name": "Свирепый набег",
+          "id": "ferocious-charge",
+          "level": 10
+        },
+        {
+          "name": "Скоростной наскок",
+          "id": "running-kick",
+          "level": 10
+        },
+        {
+          "name": "Смертельная хватка",
+          "id": "sinking-jaws",
+          "level": 10
+        },
+        {
+          "name": "Сметающий хвост",
+          "id": "sweeping-tail",
+          "level": 10
+        },
+        {
+          "name": "Жестокое потрошение",
+          "id": "vicious-rend",
+          "level": 10
+        },
+        {
+          "name": "Зов повелителя зверей 1",
+          "id": "beastmaster-s-call",
+          "level": 12
+        },
+        {
+          "name": "Вихревые крылья",
+          "id": "billowing-wings",
+          "level": 12
+        },
+        {
+          "name": "Бок о бок (друид)",
+          "id": "side-by-side-druid-",
+          "level": 14
+        },
+        {
+          "name": "Верный зверь",
+          "id": "animal-companion",
+          "level": 1
+        },
+        {
+          "name": "Специализированный зверь повелителя",
+          "id": "specialized-beastmaster-companion",
+          "level": 14
+        },
+        {
+          "name": "Обостренные инстинкты",
+          "id": "heightened-instincts",
+          "level": 18
+        },
+        {
+          "name": "Стайная охота 2",
+          "id": "pack-takedown",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "demolitionist",
+      "name": "Подрывник",
+      "slug": "demolitionist",
+      "feats": [
+        {
+          "name": "Посвящение в подрывники",
+          "id": "demolitionist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Усиленный взрыв",
+          "id": "calculated-splash",
+          "level": 1
+        },
+        {
+          "name": "Разрушительный Заряд",
+          "id": "demolition-charge",
+          "level": 4
+        },
+        {
+          "name": "Меры предосторожности",
+          "id": "safety-measures",
+          "level": 4
+        },
+        {
+          "name": "Взрывной вход 2",
+          "id": "explosive-entry",
+          "level": 7
+        },
+        {
+          "name": "Контролируемый взрыв",
+          "id": "controlled-blast",
+          "level": 8
+        },
+        {
+          "name": "Направленные бомбы",
+          "id": "directional-bombs",
+          "level": 1
+        },
+        {
+          "name": "Обширный взрыв",
+          "id": "expanded-splash",
+          "level": 1
+        },
+        {
+          "name": "Снести стену 5",
+          "id": "collapse-wall",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "rivethun-invoker",
+      "name": "Проводник Риветуна",
+      "slug": "rivethun invoker",
+      "feats": [
+        {
+          "name": "Посвящение в Проводники Риветуна",
+          "id": "rivethun-invoker-dedication",
+          "level": 2
+        },
+        {
+          "name": "Крепкий орешек",
+          "id": "diehard",
+          "level": 1
+        },
+        {
+          "name": "Призвать нападение 1",
+          "id": "invoke-offense",
+          "level": 4
+        },
+        {
+          "name": "Разбрасывающий натиск 2",
+          "id": "barreling-charge",
+          "level": 6
+        },
+        {
+          "name": "Использовать тоску 5",
+          "id": "leverage-anguish",
+          "level": 6
+        },
+        {
+          "name": "Нокдаун 2",
+          "id": "slam-down",
+          "level": 6
+        },
+        {
+          "name": "Призвать защиту 1",
+          "id": "invoke-defense",
+          "level": 8
+        },
+        {
+          "name": "Отринуть печаль 5",
+          "id": "defy-sorrow",
+          "level": 10
+        },
+        {
+          "name": "Улучшенный нокдаун",
+          "id": "crashing-slam",
+          "level": 12
+        },
+        {
+          "name": "Призвать передвижение 1",
+          "id": "invoke-movement",
+          "level": 12
+        },
+        {
+          "name": "Подавляющий натиск",
+          "id": "overpowering-charge",
+          "level": 12
+        },
+        {
+          "name": "Единый с духами 1",
+          "id": "one-with-the-spirits",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "bullet-dancer",
+      "name": "Пулевой танцор",
+      "slug": "bullet dancer",
+      "feats": [
+        {
+          "name": "Посвящение в пулевые танцоры",
+          "id": "bullet-dancer-dedication",
+          "level": 2
+        },
+        {
+          "name": "Прожиг пулевого танцора",
+          "id": "bullet-dancer-burn",
+          "level": 6
+        },
+        {
+          "name": "Вращение пистоля 1",
+          "id": "pistol-twirl",
+          "level": 4
+        },
+        {
+          "name": "Пороховой импульс 1 / 2",
+          "id": "black-powder-boost",
+          "level": 6
+        },
+        {
+          "name": "Быстрый прыжок",
+          "id": "quick-jump",
+          "level": 1
+        },
+        {
+          "name": "Пороховая вспышка 2",
+          "id": "black-powder-blaze",
+          "level": 8
+        },
+        {
+          "name": "Перезарядка пулевого танцора 1",
+          "id": "bullet-dancer-reload",
+          "level": 12
+        },
+        {
+          "name": "Хитрый выстрел 2",
+          "id": "trick-shot",
+          "level": 12
+        },
+        {
+          "name": "Дальнобойное обезоруживание 1",
+          "id": "ranged-disarm",
+          "level": 14
+        },
+        {
+          "name": "Рикошетный выстрел 1",
+          "id": "ricochet-shot",
+          "level": 14
+        },
+        {
+          "name": "Шоумен",
+          "id": "showstopper",
+          "level": 16
+        },
+        {
+          "name": "Парный залп 1",
+          "id": "two-weapon-fusillade",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "scout",
+      "name": "Разведчик",
+      "slug": "scout",
+      "feats": [
+        {
+          "name": "Посвящение в разведчики",
+          "id": "scout-dedication",
+          "level": 2
+        },
+        {
+          "name": "Натиск разведчика 2",
+          "id": "scout-s-charge",
+          "level": 4
+        },
+        {
+          "name": "Разведчик на местности",
+          "id": "terrain-scout",
+          "level": 4
+        },
+        {
+          "name": "Скрытность на местности",
+          "id": "terrain-stalker",
+          "level": 1
+        },
+        {
+          "name": "Скользящая тень 2",
+          "id": "fleeting-shadow",
+          "level": 6
+        },
+        {
+          "name": "Скорость разведчика",
+          "id": "scout-s-speed",
+          "level": 6
+        },
+        {
+          "name": "Наскок разведчика 2",
+          "id": "scout-s-pounce",
+          "level": 10
+        },
+        {
+          "name": "Камуфляж",
+          "id": "camouflage",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "razmiran-priest",
+      "name": "Размиранский священник",
+      "slug": "razmiran priest",
+      "feats": [
+        {
+          "name": "Посвящение в Размиранские священники",
+          "id": "razmiran-priest-dedication",
+          "level": 2
+        },
+        {
+          "name": "Посвящение в жрецы",
+          "id": "cleric-dedication",
+          "level": 1
+        },
+        {
+          "name": "Совершенные истины",
+          "id": "perfect-truths",
+          "level": 6
+        },
+        {
+          "name": "Маска 12-й ступени",
+          "id": "mask-of-the-12th-step",
+          "level": 10
+        },
+        {
+          "name": "Маска 15 Ступени",
+          "id": "mask-of-the-15th-step",
+          "level": 14
+        },
+        {
+          "name": "Живой бог",
+          "id": "living-god",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "sniping-duo",
+      "name": "Снайперская пара",
+      "slug": "sniping duo",
+      "feats": [
+        {
+          "name": "Посвящение в снайперские пары",
+          "id": "sniping-duo-dedication",
+          "level": 2
+        },
+        {
+          "name": "Прикрывающий огонь 1",
+          "id": "cover-fire",
+          "level": 4
+        },
+        {
+          "name": "Триангуляция",
+          "id": "triangulate",
+          "level": 4
+        },
+        {
+          "name": "Использовать брешь 5",
+          "id": "exploit-opening",
+          "level": 6
+        },
+        {
+          "name": "Выверенный рикошет 1",
+          "id": "targeted-redirection",
+          "level": 6
+        },
+        {
+          "name": "Парное прицеливание 2",
+          "id": "duo-s-aim",
+          "level": 8
+        },
+        {
+          "name": "Стрельба из укрытия",
+          "id": "vantage-shot",
+          "level": 8
+        },
+        {
+          "name": "Работа в команде 5",
+          "id": "tag-team",
+          "level": 10
+        },
+        {
+          "name": "Отбивающий выстрел 5",
+          "id": "deflecting-shot",
+          "level": 12
+        },
+        {
+          "name": "Глаз да глаз",
+          "id": "eagle-eyes",
+          "level": 12
+        },
+        {
+          "name": "Перенаправляющий выстрел 5",
+          "id": "redirecting-shot",
+          "level": 12
+        },
+        {
+          "name": "Концентрированное нападение",
+          "id": "concentrated-assault",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "snarecrafter",
+      "name": "Создатель западней",
+      "slug": "snarecrafter",
+      "feats": [
+        {
+          "name": "Посвящение в создатели западней",
+          "id": "snarecrafter-dedication",
+          "level": 2
+        },
+        {
+          "name": "Ремесло западнёй",
+          "id": "snare-crafting",
+          "level": 1
+        },
+        {
+          "name": "Внезапная западня 3",
+          "id": "surprise-snare",
+          "level": 4
+        },
+        {
+          "name": "Удалённая активация",
+          "id": "remote-trigger",
+          "level": 6
+        },
+        {
+          "name": "Гигантская западня",
+          "id": "giant-snare",
+          "level": 10
+        },
+        {
+          "name": "Моментальные западни",
+          "id": "lightning-snares",
+          "level": 12
+        },
+        {
+          "name": "Множество западней",
+          "id": "plentiful-snares",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "sentinel",
+      "name": "Страж",
+      "slug": "sentinel",
+      "feats": [
+        {
+          "name": "Посвящение в стражи",
+          "id": "sentinel-dedication",
+          "level": 2
+        },
+        {
+          "name": "Стальная кожа",
+          "id": "steel-skin",
+          "level": 4
+        },
+        {
+          "name": "Специалист по броне",
+          "id": "armor-specialist",
+          "level": 6
+        },
+        {
+          "name": "Бронированный отпор 5",
+          "id": "armored-rebuff",
+          "level": 8
+        },
+        {
+          "name": "Неприступная крепость",
+          "id": "mighty-bulwark",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "wandering-chef",
+      "name": "Странствующий повар",
+      "slug": "wandering chef",
+      "feats": [
+        {
+          "name": "Посвящение в странствующие повара",
+          "id": "wandering-chef-dedication",
+          "level": 2
+        },
+        {
+          "name": "алхимического ремесла",
+          "id": "alchemical-crafting",
+          "level": 1
+        },
+        {
+          "name": "Утренние закуски",
+          "id": "morning-side-dishes",
+          "level": 4
+        },
+        {
+          "name": "Добавочная порция",
+          "id": "additional-servings",
+          "level": 6
+        },
+        {
+          "name": "Сохранение пищи",
+          "id": "food-preservation",
+          "level": 6
+        },
+        {
+          "name": "Организатор пира",
+          "id": "feast-planner",
+          "level": 10
+        },
+        {
+          "name": "Начинённый вкусом",
+          "id": "packed-with-flavor",
+          "level": 12
+        },
+        {
+          "name": "Космический коктейль",
+          "id": "cosmic-cocktail",
+          "level": 14
+        },
+        {
+          "name": "Местная особенность",
+          "id": "regional-specialty",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "clawdancer",
+      "name": "Танцор когтей",
+      "slug": "clawdancer",
+      "feats": [
+        {
+          "name": "Посвящение в танцоры когтей",
+          "id": "clawdancer-dedication",
+          "level": 2
+        },
+        {
+          "name": "Вцепиться когтями 5",
+          "id": "claw-snag",
+          "level": 4
+        },
+        {
+          "name": "Лихой наскок 2",
+          "id": "dashing-pounce",
+          "level": 4
+        },
+        {
+          "name": "Взмах лапой 5",
+          "id": "talon-sweep",
+          "level": 4
+        },
+        {
+          "name": "Осколочная рана 1",
+          "id": "abscission-shards",
+          "level": 6
+        },
+        {
+          "name": "Располосовать брюхо 1",
+          "id": "hindquarter-kick",
+          "level": 6
+        },
+        {
+          "name": "Вихревое вставание 1 - 2",
+          "id": "spinning-stand",
+          "level": 6
+        },
+        {
+          "name": "Хватающий перекат 1",
+          "id": "wheeling-grab",
+          "level": 6
+        },
+        {
+          "name": "Кошачий танец 5",
+          "id": "feline-dance",
+          "level": 8
+        },
+        {
+          "name": "Разорвать сухожилия 2",
+          "id": "tear-tendons",
+          "level": 8
+        },
+        {
+          "name": "Охотничий захват 5",
+          "id": "hunting-snag",
+          "level": 10
+        },
+        {
+          "name": "Трамплин 1",
+          "id": "springboard",
+          "level": 10
+        },
+        {
+          "name": "Поток когтей 1",
+          "id": "claw-and-talon-flow",
+          "level": 12
+        },
+        {
+          "name": "Точный зацеп",
+          "id": "precise-hooks",
+          "level": 14
+        },
+        {
+          "name": "Буря когтей 3",
+          "id": "storm-of-claws",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "fan-dancer",
+      "name": "Танцор с веером",
+      "slug": "fan dancer",
+      "feats": [
+        {
+          "name": "Посвящение в танцоры с веером",
+          "id": "fan-dancer-dedication",
+          "level": 2
+        },
+        {
+          "name": "Шаг лепестка",
+          "id": "petal-step",
+          "level": 4
+        },
+        {
+          "name": "Танец одного",
+          "id": "solo-dancer",
+          "level": 4
+        },
+        {
+          "name": "Сквозное вращение",
+          "id": "twirl-through",
+          "level": 4
+        },
+        {
+          "name": "Обманчивый взмах",
+          "id": "fluttering-misdirection",
+          "level": 6
+        },
+        {
+          "name": "Стремительный блок веером 5",
+          "id": "sweeping-fan-block",
+          "level": 6
+        },
+        {
+          "name": "Дуновение ветра",
+          "id": "pushing-wind",
+          "level": 8
+        },
+        {
+          "name": "Удар во вращении 2",
+          "id": "twirling-strike",
+          "level": 8
+        },
+        {
+          "name": "Закрытая позиция",
+          "id": "close-formation",
+          "level": 10
+        },
+        {
+          "name": "Головокружительный танец 3",
+          "id": "dizzying-spin-dance",
+          "level": 10
+        },
+        {
+          "name": "Отвлекающий взмах 5",
+          "id": "fluttering-distraction",
+          "level": 10
+        },
+        {
+          "name": "Стремительное перенаправление веером",
+          "id": "sweeping-fan-redirection",
+          "level": 10
+        },
+        {
+          "name": "Путь дракона 1",
+          "id": "dragon-s-journey",
+          "level": 14
+        },
+        {
+          "name": "Расцвет пиона 3",
+          "id": "peony-s-flourish",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "tattooed-historian",
+      "name": "Татуированный сказитель",
+      "slug": "tattooed historian",
+      "feats": [
+        {
+          "name": "Посвящение в татуированные сказители",
+          "id": "tattooed-historian-dedication",
+          "level": 2
+        },
+        {
+          "name": "Представитель всех кланов",
+          "id": "agent-of-all-holds",
+          "level": 2
+        },
+        {
+          "name": "Доспех из чернил 5",
+          "id": "inked-panoply",
+          "level": 4
+        },
+        {
+          "name": "Мощь Белкзена 2",
+          "id": "infused-with-belkzen-s-might",
+          "level": 6
+        },
+        {
+          "name": "Свершения предков",
+          "id": "inscribed-with-elders-deeds",
+          "level": 6
+        },
+        {
+          "name": "Гнев клана 2",
+          "id": "wrath-of-the-hold",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "herbalist",
+      "name": "Травник",
+      "slug": "herbalist",
+      "feats": [
+        {
+          "name": "Посвящение в травники",
+          "id": "herbalist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Природная медицина",
+          "id": "natural-medicine",
+          "level": 1
+        },
+        {
+          "name": "Свежие ингредиенты",
+          "id": "fresh-ingredients",
+          "level": 2
+        },
+        {
+          "name": "Варение припарок",
+          "id": "poultice-preparation",
+          "level": 4
+        },
+        {
+          "name": "Продвинутое травничество",
+          "id": "advanced-herbalism",
+          "level": 6
+        },
+        {
+          "name": "Местные травы",
+          "id": "endemic-herbs",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "id": "vehicle-mechanic",
+      "name": "Транспортный механик",
+      "slug": "vehicle mechanic",
+      "feats": [
+        {
+          "name": "Посвящение в транспортные механики",
+          "id": "vehicle-mechanic-dedication",
+          "level": 2
+        },
+        {
+          "name": "Ремонтный отсек",
+          "id": "engine-bay",
+          "level": 4
+        },
+        {
+          "name": "Быстрой починки",
+          "id": "quick-repair",
+          "level": 1
+        },
+        {
+          "name": "Заплаточный ремонт",
+          "id": "patch-job",
+          "level": 4
+        },
+        {
+          "name": "Импровизированный ремонт",
+          "id": "improvised-repair",
+          "level": 1
+        },
+        {
+          "name": "Превосходная тяга",
+          "id": "superior-propulsion",
+          "level": 6
+        },
+        {
+          "name": "Эффективное управление",
+          "id": "efficient-controls",
+          "level": 7
+        },
+        {
+          "name": "Стойкий транспорт",
+          "id": "impervious-vehicle",
+          "level": 8
+        },
+        {
+          "name": "Чудесный полёт",
+          "id": "miraculous-flight",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "scroll-trickster",
+      "name": "Трикстер свитков",
+      "slug": "scroll trickster",
+      "feats": [
+        {
+          "name": "Посвящение в трикстеры свитков",
+          "id": "scroll-trickster-dedication",
+          "level": 2
+        },
+        {
+          "name": "Обман магического предмета",
+          "id": "trick-magic-item",
+          "level": 1
+        },
+        {
+          "name": "Простой набор свитков",
+          "id": "basic-scroll-cache",
+          "level": 6
+        },
+        {
+          "name": "Просмотр свитка 1",
+          "id": "skim-scroll",
+          "level": 8
+        },
+        {
+          "name": "Экспертный набор свитков",
+          "id": "expert-scroll-cache",
+          "level": 12
+        },
+        {
+          "name": "Мастерский набор свитков",
+          "id": "master-scroll-cache",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "familiar-master",
+      "name": "Хозяин фамильяра",
+      "slug": "familiar master",
+      "feats": [
+        {
+          "name": "Посвящение в хозяева фамильяра",
+          "id": "familiar-master-dedication",
+          "level": 2
+        },
+        {
+          "name": "Улучшенный фамильяр",
+          "id": "enhanced-familiar",
+          "level": 1
+        },
+        {
+          "name": "Связь с фамильяром 1",
+          "id": "familiar-conduit",
+          "level": 4
+        },
+        {
+          "name": "Фамильяр-талисман",
+          "id": "familiar-mascot",
+          "level": 4
+        },
+        {
+          "name": "Усовершенствованный фамильяр",
+          "id": "improved-familiar",
+          "level": 6
+        },
+        {
+          "name": "Изменчивый фамильяр",
+          "id": "mutable-familiar",
+          "level": 8
+        },
+        {
+          "name": "Невероятный фамильяр",
+          "id": "incredible-familiar",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "swarmkeeper",
+      "name": "Хранитель роя",
+      "slug": "swarmkeeper",
+      "feats": [
+        {
+          "name": "Посвящение в хранители роя",
+          "id": "swarmkeeper-dedication",
+          "level": 2
+        },
+        {
+          "name": "Вспышка афета 1",
+          "id": "aphet-flash",
+          "level": 4
+        },
+        {
+          "name": "Жало огненного муравья 1",
+          "id": "pyre-ant-sting",
+          "level": 4
+        },
+        {
+          "name": "Сеть прядильщика 1",
+          "id": "weaver-s-web",
+          "level": 4
+        },
+        {
+          "name": "Отвлекающие укусы",
+          "id": "distracting-bites",
+          "level": 6
+        },
+        {
+          "name": "Подвижный рой",
+          "id": "mobile-swarm",
+          "level": 6
+        },
+        {
+          "name": "Перемещение с роем",
+          "id": "carried-with-the-swarm",
+          "level": 8
+        },
+        {
+          "name": "Удушение жуков-подменышей 1",
+          "id": "sportlebore-choke",
+          "level": 8
+        },
+        {
+          "name": "Завеса из жуков",
+          "id": "veil-of-bugs",
+          "level": 10
+        },
+        {
+          "name": "Стрекот цикад смерти",
+          "id": "buzzing-death-cicadas",
+          "level": 12
+        },
+        {
+          "name": "Огромный рой",
+          "id": "expanded-swarm",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "rivethun-emissary",
+      "name": "Эмиссар Риветуна",
+      "slug": "rivethun emissary",
+      "feats": [
+        {
+          "name": "Посвящение в эмиссары Риветуна",
+          "id": "rivethun-emissary-dedication",
+          "level": 2
+        },
+        {
+          "name": "Фамильяр эмиссара",
+          "id": "emissary-familiar",
+          "level": 4
+        },
+        {
+          "name": "Улучшенный фамильяр",
+          "id": "enhanced-familiar",
+          "level": 1
+        },
+        {
+          "name": "Дух домена",
+          "id": "domain-spirit",
+          "level": 6
+        },
+        {
+          "name": "Невероятный фамильяр",
+          "id": "incredible-familiar",
+          "level": 8
+        },
+        {
+          "name": "Калейдоскопическая просьба 1",
+          "id": "kaleidoscopic-entreaty",
+          "level": 8
+        },
+        {
+          "name": "Преданность Риветуну",
+          "id": "rivethun-devotion",
+          "level": 8
+        },
+        {
+          "name": "Продвинутый дух домена",
+          "id": "advanced-domain-spirit",
+          "level": 10
+        },
+        {
+          "name": "Общение с духами (Эмиссар Риветуна)",
+          "id": "consult-the-spirits-rivethun-emissary-",
+          "level": 12
+        },
+        {
+          "name": "Проводник многих 1",
+          "id": "manifold-conduit",
+          "level": 12
+        },
+        {
+          "name": "Адепт Риветуна",
+          "id": "rivethun-adept",
+          "level": 16
+        },
+        {
+          "name": "Воодушевленный славной целью",
+          "id": "embolded-with-glorious-purpose",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "trapsmith",
+      "name": "Механик ловушек",
+      "slug": "trapsmith",
+      "feats": [
+        {
+          "name": "Посвящение в механики ловушек",
+          "id": "trapsmith-dedication",
+          "level": 4
+        },
+        {
+          "name": "Посвящение в создатели западнёй",
+          "id": "snarecrafter-dedication",
+          "level": 1
+        },
+        {
+          "name": "Специалист по западням",
+          "id": "snare-specialist",
+          "level": 1
+        },
+        {
+          "name": "Скрежет шестерён",
+          "id": "gear-gnash",
+          "level": 4
+        },
+        {
+          "name": "Крепление пропеллера",
+          "id": "propeller-attachment",
+          "level": 7
+        },
+        {
+          "name": "Переработка шестерён",
+          "id": "recycled-cogwheel",
+          "level": 8
+        },
+        {
+          "name": "Переборка деталей",
+          "id": "repurposed-parts",
+          "level": 10
+        },
+        {
+          "name": "Утонченные особенности",
+          "id": "finessed-features",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "familiar-sage",
+      "name": "Мудрец фамильяра",
+      "slug": "familiar sage",
+      "feats": [
+        {
+          "name": "Посвящение в мудрецы фамильяра",
+          "id": "familiar-sage-dedication",
+          "level": 4
+        },
+        {
+          "name": "Улучшенный фамильяр",
+          "id": "enhanced-familiar",
+          "level": 1
+        },
+        {
+          "name": "посвящение в хозяева фамильяра",
+          "id": "familiar-master-dedication",
+          "level": 1
+        },
+        {
+          "name": "Решимость фамильяра 1",
+          "id": "familiar-s-resolve",
+          "level": 6
+        },
+        {
+          "name": "Фамильяр фулу",
+          "id": "fulu-familiar",
+          "level": 6
+        },
+        {
+          "name": "Скорость грозового облака",
+          "id": "tempest-cloud-s-speed",
+          "level": 6
+        },
+        {
+          "name": "Ритуальный фамильяр",
+          "id": "familiar-ritualist",
+          "level": 8
+        },
+        {
+          "name": "Щедрость золотого дракона 1",
+          "id": "golden-dragon-s-bounty",
+          "level": 8
+        },
+        {
+          "name": "Вмешательство колец молний",
+          "id": "lightning-rings-intervention",
+          "level": 8
+        },
+        {
+          "name": "Печать золотого дракона 5",
+          "id": "seal-of-the-golden-dragon",
+          "level": 10
+        },
+        {
+          "name": "Перезарядка колец молнии",
+          "id": "lightning-rings-overcharge",
+          "level": 12
+        },
+        {
+          "name": "Раздражающая буря 1",
+          "id": "vexing-tempest",
+          "level": 12
+        },
+        {
+          "name": "Полёт феникса",
+          "id": "phoenix-s-flight",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "ritualist",
+      "name": "Ритуалист",
+      "slug": "ritualist",
+      "feats": [
+        {
+          "name": "Посвящение в ритуалисты",
+          "id": "ritualist-dedication",
+          "level": 4
+        },
+        {
+          "name": "Гибкий ритуалист",
+          "id": "flexible-ritualist",
+          "level": 6
+        },
+        {
+          "name": "Находчивый ритуалист",
+          "id": "resourceful-ritualist",
+          "level": 6
+        },
+        {
+          "name": "Эффективные ритуалы",
+          "id": "efficient-rituals",
+          "level": 8
+        },
+        {
+          "name": "Уверенный ритуалист",
+          "id": "assured-ritualist",
+          "level": 10
+        },
+        {
+          "name": "Предприимчивый ритуалист",
+          "id": "enterprising-ritualist",
+          "level": 14
+        },
+        {
+          "name": "Быстрые Ритуалы",
+          "id": "speedy-rituals",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "five-breath-vanguard",
+      "name": "Авангард пяти вдохов",
+      "slug": "five-breath vanguard",
+      "feats": [
+        {
+          "name": "стойка железной крови",
+          "id": "ironblood-stance",
+          "level": 6
+        },
+        {
+          "name": "стойка горы",
+          "id": "mountain-stance",
+          "level": 6
+        },
+        {
+          "name": "стойка зеркальной ряби",
+          "id": "reflective-ripple-stance",
+          "level": 6
+        },
+        {
+          "name": "стойка разожжённого пламени",
+          "id": "stoked-flame-stance",
+          "level": 6
+        },
+        {
+          "name": "стойка чащобы",
+          "id": "tangled-forest-stance",
+          "level": 6
+        },
+        {
+          "name": "Посвящение в авангарды пяти вдохов",
+          "id": "five-breath-vanguard-dedication",
+          "level": 6
+        },
+        {
+          "name": "Цикл обновления",
+          "id": "renewing-cycle",
+          "level": 10
+        },
+        {
+          "name": "Вызвать дисбаланс 2",
+          "id": "induce-imbalance",
+          "level": 14
+        },
+        {
+          "name": "Цикл обороны 5",
+          "id": "protective-cycle",
+          "level": 16
+        },
+        {
+          "name": "Пять вдохов — одна смерть 2",
+          "id": "five-breaths-one-death",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "beast-gunner",
+      "name": "Звериный стрелок",
+      "slug": "beast gunner",
+      "feats": [
+        {
+          "name": "Посвящение в звериные стрелки",
+          "id": "beast-gunner-dedication",
+          "level": 6
+        },
+        {
+          "name": "Зачарованный выстрел",
+          "id": "spell-woven-shot",
+          "level": 1
+        },
+        {
+          "name": "Простые заклинания звериного стрелка",
+          "id": "basic-beast-gunner-spellcasting",
+          "level": 8
+        },
+        {
+          "name": "Призыв оружия",
+          "id": "call-gun",
+          "level": 8
+        },
+        {
+          "name": "Посвящение в стрелков-заклинателей",
+          "id": "spellshot-dedication",
+          "level": 1
+        },
+        {
+          "name": "Истощить жизнь 1",
+          "id": "drain-vitality",
+          "level": 10
+        },
+        {
+          "name": "Экспертные заклинания звериного стрелка",
+          "id": "expert-beast-gunner-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Простые заклинания волшебника",
+          "id": "basic-wizard-spellcasting",
+          "level": 1
+        },
+        {
+          "name": "Контролируемая пуля 2",
+          "id": "controlled-bullet",
+          "level": 16
+        },
+        {
+          "name": "Мастерские заклинания звериного стрелка",
+          "id": "master-beast-gunner-spellcasting",
+          "level": 18
+        },
+        {
+          "name": "Экспертные заклинания волшебника",
+          "id": "expert-wizard-spellcasting",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "id": "eldritch-archer",
+      "name": "Мистический лучник",
+      "slug": "eldritch archer",
+      "feats": [
+        {
+          "name": "Посвящение в мистические лучники",
+          "id": "eldritch-archer-dedication",
+          "level": 6
+        },
+        {
+          "name": "Простые заклинания мистического лучника",
+          "id": "basic-eldritch-archer-spellcasting",
+          "level": 8
+        },
+        {
+          "name": "Чарующий выстрел 2",
+          "id": "enchanting-shot",
+          "level": 8
+        },
+        {
+          "name": "Магические боеприпасы",
+          "id": "magic-ammunition",
+          "level": 8
+        },
+        {
+          "name": "Ценные боеприпасы 1",
+          "id": "precious-ammunition",
+          "level": 8
+        },
+        {
+          "name": "Перезарядка на ходу 1",
+          "id": "running-reload",
+          "level": 8
+        },
+        {
+          "name": "Мистическая перезарядка 4",
+          "id": "eldritch-reload",
+          "level": 10
+        },
+        {
+          "name": "Экспертные заклинания мистического лучника",
+          "id": "expert-eldritch-archer-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Самонаводящийся выстрел 1",
+          "id": "homing-shot",
+          "level": 14
+        },
+        {
+          "name": "Бестелесный выстрел 1",
+          "id": "incorporeal-shot",
+          "level": 16
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Добивающий выстрел 3",
+          "id": "fatal-shot",
+          "level": 18
+        },
+        {
+          "name": "Мастерские заклинания мистического лучника",
+          "id": "master-eldritch-archer-spellcasting",
+          "level": 18
+        },
+        {
+          "name": "Невероятный залп 3",
+          "id": "impossible-volley",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "pathfinder-agent",
+      "name": "Агент Общества Искателей",
+      "slug": "pathfinder agent",
+      "feats": [
+        {
+          "name": "Посвящение в Агенты Общества Искателей",
+          "id": "pathfinder-agent-dedication",
+          "level": 2
+        },
+        {
+          "name": "Осторожный исследователь",
+          "id": "careful-explorer",
+          "level": 4
+        },
+        {
+          "name": "Умелое сотрудничество",
+          "id": "deft-cooperation",
+          "level": 4
+        },
+        {
+          "name": "Подробные отчеты",
+          "id": "thorough-reports",
+          "level": 4
+        },
+        {
+          "name": "Настройщик резонанса путеискателя",
+          "id": "wayfinder-resonance-tinkerer",
+          "level": 4
+        }
+      ]
+    },
+    {
+      "id": "dragon-disciple",
+      "name": "Драконий Апостол",
+      "slug": "dragon disciple",
+      "feats": [
+        {
+          "name": "Посвящение В Драконьи Апостолы",
+          "id": "dragon-disciple-dedication",
+          "level": 2
+        },
+        {
+          "name": "Когти Дракона",
+          "id": "claws-of-the-dragon",
+          "level": 4
+        },
+        {
+          "name": "Драконий Нюх",
+          "id": "draconic-scent",
+          "level": 4
+        },
+        {
+          "name": "Мистицизм Дракона",
+          "id": "dragon-arcana",
+          "level": 4
+        },
+        {
+          "name": "Чешуя Дракона",
+          "id": "scales-of-the-dragon",
+          "level": 4
+        },
+        {
+          "name": "Дыхание Дракона",
+          "id": "breath-of-the-dragon",
+          "level": 8
+        },
+        {
+          "name": "Крылья Дракона",
+          "id": "wings-of-the-dragon",
+          "level": 12
+        },
+        {
+          "name": "Драконий Облик",
+          "id": "shape-of-the-dragon",
+          "level": 14
+        },
+        {
+          "name": "Дыхание Апостола 2",
+          "id": "disciple-s-breath",
+          "level": 16
+        },
+        {
+          "name": "Могучий Драконий Облик",
+          "id": "mighty-dragon-shape",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "sorcerer",
+      "name": "чародея",
+      "slug": "sorcerer",
+      "feats": [
+        {
+          "name": "Посвящение в чародеи",
+          "id": "sorcerer-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простая сила крови",
+          "id": "basic-blood-potency",
+          "level": 4
+        },
+        {
+          "name": "Простое заклинание наследия",
+          "id": "basic-bloodline-spell",
+          "level": 4
+        },
+        {
+          "name": "Простые заклинания чародея",
+          "id": "basic-sorcerer-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая сила крови",
+          "id": "advanced-blood-potency",
+          "level": 6
+        },
+        {
+          "name": "Познания наследия",
+          "id": "bloodline-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания чародея",
+          "id": "expert-sorcerer-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания чародея",
+          "id": "master-sorcerer-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "drow-shootist",
+      "name": "Дроу-стрелок",
+      "slug": "drow shootist",
+      "feats": [
+        {
+          "name": "Посвящение в дроу-стрелки",
+          "id": "drow-shootist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Обращение с многозарядным ручным арбалетом",
+          "id": "repeating-hand-crossbow-training",
+          "level": 4
+        },
+        {
+          "name": "Перезарядка на ходу",
+          "id": "running-reload",
+          "level": 1
+        },
+        {
+          "name": "Ловкая перезарядка 1",
+          "id": "reloading-trick",
+          "level": 6
+        },
+        {
+          "name": "Летаргический отравитель",
+          "id": "lethargy-poisoner",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "aldori-duelist",
+      "name": "Дуэлянт Алдори",
+      "slug": "aldori duelist",
+      "feats": [
+        {
+          "name": "Посвящение в Дуэлянты Алдори",
+          "id": "aldori-duelist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Парирование Алдори 1",
+          "id": "aldori-parry",
+          "level": 4
+        },
+        {
+          "name": "Преимущество Дуэлянта 4",
+          "id": "duelist-s-edge",
+          "level": 4
+        },
+        {
+          "name": "Контратака Алдори 5",
+          "id": "aldori-riposte",
+          "level": 6
+        },
+        {
+          "name": "Нервирующая Искусность 4",
+          "id": "unnerving-prowess",
+          "level": 6
+        },
+        {
+          "name": "Спасительный Взмах 5",
+          "id": "saving-slash",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "living-monolith",
+      "name": "Живой Монолит",
+      "slug": "living monolith",
+      "feats": [
+        {
+          "name": "Посвящение в Живой монолит",
+          "id": "living-monolith-dedication",
+          "level": 2
+        },
+        {
+          "name": "Ритуал камня ка",
+          "id": "ka-stone-ritual",
+          "level": 4
+        },
+        {
+          "name": "Каменная кровь",
+          "id": "stone-blood",
+          "level": 6
+        },
+        {
+          "name": "Укреплённая плоть",
+          "id": "fortified-flesh",
+          "level": 8
+        },
+        {
+          "name": "Настройка на камень",
+          "id": "attunement-to-stone",
+          "level": 10
+        },
+        {
+          "name": "Суд Монолита",
+          "id": "judgment-of-the-monolith",
+          "level": 12
+        },
+        {
+          "name": "Каменное единение",
+          "id": "stone-communion",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "horizon-walker",
+      "name": "Идущий За Горизонт",
+      "slug": "horizon walker",
+      "feats": [
+        {
+          "name": "Посвящение В Идущие За Горизонт",
+          "id": "horizon-walker-dedication",
+          "level": 2
+        },
+        {
+          "name": "Излюбленная местность",
+          "id": "favored-terrain",
+          "level": 1
+        },
+        {
+          "name": "Акклиматизация",
+          "id": "acclimatization",
+          "level": 4
+        },
+        {
+          "name": "Уверенная Поступь",
+          "id": "sure-foot",
+          "level": 4
+        },
+        {
+          "name": "Всегда Начеку",
+          "id": "perpetual-scout",
+          "level": 6
+        },
+        {
+          "name": "Магическая Адаптация",
+          "id": "magical-adaptation",
+          "level": 10
+        },
+        {
+          "name": "Природный Странник",
+          "id": "wild-strider",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "runescarred",
+      "name": "Испещрённый рунами",
+      "slug": "runescarred",
+      "feats": [
+        {
+          "name": "Посвящение в Испещрённые рунами",
+          "id": "runescarred-dedication",
+          "level": 2
+        },
+        {
+          "name": "Руны заклинаний",
+          "id": "spell-runes",
+          "level": 4
+        },
+        {
+          "name": "Охранная руна",
+          "id": "warding-rune",
+          "level": 6
+        },
+        {
+          "name": "Улучшенные руны заклинаний",
+          "id": "greater-spell-runes",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "eldritch-researcher",
+      "name": "Исследователь непознанного",
+      "slug": "eldritch researcher",
+      "feats": [
+        {
+          "name": "Посвящение в исследователи непознанного",
+          "id": "eldritch-researcher-dedication",
+          "level": 2
+        },
+        {
+          "name": "Искатель истин",
+          "id": "seeker-of-truths",
+          "level": 4
+        },
+        {
+          "name": "Начальное заклинание домена",
+          "id": "domain-initiate",
+          "level": 1
+        },
+        {
+          "name": "Странные письмена",
+          "id": "strange-script",
+          "level": 4
+        },
+        {
+          "name": "Научная защита",
+          "id": "scholarly-defense",
+          "level": 6
+        },
+        {
+          "name": "Умелый ритуалист",
+          "id": "able-ritualist",
+          "level": 8
+        },
+        {
+          "name": "Охотник за знаниями",
+          "id": "lorefinder",
+          "level": 8
+        },
+        {
+          "name": "Всезнайка",
+          "id": "know-it-all",
+          "level": 10
+        },
+        {
+          "name": "Продвинутый искатель истин",
+          "id": "advanced-seeker-of-truths",
+          "level": 12
+        },
+        {
+          "name": "Судьбоносные слова",
+          "id": "words-of-unraveling",
+          "level": 12
+        },
+        {
+          "name": "Запредельные сущности",
+          "id": "entities-from-afar",
+          "level": 14
+        },
+        {
+          "name": "Невероятная память 1",
+          "id": "incredible-recollection",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "lion-blade",
+      "name": "Львиный Клинок",
+      "slug": "lion blade",
+      "feats": [
+        {
+          "name": "Посвящение в Львиные Клинки",
+          "id": "lion-blade-dedication",
+          "level": 2
+        },
+        {
+          "name": "Затеряться в толпе",
+          "id": "lost-in-the-crowd",
+          "level": 1
+        },
+        {
+          "name": "Шпионское противодействие",
+          "id": "spy-s-countermeasures",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "magic-warrior",
+      "name": "Магический Воитель",
+      "slug": "magic warrior",
+      "feats": [
+        {
+          "name": "Посвящение в Магические воители",
+          "id": "magic-warrior-dedication",
+          "level": 2
+        },
+        {
+          "name": "Аспект магического воителя",
+          "id": "magic-warrior-aspect",
+          "level": 4
+        },
+        {
+          "name": "Превращение магического воителя",
+          "id": "magic-warrior-transformation",
+          "level": 4
+        },
+        {
+          "name": "Безымянная анонимность",
+          "id": "nameless-anonymity",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "id": "hellknight-armiger",
+      "name": "Оруженосец Рыцарей Преисподней",
+      "slug": "hellknight armiger",
+      "feats": [
+        {
+          "name": "Посвящение в Оруженосцы Рыцарей Преисподней",
+          "id": "hellknight-armiger-dedication",
+          "level": 2
+        },
+        {
+          "name": "Ретивый Оруженосец",
+          "id": "ardent-armiger",
+          "level": 4
+        },
+        {
+          "name": "Дьявольская уверенность 4",
+          "id": "diabolic-certitude",
+          "level": 4
+        },
+        {
+          "name": "Умерщвление плоти",
+          "id": "mortification",
+          "level": 4
+        },
+        {
+          "name": "Подвижность Оруженосца",
+          "id": "armiger-s-mobility",
+          "level": 8
+        },
+        {
+          "name": "Невесомое железо",
+          "id": "unburdened-iron",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "id": "ghost-hunter",
+      "name": "Охотник за привидениями",
+      "slug": "ghost hunter",
+      "feats": [
+        {
+          "name": "Посвящение в охотники за привидениями",
+          "id": "ghost-hunter-dedication",
+          "level": 2
+        },
+        {
+          "name": "Могильный глас",
+          "id": "grave-s-voice",
+          "level": 4
+        },
+        {
+          "name": "Выявление видений",
+          "id": "investigate-haunting",
+          "level": 4
+        },
+        {
+          "name": "Спиритические заклинания",
+          "id": "spirit-spells",
+          "level": 4
+        },
+        {
+          "name": "Призрачный удар 2",
+          "id": "ghost-strike",
+          "level": 6
+        },
+        {
+          "name": "Взгляд за грань",
+          "id": "peer-beyond",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "oozemorph",
+      "name": "Слиземорф",
+      "slug": "oozemorph",
+      "feats": [
+        {
+          "name": "Посвящение в слиземорфы",
+          "id": "oozemorph-dedication",
+          "level": 2
+        },
+        {
+          "name": "Полезный беспорядок",
+          "id": "disturbing-defense",
+          "level": 4
+        },
+        {
+          "name": "Мерзкие завывания",
+          "id": "hideous-ululation",
+          "level": 4
+        },
+        {
+          "name": "Утрата зрения 5",
+          "id": "vacate-vision",
+          "level": 6
+        },
+        {
+          "name": "Понимание жижи",
+          "id": "ooze-empathy",
+          "level": 8
+        },
+        {
+          "name": "Гуттаперчевая кожа",
+          "id": "rubbery-skin",
+          "level": 10
+        },
+        {
+          "name": "Невероятное присасывание",
+          "id": "uncanny-suction",
+          "level": 12
+        },
+        {
+          "name": "быстрое лазание",
+          "id": "quick-climb",
+          "level": 1
+        },
+        {
+          "name": "Странная анатомия",
+          "id": "peculiar-anatomy",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "lastwall-sentry",
+      "name": "Страж Последнего Оплота",
+      "slug": "lastwall sentry",
+      "feats": [
+        {
+          "name": "Посвящение в Стражи Последнего Оплота",
+          "id": "lastwall-sentry-dedication",
+          "level": 2
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Рефлекторная защита",
+          "id": "reactive-shield",
+          "level": 1
+        },
+        {
+          "name": "Око Озема",
+          "id": "eye-of-ozem",
+          "level": 4
+        },
+        {
+          "name": "Сопротивление некромантии",
+          "id": "necromantic-resistance",
+          "level": 4
+        },
+        {
+          "name": "Могильное чутьё",
+          "id": "grave-sense",
+          "level": 6
+        },
+        {
+          "name": "Устойчивость к некромантии",
+          "id": "necromantic-tenacity",
+          "level": 8
+        },
+        {
+          "name": "Заступник Последнего Оплота",
+          "id": "lastwall-warden",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "student-of-perfection",
+      "name": "Ученик Совершенства",
+      "slug": "student of perfection",
+      "feats": [
+        {
+          "name": "Посвящение в Ученики Совершенства",
+          "id": "student-of-perfection-dedication",
+          "level": 2
+        },
+        {
+          "name": "Удар ци",
+          "id": "ki-strike",
+          "level": 1
+        },
+        {
+          "name": "Совершенный удар",
+          "id": "perfect-strike",
+          "level": 4
+        },
+        {
+          "name": "Знаток совершенного ци",
+          "id": "perfect-ki-adept",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "id": "loremaster",
+      "name": "Хранитель Знаний",
+      "slug": "loremaster",
+      "feats": [
+        {
+          "name": "Посвящение В Хранители Знаний",
+          "id": "loremaster-dedication",
+          "level": 2
+        },
+        {
+          "name": "Знание барда",
+          "id": "bardic-lore",
+          "level": 1
+        },
+        {
+          "name": "Магическое Наставление",
+          "id": "magical-edification",
+          "level": 4
+        },
+        {
+          "name": "Мастерство Орфографии",
+          "id": "orthographic-mastery",
+          "level": 4
+        },
+        {
+          "name": "Быстрая Учёба",
+          "id": "quick-study",
+          "level": 4
+        },
+        {
+          "name": "Улучшенное Магическое Наставление",
+          "id": "greater-magical-edification",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "shadowdancer",
+      "name": "Танцор Теней",
+      "slug": "shadowdancer",
+      "feats": [
+        {
+          "name": "Посвящение В Танцоры Теней",
+          "id": "shadowdancer-dedication",
+          "level": 8
+        },
+        {
+          "name": "Магия Теней",
+          "id": "shadow-magic",
+          "level": 10
+        },
+        {
+          "name": "Атака Исподтишка Из Тени",
+          "id": "shadow-sneak-attack",
+          "level": 10
+        },
+        {
+          "name": "Дополнительная Магия Теней",
+          "id": "additional-shadow-magic",
+          "level": 12
+        },
+        {
+          "name": "Иллюзия Теней",
+          "id": "shadow-illusion",
+          "level": 12
+        },
+        {
+          "name": "Мощь Теней",
+          "id": "shadow-power",
+          "level": 14
+        },
+        {
+          "name": "Мастер Теней",
+          "id": "shadow-master",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "alchemist",
+      "name": "Алхимик",
+      "slug": "alchemist",
+      "feats": [
+        {
+          "name": "Посвящение в алхимики",
+          "id": "alchemist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Алхимическое ремесло",
+          "id": "alchemical-crafting",
+          "level": 1
+        },
+        {
+          "name": "Продвинутая алхимия",
+          "id": "advanced-alchemy",
+          "level": 4
+        },
+        {
+          "name": "Простые смеси",
+          "id": "basic-concoction",
+          "level": 4
+        },
+        {
+          "name": "Продвинутые смеси",
+          "id": "advanced-concoction",
+          "level": 6
+        },
+        {
+          "name": "Экспертная Алхимия",
+          "id": "expert-alchemy",
+          "level": 6
+        },
+        {
+          "name": "Объёмные пузырьки",
+          "id": "voluminous-vials",
+          "level": 6
+        },
+        {
+          "name": "Алхимическая мощь",
+          "id": "alchemical-power",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "animist",
+      "name": "Анимист",
+      "slug": "animist",
+      "feats": [
+        {
+          "name": "Посвящение в анимисты",
+          "id": "animist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания анимиста",
+          "id": "basic-animist-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Духовное пробуждение",
+          "id": "spiritual-awakening",
+          "level": 4
+        },
+        {
+          "name": "Мощь анимиста",
+          "id": "animist-s-power",
+          "level": 6
+        },
+        {
+          "name": "Магия сущности",
+          "id": "apparition-magic",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания анимиста",
+          "id": "expert-animist-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания анимиста",
+          "id": "master-animist-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "bard",
+      "name": "Бард",
+      "slug": "bard",
+      "feats": [
+        {
+          "name": "Посвящение в барды",
+          "id": "bard-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания барда",
+          "id": "basic-bard-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Простой шёпот музы",
+          "id": "basic-muse-s-whispers",
+          "level": 4
+        },
+        {
+          "name": "Продвинутый шёпот музы",
+          "id": "advanced-muse-s-whispers",
+          "level": 6
+        },
+        {
+          "name": "Контрисполнение",
+          "id": "counter-perform",
+          "level": 6
+        },
+        {
+          "name": "Вдохновляющее исполнение",
+          "id": "anthemic-performance",
+          "level": 8
+        },
+        {
+          "name": "Оккультные познания",
+          "id": "occult-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания барда",
+          "id": "expert-bard-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания барда",
+          "id": "master-bard-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "barbarian",
+      "name": "Варвар",
+      "slug": "barbarian",
+      "feats": [
+        {
+          "name": "Посвящение в варвары",
+          "id": "barbarian-dedication",
+          "level": 2
+        },
+        {
+          "name": "Варварская живучесть",
+          "id": "barbarian-resiliency",
+          "level": 4
+        },
+        {
+          "name": "Простая свирепость",
+          "id": "basic-fury",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая свирепость",
+          "id": "advanced-fury",
+          "level": 6
+        },
+        {
+          "name": "Инстинктивная способность",
+          "id": "instinct-ability",
+          "level": 6
+        },
+        {
+          "name": "Стойкость джаггернаута",
+          "id": "juggernaut-s-fortitude",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "witch",
+      "name": "Ведьма",
+      "slug": "witch",
+      "feats": [
+        {
+          "name": "Посвящение в ведьмы",
+          "id": "witch-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания ведьмы",
+          "id": "basic-witch-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Простое ведовство",
+          "id": "basic-witchcraft",
+          "level": 4
+        },
+        {
+          "name": "Продвинутое ведовство",
+          "id": "advanced-witchcraft",
+          "level": 6
+        },
+        {
+          "name": "Познания покровителя",
+          "id": "patron-s-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания ведьмы",
+          "id": "expert-witch-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания ведьмы",
+          "id": "master-witch-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "fighter",
+      "name": "Воин",
+      "slug": "fighter",
+      "feats": [
+        {
+          "name": "Посвящение в воины",
+          "id": "fighter-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простой манёвр",
+          "id": "basic-maneuver",
+          "level": 4
+        },
+        {
+          "name": "Воинская живучесть",
+          "id": "fighter-resiliency",
+          "level": 4
+        },
+        {
+          "name": "Оппортунист",
+          "id": "reactive-striker",
+          "level": 4
+        },
+        {
+          "name": "Продвинутый манёвр",
+          "id": "advanced-maneuver",
+          "level": 6
+        },
+        {
+          "name": "Разносторонний эксперт оружия",
+          "id": "diverse-weapon-expert",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "wizard",
+      "name": "Волшебник",
+      "slug": "wizard",
+      "feats": [
+        {
+          "name": "Посвящение в волшебники",
+          "id": "wizard-dedication",
+          "level": 2
+        },
+        {
+          "name": "Заклинание магической школы",
+          "id": "arcane-school-spell",
+          "level": 4
+        },
+        {
+          "name": "Простой мистицизм",
+          "id": "basic-arcana",
+          "level": 4
+        },
+        {
+          "name": "Простые заклинания волшебника",
+          "id": "basic-wizard-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Продвинутый мистицизм",
+          "id": "advanced-arcana",
+          "level": 6
+        },
+        {
+          "name": "Мистические познания",
+          "id": "arcane-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания волшебника",
+          "id": "expert-wizard-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания волшебника",
+          "id": "master-wizard-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "druid",
+      "name": "Друид",
+      "slug": "druid",
+      "feats": [
+        {
+          "name": "Посвящение в друиды",
+          "id": "druid-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания друида",
+          "id": "basic-druid-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Простая связь с природой",
+          "id": "basic-wilding",
+          "level": 4
+        },
+        {
+          "name": "Заклинание ордена",
+          "id": "order-spell",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая связь с природой",
+          "id": "advanced-wilding",
+          "level": 6
+        },
+        {
+          "name": "Первобытные познания",
+          "id": "primal-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания друида",
+          "id": "expert-druid-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания друида",
+          "id": "master-druid-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "cleric",
+      "name": "Жрец",
+      "slug": "cleric",
+      "feats": [
+        {
+          "name": "Посвящение в жрецы",
+          "id": "cleric-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания жреца",
+          "id": "basic-cleric-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Простое вероучение",
+          "id": "basic-dogma",
+          "level": 4
+        },
+        {
+          "name": "Продвинутое вероучение",
+          "id": "advanced-dogma",
+          "level": 6
+        },
+        {
+          "name": "Сакральные познания",
+          "id": "divine-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания жреца",
+          "id": "expert-cleric-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания жреца",
+          "id": "master-cleric-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "inventor",
+      "name": "Изобретатель",
+      "slug": "inventor",
+      "feats": [
+        {
+          "name": "Посвящение в изобретатели",
+          "id": "inventor-dedication",
+          "level": 2
+        },
+        {
+          "name": "Изобретатель",
+          "id": "inventor",
+          "level": 1
+        },
+        {
+          "name": "Простое открытие",
+          "id": "basic-breakthrough",
+          "level": 4
+        },
+        {
+          "name": "Гениальный ремесленник",
+          "id": "brilliant-crafter",
+          "level": 4
+        },
+        {
+          "name": "Продвинутое открытие",
+          "id": "advanced-breakthrough",
+          "level": 6
+        },
+        {
+          "name": "Взрыв",
+          "id": "explosion",
+          "level": 6
+        },
+        {
+          "name": "Простая модификация",
+          "id": "basic-modification",
+          "level": 8
+        }
+      ]
+    },
+    {
+      "id": "monk",
+      "name": "Монах",
+      "slug": "monk",
+      "feats": [
+        {
+          "name": "Посвящение в монахи",
+          "id": "monk-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые ката",
+          "id": "basic-kata",
+          "level": 4
+        },
+        {
+          "name": "Монашеская живучесть",
+          "id": "monk-resiliency",
+          "level": 4
+        },
+        {
+          "name": "Продвинутые ката",
+          "id": "advanced-kata",
+          "level": 6
+        },
+        {
+          "name": "Монашеская скорость",
+          "id": "monk-moves",
+          "level": 8
+        },
+        {
+          "name": "Град ударов",
+          "id": "monk-s-flurry",
+          "level": 10
+        },
+        {
+          "name": "Путь совершенства",
+          "id": "perfection-s-path",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "oracle",
+      "name": "Оракул",
+      "slug": "oracle",
+      "feats": [
+        {
+          "name": "Посвящение в оракулы",
+          "id": "oracle-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые тайны",
+          "id": "basic-mysteries",
+          "level": 4
+        },
+        {
+          "name": "Простые заклинания оракула",
+          "id": "basic-oracle-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Первое откровение",
+          "id": "first-revelation",
+          "level": 4
+        },
+        {
+          "name": "Продвинутые тайны",
+          "id": "advanced-mysteries",
+          "level": 6
+        },
+        {
+          "name": "Тайные познания",
+          "id": "mysterious-breadth",
+          "level": 8
+        },
+        {
+          "name": "Экспертные заклинания оракула",
+          "id": "expert-oracle-spellcasting",
+          "level": 12
+        },
+        {
+          "name": "Мастерские заклинания оракула",
+          "id": "master-oracle-spellcasting",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "rogue",
+      "name": "Плут",
+      "slug": "rogue",
+      "feats": [
+        {
+          "name": "Посвящение в плуты",
+          "id": "rogue-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые трюки",
+          "id": "basic-trickery",
+          "level": 4
+        },
+        {
+          "name": "Атакующий исподтишка",
+          "id": "sneak-attacker",
+          "level": 4
+        },
+        {
+          "name": "Продвинутые трюки",
+          "id": "advanced-trickery",
+          "level": 6
+        },
+        {
+          "name": "Мастерство навыка (плут)",
+          "id": "skill-mastery-rogue-",
+          "level": 8
+        },
+        {
+          "name": "Невероятное уклонение",
+          "id": "uncanny-dodge",
+          "level": 10
+        },
+        {
+          "name": "Увёртливость (плут)",
+          "id": "evasiveness-rogue-",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "champion",
+      "name": "Поборник",
+      "slug": "champion",
+      "feats": [
+        {
+          "name": "Посвящение в поборники",
+          "id": "champion-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простая преданность",
+          "id": "basic-devotion",
+          "level": 4
+        },
+        {
+          "name": "Живучесть поборника",
+          "id": "champion-resiliency",
+          "level": 4
+        },
+        {
+          "name": "Благочестивая магия",
+          "id": "devout-magic",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая преданность",
+          "id": "advanced-devotion",
+          "level": 6
+        },
+        {
+          "name": "Ответное действие поборника",
+          "id": "champion-s-reaction",
+          "level": 6
+        },
+        {
+          "name": "Благочестивое благословение",
+          "id": "devout-blessing",
+          "level": 6
+        }
+      ]
+    },
+    {
+      "id": "investigator",
+      "name": "Следователь",
+      "slug": "investigator",
+      "feats": [
+        {
+          "name": "Посвящение в следователи",
+          "id": "investigator-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простая дедукция",
+          "id": "basic-deduction",
+          "level": 4
+        },
+        {
+          "name": "Стратагема следователя",
+          "id": "investigator-s-stratagem",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая дедукция",
+          "id": "advanced-deduction",
+          "level": 6
+        },
+        {
+          "name": "Острая память",
+          "id": "keen-recollection",
+          "level": 6
+        },
+        {
+          "name": "Мастерство навыков",
+          "id": "skill-mastery",
+          "level": 8
+        },
+        {
+          "name": "Мастер-наблюдатель",
+          "id": "master-spotter",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "ranger",
+      "name": "Следопыт",
+      "slug": "ranger",
+      "feats": [
+        {
+          "name": "Посвящение в следопыты",
+          "id": "ranger-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простой охотничий приём",
+          "id": "basic-hunter-s-trick",
+          "level": 4
+        },
+        {
+          "name": "Живучесть следопыта",
+          "id": "ranger-resiliency",
+          "level": 4
+        },
+        {
+          "name": "Продвинутый охотничий приём",
+          "id": "advanced-hunter-s-trick",
+          "level": 6
+        },
+        {
+          "name": "Мастер зоркости",
+          "id": "master-spotter-ranger-",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "swashbuckler",
+      "name": "Сорвиголова",
+      "slug": "swashbuckler",
+      "feats": [
+        {
+          "name": "Посвящение в сорвиголовы",
+          "id": "swashbuckler-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простой талант",
+          "id": "basic-flair",
+          "level": 4
+        },
+        {
+          "name": "Точное добивание",
+          "id": "finishing-precision",
+          "level": 4
+        },
+        {
+          "name": "Продвинутый талант",
+          "id": "advanced-flair",
+          "level": 6
+        },
+        {
+          "name": "Контратака сорвиголовы",
+          "id": "swashbuckler-s-riposte",
+          "level": 6
+        },
+        {
+          "name": "Скорость сорвиголовы",
+          "id": "swashbuckler-s-speed",
+          "level": 8
+        },
+        {
+          "name": "Уклончивость",
+          "id": "evasiveness",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "gunslinger",
+      "name": "Стрелок",
+      "slug": "gunslinger",
+      "feats": [
+        {
+          "name": "Посвящение в стрелки",
+          "id": "gunslinger-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простая стрельба",
+          "id": "basic-shooting",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая стрельба",
+          "id": "advanced-shooting",
+          "level": 6
+        },
+        {
+          "name": "Готовность стрелка",
+          "id": "slinger-s-readiness",
+          "level": 6
+        },
+        {
+          "name": "Отработанная перезарядка",
+          "id": "practiced-reloads",
+          "level": 10
+        },
+        {
+          "name": "Орлиный глаз",
+          "id": "eagle-eye",
+          "level": 12
+        },
+        {
+          "name": "Посвящение в артиллеристы",
+          "id": "firearm-expert",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "id": "exemplar",
+      "name": "Экземплар",
+      "slug": "exemplar",
+      "feats": [
+        {
+          "name": "Посвящение в экземплары",
+          "id": "exemplar-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простая слава",
+          "id": "basic-glory",
+          "level": 4
+        },
+        {
+          "name": "Экземпларская живучесть",
+          "id": "exemplar-resilency",
+          "level": 4
+        },
+        {
+          "name": "Продвинутая слава",
+          "id": "advanced-glory",
+          "level": 6
+        },
+        {
+          "name": "Экземплар - эксперт",
+          "id": "exemplar-expertise",
+          "level": 10
+        },
+        {
+          "name": "Вторая икона",
+          "id": "second-ikon",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "kineticist",
+      "name": "Кинетик",
+      "slug": "kineticist",
+      "feats": [
+        {
+          "name": "Мгновение ясности",
+          "id": "moment-of-clarity",
+          "level": 2
+        },
+        {
+          "name": "Посвящение в кинетики",
+          "id": "kineticist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Улучшенный стихийный взрыв",
+          "id": "improved-elemental-blast",
+          "level": 1
+        },
+        {
+          "name": "Базовый кинез",
+          "id": "base-kinesis",
+          "level": 4
+        },
+        {
+          "name": "Прохождение через врата",
+          "id": "through-the-gate",
+          "level": 4
+        },
+        {
+          "name": "Продвинутый стихийный контроль",
+          "id": "advanced-element-control",
+          "level": 6
+        },
+        {
+          "name": "Добавление стихии",
+          "id": "add-element",
+          "level": 10
+        },
+        {
+          "name": "Экспертный кинетический контроль",
+          "id": "expert-kinetic-control",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "vindicator",
+      "name": "Воздаятель",
+      "slug": "vindicator",
+      "feats": [
+        {
+          "name": "Посвящение в воздаятели",
+          "id": "vindicator-dedication",
+          "level": 2
+        },
+        {
+          "name": "Смертоносная простота",
+          "id": "deadly-simplicity",
+          "level": 2
+        },
+        {
+          "name": "Начальное заклинание домена",
+          "id": "domain-initiate",
+          "level": 2
+        },
+        {
+          "name": "Продвинутое заклинание домена",
+          "id": "advanced-domain",
+          "level": 2
+        },
+        {
+          "name": "Продолжительное расследование",
+          "id": "ongoing-investigation",
+          "level": 4
+        },
+        {
+          "name": "Допросить 5",
+          "id": "interrogate",
+          "level": 6
+        },
+        {
+          "name": "Тщательное исследование",
+          "id": "thorough-research",
+          "level": 6
+        },
+        {
+          "name": "Заткнуть нечистивца 5",
+          "id": "silence-the-profane",
+          "level": 8
+        },
+        {
+          "name": "Посвящение в мстители",
+          "id": "avenger-dedication",
+          "level": 1
+        },
+        {
+          "name": "Приговор воздаятеля",
+          "id": "vindicator-s-judgement",
+          "level": 10
+        },
+        {
+          "name": "Объявить охоту 1",
+          "id": "call-the-hunt",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "warrior-of-legend",
+      "name": "Воитель из легенд",
+      "slug": "warrior of legend",
+      "feats": [
+        {
+          "name": "Посвящение в воины из легенд",
+          "id": "warrior-of-legend-dedication",
+          "level": 2
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 2
+        },
+        {
+          "name": "Крепкий орешек",
+          "id": "diehard",
+          "level": 2
+        },
+        {
+          "name": "Героический отпор 5",
+          "id": "heroic-defiance",
+          "level": 4
+        },
+        {
+          "name": "Расчистка пути 2",
+          "id": "clear-the-way",
+          "level": 6
+        },
+        {
+          "name": "Посвящение в Громилы",
+          "id": "mauler-dedication",
+          "level": 1
+        },
+        {
+          "name": "Пронизывающий рок 2",
+          "id": "piercing-doom",
+          "level": 8
+        },
+        {
+          "name": "Роковое копьё 1",
+          "id": "spear-of-doom",
+          "level": 10
+        },
+        {
+          "name": "Познай свою участь 5",
+          "id": "know-thy-doom",
+          "level": 12
+        },
+        {
+          "name": "Только моя судьба может забрать меня",
+          "id": "only-my-doom-may-claim-me",
+          "level": 14
+        },
+        {
+          "name": "Ошарашивающий взмах 3",
+          "id": "unbalancing-sweep",
+          "level": 14
+        },
+        {
+          "name": "Лезвие бритвы",
+          "id": "razor-s-edge",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "avenger",
+      "name": "Мститель",
+      "slug": "avenger",
+      "feats": [
+        {
+          "name": "Посвящение в мстители",
+          "id": "avenger-dedication",
+          "level": 2
+        },
+        {
+          "name": "Парный удар 1",
+          "id": "twin-takedown",
+          "level": 4
+        },
+        {
+          "name": "Парное парирование 1",
+          "id": "twin-parry",
+          "level": 6
+        },
+        {
+          "name": "Рьяная неизбежность 1",
+          "id": "zealous-inevitability",
+          "level": 6
+        },
+        {
+          "name": "Заткнуть нечистивца 5",
+          "id": "silence-the-profane",
+          "level": 8
+        },
+        {
+          "name": "Посвящение в воздаятели",
+          "id": "vindicator-dedication",
+          "level": 1
+        },
+        {
+          "name": "Тень смерти",
+          "id": "shadow-of-death",
+          "level": 10
+        },
+        {
+          "name": "Сразить 2",
+          "id": "slay",
+          "level": 12
+        },
+        {
+          "name": "Парная контратака 5",
+          "id": "twin-riposte",
+          "level": 12
+        },
+        {
+          "name": "Повторный укол 1",
+          "id": "second-sting",
+          "level": 14
+        },
+        {
+          "name": "Улучшенная парная контратака (Воин)",
+          "id": "improved-twin-riposte-fighter-",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "id": "bloodrager",
+      "name": "Наследник ярости",
+      "slug": "bloodrager",
+      "feats": [
+        {
+          "name": "Посвящение в наследники ярости",
+          "id": "bloodrager-dedication",
+          "level": 2
+        },
+        {
+          "name": "Кровь взывает к крови 5",
+          "id": "blood-calls-blood",
+          "level": 4
+        },
+        {
+          "name": "Восходящая магия крови",
+          "id": "rising-blood-magic",
+          "level": 4
+        },
+        {
+          "name": "Раздвоенный выстрел 1",
+          "id": "split-shot",
+          "level": 4
+        },
+        {
+          "name": "Вытягивание магии 1",
+          "id": "siphon-magic",
+          "level": 6
+        },
+        {
+          "name": "Зачарование ударов 4",
+          "id": "bespell-strikes",
+          "level": 8
+        },
+        {
+          "name": "Испивающий заклинания 1",
+          "id": "spelldrinker",
+          "level": 8
+        },
+        {
+          "name": "Бушующая магия крови",
+          "id": "surging-blood-magic",
+          "level": 1
+        },
+        {
+          "name": "Торжествующая магия крови",
+          "id": "exultant-blood-magic",
+          "level": 1
+        },
+        {
+          "name": "Кровавая баня",
+          "id": "hematocritical",
+          "level": 10
+        },
+        {
+          "name": "Энергетический оберег 4",
+          "id": "energy-ward",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "battle-harbinger",
+      "name": "Предвестник битвы",
+      "slug": "battle harbinger",
+      "feats": [
+        {
+          "name": "Посвящение в предвестники битвы",
+          "id": "battle-harbinger-dedication",
+          "level": 2
+        },
+        {
+          "name": "Смертоносная простота",
+          "id": "deadly-simplicity",
+          "level": 2
+        },
+        {
+          "name": "Внеочередную атака",
+          "id": "reactive-strike",
+          "level": 2
+        },
+        {
+          "name": "Живучесть",
+          "id": "toughness",
+          "level": 1
+        },
+        {
+          "name": "Сокрушительный удар 2",
+          "id": "vicious-swing",
+          "level": 2
+        },
+        {
+          "name": "Усиление ауры",
+          "id": "aura-enhancement",
+          "level": 4
+        },
+        {
+          "name": "Устрашающий удар 2",
+          "id": "intimidating-strike",
+          "level": 4
+        },
+        {
+          "name": "Натиск в тандеме",
+          "id": "tandem-onslaught",
+          "level": 4
+        },
+        {
+          "name": "Зачарование ударов 4",
+          "id": "bespell-strikes",
+          "level": 6
+        },
+        {
+          "name": "Заставляющая аура",
+          "id": "exigent-aura",
+          "level": 6
+        },
+        {
+          "name": "Защита предвестника",
+          "id": "harbinger-s-protection",
+          "level": 6
+        },
+        {
+          "name": "Магия вероучения",
+          "id": "creed-magic",
+          "level": 8
+        },
+        {
+          "name": "Вооружение предвестника",
+          "id": "harbinger-s-armament",
+          "level": 8
+        },
+        {
+          "name": "Мощный натиск 5",
+          "id": "empowered-onslaught",
+          "level": 12
+        },
+        {
+          "name": "Тандем аур",
+          "id": "tandem-auras",
+          "level": 12
+        },
+        {
+          "name": "Эксперт аур 4",
+          "id": "aura-expertise",
+          "level": 16
+        },
+        {
+          "name": "Улучшенное вооружение",
+          "id": "greater-armament",
+          "level": 16
+        },
+        {
+          "name": "Жизнь согласно вероучению 1",
+          "id": "live-the-creed",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "seneschal-witch",
+      "name": "Сенешаль",
+      "slug": "seneschal witch",
+      "feats": [
+        {
+          "name": "Посвящение ведьмы-сенешаля",
+          "id": "seneschal-witch-dedication",
+          "level": 2
+        },
+        {
+          "name": "Протеже ведьмы",
+          "id": "witch-s-charge",
+          "level": 1
+        },
+        {
+          "name": "фамильяра",
+          "id": "familiar",
+          "level": 1
+        },
+        {
+          "name": "Морок покровителя",
+          "id": "patron-s-glamour",
+          "level": 4
+        },
+        {
+          "name": "Заклинание сенешаля 1",
+          "id": "seneschal-spell",
+          "level": 4
+        },
+        {
+          "name": "Многогранная воля",
+          "id": "multifaceted-will",
+          "level": 6
+        },
+        {
+          "name": "Духовная тайна 4",
+          "id": "spiritual-secret",
+          "level": 6
+        },
+        {
+          "name": "Смотрящий на стене 2",
+          "id": "watcher-on-the-wall",
+          "level": 8
+        },
+        {
+          "name": "Мученик 1",
+          "id": "martyr",
+          "level": 10
+        },
+        {
+          "name": "Шёпот покровителя",
+          "id": "patron-s-whisper",
+          "level": 10
+        },
+        {
+          "name": "Нестабильное покровительство",
+          "id": "unstable-patronage",
+          "level": 14
+        },
+        {
+          "name": "Ясное предостережение 5",
+          "id": "premonition-of-clarity",
+          "level": 16
+        },
+        {
+          "name": "Неосквернимость",
+          "id": "inviolable",
+          "level": 18
+        },
+        {
+          "name": "Возрождённый покровитель",
+          "id": "patron-reborn",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "spellshot",
+      "name": "Стрелок-заклинатель",
+      "slug": "spellshot",
+      "feats": [
+        {
+          "name": "Зачарованный выстрел",
+          "id": "spell-woven-shot",
+          "level": 4
+        },
+        {
+          "name": "Посвящение в стрелков-заклинателей",
+          "id": "spellshot-dedication",
+          "level": 2
+        },
+        {
+          "name": "Простые заклинания волшебника",
+          "id": "basic-wizard-spellcasting",
+          "level": 1
+        },
+        {
+          "name": "посвящение в звериные стрелки",
+          "id": "beast-gunner-dedication",
+          "level": 1
+        },
+        {
+          "name": "Гремучий выстрел 1",
+          "id": "fulminating-shot",
+          "level": 6
+        },
+        {
+          "name": "Призыв оружия",
+          "id": "call-gun",
+          "level": 8
+        },
+        {
+          "name": "Фазовая пуля 1",
+          "id": "phase-bullet",
+          "level": 14
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Пороховое воплощение 2",
+          "id": "black-powder-embodiment",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "palatine-detective",
+      "name": "Сыщик Княжьего Ока",
+      "slug": "palatine detective",
+      "feats": [
+        {
+          "name": "Посвящение в Сыщики Княжьего Ока",
+          "id": "palatine-detective-dedication",
+          "level": 2
+        },
+        {
+          "name": "Эзотерическое сотворение заклинаний",
+          "id": "esoteric-spellcasting",
+          "level": 4
+        },
+        {
+          "name": "Расшифровщик текстов",
+          "id": "text-decoder",
+          "level": 4
+        },
+        {
+          "name": "Княжье очарование",
+          "id": "palatine-enchantment",
+          "level": 6
+        },
+        {
+          "name": "Внутренний вызов 5",
+          "id": "challenge-insight",
+          "level": 8
+        },
+        {
+          "name": "Княжий удар",
+          "id": "palatine-strike",
+          "level": 8
+        },
+        {
+          "name": "Разрушитель проклятий",
+          "id": "cursebreaker",
+          "level": 10
+        },
+        {
+          "name": "Открыть пылающее око 2",
+          "id": "open-the-blazing-eye",
+          "level": 10
+        },
+        {
+          "name": "Улучшенное эзотерическое сотворение заклинаний",
+          "id": "greater-esoteric-spellcasting",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "id": "elementalist",
+      "name": "Элементалист",
+      "slug": "elementalist",
+      "feats": [
+        {
+          "name": "Резонирующее заклинание",
+          "id": "reverberating-spell",
+          "level": 2
+        },
+        {
+          "name": "Посвящение в элементалисты",
+          "id": "elementalist-dedication",
+          "level": 2
+        },
+        {
+          "name": "Гасящее заклинание 1",
+          "id": "dousing-spell",
+          "level": 4
+        },
+        {
+          "name": "Стихийный фамильяр",
+          "id": "elemental-familiar",
+          "level": 4
+        },
+        {
+          "name": "Пылающее заклинание 1",
+          "id": "burning-spell",
+          "level": 6
+        },
+        {
+          "name": "Текучее заклинание 1",
+          "id": "current-spell",
+          "level": 6
+        },
+        {
+          "name": "Невероятный Фамильяр",
+          "id": "incredible-familiar",
+          "level": 1
+        },
+        {
+          "name": "Невероятный Фамильяр (Хозяин Фамильяра)",
+          "id": "incredible-familiar-familiar-master-",
+          "level": 1
+        },
+        {
+          "name": "Расширенная стихийная магия",
+          "id": "expanded-elemental-magic",
+          "level": 6
+        },
+        {
+          "name": "Метаболизм стихии 5",
+          "id": "metabolize-element",
+          "level": 8
+        },
+        {
+          "name": "Растущее заклинание 1",
+          "id": "growth-spell",
+          "level": 10
+        },
+        {
+          "name": "Обваливающее заклинание 1",
+          "id": "rockslide-spell",
+          "level": 10
+        },
+        {
+          "name": "Перенаправление стихий 5",
+          "id": "redirect-elements",
+          "level": 12
+        },
+        {
+          "name": "Ветром гонимое заклинание 1",
+          "id": "wind-tossed-spell",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "id": "apocalypse-rider",
+      "name": "Апокалиптический всадник",
+      "slug": "apocalypse rider",
+      "feats": [
+        {
+          "name": "Посвящение в апокалиптические всадники",
+          "id": "apocalypse-rider-dedication",
+          "level": 12
+        },
+        {
+          "name": "Вот конь бледный",
+          "id": "behold-a-pale-horse",
+          "level": 14
+        },
+        {
+          "name": "История насилия 2",
+          "id": "history-of-violence",
+          "level": 14
+        },
+        {
+          "name": "Турнирный скакун",
+          "id": "jousting-mount",
+          "level": 14
+        },
+        {
+          "name": "Один против толпы",
+          "id": "one-among-the-masses",
+          "level": 14
+        },
+        {
+          "name": "Гниение 2",
+          "id": "putrefaction",
+          "level": 14
+        },
+        {
+          "name": "Ночной кошмар",
+          "id": "night-terror",
+          "level": 16
+        },
+        {
+          "name": "Украсть смерть 5",
+          "id": "steal-death",
+          "level": 16
+        },
+        {
+          "name": "В битву! 3",
+          "id": "to-war-",
+          "level": 16
+        },
+        {
+          "name": "Заразный удар 1",
+          "id": "virulent-strike",
+          "level": 16
+        },
+        {
+          "name": "Исчахни 2",
+          "id": "wither-away",
+          "level": 16
+        },
+        {
+          "name": "Заразное заклинание 1",
+          "id": "contagious-spell",
+          "level": 18
+        },
+        {
+          "name": "Бессмертный служитель",
+          "id": "deathless-servant",
+          "level": 18
+        },
+        {
+          "name": "Воспоминание небытия 2",
+          "id": "memory-of-nothing",
+          "level": 18
+        },
+        {
+          "name": "Скакун вмещающий душу",
+          "id": "soul-vessel-mount",
+          "level": 18
+        },
+        {
+          "name": "Бессмертная погибель",
+          "id": "immortal-ruin",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "archfiend",
+      "name": "Архибестия",
+      "slug": "archfiend",
+      "feats": [
+        {
+          "name": "Посвящение в архибестии",
+          "id": "archfiend-dedication",
+          "level": 12
+        },
+        {
+          "name": "Обреcти пыл 1",
+          "id": "don-thy-fervor",
+          "level": 14
+        },
+        {
+          "name": "Владыка бестий 2",
+          "id": "lord-of-the-fiends",
+          "level": 14
+        },
+        {
+          "name": "Управление владениями",
+          "id": "manipulate-realm",
+          "level": 14
+        },
+        {
+          "name": "Мобилизация бестий",
+          "id": "marshall-fiendish-forces",
+          "level": 16
+        },
+        {
+          "name": "Перемещение через владение",
+          "id": "realm-strider",
+          "level": 16
+        },
+        {
+          "name": "Обитель силы",
+          "id": "seat-of-power",
+          "level": 16
+        },
+        {
+          "name": "Демонстрация власти 2",
+          "id": "brandish-authority",
+          "level": 18
+        },
+        {
+          "name": "Заточить врага 1",
+          "id": "imprison-foe",
+          "level": 18
+        },
+        {
+          "name": "Нечестивая сделка 2",
+          "id": "profane-bargain",
+          "level": 18
+        },
+        {
+          "name": "Вечная бестия",
+          "id": "fiend-eternal",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "godling",
+      "name": "Богоподобный",
+      "slug": "godling",
+      "feats": [
+        {
+          "name": "Посвящение в богоподобные",
+          "id": "godling-dedication",
+          "level": 12
+        },
+        {
+          "name": "Притязание на основные домены",
+          "id": "claim-cardinal-domains",
+          "level": 14
+        },
+        {
+          "name": "Божественная неуязвимость 1",
+          "id": "divine-invulnerability",
+          "level": 14
+        },
+        {
+          "name": "Восприятие молитв",
+          "id": "receive-prayers",
+          "level": 14
+        },
+        {
+          "name": "Искупление грехов 2",
+          "id": "absolve-sins",
+          "level": 16
+        },
+        {
+          "name": "Источник жизни и смерти",
+          "id": "font-of-life-or-death",
+          "level": 16
+        },
+        {
+          "name": "Облечь поборника",
+          "id": "gird-champion",
+          "level": 16
+        },
+        {
+          "name": "Свершить гневный суд 1",
+          "id": "pass-vengeful-judgement",
+          "level": 18
+        },
+        {
+          "name": "Освящённая реликвия",
+          "id": "sanctified-relic",
+          "level": 18
+        },
+        {
+          "name": "Противление богам 2",
+          "id": "stymie-the-gods",
+          "level": 18
+        },
+        {
+          "name": "Принятие божественности",
+          "id": "assume-godhood",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "eternal-legend",
+      "name": "Вечная легенда",
+      "slug": "eternal legend",
+      "feats": [
+        {
+          "name": "Посвящение в вечные легенды",
+          "id": "eternal-legend-dedication",
+          "level": 12
+        },
+        {
+          "name": "Сокрушительное отталкивание 1",
+          "id": "demolishing-knockback",
+          "level": 14
+        },
+        {
+          "name": "Удар от земли до небес 2",
+          "id": "earth-to-heavens-strike",
+          "level": 14
+        },
+        {
+          "name": "Безупречная защита 5",
+          "id": "fautless-defense",
+          "level": 14
+        },
+        {
+          "name": "Непоколебимый объект 1",
+          "id": "immovable-object",
+          "level": 14
+        },
+        {
+          "name": "Расталкивающий клич 3",
+          "id": "scattering-shout",
+          "level": 14
+        },
+        {
+          "name": "Смерть с небес 2",
+          "id": "death-from-above",
+          "level": 16
+        },
+        {
+          "name": "Удар прыгающего ежа 2",
+          "id": "leaping-hedgehog-strike",
+          "level": 16
+        },
+        {
+          "name": "Пронзить глаз 2",
+          "id": "pierce-the-eye",
+          "level": 16
+        },
+        {
+          "name": "Устрашающий лик",
+          "id": "terrifying-mien",
+          "level": 16
+        },
+        {
+          "name": "Плетение 3",
+          "id": "weft-and-warp",
+          "level": 16
+        },
+        {
+          "name": "Подавляющее величие 3",
+          "id": "exaltation-overwhelming",
+          "level": 18
+        },
+        {
+          "name": "Легенда битвы 1",
+          "id": "legend-of-combat",
+          "level": 18
+        },
+        {
+          "name": "Мифическое привычное оружие",
+          "id": "mythic-weapon-specialization",
+          "level": 18
+        },
+        {
+          "name": "Неостановимая сила",
+          "id": "unstoppable-force",
+          "level": 18
+        },
+        {
+          "name": "Сражение с забвением",
+          "id": "fight-through-oblivion",
+          "level": 20
+        },
+        {
+          "name": "Оборви их историю! 2",
+          "id": "finish-their-story-",
+          "level": 20
+        },
+        {
+          "name": "Живой эпос",
+          "id": "living-epic",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "beast-lord",
+      "name": "Владыка зверей",
+      "slug": "beast lord",
+      "feats": [
+        {
+          "name": "Посвящение во владыки зверей",
+          "id": "beast-lord-dedication",
+          "level": 12
+        },
+        {
+          "name": "Избранный подопечный",
+          "id": "chosen-ward",
+          "level": 14
+        },
+        {
+          "name": "Защитить наше единство",
+          "id": "defend-our-union",
+          "level": 1
+        },
+        {
+          "name": "Охраняемая территория",
+          "id": "guarded-domain",
+          "level": 14
+        },
+        {
+          "name": "Мы едины",
+          "id": "we-are-one",
+          "level": 14
+        },
+        {
+          "name": "От нас не скрыться 1",
+          "id": "you-can-t-hide-from-us",
+          "level": 14
+        },
+        {
+          "name": "Отшвырнуть 2",
+          "id": "bat-around",
+          "level": 16
+        },
+        {
+          "name": "Телепатическая связь",
+          "id": "telepathic-union",
+          "level": 16
+        },
+        {
+          "name": "Стойка единения 1",
+          "id": "unified-stance",
+          "level": 16
+        },
+        {
+          "name": "Существо из мифов",
+          "id": "creature-of-myth",
+          "level": 18
+        },
+        {
+          "name": "Стая владыки зверей 3",
+          "id": "pack-of-the-beast-lord",
+          "level": 18
+        },
+        {
+          "name": "Одна жизнь в двух телах",
+          "id": "one-life-two-vessels",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "ascended-celestial",
+      "name": "Вознесшийся небожитель",
+      "slug": "ascended celestial",
+      "feats": [
+        {
+          "name": "Посвящение в вознесшиеся небожители",
+          "id": "ascended-celestial-dedication",
+          "level": 12
+        },
+        {
+          "name": "Эгида для невинных 1",
+          "id": "aegis-for-the-innocent",
+          "level": 14
+        },
+        {
+          "name": "Вознесение",
+          "id": "ascend",
+          "level": 14
+        },
+        {
+          "name": "Проведение божественной искры 1",
+          "id": "channel-divine-spark",
+          "level": 14
+        },
+        {
+          "name": "Совет небесного наставника",
+          "id": "consult-celestial-advisor",
+          "level": 14
+        },
+        {
+          "name": "Тысяча криков о помощи",
+          "id": "a-thousand-cries-for-help",
+          "level": 16
+        },
+        {
+          "name": "Отречение от вреда 5",
+          "id": "abjure-harm",
+          "level": 16
+        },
+        {
+          "name": "Оружие небожителя",
+          "id": "celestial-armaments",
+          "level": 16
+        },
+        {
+          "name": "Очищающее заклинание 1",
+          "id": "cleansing-spell",
+          "level": 16
+        },
+        {
+          "name": "Армия из одного 2",
+          "id": "army-of-one",
+          "level": 18
+        },
+        {
+          "name": "Незамутнённый взор",
+          "id": "eyes-unclouded",
+          "level": 18
+        },
+        {
+          "name": "Карающая искра",
+          "id": "scouring-spark",
+          "level": 18
+        },
+        {
+          "name": "Сияющая слава 2",
+          "id": "shining-glory",
+          "level": 18
+        },
+        {
+          "name": "Перерождение небожителя",
+          "id": "celestial-rebirth",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "wildspell",
+      "name": "Дикий заклинатель",
+      "slug": "wildspell",
+      "feats": [
+        {
+          "name": "Посвящение в дикие заклинатели",
+          "id": "wildspell-dedication",
+          "level": 12
+        },
+        {
+          "name": "Опаляющий прилив 5",
+          "id": "burning-surge",
+          "level": 14
+        },
+        {
+          "name": "Расширенный прилив 1",
+          "id": "extend-surge",
+          "level": 14
+        },
+        {
+          "name": "Укрепляющий прилив 1",
+          "id": "invigorating-surge",
+          "level": 14
+        },
+        {
+          "name": "Мифическое повышение 1",
+          "id": "mythic-heightening",
+          "level": 14
+        },
+        {
+          "name": "Сеть заклинаний 4",
+          "id": "spell-network",
+          "level": 14
+        },
+        {
+          "name": "Вселить заклинание 4",
+          "id": "imbue-spell",
+          "level": 16
+        },
+        {
+          "name": "Мистическое сияние 1",
+          "id": "mystical-flare",
+          "level": 16
+        },
+        {
+          "name": "Быстрое переключение 4",
+          "id": "rapid-switch",
+          "level": 16
+        },
+        {
+          "name": "Передача заряда 1",
+          "id": "recharging-transference",
+          "level": 16
+        },
+        {
+          "name": "Оглушительный прилив 1",
+          "id": "thundering-surge",
+          "level": 16
+        },
+        {
+          "name": "Гальванизировать заклинание 4",
+          "id": "galvanize-spell",
+          "level": 18
+        },
+        {
+          "name": "Детонация маны",
+          "id": "mana-detonation",
+          "level": 18
+        },
+        {
+          "name": "Мифическое контрзаклинание",
+          "id": "mythic-counter",
+          "level": 18
+        },
+        {
+          "name": "Мистическая жизненная сила",
+          "id": "mystic-life-force",
+          "level": 20
+        },
+        {
+          "name": "Приливные помехи 5",
+          "id": "surging-interference",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "prophesied-monarch",
+      "name": "Предначертанный монарх",
+      "slug": "prophesied monarch",
+      "feats": [
+        {
+          "name": "Посвящение в предначертанные монархи",
+          "id": "prophesied-monarch-dedication",
+          "level": 12
+        },
+        {
+          "name": "Цветение здоровья 1",
+          "id": "bloom-of-health",
+          "level": 14
+        },
+        {
+          "name": "Распоряжение об изгнании 1",
+          "id": "decree-of-banisment",
+          "level": 14
+        },
+        {
+          "name": "Распоряжение о процветании 1",
+          "id": "decree-of-prosperity",
+          "level": 14
+        },
+        {
+          "name": "Мощь государства 2",
+          "id": "might-of-the-realm",
+          "level": 14
+        },
+        {
+          "name": "Преклонись перед законным наследником 2",
+          "id": "kneel-before-the-rightful-heir",
+          "level": 16
+        },
+        {
+          "name": "Мое королевство, моя кровь 2",
+          "id": "my-kingdom-my-blood",
+          "level": 16
+        },
+        {
+          "name": "Благородная жертва 5",
+          "id": "noble-sacrifice",
+          "level": 16
+        },
+        {
+          "name": "Блок щитом",
+          "id": "shield-block",
+          "level": 1
+        },
+        {
+          "name": "Защита королевской крови 1",
+          "id": "protect-the-royal-line",
+          "level": 16
+        },
+        {
+          "name": "Распоряжение о казни 3",
+          "id": "decree-of-execution",
+          "level": 18
+        },
+        {
+          "name": "Распоряжение о войне 3",
+          "id": "decree-of-war",
+          "level": 18
+        },
+        {
+          "name": "Роковая дуэль 1",
+          "id": "fated-duel",
+          "level": 18
+        },
+        {
+          "name": "Клинок государя 2",
+          "id": "sovereign-s-blade",
+          "level": 18
+        },
+        {
+          "name": "Наследие монархов",
+          "id": "legacy-of-monarchs",
+          "level": 20
+        },
+        {
+          "name": "Былой и грядущий",
+          "id": "once-and-future",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "broken-chain",
+      "name": "Разбивающий цепи",
+      "slug": "broken chain",
+      "feats": [
+        {
+          "name": "Посвящение в разбивающие цепи",
+          "id": "broken-chain-dedication",
+          "level": 12
+        },
+        {
+          "name": "Тактика ячеек",
+          "id": "bloc-tactics",
+          "level": 14
+        },
+        {
+          "name": "Разорвать цикл",
+          "id": "break-the-cycle",
+          "level": 14
+        },
+        {
+          "name": "Легендарные переговоры",
+          "id": "legendary-negotiation",
+          "level": 1
+        },
+        {
+          "name": "Освободи меня! 1",
+          "id": "release-me-",
+          "level": 14
+        },
+        {
+          "name": "Обряды освобождения",
+          "id": "rites-of-liberation",
+          "level": 14
+        },
+        {
+          "name": "Единый фронт",
+          "id": "united-front",
+          "level": 14
+        },
+        {
+          "name": "Вы не сможете нас удержать 3",
+          "id": "you-can-t-keep-us-down",
+          "level": 14
+        },
+        {
+          "name": "Вовлечь в дело 2",
+          "id": "bring-into-the-fold",
+          "level": 16
+        },
+        {
+          "name": "Клич восстания 3",
+          "id": "cry-of-rebellion",
+          "level": 16
+        },
+        {
+          "name": "Сбрось свои оковы 5",
+          "id": "lose-your-chains",
+          "level": 16
+        },
+        {
+          "name": "Запомни их имена 2",
+          "id": "remember-thy-names",
+          "level": 16
+        },
+        {
+          "name": "Не склоняй голову 1",
+          "id": "stand-firm",
+          "level": 16
+        },
+        {
+          "name": "Свобода или смерть 2",
+          "id": "liberty-or-death",
+          "level": 18
+        },
+        {
+          "name": "Мятежное существование",
+          "id": "rebellious-existence",
+          "level": 18
+        },
+        {
+          "name": "Возмездие павших",
+          "id": "reprisal-of-the-fallen",
+          "level": 18
+        },
+        {
+          "name": "Разорвать цепь событий 3",
+          "id": "break-the-causal-chain",
+          "level": 20
+        },
+        {
+          "name": "Ты не можешь убить идею",
+          "id": "you-can-t-kill-an-idea",
+          "level": 20
+        }
+      ]
+    }
+  ]
+}

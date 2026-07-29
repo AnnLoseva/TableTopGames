@@ -1,0 +1,1494 @@
+{
+  "schemaVersion": 1,
+  "id": "traits",
+  "title": "Pathfinder 2 Traits",
+  "version": "2026-07",
+  "source": "Compiled from Rules/*.json",
+  "license": null,
+  "entries": [
+    {
+      "id": "aberration",
+      "name": "Aberration",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "aeon",
+      "name": "Aeon",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "air",
+      "name": "Air",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "aiuvarin",
+      "name": "Aiuvarin",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "amphibious",
+      "name": "Amphibious",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "anadi",
+      "name": "Anadi",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "android",
+      "name": "Android",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "aquatic",
+      "name": "Aquatic",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "ardande",
+      "name": "Ardande",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "artifact",
+      "name": "Artifact",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "athamaru",
+      "name": "Athamaru",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "automaton",
+      "name": "Automaton",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "awakenedanimal",
+      "name": "AwakenedAnimal",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "azarketi",
+      "name": "Azarketi",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "beast",
+      "name": "Beast",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "beastkin",
+      "name": "Beastkin",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "catfolk",
+      "name": "Catfolk",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "centaur",
+      "name": "Centaur",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "changeling",
+      "name": "Changeling",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "conrasu",
+      "name": "Conrasu",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "construct",
+      "name": "Construct",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "cursed",
+      "name": "Cursed",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "dedication",
+      "name": "Dedication",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/feats"
+    },
+    {
+      "id": "dhampir",
+      "name": "Dhampir",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "dragon",
+      "name": "Dragon",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "dragonblood",
+      "name": "Dragonblood",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "dragonet",
+      "name": "Dragonet",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "dromaar",
+      "name": "Dromaar",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "duskwalker",
+      "name": "Duskwalker",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "dwarf",
+      "name": "Dwarf",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "earth",
+      "name": "Earth",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "elf",
+      "name": "Elf",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "eternal-legend",
+      "name": "Eternal Legend",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/feats"
+    },
+    {
+      "id": "fetchling",
+      "name": "Fetchling",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "fey",
+      "name": "Fey",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "fire",
+      "name": "Fire",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "fleshwarp",
+      "name": "Fleshwarp",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "general",
+      "name": "General",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/feats"
+    },
+    {
+      "id": "geniekin",
+      "name": "Geniekin",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "ghoran",
+      "name": "Ghoran",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "giant",
+      "name": "Giant",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "gnome",
+      "name": "Gnome",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "goblin",
+      "name": "Goblin",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "goloma",
+      "name": "Goloma",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "halfling",
+      "name": "Halfling",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "hobgoblin",
+      "name": "Hobgoblin",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "human",
+      "name": "Human",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "humanoid",
+      "name": "Humanoid",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "hungerseed",
+      "name": "Hungerseed",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "ifrit",
+      "name": "Ifrit",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "incarnate",
+      "name": "Incarnate",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "insect",
+      "name": "Insect",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "jotunborn",
+      "name": "Jotunborn",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "kashrishi",
+      "name": "Kashrishi",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "kholo",
+      "name": "Kholo",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "kitsune",
+      "name": "Kitsune",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "kobold",
+      "name": "Kobold",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "legacy",
+      "name": "Legacy",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "leshy",
+      "name": "Leshy",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "lizardfolk",
+      "name": "Lizardfolk",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "merfolk",
+      "name": "Merfolk",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "metal",
+      "name": "Metal",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "minotaur",
+      "name": "Minotaur",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "mythic",
+      "name": "Mythic",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/feats"
+    },
+    {
+      "id": "nagaji",
+      "name": "Nagaji",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "nephilim",
+      "name": "Nephilim",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "oni",
+      "name": "Oni",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "orc",
+      "name": "Orc",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "oread",
+      "name": "Oread",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "plant",
+      "name": "Plant",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "poppet",
+      "name": "Poppet",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "ratfolk",
+      "name": "Ratfolk",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "reflection",
+      "name": "Reflection",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "samsaran",
+      "name": "Samsaran",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "sarangay",
+      "name": "Sarangay",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "shadow",
+      "name": "Shadow",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "shapechanger",
+      "name": "Shapechanger",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "shisk",
+      "name": "Shisk",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "shoony",
+      "name": "Shoony",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "skill",
+      "name": "Skill",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/feats"
+    },
+    {
+      "id": "sprite",
+      "name": "Sprite",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "strix",
+      "name": "Strix",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "suli",
+      "name": "Suli",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "surki",
+      "name": "Surki",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "sylph",
+      "name": "Sylph",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "talos",
+      "name": "Talos",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "tanuki",
+      "name": "Tanuki",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "tengu",
+      "name": "Tengu",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "trait-253-артефакт",
+      "name": "[[trait/253|артефакт]",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "tripkee",
+      "name": "Tripkee",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "uncommon",
+      "name": "Uncommon",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "undead",
+      "name": "Undead",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "undine",
+      "name": "Undine",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "vanara",
+      "name": "Vanara",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "vishkanya",
+      "name": "Vishkanya",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "wayang",
+      "name": "Wayang",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "yaksha",
+      "name": "Yaksha",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "yaoguai",
+      "name": "Yaoguai",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/ancestries"
+    },
+    {
+      "id": "анимист",
+      "name": "Анимист",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "артефакт",
+      "name": "Артефакт",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "архетип",
+      "name": "Архетип",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "атака",
+      "name": "Атака",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "аура",
+      "name": "Аура",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "бард",
+      "name": "Бард",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "болезнь",
+      "name": "Болезнь",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "ведьма",
+      "name": "Ведьма",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "вода",
+      "name": "Вода",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "воздух",
+      "name": "Воздух",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "волшебник",
+      "name": "Волшебник",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "воплощение",
+      "name": "Воплощение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "вселение",
+      "name": "Вселение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "гриб",
+      "name": "Гриб",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "движение",
+      "name": "Движение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "дерево",
+      "name": "Дерево",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "добро",
+      "name": "Добро",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "друид",
+      "name": "Друид",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "дух",
+      "name": "Дух",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "жизнь",
+      "name": "Жизнь",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "жрец",
+      "name": "Жрец",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "звук",
+      "name": "Звук",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "земля",
+      "name": "Земля",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "зло",
+      "name": "Зло",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "зрение",
+      "name": "Зрение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "иллюзия",
+      "name": "Иллюзия",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "исследование",
+      "name": "Исследование",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "исцеление",
+      "name": "Исцеление",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "кислота",
+      "name": "Кислота",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "колдун",
+      "name": "Колдун",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "композиция",
+      "name": "Композиция",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "концентрация",
+      "name": "Концентрация",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "литания",
+      "name": "Литания",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "магический",
+      "name": "Магический",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "манипуляция",
+      "name": "Манипуляция",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "межпространственный",
+      "name": "Межпространственный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "ментальный",
+      "name": "Ментальный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "метал",
+      "name": "Метал",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "металл",
+      "name": "Металл",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "метамагия",
+      "name": "Метамагия",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "метаморфоза",
+      "name": "Метаморфоза",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "мистический",
+      "name": "мистический",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "мифический",
+      "name": "Мифический",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "монах",
+      "name": "Монах",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "наговор",
+      "name": "Наговор",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "напористое",
+      "name": "Напористое",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "настроенность",
+      "name": "Настроенность",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "негативный",
+      "name": "негативный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "незаметное",
+      "name": "Незаметное",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "некромантия",
+      "name": "Некромантия",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "непредвиденные",
+      "name": "непредвиденные",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "несмертельное",
+      "name": "Несмертельное",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "неудача",
+      "name": "Неудача",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "нечестивый",
+      "name": "Нечестивый",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "обнаружение",
+      "name": "обнаружение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "обоняние",
+      "name": "Обоняние",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "обстоятельства",
+      "name": "обстоятельства",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "огонь",
+      "name": "Огонь",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "оккультный",
+      "name": "Оккультный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "оковы",
+      "name": "оковы",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "оракул",
+      "name": "Оракул",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "освящение",
+      "name": "Освящение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "освященный",
+      "name": "Освященный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "очарование",
+      "name": "Очарование",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "первобытный",
+      "name": "Первобытный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "поборник",
+      "name": "Поборник",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "позитивный",
+      "name": "Позитивный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "полиморф",
+      "name": "Полиморф",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "превращение",
+      "name": "превращение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "преграждение",
+      "name": "преграждение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "предсказание",
+      "name": "Предсказание",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "призыв",
+      "name": "Призыв",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "проклятие",
+      "name": "Проклятие",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "проклятия",
+      "name": "проклятия",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "проклятый",
+      "name": "Проклятый",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "прорицание",
+      "name": "Прорицание",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "пустота",
+      "name": "Пустота",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "разоблачение",
+      "name": "Разоблачение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "разумный",
+      "name": "Разумный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "растение",
+      "name": "Растение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "редкий",
+      "name": "Редкий",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "сакральный",
+      "name": "Сакральный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "свет",
+      "name": "Свет",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "священный",
+      "name": "Священный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "сила",
+      "name": "Сила",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "следопыт",
+      "name": "Следопыт",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "слух",
+      "name": "Слух",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "смерть",
+      "name": "Смерть",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "сон",
+      "name": "Сон",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "стойка",
+      "name": "Стойка",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "строение",
+      "name": "Строение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "тайновидение",
+      "name": "Тайновидение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "телепортация",
+      "name": "Телепортация",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "тень",
+      "name": "Тень",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "тьма",
+      "name": "Тьма",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "удача",
+      "name": "удача",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "ужас",
+      "name": "Ужас",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "уникальный",
+      "name": "Уникальный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "усилие",
+      "name": "Усилие",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "устранение",
+      "name": "Устранение",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "фокальное",
+      "name": "Фокальное",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "фокальный",
+      "name": "Фокальный",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "фокус",
+      "name": "фокус",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "хаос",
+      "name": "Хаос",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "холод",
+      "name": "холод",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "чародей",
+      "name": "Чародей",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "эвокация",
+      "name": "Эвокация",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/artifacts"
+    },
+    {
+      "id": "электричество",
+      "name": "Электричество",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "эмоции",
+      "name": "эмоции",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "яд",
+      "name": "Яд",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    },
+    {
+      "id": "язык",
+      "name": "Язык",
+      "description": "",
+      "category": "general",
+      "sourceBook": "https://pf2.ru/spells"
+    }
+  ]
+}

@@ -217,3 +217,25 @@ export function uniqueSorted(values: Array<string | null | undefined>) {
   return Array.from(new Set(values.filter((value): value is string => Boolean(value))))
     .sort((left, right) => left.localeCompare(right, 'ru'))
 }
+
+type Pathfinder2AttributeFilterItem =
+  | Pathfinder2AncestryRule
+  | Pathfinder2BackgroundRule
+  | Pathfinder2ClassRule
+
+export function getAttributeFilterValues(
+  item: Pathfinder2AttributeFilterItem,
+): Pathfinder2AttributeKey[] {
+  if ('keyAbilities' in item) return item.keyAbilities
+  if ('abilityBoostOptions' in item) return item.abilityBoostOptions
+  return item.abilityBoosts.filter(
+    (value): value is Pathfinder2AttributeKey => value in ATTRIBUTE_LABELS,
+  )
+}
+
+export function matchesAttributeFilter(
+  item: Pathfinder2AttributeFilterItem,
+  attribute: Pathfinder2AttributeKey | '',
+) {
+  return !attribute || getAttributeFilterValues(item).includes(attribute)
+}

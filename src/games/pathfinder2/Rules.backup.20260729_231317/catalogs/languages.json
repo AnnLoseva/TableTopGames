@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "id": "languages",
+  "title": "Pathfinder 2 Languages",
+  "version": "2026-07",
+  "source": "Player Core",
+  "license": null,
+  "entries": [
+    {
+      "id": "common",
+      "name": "Всеобщий",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "dwarven",
+      "name": "Дварфийский",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "elven",
+      "name": "Эльфийский",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "gnomish",
+      "name": "Гномий",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "goblin",
+      "name": "Гоблинский",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "halfling",
+      "name": "Полуросличий",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "orcish",
+      "name": "Орочий",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "draconic",
+      "name": "Драконий",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "sylvan",
+      "name": "Сильван",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "undercommon",
+      "name": "Подземный",
+      "rarity": "common",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "celestial",
+      "name": "Небесный",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "infernal",
+      "name": "Инфернальный",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "abyssal",
+      "name": "Бездны",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "aklo",
+      "name": "Акло",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "aquan",
+      "name": "Акван",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "auran",
+      "name": "Ауран",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "ignan",
+      "name": "Игнан",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "terran",
+      "name": "Терран",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "necril",
+      "name": "Некрил",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "shadowtongue",
+      "name": "Теневой",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "giant",
+      "name": "Великаний",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "gnoll",
+      "name": "Гноллий",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    },
+    {
+      "id": "iruxi",
+      "name": "Ирукси",
+      "rarity": "uncommon",
+      "regional": false,
+      "traits": [],
+      "sourceBook": "Player Core"
+    }
+  ]
+}

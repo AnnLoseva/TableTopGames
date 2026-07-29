@@ -1,0 +1,3607 @@
+{
+  "title": "PF2 Armor",
+  "source": "https://pf2.ru/armor",
+  "version": "2026-07",
+  "armor": [
+    {
+      "id": "unarmored",
+      "name": "Без брони",
+      "nameEn": "Unarmored",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "unarmored",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "gi",
+      "name": "Ги",
+      "nameEn": "Gi",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "unarmored",
+      "armorBonus": 0,
+      "dexterityCap": 5,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "cloth",
+      "price": {
+        "cp": 0,
+        "sp": 2,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "Удобная"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "explorer-s-clothing",
+      "name": "Одежда исследователя",
+      "nameEn": "Explorer's Clothing",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "unarmored",
+      "armorBonus": 0,
+      "dexterityCap": 5,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "cloth",
+      "price": {
+        "cp": 0,
+        "sp": 1,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "Удобная"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "scroll-robes",
+      "name": "Роба свитков",
+      "nameEn": "Scroll Robes",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "unarmored",
+      "armorBonus": 0,
+      "dexterityCap": 5,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "cloth",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "начертанное"
+      ],
+      "sourceBook": ""
+    },
+    {
+      "id": "leather-armor",
+      "name": "Кожаный доспех",
+      "nameEn": "Leather Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 1,
+      "dexterityCap": 4,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "leather",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "leather-lamellar",
+      "name": "Кожаный ламеллярный доспех",
+      "nameEn": "Leather Lamellar",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 1,
+      "dexterityCap": 4,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 3,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Ламинарный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "leaf-weave",
+      "name": "Лиственная броня",
+      "nameEn": "Leaf Weave",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 1,
+      "dexterityCap": 4,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 4,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "ламинарный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "rattan-armor",
+      "name": "Ротанговый доспех",
+      "nameEn": "Rattan Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 1,
+      "dexterityCap": 4,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Аквадинамика"
+      ],
+      "sourceBook": "Война Бессмертных"
+    },
+    {
+      "id": "padded-armor",
+      "name": "Стёганый доспех",
+      "nameEn": "Padded Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 1,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "cloth",
+      "price": {
+        "cp": 0,
+        "sp": 2,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "Удобная"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "buckle-armor",
+      "name": "Броня с пряжками",
+      "nameEn": "Buckle Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "leather",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 4,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "модифицированное",
+        "подсумки",
+        "шумная"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "studded-leather-armor",
+      "name": "Клёпаный кожаный доспех",
+      "nameEn": "Studded Leather Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "leather",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 3,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "chain-shirt",
+      "name": "Кольчужная рубаха",
+      "nameEn": "Chain Shirt",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "chain",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Гибкая",
+        "Шумная"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "kilted-breastplate",
+      "name": "Нагрудник с килтом",
+      "nameEn": "Kilted Breastplate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 3,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Гибкая"
+      ],
+      "sourceBook": "Война Бессмертных"
+    },
+    {
+      "id": "sankeit",
+      "name": "Санкейт",
+      "nameEn": "Sankeit",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Ламинарная"
+      ],
+      "sourceBook": "Война Бессмертных"
+    },
+    {
+      "id": "quilted-armor",
+      "name": "Стёганка",
+      "nameEn": "Quilted Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "cloth",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 3,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "удобная"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "ceramic-plate",
+      "name": "Керамические латы",
+      "nameEn": "Ceramic Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "модифицированное",
+        "застёжки",
+        "для",
+        "доспеха",
+        "шумная"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "coral-armor",
+      "name": "Коралловый доспех",
+      "nameEn": "Coral Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "аквадинамика"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "niyah-at",
+      "name": "Нийяхаат",
+      "nameEn": "Niyaháat",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "medium",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Ламинарная"
+      ],
+      "sourceBook": "Война Бессмертных"
+    },
+    {
+      "id": "hide-armor",
+      "name": "Сыромятный доспех",
+      "nameEn": "Hide Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "medium",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "leather",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "scale-mail",
+      "name": "Чешуйчатый доспех",
+      "nameEn": "Scale Mail",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "medium",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 4,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "chain-mail",
+      "name": "Кольчуга",
+      "nameEn": "Chain Mail",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "medium",
+      "armorBonus": 4,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "chain",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Гибкая",
+        "Шумная"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "lamellar-breastplate",
+      "name": "Ламеллярный нагрудник",
+      "nameEn": "Lamellar Breastplate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 4,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 7,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "задерживающее",
+        "ламинарный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "breastplate",
+      "name": "Нагрудник",
+      "nameEn": "Breastplate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "medium",
+      "armorBonus": 4,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 8,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "lattice-armor",
+      "name": "Решётчатый доспех",
+      "nameEn": "Lattice Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "medium",
+      "armorBonus": 4,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "chain",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Война Бессмертных"
+    },
+    {
+      "id": "mantis-shell",
+      "name": "Панцирь богомола",
+      "nameEn": "Mantis Shell",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 10,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Модифицированное",
+        "оружейные",
+        "подвесы"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "hellknight-breastplate",
+      "name": "Нагрудник рыцарей преисподней",
+      "nameEn": "Hellknight Breastplate",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 4,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 10,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "half-plate",
+      "name": "Кольчужно-латный доспех",
+      "nameEn": "Half Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 5,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 18,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "splint-mail",
+      "name": "Пластинчатый доспех",
+      "nameEn": "Splint Mail",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 5,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 13,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "hellknight-half-plate",
+      "name": "Полулаты рыцарей преисподней",
+      "nameEn": "Hellknight Half Plate",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 5,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 20,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "fortress-plate",
+      "name": "Крепостные латы",
+      "nameEn": "Fortress Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 6,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 32,
+        "pp": 0
+      },
+      "bulk": 5,
+      "traits": [
+        "Закрытая",
+        "Укрепление",
+        "Тяжеловесное"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "bastion-plate",
+      "name": "Латы бастиона",
+      "nameEn": "Bastion Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 6,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 33,
+        "pp": 0
+      },
+      "bulk": 5,
+      "traits": [
+        "закрытая",
+        "укрепление",
+        "задерживающее"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "hellknight-plate",
+      "name": "Латы рыцарей преисподней",
+      "nameEn": "Hellknight Plate",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 6,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "закрытая"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "o-yoroi",
+      "name": "О-ёрой",
+      "nameEn": "O-Yoroi",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 6,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35,
+        "pp": 0
+      },
+      "bulk": 5,
+      "traits": [
+        "закрытая",
+        "ламинарный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "full-plate",
+      "name": "Полный латный доспех",
+      "nameEn": "Full Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 6,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 30,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "Закрытая"
+      ],
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "sankeit",
+      "name": "Санкейт",
+      "nameEn": "Sankeit",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 2,
+      "dexterityCap": 3,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "ламинарный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "wooden-breastplate",
+      "name": "Деревянный нагрудник",
+      "nameEn": "Wooden Breastplate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "niyah-at",
+      "name": "Нийахаат",
+      "nameEn": "Niyaháat",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 3,
+      "dexterityCap": 2,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "ламинарный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "lattice-armor",
+      "name": "Решётчатый доспех",
+      "nameEn": "Lattice Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 4,
+      "dexterityCap": 1,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "chain",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 9,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "gray-maiden-plate",
+      "name": "Доспех Серых Дев",
+      "nameEn": "Gray Maiden Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "heavy",
+      "armorBonus": 6,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "Закрытая"
+      ],
+      "sourceBook": "Закатные тени"
+    },
+    {
+      "id": "cold-iron-armor",
+      "name": "Броня из холодного железа",
+      "nameEn": "Cold Iron Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 140,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "cold-iron-armor-low-grade-",
+      "name": "Броня из холодного железа (Низкокачественная)",
+      "nameEn": "Cold Iron Armor (Low-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 140,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "cold-iron-armor-standard-grade-",
+      "name": "Броня из холодного железа (Стандартная)",
+      "nameEn": "Cold Iron Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1200,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "cold-iron-armor-high-grade-",
+      "name": "Броня из холодного железа (Высококачественная)",
+      "nameEn": "Cold Iron Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 20000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "silver-armor",
+      "name": "Серебряная броня",
+      "nameEn": "Silver Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 140,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "silver-armor-low-grade-",
+      "name": "Серебряная броня (Низкокачественная)",
+      "nameEn": "Silver Armor (Low-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 140,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "silver-armor-standard-grade-",
+      "name": "Серебряная броня (Стандартная)",
+      "nameEn": "Silver Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1200,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "silver-armor-high-grade-",
+      "name": "Серебряная броня (Высококачественная)",
+      "nameEn": "Silver Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 20000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "adamantine-armor",
+      "name": "Адамантиновая броня",
+      "nameEn": "Adamantine Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "adamantine-armor-standard-grade-",
+      "name": "Адамантиновая броня (Стандартная)",
+      "nameEn": "Adamantine Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "adamantine-armor-high-grade-",
+      "name": "Адамантиновая броня (Высококачественная)",
+      "nameEn": "Adamantine Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 32000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "dragonhide-armor",
+      "name": "Броня из драконьей шкуры",
+      "nameEn": "Dragonhide Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [],
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "dragonhide-armor-standard-grade-",
+      "name": "Броня из драконьей шкуры (Стандартного качества)",
+      "nameEn": "Dragonhide Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "dragonhide-armor-high-grade-",
+      "name": "Броня из драконьей шкуры (Высококачественная)",
+      "nameEn": "Dragonhide Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 32000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "dawnsilver-armor",
+      "name": "Броня из рассветного серебра",
+      "nameEn": "Dawnsilver Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "dawnsilver-armor-standard-grade-",
+      "name": "Броня из рассветного серебра (Стандартная)",
+      "nameEn": "Dawnsilver Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "dawnsilver-armor-high-grade-",
+      "name": "Броня из рассветного серебра (Высококачественная)",
+      "nameEn": "Dawnsilver Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 32000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "duskwood-armor",
+      "name": "Броня из сумеречного дерева",
+      "nameEn": "Duskwood Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "duskwood-armor-standard-grade",
+      "name": "Броня из сумеречного дерева (Стандартная)",
+      "nameEn": "Duskwood Armor (Standard-Grade",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1600,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "duskwood-armor-high-grade-",
+      "name": "Броня из сумеречного дерева (Высококачественная)",
+      "nameEn": "Duskwood Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 32000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "elven-chain",
+      "name": "Эльфийская кольчуга",
+      "nameEn": "Elven Chain",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2500,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "elven-chain-standard-grade-",
+      "name": "Эльфийская кольчуга (Стандартная)",
+      "nameEn": "Elven Chain (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2500,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "elven-chain-high-grade-",
+      "name": "Эльфийская кольчуга (Высококачественная)",
+      "nameEn": "Elven Chain (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 52000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "orichalcum-armor",
+      "name": "Орихалковая броня",
+      "nameEn": "Orichalcum Armor",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 55000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "inubrix-armor",
+      "name": "Броня из инубрикса",
+      "nameEn": "Inubrix Armor",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 18000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Grand Bazaar"
+    },
+    {
+      "id": "inubrix-armor-standard-grade-",
+      "name": "Инубриксовая броня (Стандартная)",
+      "nameEn": "Inubrix Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1200,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Grand Bazaar"
+    },
+    {
+      "id": "inubrix-armor-high-grade-",
+      "name": "Инубриксовая броня (Высококачественная)",
+      "nameEn": "Inubrix Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 18000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Grand Bazaar"
+    },
+    {
+      "id": "djezet-armor",
+      "name": "Броня из джезета",
+      "nameEn": "Djezet Armor",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [],
+      "sourceBook": "Grand Bazaar"
+    },
+    {
+      "id": "djezet-armor-standard-grade-",
+      "name": "Джезетовая броня (Стандартная)",
+      "nameEn": "Djezet Armor (Standard-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1800,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Grand Bazaar"
+    },
+    {
+      "id": "djezet-armor-high-grade-",
+      "name": "Джезетовая броня (Высококачественная)",
+      "nameEn": "Djezet Armor (High-Grade)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Grand Bazaar"
+    },
+    {
+      "id": "trollhound-vest",
+      "name": "Жилет из шкуры трольской гончей",
+      "nameEn": "Trollhound Vest",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 230,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "devil-s-bargain",
+      "name": "Сделка с дьяволом",
+      "nameEn": "Devil's Bargain",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 250,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "Настроенность",
+        "Магический",
+        "Нечестивый"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "wolfjaw-armor",
+      "name": "Доспех волчьей пасти",
+      "nameEn": "Wolfjaw Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 355,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Первобытный"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "blade-byrnie",
+      "name": "Клинковая кольчуга",
+      "nameEn": "Blade Byrnie",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 360,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "blade-byrnie",
+      "name": "Клинковая кольчуга",
+      "nameEn": "Blade Byrnie",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 360,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "blade-byrnie-greater-",
+      "name": "Клинковая кольчуга (улучшенная)",
+      "nameEn": "Blade Byrnie (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 3000,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "blade-byrnie-major-",
+      "name": "Клинковая кольчуга (высшая)",
+      "nameEn": "Blade Byrnie (Major)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35000,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "hodag-leather",
+      "name": "Кожаный доспех ходага",
+      "nameEn": "Hodag Leather",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 350,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Рёв дикой природы"
+    },
+    {
+      "id": "moonlit-chain",
+      "name": "Лунная кольчужная рубаха",
+      "nameEn": "Moonlit Chain",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 360,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "arachnid-harness",
+      "name": "Паучья куртка",
+      "nameEn": "Arachnid Harness",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 360,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "arachnid-harness",
+      "name": "Паучья куртка",
+      "nameEn": "Arachnid Harness",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 360,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "arachnid-harness-greater-",
+      "name": "Паучья куртка (улучшенный)",
+      "nameEn": "Arachnid Harness (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 700,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "wasp-guard",
+      "name": "Осиная стража",
+      "nameEn": "Wasp Guard",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 487,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "rusting-carapace",
+      "name": "Ржавеющий панцирь",
+      "nameEn": "Rusting Carapace",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 476,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "zeto-geki-hide-armor",
+      "name": "Сыромятный доспех из шкуры зетогека",
+      "nameEn": "Zeto Geki Hide Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 500,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Земля",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Pathfinder 208. Копыта, зола и буря"
+    },
+    {
+      "id": "library-robes",
+      "name": "Библиотечная роба",
+      "nameEn": "Library Robes",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 700,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "library-robes",
+      "name": "Библиотечная роба",
+      "nameEn": "Library Robes",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 700,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "library-robes-greater-",
+      "name": "Библиотечная роба (улучшенная)",
+      "nameEn": "Library Robes (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "library-robes-major-",
+      "name": "Библиотечная роба (высшая)",
+      "nameEn": "Library Robes (Major)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "library-robes-true-",
+      "name": "Библиотечная роба (истинная)",
+      "nameEn": "Library Robes (True)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 36000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "bulkRaw": "light",
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "dragon-turtle-plate",
+      "name": "Латы драконьей черепахи",
+      "nameEn": "Dragon Turtle Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 700,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "onslaught-hide",
+      "name": "Шкура натиска",
+      "nameEn": "Onslaught Hide",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 700,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Invested",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "aurochs-hide-armor",
+      "name": "Доспех из шкуры бизона",
+      "nameEn": "Aurochs Hide Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Pathfinder 209. Судьба Разрушителя"
+    },
+    {
+      "id": "tideplate",
+      "name": "Доспех приливов",
+      "nameEn": "Tideplate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1000,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "smoldering-armor",
+      "name": "Тлеющий доспех",
+      "nameEn": "Smoldering Armor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 975,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "mamlambo-scale",
+      "name": "Чешуя мамламбо",
+      "nameEn": "Mamlambo Scale",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 990,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Рёв дикой природы"
+    },
+    {
+      "id": "electric-eelskin",
+      "name": "Шкура электрического угря",
+      "nameEn": "Electric Eelskin",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 950,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "bastion-of-the-inheritor",
+      "name": "Бастион наследницы",
+      "nameEn": "Bastion of the Inheritor",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1750,
+        "pp": 0
+      },
+      "bulk": 5,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "lion-s-armor",
+      "name": "Броня льва",
+      "nameEn": "Lion's Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2000,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "lion-s-armor",
+      "name": "Броня льва",
+      "nameEn": "Lion's Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2000,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "lion-s-armor-greater-",
+      "name": "Броня льва (улучшенная)",
+      "nameEn": "Lion's Armor (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 30500,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "autumn-s-embrace",
+      "name": "Объятия осени",
+      "nameEn": "Autumn's Embrace",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2000,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "mantis-plate",
+      "name": "Панцирь богомола",
+      "nameEn": "Mantis Plate",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1900,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Рёв дикой природы"
+    },
+    {
+      "id": "reef-heart",
+      "name": "Сердце рифа",
+      "nameEn": "Reef Heart",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "reef-heart",
+      "name": "Сердце рифа",
+      "nameEn": "Reef Heart",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "reef-heart-greater-",
+      "name": "Сердце рифа (улучшенное)",
+      "nameEn": "Reef Heart (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6500,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "energizing-lattice",
+      "name": "Энергетический плетёный доспех",
+      "nameEn": "Energizing Lattice",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 3000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Свет",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "life-saver-mail",
+      "name": "Доспех спасителя жизни",
+      "nameEn": "Life-Saver Mail",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 4000,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "life-saver-mail",
+      "name": "Доспех спасителя жизни",
+      "nameEn": "Life-Saver Mail",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 4000,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "life-saver-mail-greater-",
+      "name": "Доспех спасителя жизни (улучшенный)",
+      "nameEn": "Life-Saver Mail (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 52500,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "assassin-s-skin",
+      "name": "Кожа ассасина",
+      "nameEn": "Assassin's Skin",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6500,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Prey for Death"
+    },
+    {
+      "id": "vernai-shell",
+      "name": "Панцирь Вернаи",
+      "nameEn": "Vernai Shell",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 8000,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Межпространственный",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Prey for Death"
+    },
+    {
+      "id": "black-hole-armor",
+      "name": "Доспех чёрной дыры",
+      "nameEn": "Black Hole Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 8500,
+        "pp": 0
+      },
+      "bulk": 5,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "dragonplate",
+      "name": "Драконьи латы",
+      "nameEn": "Dragonplate",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 10000,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "Настроенный",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "impenetrable-scale",
+      "name": "Непробиваемая чешуя",
+      "nameEn": "Impenetrable Scale",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 12800,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего"
+    },
+    {
+      "id": "linnorm-s-sankeit",
+      "name": "Санкейт линнорма",
+      "nameEn": "Linnorm's Sankeit",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 22750,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "ouroboros-buckles",
+      "name": "Пряжки уробороса",
+      "nameEn": "Ouroboros Buckles",
+      "level": 0,
+      "rarity": "rare",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 40000,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "immortal-bastion",
+      "name": "Бессмертный бастион",
+      "nameEn": "Immortal Bastion",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 70000,
+        "pp": 0
+      },
+      "bulk": 5,
+      "traits": [
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "breastplate-of-the-mountain",
+      "name": "Нагрудник горы",
+      "nameEn": "Breastplate of the Mountain",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 70000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Возвышающий",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Хранилище сокровищ"
+    },
+    {
+      "id": "victory-plate",
+      "name": "Победные Латы",
+      "nameEn": "Victory Plate",
+      "level": 0,
+      "rarity": "uncommon",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5500,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "Преграждение",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Руководство продвинутого игрока"
+    },
+    {
+      "id": "victory-plate",
+      "name": "Победные Латы",
+      "nameEn": "Victory Plate",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 675,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Руководство продвинутого игрока"
+    },
+    {
+      "id": "victory-plate-greater-",
+      "name": "Победные Латы (Улучшенные)",
+      "nameEn": "Victory Plate (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 5500,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Руководство продвинутого игрока"
+    },
+    {
+      "id": "wisp-chain",
+      "name": "Цепь ветров",
+      "nameEn": "Wisp Chain",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "Воздух",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "wisp-chain",
+      "name": "Цепь ветров",
+      "nameEn": "Wisp Chain",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 685,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "wisp-chain-greater-",
+      "name": "Цепь ветров (улучшенная)",
+      "nameEn": "Wisp Chain (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1900,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "wisp-chain-major-",
+      "name": "Цепь ветров (высшая)",
+      "nameEn": "Wisp Chain (Major)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 6000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "wisp-chain-true-",
+      "name": "Цепь ветров (истинная)",
+      "nameEn": "Wisp Chain (True)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 35000,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "breastplate-of-command",
+      "name": "Нагрудник Командира",
+      "nameEn": "Breastplate of Command",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 22000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Очарование",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга правил"
+    },
+    {
+      "id": "breastplate-of-command",
+      "name": "Нагрудник Командира",
+      "nameEn": "Breastplate of Command",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга правил"
+    },
+    {
+      "id": "breastplate-of-command-greater-",
+      "name": "Нагрудник Командира (Улучшенный)",
+      "nameEn": "Breastplate of Command (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 22000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга правил"
+    },
+    {
+      "id": "tales-in-timber",
+      "name": "Сказания в древесине",
+      "nameEn": "Tales in Timber",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 22000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "Настроенность",
+        "Магический",
+        "Дерево"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "tales-in-timber",
+      "name": "Сказания в древесине",
+      "nameEn": "Tales in Timber",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 1000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "tales-in-timber-greater-",
+      "name": "Сказания в древесине (улучшенные)",
+      "nameEn": "Tales in Timber (Greater)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2800,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "tales-in-timber-major-",
+      "name": "Сказания в древесине (высшие)",
+      "nameEn": "Tales in Timber (Major)",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 22000,
+        "pp": 0
+      },
+      "bulk": 2,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "demon-armor",
+      "name": "Демонический Доспех",
+      "nameEn": "Demon Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2500,
+        "pp": 0
+      },
+      "bulk": 4,
+      "traits": [
+        "Сакральный",
+        "Зло",
+        "Настроенность",
+        "Некромантия"
+      ],
+      "sourceBook": "Основная книга правил"
+    },
+    {
+      "id": "mail-of-luck",
+      "name": "Доспех Удачи",
+      "nameEn": "Mail of Luck",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2600,
+        "pp": 0
+      },
+      "bulk": 3,
+      "traits": [
+        "Прорицание",
+        "Настроенность",
+        "Магический"
+      ],
+      "sourceBook": "Основная книга правил"
+    },
+    {
+      "id": "celestial-armor",
+      "name": "Небесный Доспех",
+      "nameEn": "Celestial Armor",
+      "level": 0,
+      "rarity": "common",
+      "category": "armor",
+      "armorCategory": "light",
+      "armorBonus": 0,
+      "dexterityCap": 0,
+      "checkPenalty": 0,
+      "speedPenalty": 0,
+      "strengthRequirement": 0,
+      "group": "composite",
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 2500,
+        "pp": 0
+      },
+      "bulk": 1,
+      "traits": [
+        "Сакральный",
+        "Добро",
+        "Настроенность",
+        "Превращение"
+      ],
+      "sourceBook": "Основная книга правил"
+    }
+  ]
+}

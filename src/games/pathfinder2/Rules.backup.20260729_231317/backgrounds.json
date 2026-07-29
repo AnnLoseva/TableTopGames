@@ -1,0 +1,2167 @@
+{
+  "title": "Pathfinder 2 Backgrounds",
+  "source": "https://pf2.ru/backgrounds",
+  "version": "2026-07",
+  "backgrounds": [
+    {
+      "id": "barrister",
+      "name": "Адвокат",
+      "nameEn": "Barrister",
+      "trainedSkills": "Дипломатия,  Знание (закон)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "martial-disciple",
+      "name": "Адепт боевых искусств",
+      "nameEn": "Martial Disciple",
+      "trainedSkills": "Акробатика или  Атлетика,  Знание (военное дело)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Кошачье приземление, \n                            Быстрый прыжок",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "gambler",
+      "name": "Азартный игрок",
+      "nameEn": "Gambler",
+      "trainedSkills": "Обман,  Знание (игры)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "обманщик",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "acrobat",
+      "name": "Акробат",
+      "nameEn": "Acrobat",
+      "trainedSkills": "Акробатика,  Знание (цирк)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Устойчивое равновесие",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "acupuncturist",
+      "name": "Акупунктурист",
+      "nameEn": "Acupuncturist",
+      "trainedSkills": "Медицина,  Знание (акупунктура)",
+      "abilityBoosts": "Мудрость, Ловкость",
+      "skillFeat": "Медицина в бою",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "alkenstar-outlaw",
+      "name": "Алькенстарский преступник",
+      "nameEn": "Alkenstar Outlaw",
+      "trainedSkills": "Воровство,  Знание (преступный мир)",
+      "abilityBoosts": "Ловкость, Выносливость",
+      "skillFeat": "Незаметная кража",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "anti-tech-activist",
+      "name": "Антитехнический активист",
+      "nameEn": "Anti-Tech Activist",
+      "trainedSkills": "Запугивание,  Знание (Гильдии)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Групповая угроза",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "disciple-of-the-gear",
+      "name": "Апостол шестерни",
+      "nameEn": "Disciple of the Gear",
+      "trainedSkills": "Ремесло,  Знание божества, которому вы поклоняетесь",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Быстрая починка",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "entertainer",
+      "name": "Артист",
+      "nameEn": "Entertainer",
+      "trainedSkills": "Исполнение,  Знание (театр)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Завораживающее выступление",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "fireworks-performer",
+      "name": "Артист-пиротехник",
+      "nameEn": "Fireworks Performer",
+      "trainedSkills": "Исполнение,  Знание (инженерное дело)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Завораживающее выступление",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "saloon-entertainer",
+      "name": "Артист салуна",
+      "nameEn": "Saloon Entertainer",
+      "trainedSkills": "Исполнение,  Знание по вашему выбору.",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Исполнитель-виртуоз",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "astrologer",
+      "name": "Астролог",
+      "nameEn": "Astrologer",
+      "trainedSkills": "Оккультизм,  Знание (астрология)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Опознание странностей",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "bachuan-revolutionary",
+      "name": "Бачуаньский революционер",
+      "nameEn": "Bachuan Revolutionary",
+      "trainedSkills": "Общество,  Знание (закон)",
+      "abilityBoosts": "Мудрость, Сила",
+      "skillFeat": "Язык жестов",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "runaway-noble",
+      "name": "Беглый дворянин",
+      "nameEn": "Runaway Noble",
+      "trainedSkills": "Дипломатия,  Знание (генеалогия) или  Знание (геральдика).",
+      "abilityBoosts": "Харизма, Интеллект",
+      "skillFeat": "Подколка",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "refugee",
+      "name": "Беженец",
+      "nameEn": "Refugee",
+      "trainedSkills": "Общество,  Знание, связанное с вашим родным поселением",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "noble",
+      "name": "Благородный",
+      "nameEn": "Noble",
+      "trainedSkills": "Общество,  Знание (генеалогия) или Знание (геральдика).",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Изящные манеры",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "blessed",
+      "name": "Благословлённый",
+      "nameEn": "Blessed",
+      "trainedSkills": "Знание, связанное с благословившим вас божеством",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "warrior",
+      "name": "Боец",
+      "nameEn": "Warrior",
+      "trainedSkills": "Запугивание,  Знание (военное дело)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Устрашающий взгляд",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "street-urchin",
+      "name": "Бродяга",
+      "nameEn": "Street Urchin",
+      "trainedSkills": "Воровство,  Знание, связанное с тем городом, где вы вели бродячую жизнь",
+      "abilityBoosts": "Ловкость, Выносливость",
+      "skillFeat": "Карманник",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "waste-walker",
+      "name": "Бродящий по пустоши",
+      "nameEn": "Waste Walker",
+      "trainedSkills": "Выживание,  Знание (Пустоши Маны) (или другой подобный навык, связанный с пустошами, где вы выросли).",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "discarded-duplicate",
+      "name": "Брошенный дубликат",
+      "nameEn": "Discarded Duplicate",
+      "trainedSkills": "-",
+      "abilityBoosts": "-",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "driver",
+      "name": "Водитель",
+      "nameEn": "Driver",
+      "trainedSkills": "Акробатика,  Знание (вождение или пилотирование)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "returned",
+      "name": "Возвращённый",
+      "nameEn": "Returned",
+      "trainedSkills": "-",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Крепкий орешек, \n                            Дополнительные знания",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "raised-by-belief",
+      "name": "Воспитанный в вере",
+      "nameEn": "Raised by Belief",
+      "trainedSkills": "Знание связанное с вашим божеством",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "fortune-teller",
+      "name": "Гадатель",
+      "nameEn": "Fortune Teller",
+      "trainedSkills": "Оккультизм,  Знание (гадание)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Опознание странностей",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "gladiator",
+      "name": "Гладиатор",
+      "nameEn": "Gladiator",
+      "trainedSkills": "Исполнение,  Знание (гладиаторы)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Впечатляющее исполнение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "undertaker",
+      "name": "Гробовщик",
+      "nameEn": "Undertaker",
+      "trainedSkills": "Медицина,  Знание, специализирующееся на одном местном виде \n                            нежити .",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Проницательная экспертиза",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "saboteur",
+      "name": "Диверсант",
+      "nameEn": "Saboteur",
+      "trainedSkills": "Скрытность,  Знание (инженерное дело)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Скрывающая уловка",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "feral-child",
+      "name": "Дикое дитя",
+      "nameEn": "Feral Child",
+      "trainedSkills": "Выживание и  Природа",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "goldhand-arms-dealer",
+      "name": "Дилер Золотой Руки",
+      "nameEn": "Goldhand Arms Dealer",
+      "trainedSkills": "Дипломатия,  Знание (коммерческое дело)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "remittance-agent",
+      "name": "Доверенный перевозчик",
+      "nameEn": "Remittance Agent",
+      "trainedSkills": "Общество,  Знание (рабочие специальности) или  Знание (наёмники).",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Опытный профессионал",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "back-alley-doctor",
+      "name": "Доктор из подворотни",
+      "nameEn": "Back-Alley Doctor",
+      "trainedSkills": "Медицина,  Знание (преступный мир)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Рискованная операция",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "feybound",
+      "name": "Должник фей",
+      "nameEn": "Feybound",
+      "trainedSkills": "Знание (феи)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "tiffin-box-deliverer",
+      "name": "Доставщик еды",
+      "nameEn": "Tiffin Box Deliverer",
+      "trainedSkills": "Общество,  Знание (рабочие специальности)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "animal-whisperer",
+      "name": "Друг животных",
+      "nameEn": "Animal Whisperer",
+      "trainedSkills": "Природа,  Знание связанное с местностью, в которой обитают ваши любимые животные",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Дрессировка животного",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "press-ganged-g-g-",
+      "name": "Завербованный",
+      "nameEn": "Press-Ganged (G&G)",
+      "trainedSkills": "Атлетика,  Знание (рабочие специальности)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Облачение в броню",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "clockfighter",
+      "name": "Заводной гладиатор",
+      "nameEn": "Clockfighter",
+      "trainedSkills": "Ремесло,  Знание (Гладиаторы)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Опытный профессионал",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "prisoner",
+      "name": "Заключённый",
+      "nameEn": "Prisoner",
+      "trainedSkills": "Скрытность,  Знание (преступный мир)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Опытный контрабандист",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "farmhand",
+      "name": "Землепашец",
+      "nameEn": "Farmhand",
+      "trainedSkills": "Атлетика,  Знание (фермерство)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "banished-celestial",
+      "name": "Изгнанный небожитель",
+      "nameEn": "Banished Celestial",
+      "trainedSkills": "-",
+      "abilityBoosts": "Универсальное, Универсальное",
+      "skillFeat": "-",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "clockwork-researcher",
+      "name": "Исследователь заводных механизмов",
+      "nameEn": "Clockwork Researcher",
+      "trainedSkills": "Общество,  Знание(инженерное дело)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Ремесленная оценка",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "cannoneer",
+      "name": "Канонир",
+      "nameEn": "Cannoneer",
+      "trainedSkills": "Атлетика,  Знание (военное дело)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Дюжий носильщик",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "outrider",
+      "name": "Конный разведчик",
+      "nameEn": "Outrider",
+      "trainedSkills": "Природа,  Знание (равнины)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Скоростной наездник",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "royalty",
+      "name": "Королевская кровь",
+      "nameEn": "Royalty",
+      "trainedSkills": "Общество",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Изящные манеры",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "nomad",
+      "name": "Кочевник",
+      "nameEn": "Nomad",
+      "trainedSkills": "Выживание,  Знание, связанное стой местностью, по которой вы странствовали",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "codebreaker",
+      "name": "Криптограф",
+      "nameEn": "Codebreaker",
+      "trainedSkills": "Общество,   Знание (Криптография)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Перлюстрация",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "cultist",
+      "name": "Культист",
+      "nameEn": "Cultist",
+      "trainedSkills": "Оккультизм,  Знание, связанное с вашим божеством или культом.",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "посвященный в тайны",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "merchant",
+      "name": "Купец",
+      "nameEn": "Merchant",
+      "trainedSkills": "Дипломатия,  Знание (торговля)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Перекупщик",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "toymaker",
+      "name": "Мастер игрушек",
+      "nameEn": "Toymaker",
+      "trainedSkills": "Ремесло, Знание (коммерческое дело)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "medicinal-clocksmith",
+      "name": "Медик-часовщик",
+      "nameEn": "Medicinal Clocksmith",
+      "trainedSkills": "Медицина,  Знание (инженерное дело)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Рискованная операция",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "tinker",
+      "name": "Механик",
+      "nameEn": "Tinker",
+      "trainedSkills": "Ремесло,  Знание (инженерное дело)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "mechanic",
+      "name": "Механик",
+      "nameEn": "Mechanic",
+      "trainedSkills": "Ремесло,  Знание (инженерное дело)",
+      "abilityBoosts": "Сила, Интеллект",
+      "skillFeat": "Быстрая починка",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "mechanical-symbiosis",
+      "name": "Механический симбиоз",
+      "nameEn": "Mechanical Symbiosis",
+      "trainedSkills": "Мистицизм",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "otherworldly-mission",
+      "name": "Миссия из Иного Мира",
+      "nameEn": "Otherworldly Mission",
+      "trainedSkills": "Религия",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "sailor",
+      "name": "Моряк",
+      "nameEn": "Sailor",
+      "trainedSkills": "Атлетика,  Знание (мореплавание)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Подводный мародёр",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "scavenger",
+      "name": "Мусорщик",
+      "nameEn": "Scavenger",
+      "trainedSkills": "Выживание,  Знание, связанное с поселением, где вы были мусорщиком",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "junker",
+      "name": "Мусорщик",
+      "nameEn": "Junker",
+      "trainedSkills": "Атлетика,  Знание местности, в которой вы рыщете.",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Дюжий носильщик",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "spotter",
+      "name": "Наводчик",
+      "nameEn": "Spotter",
+      "trainedSkills": "Скрытность,  Знание (разведка)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Скрытность на местности",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "hired-killer",
+      "name": "Наёмный убийца",
+      "nameEn": "Hired Killer",
+      "trainedSkills": "Скрытность,  Знание (криминальный мир)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Скрытность на местности",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "tall-tale",
+      "name": "Небылица",
+      "nameEn": "Tall-Tale",
+      "trainedSkills": "Исполнение",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Впечатляющее исполнение",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "ocean-diver",
+      "name": "Ныряльщик в океан",
+      "nameEn": "Ocean Diver",
+      "trainedSkills": "Атлетика,  Знание (океан)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Подводный мародёр",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "warded-by-kami",
+      "name": "Оберегаемый ками",
+      "nameEn": "Warded by Kami",
+      "trainedSkills": "Оккультизм,  Знание (духи)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "-",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "wished-alive",
+      "name": "Оживленный желанием",
+      "nameEn": "Wished Alive",
+      "trainedSkills": "Дипломатия",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "circuit-judge",
+      "name": "Окружной судья",
+      "nameEn": "Circuit Judge",
+      "trainedSkills": "Обман,  Знание (Юриспруденция)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Обманщик",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "gunsmith",
+      "name": "Оружейник",
+      "nameEn": "Gunsmith",
+      "trainedSkills": "Ремесло,  Знание (инженерное дело)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Быстрая починка",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "squire",
+      "name": "Оруженосец",
+      "nameEn": "Squire",
+      "trainedSkills": "Атлетика,  Знание (военное дело) или  Знание (геральдика)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Облачение в броню",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "hermit",
+      "name": "Отшельник",
+      "nameEn": "Hermit",
+      "trainedSkills": "Природа или  Оккультизм,  Знание, связанное с той местностью, в которой вы жили во время отшельничества",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Сомнительные знания",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "hunter",
+      "name": "Охотник",
+      "nameEn": "Hunter",
+      "trainedSkills": "Выживание,  Знание (кожевенное дело)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Наблюдение за дикой природой",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "bounty-hunter",
+      "name": "Охотник за головами",
+      "nameEn": "Bounty Hunter",
+      "trainedSkills": "Выживание,  Знание (закон)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Опытный ловчий",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "eagle-hunter",
+      "name": "Охотник с орлом",
+      "nameEn": "Eagle Hunter",
+      "trainedSkills": "Природа,  Знание (охота)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Любимец, \n                            Дрессировка животного",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "pilgrim",
+      "name": "Паломник",
+      "nameEn": "Pilgrim",
+      "trainedSkills": "Религия,  Знание, связанное с вашим божеством",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Знак паломника",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "alkenstar-sojourner",
+      "name": "Переехавший в Алькенстар",
+      "nameEn": "Alkenstar Sojourner",
+      "trainedSkills": "Общество,  Знание (инженерное дело)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "printer",
+      "name": "Печатник",
+      "nameEn": "Printer",
+      "trainedSkills": "Общество,  Знание (каллиграфия)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Обучение языкам",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "cook",
+      "name": "Повар",
+      "nameEn": "Cook",
+      "trainedSkills": "Выживание,  Знание (кулинария)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Опытный повар",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "insurgent",
+      "name": "Повстанец",
+      "nameEn": "Insurgent",
+      "trainedSkills": "Обман,  Знание (военное дело)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Длительное отвлечение",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "ward",
+      "name": "Подопечный",
+      "nameEn": "Ward",
+      "trainedSkills": "Исполнение,  Знание (генеалогия)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Завораживающее выступление",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "field-medic",
+      "name": "Полевой медик",
+      "nameEn": "Field Medic",
+      "trainedSkills": "Медицина,  Знание (военное дело)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Медицина в бою",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "deputy",
+      "name": "Помощник шерифа",
+      "nameEn": "Deputy",
+      "trainedSkills": "Выживание,  Знание (охота)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Опытный ловчий",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "emissary",
+      "name": "Посланник",
+      "nameEn": "Emissary",
+      "trainedSkills": "Общество,  Знание, связанное с одним из городов, где вы часто бывали.",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Обучение языкам",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "acolyte",
+      "name": "Послушник",
+      "nameEn": "Acolyte",
+      "trainedSkills": "Религия,  Знание (каллиграфия)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "знаток канонов",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "courier",
+      "name": "Посыльный",
+      "nameEn": "Courier",
+      "trainedSkills": "Общество,  Знание города, в котором вы выросли",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Перлюстрация",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "amnesiac",
+      "name": "Потерявший память",
+      "nameEn": "Amnesiac",
+      "trainedSkills": "-",
+      "abilityBoosts": "-",
+      "skillFeat": "-",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "kaiju-stalker",
+      "name": "Преследователь кайдзю",
+      "nameEn": "Kaiju Stalker",
+      "trainedSkills": "-",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "-",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "hounded-thief",
+      "name": "Преследуемый вор",
+      "nameEn": "Hounded Thief",
+      "trainedSkills": "Воровство,  Знание (Преступный мир)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Карманник",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "criminal",
+      "name": "Преступник",
+      "nameEn": "Criminal",
+      "trainedSkills": "Скрытность,  Знание (преступный мир)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Опытный контрабандист",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "streetfood-vendor",
+      "name": "Продавец уличной еды",
+      "nameEn": "Streetfood Vendor",
+      "trainedSkills": "Ремесло,  Знание (кулинария)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Опытный повар",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "cursed",
+      "name": "Проклятый",
+      "nameEn": "Cursed",
+      "trainedSkills": "Оккультизм,  Знание (проклятия)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "professional-letter-writer",
+      "name": "Профессиональный писатель писем",
+      "nameEn": "Professional Letter Writer",
+      "trainedSkills": "Знание (каллиграфия)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Ремесленник-специалист, \n                            Обучение языкам",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "bandit",
+      "name": "Разбойник",
+      "nameEn": "Bandit",
+      "trainedSkills": "Запугивание,  Знание, связанное с местностью, где вы разбойничали,",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Групповая угроза",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "scout",
+      "name": "Разведчик",
+      "nameEn": "Scout",
+      "trainedSkills": "Выживание,  Знание, связанное с той местностью, где вы проводили разведку",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "laborer",
+      "name": "Разнорабочий",
+      "nameEn": "Laborer",
+      "trainedSkills": "Атлетика,  Знание (рабочие специальности)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Дюжий носильщик",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "revenant",
+      "name": "Ревенант",
+      "nameEn": "Revenant",
+      "trainedSkills": "Религия,  Знание (Костяной Двор)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "artisan",
+      "name": "Ремесленник",
+      "nameEn": "Artisan",
+      "trainedSkills": "Ремесло,  Знание (гильдии)",
+      "abilityBoosts": "Сила, Интеллект",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "miner",
+      "name": "Рудокоп",
+      "nameEn": "Miner",
+      "trainedSkills": "Выживание,  Знание (горное дело)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Знаток местности",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "tax-collector",
+      "name": "Сборщик податей",
+      "nameEn": "Tax Collector",
+      "trainedSkills": "Запугивание,  Знание, связанное с поселением, где вы работали",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Быстрая угроза",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "zodiac-bound",
+      "name": "Связанный с зодиаком",
+      "nameEn": "Zodiac Bound",
+      "trainedSkills": "-",
+      "abilityBoosts": "-",
+      "skillFeat": "-",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "servant",
+      "name": "Слуга",
+      "nameEn": "Servant",
+      "trainedSkills": "Общество,  Знание (рабочие специальности)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Чтение по губам",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "root-worker",
+      "name": "Собиратель кореньев",
+      "nameEn": "Root Worker",
+      "trainedSkills": "Оккультизм,  Знание (травничество)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Волшебные корешки",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "junk-collector",
+      "name": "Собиратель хлама",
+      "nameEn": "Junk Collector",
+      "trainedSkills": "Ремесло,  Знание(инженерное дело)]] или  Знание (горное дело).",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Ремесленная оценка",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "saved-by-clockwork",
+      "name": "Спасенный механизмом",
+      "nameEn": "Saved by Clockwork",
+      "trainedSkills": "Ремесло",
+      "abilityBoosts": "Сила, Интеллект",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "gossip",
+      "name": "Сплетник",
+      "nameEn": "Gossip",
+      "trainedSkills": "Дипломатия,  Знание на ваш выбор.",
+      "abilityBoosts": "Харизма, Интеллект",
+      "skillFeat": "Неформальное общение",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "guard",
+      "name": "Стражник",
+      "nameEn": "Guard",
+      "trainedSkills": "Запугивание,  Знание (военное дело) или Знание (закон).",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Быстрая угроза",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "traveling-gourmand",
+      "name": "Странствующий гурман",
+      "nameEn": "Traveling Gourmand",
+      "trainedSkills": "Выживание,  Знание (кулинария)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "wandering-preacher",
+      "name": "Странствующий проповедник",
+      "nameEn": "Wandering Preacher",
+      "trainedSkills": "Религия,  Знание, которое ассоциируется с вашим божеством (например Знание (Фаразма)).",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Знак паломника",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "fated-rival",
+      "name": "Судьбоносный соперник",
+      "nameEn": "Fated Rival",
+      "trainedSkills": "-",
+      "abilityBoosts": "Универсальное, Универсальное",
+      "skillFeat": "Крепкий орешек",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "bookkeeper",
+      "name": "Счетовод",
+      "nameEn": "Bookkeeper",
+      "trainedSkills": "Общество,  Знание (счетоводство)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Вычислитель",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "detective",
+      "name": "Сыщик",
+      "nameEn": "Detective",
+      "trainedSkills": "Общество,  Знание (преступный мир)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "haunted",
+      "name": "Терзаемый призраками",
+      "nameEn": "Haunted",
+      "trainedSkills": "Оккультизм",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "tech-reliant",
+      "name": "Технозависимый",
+      "nameEn": "Tech-Reliant",
+      "trainedSkills": "Ремесло или  Медицина",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "-",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "weaver",
+      "name": "Ткач",
+      "nameEn": "Weaver",
+      "trainedSkills": "Ремесло,  Знание (плетение корзин) или  Знание (гобелены) или  Знание (текстиль)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "herbalist",
+      "name": "Травник",
+      "nameEn": "Herbalist",
+      "trainedSkills": "Природа,  Знание (травничество)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Природная медицина",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "barkeep",
+      "name": "Трактирщик",
+      "nameEn": "Barkeep",
+      "trainedSkills": "Дипломатия,  Знание (алкоголь)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Неформальное общение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "scholar",
+      "name": "Учёный",
+      "nameEn": "Scholar",
+      "trainedSkills": "Знание (академические науки)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "teacher",
+      "name": "Учитель",
+      "nameEn": "Teacher",
+      "trainedSkills": "Исполнение или  Общество,  Знание (академические науки)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Опытный профессионал",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "favored",
+      "name": "Фаворит",
+      "nameEn": "Favored",
+      "trainedSkills": "Дипломатия,  Исполнение или  Общество,  Знание на ваш выбор",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Упоминание имени",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "farmsteader",
+      "name": "Фермер",
+      "nameEn": "Farmsteader",
+      "trainedSkills": "Выживание,  Знание (земледелие)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "artist",
+      "name": "Художник",
+      "nameEn": "Artist",
+      "trainedSkills": "Ремесло,  Знание (искусство)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "barber",
+      "name": "Цирюльник",
+      "nameEn": "Barber",
+      "trainedSkills": "Медицина,  Знание (хирургия)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Рискованная операция",
+      "sourceBook": "Основная книга игрока 2"
+    },
+    {
+      "id": "charlatan",
+      "name": "Шарлатан",
+      "nameEn": "Charlatan",
+      "trainedSkills": "Обман,  Знание (преступный мир)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Обаятельный лжец",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "silk-farmer",
+      "name": "Шелковод",
+      "nameEn": "Silk Farmer",
+      "trainedSkills": "Ремесло,  Знание (шелководство)",
+      "abilityBoosts": "Мудрость, Интеллект",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "sheriff",
+      "name": "Шериф",
+      "nameEn": "Sheriff",
+      "trainedSkills": "Запугивание,   Знание (охота)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Групповая угроза",
+      "sourceBook": "Пушки и шестерни"
+    },
+    {
+      "id": "jeweler",
+      "name": "Ювелир",
+      "nameEn": "Jeweler",
+      "trainedSkills": "Ремесло,  Знание (драгоценные камни)",
+      "abilityBoosts": "Мудрость, Интеллект",
+      "skillFeat": "Ремесленная оценка",
+      "sourceBook": "Тянь-Ша. Руководство по персонажам"
+    },
+    {
+      "id": "starless-one",
+      "name": "Беззвездный",
+      "nameEn": "Starless One",
+      "trainedSkills": "оккультизм, Астрология  Знание",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "doomcaller",
+      "name": "Глашатай рока",
+      "nameEn": "Doomcaller",
+      "trainedSkills": "оккультизм, Звёзды  Знание",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "dendrologist",
+      "name": "Дендролог",
+      "nameEn": "Dendrologist",
+      "trainedSkills": "Выживание,  Знание (план Дерева)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Знаток Местности",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "astrological-augur",
+      "name": "Звездный предсказатель",
+      "nameEn": "Astrological Augur",
+      "trainedSkills": "Астрология  Знание",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "concordance-researcher",
+      "name": "Исследователь конкорданса",
+      "nameEn": "Concordance Researcher",
+      "trainedSkills": "Четыре изученных Знания планов",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "-",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "crystal-healer",
+      "name": "Кристальный целитель",
+      "nameEn": "Crystal Healer",
+      "trainedSkills": "Природа,  Знание (план Земли)",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Природная Медицина",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "alloysmith",
+      "name": "Металлург",
+      "nameEn": "Alloysmith",
+      "trainedSkills": "Ремесло,  Знание (план Металла)",
+      "abilityBoosts": "Сила, Интеллект",
+      "skillFeat": "Ремесленник-Специалист",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "deep-sea-diver",
+      "name": "Морской ныряльщик",
+      "nameEn": "Deep-Sea Diver",
+      "trainedSkills": "Атлетика,  Знание (план Воды)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Подводный Мародёр",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "tide-watcher",
+      "name": "Наблюдатель приливов",
+      "nameEn": "Tide Watcher",
+      "trainedSkills": "природа, Океан  Знание",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "elementally-infused",
+      "name": "Наполненный стихиями",
+      "nameEn": "Elementally Infused",
+      "trainedSkills": "-",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "sky-rider",
+      "name": "Небесный наездник",
+      "nameEn": "Sky Rider",
+      "trainedSkills": "Акробатика,  Знание (план Воздуха)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Кошачье Приземление",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "sign-bound",
+      "name": "Отмеченный Созведием",
+      "nameEn": "Sign Bound",
+      "trainedSkills": "-",
+      "abilityBoosts": "-",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "planar-migrant",
+      "name": "Планарный скиталец",
+      "nameEn": "Planar Migrant",
+      "trainedSkills": "Атлетика",
+      "abilityBoosts": "Ловкость, Выносливость",
+      "skillFeat": "-",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "nocturnal-navigator",
+      "name": "Проводник во тьме",
+      "nameEn": "Nocturnal Navigator",
+      "trainedSkills": "выживание",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "concordance-scout",
+      "name": "Разведчик конкорданса",
+      "nameEn": "Concordance Scout",
+      "trainedSkills": "Дипломатия,  Знание (один из планов)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Неформальное Общение",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "eclipseborn",
+      "name": "Рожденный в затмении",
+      "nameEn": "Eclipseborn",
+      "trainedSkills": "-",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "fire-warden",
+      "name": "Страж огня",
+      "nameEn": "Fire Warden",
+      "trainedSkills": "Атлетика,  Знание (план Огня)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Контроль Дыхания",
+      "sourceBook": "Ярость стихий"
+    },
+    {
+      "id": "sun-dancer",
+      "name": "Танцующий с солнцем",
+      "nameEn": "Sun Dancer",
+      "trainedSkills": "исполнение",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "завораживающее выступление",
+      "sourceBook": "Путеводитель"
+    },
+    {
+      "id": "bellflower-agent",
+      "name": "Агент Колокольчика",
+      "nameEn": "Bellflower Agent",
+      "trainedSkills": "Скрытность,  Знание (преступный мир)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Опытный контрабандист",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "magaambya-academic",
+      "name": "Академик Магаамбии",
+      "nameEn": "Magaambya Academic",
+      "trainedSkills": "Мистицизм или  Природа,  Знание (академические науки)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Опознание заклинания",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "alkenstar-tinker",
+      "name": "Алькенстарский механик",
+      "nameEn": "Alkenstar Tinker",
+      "trainedSkills": "Ремесло,  Знание (инженерия)",
+      "abilityBoosts": "Dexteriry, Интеллект",
+      "skillFeat": "Алхимическое ремесло",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "atteran-rancher",
+      "name": "Аттеранский коневод",
+      "nameEn": "Atteran Rancher",
+      "trainedSkills": "Природа,  Знание (животные)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Дрессировка животного",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "mana-wastes-refugee",
+      "name": "Беженец из Пустошей Маны",
+      "nameEn": "Mana Wastes Refugee",
+      "trainedSkills": "Мистицизм,  Знание (дикая природа)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Обман магического предмета",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "bekyar-restorer",
+      "name": "Бекьярский восстановитель",
+      "nameEn": "Bekyar Restorer",
+      "trainedSkills": "Дипломатия,  Знание (Бездна)",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "geb-crusader",
+      "name": "Борец с Гебом",
+      "nameEn": "Geb Crusader",
+      "trainedSkills": "Религия,  Знание (нежить)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Знаток канонов",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "grand-council-bureaucrat",
+      "name": "Бюрократ Большого совета",
+      "nameEn": "Grand Council Bureaucrat",
+      "trainedSkills": "Дипломатия,  Знание (правительство)",
+      "abilityBoosts": "Харизма, Интеллект",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "varisian-wanderer",
+      "name": "Варисийский Скиталец",
+      "nameEn": "Varisian Wanderer",
+      "trainedSkills": "Исполнение,   Знание (цирк)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Завораживающее выступление",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "razmiran-faithful",
+      "name": "Верующий Размирана",
+      "nameEn": "Razmiran Faithful",
+      "trainedSkills": "Запугивание,  Знание (Размир)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Групповая угроза",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "vidrian-reformer",
+      "name": "Видрианский реформатор",
+      "nameEn": "Vidrian Reformer",
+      "trainedSkills": "Дипломатия,  Знание (политика)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Неформальное общение",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "sarkorian-reclaimer",
+      "name": "Восстановитель Саркориса",
+      "nameEn": "Sarkorian Reclaimer",
+      "trainedSkills": "Медицина,  Знание (Бездна)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Медицина в бою",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "lastwall-survivor",
+      "name": "Выживший Последнего Оплота",
+      "nameEn": "Lastwall Survivor",
+      "trainedSkills": "Медицина,  Знание (нежить)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Медицина в бою",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "sarkorian-survivor",
+      "name": "Выживший Саркориса",
+      "nameEn": "Sarkorian Survivor",
+      "trainedSkills": "Выживание,  Знание (история Саркориса)",
+      "abilityBoosts": "Выносливость, Сила",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "mammoth-speaker",
+      "name": "Говорящий с мамонтами",
+      "nameEn": "Mammoth Speaker",
+      "trainedSkills": "Природа,  Знание (животные)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Дрессировка животного",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "wonder-taster",
+      "name": "Дегустатор Чудес",
+      "nameEn": "Wonder Taster",
+      "trainedSkills": "Ремесло,   Знание Алхимии",
+      "abilityBoosts": "Интеллект, Выносливость",
+      "skillFeat": "Алхимическое ремесло",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "diobel-pearl-diver",
+      "name": "Диобельский ловец жемчуга",
+      "nameEn": "Diobel Pearl Diver",
+      "trainedSkills": "Атлетика,  Знание (океан)",
+      "abilityBoosts": "Выносливость, Ловкость",
+      "skillFeat": "Подводный мародёр",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "child-of-westcrown",
+      "name": "Дитя Весткрауна",
+      "nameEn": "Child of Westcrown",
+      "trainedSkills": "Дипломатия,  Знание (Весткраун)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "winter-s-child",
+      "name": "Дитя зимы",
+      "nameEn": "Winter's Child",
+      "trainedSkills": "Мистицизм,  Знание (погода)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Мистическое чутьё",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "child-of-the-puddles",
+      "name": "Дитя Луж",
+      "nameEn": "Child of the Puddles",
+      "trainedSkills": "Акробатика,  Знание (Авессалом)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Устойчивое равновесие",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "quick",
+      "name": "Живчик",
+      "nameEn": "Quick",
+      "trainedSkills": "Обман,  Знание (нежить)",
+      "abilityBoosts": "Харизма, Выносливость",
+      "skillFeat": "Обаятельный лжец",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "hermean-expatriate",
+      "name": "Изгнанный из Эрмеи",
+      "nameEn": "Hermean Expatriate",
+      "trainedSkills": "Общество,  Знание (драконы)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Обучение навыку",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "issian-partisan",
+      "name": "Иссийский партизан",
+      "nameEn": "Issian Partisan",
+      "trainedSkills": "Обман,  Знание (преступный мир)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Обаятельный лжец",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "scholar-of-the-ancients",
+      "name": "Исследователь древних",
+      "nameEn": "Scholar of the Ancients",
+      "trainedSkills": "Мистицизм,  Знание (Ацлант)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Быстрое опознание магии",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "shory-seeker",
+      "name": "Исследователь Шори",
+      "nameEn": "Shory Seeker",
+      "trainedSkills": "Ремесло,  Знание (Шори)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "perfection-seeker",
+      "name": "Ищущий Совершенства",
+      "nameEn": "Perfection Seeker",
+      "trainedSkills": "Акробатика,  Знание (военное дело)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Кошачье приземление",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "black-market-smuggler",
+      "name": "Контрабандист чёрного рынка",
+      "nameEn": "Black Market Smuggler",
+      "trainedSkills": "Скрытность,  Знание (преступный мир)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Опытный контрабандист",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "thrune-loyalist",
+      "name": "Лоялист Трун",
+      "nameEn": "Thrune Loyalist",
+      "trainedSkills": "Религия,  Знание (Преисподняя)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Знаток канонов",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "undersea-enthusiast",
+      "name": "Любитель подводного мира",
+      "nameEn": "Undersea Enthusiast",
+      "trainedSkills": "Атлетика,  Знание (океан)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Подводный мародёр",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "merabite-prodigy",
+      "name": "Мерабский талант",
+      "nameEn": "Merabite Prodigy",
+      "trainedSkills": "Ремесло,  Знание (алхимия)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Ремесленник-специалист",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "wildwood-local",
+      "name": "Местный из Диколесья",
+      "nameEn": "Wildwood Local",
+      "trainedSkills": "Природа,   Знание (лес)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Природная медицина",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "aspiring-free-captain",
+      "name": "Метящий в Вольные капитаны",
+      "nameEn": "Aspiring Free Captain",
+      "trainedSkills": "Запугивание,  Знание (мореплавание)",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Групповая угроза",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "secular-medic",
+      "name": "Мирской медик",
+      "nameEn": "Secular Medic",
+      "trainedSkills": "Медицина,  Знание (анатомия)",
+      "abilityBoosts": "Мудрость, Ловкость",
+      "skillFeat": "Медицина в бою",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "nexian-mystic",
+      "name": "Мистик Некса",
+      "nameEn": "Nexian Mystic",
+      "trainedSkills": "Мистицизм,  Знание, связанное с одним планом на ваш выбор (кроме  материального плана).",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Мистическое чутьё",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "pathfinder-hopeful",
+      "name": "Многообещающий искатель",
+      "nameEn": "Pathfinder Hopeful",
+      "trainedSkills": "Общество,  Знание(Общество Искателей)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Дополнительные знания",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "molthuni-mercenary",
+      "name": "Молтунский наемник",
+      "nameEn": "Molthuni Mercenary",
+      "trainedSkills": "Атлетика,  Знание (наёмничество)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Опытный профессионал",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "press-ganged-lowg-",
+      "name": "Насильно завербованный (ПпМ)",
+      "nameEn": "Press-Ganged (LOWG)",
+      "trainedSkills": "Общество,  Знание (мореплавание)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Опытный профессионал",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "nirmathi-guerrilla",
+      "name": "Нирмафийский партизан",
+      "nameEn": "Nirmathi Guerrilla",
+      "trainedSkills": "Скрытность,  Знание (лес)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Скрытность на местности",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "shoanti-name-bearer",
+      "name": "Носитель имени Шоанти",
+      "nameEn": "Shoanti Name-Bearer",
+      "trainedSkills": "Атлетика,  Знание (куахи)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Лазание в бою",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "witch-wary",
+      "name": "Опасающийся ведьм",
+      "nameEn": "Witch Wary",
+      "trainedSkills": "Оккультизм,  Знание (проклятия)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Опознание странностей",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "freed-slave-of-absalom",
+      "name": "Освобожденный раб из Авессалома",
+      "nameEn": "Freed Slave of Absalom",
+      "trainedSkills": "Общество,  Знание (Авессалом)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "osirionologist",
+      "name": "Осирионолог",
+      "nameEn": "Osirionologist",
+      "trainedSkills": "Оккультизм,  Знание (Древний Осирион)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Опознание странностей",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "bonuwat-wavetouched",
+      "name": "Отмеченный волной бонуват",
+      "nameEn": "Bonuwat Wavetouched",
+      "trainedSkills": "Атлетика,  Знание (океан)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Подводный мародёр",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "final-blade-survivor",
+      "name": "Переживший Универсальную бритву",
+      "nameEn": "Final Blade Survivor",
+      "trainedSkills": "Обман,  Знание (революции)",
+      "abilityBoosts": "Харизма, Мудрость",
+      "skillFeat": "Обаятельный лжец",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "storm-survivor",
+      "name": "Переживший Шторм",
+      "nameEn": "Storm Survivor",
+      "trainedSkills": "Выживание,   Знание (погода)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "trade-consortium-underling",
+      "name": "Подчинённый торгового консорциума",
+      "nameEn": "Trade Consortium Underling",
+      "trainedSkills": "Общество,  Знание (сделки)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Опытный профессионал",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "kyonin-emissary",
+      "name": "Посланник Кионина",
+      "nameEn": "Kyonin Emissary",
+      "trainedSkills": "Общество,  Знание (политика)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Обучение языкам",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "kalistrade-follower",
+      "name": "Последователь Калистрада",
+      "nameEn": "Kalistrade Follower",
+      "trainedSkills": "Дипломатия,  Знание (Калистрад)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Перекупщик",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "rivethun-adherent",
+      "name": "Последователь Риветуна",
+      "nameEn": "Rivethun Adherent",
+      "trainedSkills": "Оккультизм,   Знание (Духи)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Опознание заклинания",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "mantis-scion",
+      "name": "Потомок Богомола",
+      "nameEn": "Mantis Scion",
+      "trainedSkills": "Скрытность,  Знание (ассасины)",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Морские Просторы"
+    },
+    {
+      "id": "whispering-way-scion",
+      "name": "Потомок Пути Шёпота",
+      "nameEn": "Whispering Way Scion",
+      "trainedSkills": "Религия,  Знание (нежить)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Знаток канонов",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "shadow-haunted",
+      "name": "Преследуемый тенью",
+      "nameEn": "Shadow Haunted",
+      "trainedSkills": "Запугивание,  Знание (Теневой план)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Быстрая угроза",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "aspiring-river-monarch",
+      "name": "Претендент на речной престол",
+      "nameEn": "Aspiring River Monarch",
+      "trainedSkills": "Общество,  Знание (политика)",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Изящные манеры",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "desert-tracker",
+      "name": "Проводник в пустыне",
+      "nameEn": "Desert Tracker",
+      "trainedSkills": "Выживание,   Знание (пустыня)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Опытный ловчий",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "cursed-family",
+      "name": "Проклятая семья",
+      "nameEn": "Cursed Family",
+      "trainedSkills": "Оккультизм,  Знание (проклятия)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Опознание странностей",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "lumber-consortium-laborer",
+      "name": "Рабочий Консорциума Лесорубов",
+      "nameEn": "Lumber Consortium Laborer",
+      "trainedSkills": "Атлетика,  Знание (лес)",
+      "abilityBoosts": "Сила, Ловкость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "rostland-partisan",
+      "name": "Ростландский партизан",
+      "nameEn": "Rostland Partisan",
+      "trainedSkills": "Дипломатия,  Знание (политика)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Расколотые земли"
+    },
+    {
+      "id": "senghor-sailor",
+      "name": "Сенгорский моряк",
+      "nameEn": "Senghor Sailor",
+      "trainedSkills": "Ремесло,  Знание (мореплавание)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Быстрая починка",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "goblinblood-orphan",
+      "name": "Сирота Гоблинских войн",
+      "nameEn": "Goblinblood Orphan",
+      "trainedSkills": "Выживание,  Знание (гоблины)",
+      "abilityBoosts": "Ловкость, Выносливость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "sodden-scavenger",
+      "name": "Собиратель из Сырых земель",
+      "nameEn": "Sodden Scavenger",
+      "trainedSkills": "Выживание,  Знание (болота)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "taldan-schemer",
+      "name": "Талдорский интриган",
+      "nameEn": "Taldan Schemer",
+      "trainedSkills": "Дипломатия,  Знание (политика)",
+      "abilityBoosts": "Харизма, Выносливость",
+      "skillFeat": "Неформальное общение",
+      "sourceBook": "Сияющие Королевства"
+    },
+    {
+      "id": "thassilonian-traveler",
+      "name": "Тассилонский путешественник",
+      "nameEn": "Thassilonian Traveler",
+      "trainedSkills": "Мистицизм,  Знание (Тассилон)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Сомнительные знания",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "purveyor-of-the-bizarre",
+      "name": "Торговец диковинками",
+      "nameEn": "Purveyor of the Bizarre",
+      "trainedSkills": "Мистицизм,  Знание(торговля)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Быстрое опознание магии",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "onyx-trader",
+      "name": "Торговец Оникса",
+      "nameEn": "Onyx Trader",
+      "trainedSkills": "Общество,  Знание (торговля)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Обучение языкам",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "thuvian-unifier",
+      "name": "Тувийский объединитель",
+      "nameEn": "Thuvian Unifier",
+      "trainedSkills": "Запугивание,  Знание (политика)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Быстрая угроза",
+      "sourceBook": "Золотой путь"
+    },
+    {
+      "id": "belkzen-slayer",
+      "name": "Убийца из Белкзена",
+      "nameEn": "Belkzen Slayer",
+      "trainedSkills": "Запугивание,  Знание (орки)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Устрашающий взгляд",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "menagerie-dung-sweeper",
+      "name": "Уборщик зверинца",
+      "nameEn": "Menagerie Dung Sweeper",
+      "trainedSkills": "Природа,  Знание (животные)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Дрессировка животного",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "ulfen-raider",
+      "name": "Ульфенский налётчик",
+      "nameEn": "Ulfen Raider",
+      "trainedSkills": "Запугивание,  Знание (мореплавание)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Устрашающий взгляд",
+      "sourceBook": "Земли Сказаний"
+    },
+    {
+      "id": "inlander",
+      "name": "Уроженец",
+      "nameEn": "Inlander",
+      "trainedSkills": "Выживание,  Знание, связанное с типом местности вашего родного региона, например Знание (холмы) или Знание (горы)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Наблюдение за дикой природой",
+      "sourceBook": "Авессалом и остров Звёздного Камня"
+    },
+    {
+      "id": "ustalavic-academic",
+      "name": "Усталавский академик",
+      "nameEn": "Ustalavic Academic",
+      "trainedSkills": "Ремесло,  Знание (академические науки)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Обучение навыку",
+      "sourceBook": "Око Ужаса"
+    },
+    {
+      "id": "chelish-rebel",
+      "name": "Челийский мятежник",
+      "nameEn": "Chelish Rebel",
+      "trainedSkills": "Общество,  Знание (Кинтарго)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Старая Челия"
+    },
+    {
+      "id": "oenopion-ooze-tender",
+      "name": "Энопионский надсмотрщик за жижами",
+      "nameEn": "Oenopion Ooze-Tender",
+      "trainedSkills": "Ремесло,  Знание (жижи)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Сомнительные знания",
+      "sourceBook": "Невозможные земли"
+    },
+    {
+      "id": "bright-lion",
+      "name": "Яркий Лев",
+      "nameEn": "Bright Lion",
+      "trainedSkills": "Обман,  Знание (Мзали)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Обманщик",
+      "sourceBook": "Просторы Мванги"
+    },
+    {
+      "id": "belkzen-anthropologist",
+      "name": "Белкзенский этнограф",
+      "nameEn": "Belkzen Anthropologist",
+      "trainedSkills": "Общество, Orc Pantheon  Знание, a broad skill pertaining to orc gods both current and past",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "-",
+      "sourceBook": "Триумф бивня. Руководство игрока"
+    },
+    {
+      "id": "foreign-diplomat",
+      "name": "Дипломат-чужеземец",
+      "nameEn": "Foreign Diplomat",
+      "trainedSkills": "Дипломатия, Heraldry  Знание",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Триумф бивня. Руководство игрока"
+    },
+    {
+      "id": "badlands-scout",
+      "name": "Знаток пустоши",
+      "nameEn": "Badlands Scout",
+      "trainedSkills": "Выживание, Badlands  Знание",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Триумф бивня. Руководство игрока"
+    },
+    {
+      "id": "self-made",
+      "name": "Сам себе голова",
+      "nameEn": "Self-Made",
+      "trainedSkills": "Атлетика,  Знание related to how you've paved your own way through the world",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Дюжий носильщик",
+      "sourceBook": "Триумф бивня. Руководство игрока"
+    },
+    {
+      "id": "empty-hand-loyalist",
+      "name": "Сторонник пустой руки",
+      "nameEn": "Empty Hand Loyalist",
+      "trainedSkills": "Запугивание, Belkzen  Знание",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Быстрая угроза",
+      "sourceBook": "Триумф бивня. Руководство игрока"
+    },
+    {
+      "id": "trade-representative",
+      "name": "Торговый представитель",
+      "nameEn": "Trade Representative",
+      "trainedSkills": "Ремесло, Mercantile  Знание",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Быстрая починка",
+      "sourceBook": "Триумф бивня. Руководство игрока"
+    },
+    {
+      "id": "refugee-fop-",
+      "name": "Беглец",
+      "nameEn": "Refugee (FoP)",
+      "trainedSkills": "Выживание,  Знание (охота)",
+      "abilityBoosts": "-",
+      "skillFeat": "Собиратель",
+      "sourceBook": "Падение чумного камня"
+    },
+    {
+      "id": "bibliophile",
+      "name": "Библиофил",
+      "nameEn": "Bibliophile",
+      "trainedSkills": "Мистицизм,  Знание (библиотеки)",
+      "abilityBoosts": "Интеллект, Харизма",
+      "skillFeat": "Мистическое чутьё",
+      "sourceBook": "Зловещие катакомбы"
+    },
+    {
+      "id": "brevic-noble",
+      "name": "Благородный из бревоя",
+      "nameEn": "Brevic Noble",
+      "trainedSkills": "-",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "-",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "brevic-outcast",
+      "name": "Бревойский изгой",
+      "nameEn": "Brevic Outcast",
+      "trainedSkills": "Знание (политика)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Горделивое упрямство",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "teamster",
+      "name": "Возница",
+      "nameEn": "Teamster",
+      "trainedSkills": "Природа,  Знание (торговля)",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Дрессировка животного",
+      "sourceBook": "Падение чумного камня"
+    },
+    {
+      "id": "fogfen-tale-teller",
+      "name": "Выдумщик с болота",
+      "nameEn": "Fogfen Tale-Teller",
+      "trainedSkills": "Атлетика,  Знание (болота)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Борец с титанами",
+      "sourceBook": "Зловещие катакомбы"
+    },
+    {
+      "id": "friendly-darkmoon-kobold",
+      "name": "Дружелюбный кобольд из Темнолунья",
+      "nameEn": "Friendly Darkmoon Kobold",
+      "trainedSkills": "Дипломатия,  Знание (кобольды)",
+      "abilityBoosts": "Мудрость, Харизма",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Корона короля кобольдов"
+    },
+    {
+      "id": "starwatcher",
+      "name": "Звездочёт",
+      "nameEn": "Starwatcher",
+      "trainedSkills": "Оккультизм,  Знание (астрология)",
+      "abilityBoosts": "Выносливость, Интеллект",
+      "skillFeat": "Сомнительные знания",
+      "sourceBook": "Зловещие катакомбы"
+    },
+    {
+      "id": "eldritch-anatomist",
+      "name": "Зловещий препаратор",
+      "nameEn": "Eldritch Anatomist",
+      "trainedSkills": "Медицина,  Знание (искажённые)",
+      "abilityBoosts": "Интеллект, Мудрость",
+      "skillFeat": "Уверенность",
+      "sourceBook": "Зловещие катакомбы"
+    },
+    {
+      "id": "witchlight-follower",
+      "name": "Искатель ведьмовских огней",
+      "nameEn": "Witchlight Follower",
+      "trainedSkills": "Выживание,  Знание",
+      "abilityBoosts": "Ловкость, Мудрость",
+      "skillFeat": "Знаток местности",
+      "sourceBook": "Зловещие катакомбы"
+    },
+    {
+      "id": "issian-patriot",
+      "name": "Иссийский патриот",
+      "nameEn": "Issian Patriot",
+      "trainedSkills": "Общество,  Знание (закон)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Бывалый",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "ruin-delver",
+      "name": "Исследователь руин",
+      "nameEn": "Ruin Delver",
+      "trainedSkills": "Акробатика,  Знание (Стражи Розы)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Кошачье приземление",
+      "sourceBook": "Зловещие катакомбы"
+    },
+    {
+      "id": "hookclaw-digger",
+      "name": "Копатель Кривых Когтей",
+      "nameEn": "Hookclaw Digger",
+      "trainedSkills": "Ремесло,  Знание (горное дело или инженерное дело) .",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Импровизированный инструмент",
+      "sourceBook": "Маленький переполох в большом Авессаломе"
+    },
+    {
+      "id": "local-brigand",
+      "name": "Местный разбойник",
+      "nameEn": "Local Brigand",
+      "trainedSkills": "Запугивание,  Знание (разбой)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Групповая угроза",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "missionary",
+      "name": "Миссионер",
+      "nameEn": "Missionary",
+      "trainedSkills": "Дипломатия,  Знание (каллиграфия)",
+      "abilityBoosts": "Выносливость, Мудрость",
+      "skillFeat": "Групповое впечатление",
+      "sourceBook": "Падение чумного камня"
+    },
+    {
+      "id": "lesser-scion",
+      "name": "Младший наследник",
+      "nameEn": "Lesser Scion",
+      "trainedSkills": "Дипломатия,  Знание (геральдика)",
+      "abilityBoosts": "Ловкость, Интеллект",
+      "skillFeat": "Неформальное общение",
+      "sourceBook": "Падение чумного камня"
+    },
+    {
+      "id": "sword-scion",
+      "name": "Наследник клинка",
+      "nameEn": "Sword Scion",
+      "trainedSkills": "Знание (военное дело)",
+      "abilityBoosts": "Ловкость, Харизма",
+      "skillFeat": "-",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "borderlands-pioneer",
+      "name": "Первопроходец пограничья",
+      "nameEn": "Borderlands Pioneer",
+      "trainedSkills": "Природа,  Знание, связанное с определённым типом дикой местности",
+      "abilityBoosts": "Сила, Мудрость",
+      "skillFeat": "Дрессировка животного",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "lost-and-alone",
+      "name": "Потерянный и одинокий",
+      "nameEn": "Lost and Alone",
+      "trainedSkills": "Запугивание,  Знание (военное дело)",
+      "abilityBoosts": "Сила, Харизма",
+      "skillFeat": "Устрашающий взгляд",
+      "sourceBook": "Падение чумного камня"
+    },
+    {
+      "id": "rostlander",
+      "name": "Ростландец",
+      "nameEn": "Rostlander",
+      "trainedSkills": "Атлетика,  Знание (фермерство)",
+      "abilityBoosts": "Сила, Выносливость",
+      "skillFeat": "Дюжий носильщик",
+      "sourceBook": "Серия приключений Kingmaker"
+    },
+    {
+      "id": "market-runner",
+      "name": "Рыночный посыльный",
+      "nameEn": "Market Runner",
+      "trainedSkills": "Дипломатия,  Знание (Отари)",
+      "abilityBoosts": "Выносливость, Харизма",
+      "skillFeat": "Неформальное общение",
+      "sourceBook": "Зловещие катакомбы"
+    }
+  ]
+}

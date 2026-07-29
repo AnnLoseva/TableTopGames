@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { PATHFINDER2_ATTRIBUTES } from '../../data'
 import {
   BACKGROUND_CATEGORY_LABELS,
   displayAttribute,
@@ -9,11 +10,13 @@ import {
   displaySize,
   displayTrait,
   includesSearch,
+  matchesAttributeFilter,
   splitRuleParagraphs,
   uniqueSorted,
 } from '../../data/selectors'
 import type {
   Pathfinder2AncestryRule,
+  Pathfinder2AttributeKey,
   Pathfinder2BackgroundRule,
   Pathfinder2CharacterDraft,
   Pathfinder2ChoiceKind,
@@ -402,6 +405,7 @@ export default function Pathfinder2ChoiceGallery({
   const [category, setCategory] = useState('')
   const [skill, setSkill] = useState('')
   const [level, setLevel] = useState('')
+  const [attribute, setAttribute] = useState<Pathfinder2AttributeKey | ''>('')
   const [sort, setSort] = useState<'name' | 'source' | 'level'>('name')
   const selectedId = selectedIdForKind(kind, draft)
   const selectedIds = selectedIdsForKind(kind, draft)
@@ -416,6 +420,7 @@ export default function Pathfinder2ChoiceGallery({
     setCategory('')
     setSkill('')
     setLevel('')
+    setAttribute('')
     setSort('name')
     setPreviewId(selectedId)
   }, [kind, open, selectedId])
@@ -443,11 +448,14 @@ export default function Pathfinder2ChoiceGallery({
       const itemRarity = 'rarity' in item ? item.rarity : ''
       if (source && itemSource !== source) return false
       if (rarity && itemRarity !== rarity) return false
-      if (kind === 'ancestry' && size && (item as Pathfinder2AncestryRule).size !== size) {
-        return false
+      if (kind === 'ancestry') {
+        const ancestry = item as Pathfinder2AncestryRule
+        if (size && ancestry.size !== size) return false
+        if (!matchesAttributeFilter(ancestry, attribute)) return false
       }
       if (kind === 'background') {
         const background = item as Pathfinder2BackgroundRule
+        if (!matchesAttributeFilter(background, attribute)) return false
         if (category && background.tab !== category) return false
         if (
           skill
@@ -455,6 +463,10 @@ export default function Pathfinder2ChoiceGallery({
           && !background.trainedLore.includes(skill)
         ) return false
       }
+      if (
+        kind === 'class'
+        && !matchesAttributeFilter(item as Pathfinder2ClassRule, attribute)
+      ) return false
       if ((kind === 'generalFeat' || kind === 'skillFeat') && level) {
         if ((item as Pathfinder2FeatRule).level !== Number(level)) return false
       }
@@ -498,7 +510,7 @@ export default function Pathfinder2ChoiceGallery({
       }
       return left.name.localeCompare(right.name, 'ru')
     })
-  }, [category, kind, level, query, rarity, rawItems, size, skill, sort, source])
+  }, [attribute, category, kind, level, query, rarity, rawItems, size, skill, sort, source])
   useEffect(() => {
     if (!open || items.length === 0) return
     if (!items.some(item => item.id === previewId)) {
@@ -517,6 +529,22 @@ export default function Pathfinder2ChoiceGallery({
           onChange={event => setQuery(event.target.value)}
         />
       </label>
+      {kind === 'ancestry' || kind === 'background' || kind === 'class' ? (
+        <label>
+          <span>Характеристика</span>
+          <select
+            value={attribute}
+            onChange={event => setAttribute(
+              event.target.value as Pathfinder2AttributeKey | '',
+            )}
+          >
+            <option value="">Любая</option>
+            {PATHFINDER2_ATTRIBUTES.map(option => (
+              <option key={option.key} value={option.key}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+      ) : null}
       {kind === 'ancestry' || kind === 'background' ? (
         <label>
           <span>Редкость</span>
