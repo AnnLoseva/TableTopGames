@@ -147,6 +147,13 @@ async function run() {
       50,
       'Every ancestry should render its local artwork.',
     )
+    assert.equal(
+      await dialog
+        .locator('img[alt="Карточка народа «Кентавр»"]')
+        .getAttribute('src'),
+      '/pathfinder2/ancestries/centaur.png?v=e281bc58',
+      'The updated centaur artwork should use a cache-busting URL.',
+    )
     const closeButton = page.getByRole('button', { name: 'Закрыть каталог' })
     await closeButton.waitFor({ state: 'visible' })
     assert.equal(

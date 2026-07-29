@@ -109,6 +109,10 @@ const CLASS_CARD_IMAGE_IDS = new Set([
   'wizard',
 ])
 
+const ANCESTRY_CARD_IMAGE_VERSIONS: Readonly<Record<string, string>> = {
+  centaur: 'e281bc58',
+}
+
 function ChoiceTags({ values }: { values: string[] }) {
   if (values.length === 0) return null
   return (
@@ -611,8 +615,13 @@ export default function Pathfinder2ChoiceGallery({
       onConfirm={id => onConfirm(kind, id)}
       onClose={onClose}
       renderCard={(item, state) => {
+        const ancestryImageVersion = kind === 'ancestry'
+          ? ANCESTRY_CARD_IMAGE_VERSIONS[item.id]
+          : undefined
         const cardImage = kind === 'ancestry'
-          ? `/pathfinder2/ancestries/${item.id}.png`
+          ? `/pathfinder2/ancestries/${item.id}.png${
+            ancestryImageVersion ? `?v=${ancestryImageVersion}` : ''
+          }`
           : kind === 'class' && CLASS_CARD_IMAGE_IDS.has(item.id)
             ? `/pathfinder2/classes/${item.id}.png`
             : undefined
