@@ -11,6 +11,7 @@ import { PATHFINDER2_STEP_LABELS } from '../../rules/creation/validation-message
 import type {
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
+  Pathfinder2CharacterState,
   Pathfinder2RulesCatalog,
 } from '../../types'
 import styles from '../Pathfinder2SheetPage.module.css'
@@ -19,6 +20,7 @@ type ReviewAuditProps = {
   draft: Pathfinder2CharacterDraft
   catalog: Pathfinder2RulesCatalog
   build: Pathfinder2CharacterBuild
+  state: Pathfinder2CharacterState
   onFinish: () => void
 }
 
@@ -26,6 +28,7 @@ export default function ReviewAudit({
   draft,
   catalog,
   build,
+  state,
   onFinish,
 }: ReviewAuditProps) {
   const ancestry = getAncestryById(catalog, draft.ancestryId)
@@ -81,6 +84,43 @@ export default function ReviewAudit({
               )).join(' · ') || 'Базовое значение +0'}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className={styles.rulesSection}>
+        <header>
+          <div><span className={styles.choiceKicker}>Полный rules state</span><h3>Механические категории</h3></div>
+        </header>
+        <div className={styles.reviewGrid}>
+          <section>
+            <strong>Знания и способности</strong>
+            <p>{state.loreEntries.length} Lore · {state.grantedFeatIds.length} granted/selected feats</p>
+          </section>
+          <section>
+            <strong>Владения и особенности</strong>
+            <p>{state.proficiencies.length} владений · {state.features.length} классовых особенностей</p>
+          </section>
+          <section>
+            <strong>Снаряжение и Bulk</strong>
+            <p>{state.inventory.entries.length} предметов · Bulk {state.inventory.bulk} / {state.inventory.safeBulk}</p>
+          </section>
+          <section>
+            <strong>Боевые параметры</strong>
+            <p>КБ {state.derived.armorClass} · {state.attacks.length} рассчитанных атак</p>
+          </section>
+          <section>
+            <strong>Заклинания</strong>
+            <p>{state.spellcasting.expected
+              ? `${state.spellcasting.entries.length} источников · ${state.spellcasting.issues.length} проблем`
+              : 'Класс не требует полноценного spellcasting entry'}</p>
+          </section>
+          <section>
+            <strong>Языки и вера</strong>
+            <p>
+              {state.languages.grantedLanguageIds.length + state.languages.selectedLanguageIds.length} языков
+              {' · '}{state.religion.deity?.name ?? 'без проверенного божества'}
+            </p>
+          </section>
         </div>
       </section>
 

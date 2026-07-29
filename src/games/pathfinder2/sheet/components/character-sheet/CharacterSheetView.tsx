@@ -20,6 +20,8 @@ import { signedModifier } from '../../rules/derived-character-values'
 import type {
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
+  Pathfinder2CharacterDraftV4,
+  Pathfinder2CharacterState,
   Pathfinder2DerivedValues,
   Pathfinder2RulesCatalog,
   Pathfinder2SheetTab,
@@ -27,15 +29,20 @@ import type {
 import type {
   OpenPathfinder2Choice,
   UpdatePathfinder2Field,
+  UpdatePathfinder2V4,
 } from '../component-types'
+import LevelUpPanel from './LevelUpPanel'
 import styles from '../Pathfinder2SheetPage.module.css'
 
 type CharacterSheetViewProps = {
   draft: Pathfinder2CharacterDraft
+  v4Draft: Pathfinder2CharacterDraftV4
   catalog: Pathfinder2RulesCatalog
   build: Pathfinder2CharacterBuild
+  state: Pathfinder2CharacterState
   derived: Pathfinder2DerivedValues
   updateField: UpdatePathfinder2Field
+  updateV4: UpdatePathfinder2V4
   openChoice: OpenPathfinder2Choice
   onOpenBuilder: () => void
 }
@@ -112,26 +119,25 @@ function NumberField({
 
 export default function CharacterSheetView({
   draft,
+  v4Draft,
   catalog,
   build,
+  state,
   derived,
   updateField,
+  updateV4,
   openChoice,
   onOpenBuilder,
 }: CharacterSheetViewProps) {
   const [activeTab, setActiveTab] = useState<Pathfinder2SheetTab>('overview')
+  const [levelUpOpen, setLevelUpOpen] = useState(false)
   const ancestry = getAncestryById(catalog, draft.ancestryId)
   const heritage = getHeritageById(catalog, draft.ancestryId, draft.heritageId)
   const versatileHeritage = getVersatileHeritageById(catalog, draft.versatileHeritageId)
   const background = getBackgroundById(catalog, draft.backgroundId)
   const characterClass = getClassById(catalog, draft.classId)
   const subclass = getSubclassById(catalog, draft.classId, draft.subclassId)
-  const feats = [
-    ...draft.generalFeatIds,
-    ...draft.skillFeatIds,
-    ...draft.classFeatIds,
-    ...draft.ancestryFeatIds,
-  ].map(id => getFeatById(catalog, id)).filter(Boolean)
+  const feats = state.grantedFeatIds.map(id => getFeatById(catalog, id)).filter(Boolean)
 
   return (
     <main className={styles.characterSheet}>
@@ -153,22 +159,27 @@ export default function CharacterSheetView({
           <button type="button" className={styles.previousButton} onClick={onOpenBuilder}>
             Открыть создание
           </button>
-          <label className={styles.compactLevel}>
-            <span>Уровень</span>
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={draft.level}
-              onChange={event => updateField(
-                'level',
-                Math.min(20, Math.max(1, Number(event.target.value) || 1)),
-                { immediate: true },
-              )}
-            />
-          </label>
+          <button
+            type="button"
+            className={styles.nextButton}
+            disabled={draft.level >= 20}
+            onClick={() => setLevelUpOpen(value => !value)}
+          >
+            Повысить уровень
+          </button>
         </div>
       </section>
+
+      {levelUpOpen ? (
+        <LevelUpPanel
+          key={draft.level}
+          draft={v4Draft}
+          catalog={catalog}
+          state={state}
+          updateV4={updateV4}
+          onClose={() => setLevelUpOpen(false)}
+        />
+      ) : null}
 
       <section className={styles.sheetVitals} aria-label="Главные показатели">
         <div className={styles.hpBlock}>
@@ -207,7 +218,7 @@ export default function CharacterSheetView({
       ) : null}
 
       <nav className={styles.sheetTabs} aria-label="Разделы листа">
-        {TABS.map(tab => (
+        {TABS.filter(tab => tab.id !== 'spells' || state.spellcasting.expected).map(tab => (
           <button
             key={tab.id}
             type="button"
@@ -332,10 +343,11 @@ export default function CharacterSheetView({
                 )
               })}
             </div>
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Знания (Lore)</span>
-              <input value={draft.lore} onChange={event => updateField('lore', event.target.value)} />
-            </label>
+            <div className={styles.selectedChips}>
+              {state.loreEntries.map(lore => (
+                <span key={lore.id}>{lore.name} · {lore.rank}</span>
+              ))}
+            </div>
           </div>
         ) : null}
 
@@ -343,10 +355,7 @@ export default function CharacterSheetView({
           <div className={styles.sheetListPage}>
             <header className={styles.sheetSectionHeading}>
               <div><span className={styles.choiceKicker}>Способности</span><h2>Таланты героя</h2></div>
-              <div className={styles.choiceActions}>
-                <button type="button" className={styles.previousButton} onClick={event => openChoice('generalFeat', {}, event.currentTarget)}>Добавить общую</button>
-                <button type="button" className={styles.nextButton} onClick={event => openChoice('skillFeat', {}, event.currentTarget)}>Добавить навыка</button>
-              </div>
+              <span>Только granted/slot selections</span>
             </header>
             {feats.length ? (
               <div className={styles.sheetRuleCards}>
@@ -359,7 +368,7 @@ export default function CharacterSheetView({
                 ) : null)}
               </div>
             ) : (
-              <div className={styles.emptyState}><span>✦</span><strong>Способности ещё не выбраны</strong><p>Добавьте общую способность или способность навыка.</p></div>
+              <div className={styles.emptyState}><span>✦</span><strong>Нет проверенных черт</strong><p>Черты появляются только из структурированных слотов и автоматических grants.</p></div>
             )}
           </div>
         ) : null}
@@ -367,18 +376,25 @@ export default function CharacterSheetView({
         {activeTab === 'equipment' ? (
           <div className={styles.sheetListPage}>
             <header className={styles.sheetSectionHeading}>
-              <div><span className={styles.choiceKicker}>Инвентарь</span><h2>Снаряжение и языки</h2></div>
+              <div><span className={styles.choiceKicker}>Инвентарь</span><h2>Снаряжение и Bulk</h2></div>
+              <span>Bulk {state.inventory.bulk} / {state.inventory.safeBulk}</span>
             </header>
-            <div className={styles.fieldGrid}>
-              <label className={`${styles.field} ${styles.fieldWide}`}>
-                <span className={styles.fieldLabel}>Языки</span>
-                <textarea rows={3} value={draft.languages} onChange={event => updateField('languages', event.target.value)} />
-              </label>
-              <label className={`${styles.field} ${styles.fieldWide}`}>
-                <span className={styles.fieldLabel}>Снаряжение</span>
-                <textarea rows={12} value={draft.equipment} onChange={event => updateField('equipment', event.target.value)} />
-              </label>
+            <div className={styles.sheetRuleCards}>
+              {state.inventory.entries.map(entry => (
+                <article key={entry.id}>
+                  <span>{entry.quantity} шт.</span>
+                  <h3>{entry.customName || entry.item?.name || entry.itemId}</h3>
+                  <p>{entry.equipped ? 'Экипировано' : 'В инвентаре'} · Bulk {entry.bulk}</p>
+                </article>
+              ))}
             </div>
+            {!state.inventory.entries.length ? (
+              <div className={styles.emptyState}>
+                <span>⌁</span>
+                <strong>Нет структурированных покупок</strong>
+                <p>Описательные legacy notes не влияют на деньги, КБ и вес.</p>
+              </div>
+            ) : null}
           </div>
         ) : null}
 
@@ -387,11 +403,15 @@ export default function CharacterSheetView({
             <header className={styles.sheetSectionHeading}>
               <div><span className={styles.choiceKicker}>Заклинания</span><h2>Магическая подготовка</h2></div>
             </header>
-            <div className={styles.emptyState}>
-              <span>✧</span>
-              <strong>{characterClass?.spellTradition ? `Традиция: ${characterClass.spellTradition}` : 'Нет выбранной традиции'}</strong>
-              <p>Полная автоматизация заклинаний не входит в эту итерацию. Раздел сохранён как рабочая часть листа.</p>
-            </div>
+            {state.spellcasting.entries.map(calculated => (
+              <article className={styles.selectedChoice} key={calculated.entry.id}>
+                <span className={styles.choiceKicker}>
+                  {calculated.entry.tradition} · {calculated.entry.mode}
+                </span>
+                <h3>Атака +{calculated.spellAttack} · СЛ {calculated.spellDc}</h3>
+                <p>{calculated.selectedSpellIds.length} выбранных заклинаний</p>
+              </article>
+            ))}
           </div>
         ) : null}
 

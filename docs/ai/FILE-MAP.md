@@ -30,9 +30,9 @@ opening code**. Risk levels drive how careful you must be.
 | `src/games/vampires/lib/*` | VTM i18n and Supabase client | high | subsystem workflow | VTM-only |
 | `src/games/vampires/styles/*` | VTM global theme loaded by the VTM route group | medium | before-any-change | Keep Pathfinder styling isolated |
 | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx` | Pathfinder 2 route entry | low | before-any-change | Thin wrapper |
-| `src/games/pathfinder2/sheet/components/*` | Two-mode Pathfinder 2 sheet, ten-step builder and reusable choice galleries | medium | before-any-change | Local-only, no Supabase |
+| `src/games/pathfinder2/sheet/components/*` | Two-mode Pathfinder 2 sheet, eleven-step builder, level-up panel and reusable choice galleries | medium | before-any-change | Local-only, no Supabase |
 | `src/games/pathfinder2/sheet/{data,types}.ts` | Character draft model, static UI steps and shared catalog types | medium | before-any-change | Independent from VTM rules data |
-| `src/games/pathfinder2/sheet/{data,hooks,rules}/*` | Schema-v4 persistence/migration, catalog audit/contracts and pure attribute, skill, validation and progression engine | medium | before-any-change | v3 remains a transitional runtime adapter; keep localStorage/calculations framework-isolated, run `test:pathfinder2-builder` + `test:pathfinder2-data` |
+| `src/games/pathfinder2/sheet/{data,hooks,rules}/*` | Schema-v4 persistence/migration, catalog audit/contracts and pure creation, combat, spellcasting, detail and progression engines | medium | before-any-change | v3 remains a transitional runtime adapter; keep localStorage/calculations framework-isolated, run all `test:pathfinder2-*` scripts |
 | `src/games/pathfinder2/sheet/rules-data.ts` | Server-only adapter from raw Pathfinder JSON to the sheet catalog | medium | before-any-change | Keep raw JSON out of the client component |
 | `src/games/pathfinder2/sheet/rules-source.ts` | Short rule guides + pf2.ru search links | medium | before-any-change | Do not scrape or vendor full site content |
 | `src/games/pathfinder2/Rules/*.json` | Owner-provided Pathfinder ancestries, backgrounds, classes and feats | high | before-any-change | Preserve source/version/license metadata; keep schema changes behind `rules-data.ts` |

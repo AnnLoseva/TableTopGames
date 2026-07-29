@@ -189,7 +189,7 @@ export function clearRulesRebuildWhenConfirmed(
   const build = buildCharacter(draft, catalog)
   const hasRulesErrors = build.validationIssues.some(issue => (
     issue.severity === 'error'
-    && (issue.step === 'attributes' || issue.step === 'skills')
+    && (issue.step === 'final-attributes' || issue.step === 'features')
   ))
   return hasRulesErrors ? draft : { ...draft, needsRulesRebuild: false }
 }

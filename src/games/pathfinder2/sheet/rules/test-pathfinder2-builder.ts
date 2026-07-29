@@ -22,12 +22,15 @@ import type {
 import { calculateAttributeModifiers } from './attributes/calculate-attributes'
 import { validateAttributeChoices } from './attributes/validate-attribute-choices'
 import { buildCharacter } from './creation/build-character'
+import { buildCharacterState } from './creation/build-character-state'
 import {
   createDecisionSlot,
   createFeatSlot,
   isDecisionSlotComplete,
 } from './creation/decision-slots'
 import { reconcileCharacterDecisions } from './creation/reconcile-character'
+import { getFeatAvailability } from './feats/requirements'
+import { calculateProficiencyGrants } from './proficiencies/calculate-proficiencies'
 import { validateCharacterBuild } from './creation/validate-character'
 import {
   getStructuredClassSkillRules,
@@ -67,6 +70,11 @@ function ancestry(
     abilityFlaw,
     languages: [],
     bonusLanguages: '',
+    languageRules: {
+      grantedLanguageIds: [],
+      bonusChoiceCount: 0,
+      bonusLanguageIds: [],
+    },
     senses: [],
     specialAbilities: [],
     heritages: [{
@@ -99,6 +107,19 @@ function background(
     },
     trainedLore: 'Test Lore',
     skillFeat: '',
+    grantedLore: {
+      id: `background:${id}:lore`,
+      name: 'Test Lore',
+      rank: 'trained',
+      source: {
+        type: 'background',
+        id,
+        label: 'Предыстория',
+        level: 1,
+      },
+      custom: false,
+    },
+    grantedFeatIds: [],
     sourceBook: 'test',
     tab: 'general',
     region: null,
@@ -123,6 +144,9 @@ function characterClass(id = 'alchemist'): Pathfinder2ClassRule {
     attacks: '',
     defenses: '',
     classDc: 'trained',
+    proficiencyGrants: [],
+    choiceDefinitions: [],
+    requiresDeity: false,
     spellTradition: null,
     spellSlots: null,
     keyTerms: [],
@@ -158,6 +182,15 @@ const catalog: Pathfinder2RulesCatalog = {
   generalFeats: [],
   skillFeats: [],
   mythicFeats: [],
+  equipment: [],
+  weapons: [],
+  armor: [],
+  shields: [],
+  spells: [],
+  cantrips: [],
+  focusSpells: [],
+  languages: [],
+  deities: [],
   sources: [],
   dataAvailability: [],
   validationWarnings: [],
@@ -212,6 +245,25 @@ const tests: Array<[string, () => void]> = [
     assert.equal(result.modifiers.dexterity, 1)
     assert.equal(result.modifiers.constitution, 0)
     assert.equal(result.modifiers.charisma, 0)
+  }],
+  ['Добровольное понижение хранится отдельно и не выдаёт повышение', () => {
+    const draft = createDefaultPathfinder2Draft()
+    draft.ancestryId = 'human'
+    draft.attributeChoices.ancestryFreeBoosts = ['strength', 'dexterity']
+    draft.attributeChoices.voluntaryFlaws = ['charisma']
+    const result = calculateAttributeModifiers(draft, catalog)
+    assert.equal(result.modifiers.charisma, -1)
+    assert.ok(result.breakdown.charisma.some(entry => (
+      entry.source === 'voluntary-flaw' && entry.delta === -1
+    )))
+  }],
+  ['Добровольное понижение не может опустить итог ниже −1', () => {
+    const draft = createDefaultPathfinder2Draft()
+    draft.ancestryId = 'dwarf'
+    draft.attributeChoices.voluntaryFlaws = ['charisma']
+    assert.ok(validateAttributeChoices(draft, catalog).some(
+      issue => issue.id === 'attributes.minimum.charisma',
+    ))
   }],
   ['Одну характеристику нельзя повысить дважды на этапе народа', () => {
     const draft = validDraft()
@@ -482,6 +534,57 @@ const tests: Array<[string, () => void]> = [
     assert.equal(isDecisionSlotComplete(decision), false)
     assert.equal(isDecisionSlotComplete(feat), false)
     assert.equal(isDecisionSlotComplete({ ...feat, selectedFeatId: 'feat-1' }), true)
+  }],
+  ['Структурированные владения выбирают максимальный ранг и сохраняют источник', () => {
+    const source = {
+      type: 'class' as const,
+      id: 'fighter',
+      label: 'Воин',
+      level: 1,
+    }
+    const calculated = calculateProficiencyGrants([
+      { category: 'perception', rank: 'trained', level: 1, source },
+      { category: 'perception', rank: 'expert', level: 5, source },
+    ], 5)
+    assert.equal(calculated[0].rank, 'expert')
+    assert.equal(calculated[0].bonus, 9)
+    assert.equal(calculated[0].sources[0].id, 'fighter')
+  }],
+  ['Единый v4 state отделяет granted Lore и автоматические черты', () => {
+    const v4 = runtimeDraftToV4(validDraft())
+    const state = buildCharacterState(v4, catalog)
+    assert.equal(state.loreEntries[0].name, 'Test Lore')
+    assert.deepEqual(state.grantedFeatIds, [])
+    assert.equal(state.runtimeDraft.name, 'Тест')
+  }],
+  ['Черта проверяется по типу слота, уровню и prerequisites', () => {
+    const v4 = runtimeDraftToV4(validDraft())
+    const state = buildCharacterState(v4, catalog)
+    const slot = createFeatSlot({
+      source: {
+        type: 'level',
+        id: 'level-1',
+        label: '1-й уровень',
+        level: 1,
+      },
+      type: 'general-feat',
+      level: 1,
+    })
+    const feat = {
+      id: 'test-general',
+      name: 'Тестовая черта',
+      level: 1,
+      description: '',
+      prerequisites: null,
+      requirements: [{ type: 'attribute' as const, attribute: 'strength' as const, minimum: 1 }],
+      category: 'general' as const,
+      traits: [],
+    }
+    assert.equal(getFeatAvailability(feat, slot, state).available, true)
+    assert.equal(
+      getFeatAvailability({ ...feat, level: 2 }, slot, state).available,
+      false,
+    )
   }],
   ['Отсутствующий обязательный каталог блокирует готовность', () => {
     const incompleteCatalog: Pathfinder2RulesCatalog = {

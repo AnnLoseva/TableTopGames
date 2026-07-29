@@ -110,7 +110,7 @@ export default function SkillRulesEditor({
   const characterClass = getClassById(catalog, draft.classId)
   const { choiceRules } = getSkillRuleBlocks(draft, catalog)
   const errors = build.validationIssues.filter(issue => (
-    issue.step === 'skills' && issue.severity === 'error'
+    issue.step === 'features' && issue.severity === 'error'
   ))
 
   const hasFieldError = (field: string) => errors.some(issue => issue.field === field)

@@ -60,14 +60,14 @@ export function validateCharacterBuild(
     issues.push({
       id: 'heritage.mutually-exclusive',
       severity: 'error',
-      step: 'heritage',
+      step: 'ancestry',
       message: 'Обычное и универсальное наследие нельзя выбрать одновременно.',
     })
   } else if (!hasNormalHeritage && !hasVersatileHeritage) {
     issues.push({
       id: 'heritage.required',
       severity: 'error',
-      step: 'heritage',
+      step: 'ancestry',
       message: 'Выберите одно обычное или универсальное наследие.',
     })
   }
@@ -78,7 +78,7 @@ export function validateCharacterBuild(
     issues.push({
       id: 'heritage.wrong-ancestry',
       severity: 'error',
-      step: 'heritage',
+      step: 'ancestry',
       field: 'heritageId',
       message: 'Выбранное наследие не принадлежит текущему народу.',
     })
@@ -90,7 +90,7 @@ export function validateCharacterBuild(
     issues.push({
       id: 'heritage.versatile-missing',
       severity: 'error',
-      step: 'heritage',
+      step: 'ancestry',
       field: 'versatileHeritageId',
       message: 'Универсальное наследие больше не найдено в справочнике.',
     })
@@ -111,15 +111,6 @@ export function validateCharacterBuild(
       step: 'class',
       field: 'classId',
       message: 'Выберите класс.',
-    })
-  }
-  if (draft.level > 1) {
-    issues.push({
-      id: 'progression.not-supported',
-      severity: 'error',
-      step: 'concept',
-      field: 'level',
-      message: 'Строгая прогрессия уровней 2–20 ещё не подключена к интерфейсу. Завершить можно персонажа 1-го уровня.',
     })
   }
   if (draft.needsRulesRebuild) {

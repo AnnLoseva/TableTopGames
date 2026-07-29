@@ -52,7 +52,7 @@ export function validateCatalogReadiness(
   if (ancestryFeats && draft.ancestryId) {
     issues.push(issueFor(
       ancestryFeats,
-      'feats',
+      'features',
       'Справочник черт народов не подключён; обязательную черту народа проверить нельзя.',
     ))
   }
@@ -61,7 +61,7 @@ export function validateCatalogReadiness(
   if (classFeats && draft.classId) {
     issues.push(issueFor(
       classFeats,
-      'feats',
+      'features',
       'Справочник классовых черт не подключён; классовые слоты проверить нельзя.',
     ))
   }
@@ -73,7 +73,7 @@ export function validateCatalogReadiness(
   ) {
     issues.push(issueFor(
       generalFeats,
-      'feats',
+      'features',
       'Prerequisites выбранных черт ещё не представлены структурированными требованиями.',
     ))
   }
@@ -86,23 +86,48 @@ export function validateCatalogReadiness(
       'Каталог снаряжения не подключён; бюджет, покупки и Bulk проверить нельзя.',
     ))
   }
+  for (const id of ['weapons', 'armor', 'shields'] as const) {
+    const itemCatalog = unavailable(availability, id)
+    if (!itemCatalog) continue
+    issues.push(issueFor(
+      itemCatalog,
+      'equipment',
+      `${itemCatalog.label}: структурированные боевые поля не подключены.`,
+    ))
+  }
 
   const languages = unavailable(availability, 'languages')
   if (languages) {
     issues.push(issueFor(
       languages,
-      'equipment',
+      'details',
       'Каталог языков не подключён; автоматические и свободные языки проверить нельзя.',
     ))
   }
 
   const characterClass = getClassById(catalog, draft.classId)
+  const deities = unavailable(availability, 'deities')
+  if (deities && characterClass?.requiresDeity) {
+    issues.push(issueFor(
+      deities,
+      'details',
+      `Класс «${characterClass.name}» требует божество, но каталог божеств не подключён.`,
+    ))
+  }
+  const classProgression = unavailable(availability, 'class-progression')
+  if (classProgression && draft.level > 1) {
+    issues.push(issueFor(
+      classProgression,
+      'features',
+      'Полная структурированная прогрессия выбранного класса 2–20 не подключена.',
+    ))
+  }
   const spells = unavailable(availability, 'spells')
   if (spells && characterClass?.spellTradition) {
     issues.push(issueFor(
       spells,
-      'feats',
-      'Файл заклинаний присутствует, но spellcasting rules engine ещё не подключён.',
+      'features',
+      'Каталог заклинаний или spellcasting rules engine недоступен.',
     ))
   }
 

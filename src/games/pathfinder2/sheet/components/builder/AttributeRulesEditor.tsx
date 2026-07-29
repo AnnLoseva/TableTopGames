@@ -81,7 +81,7 @@ export default function AttributeRulesEditor({
   const characterClass = getClassById(catalog, draft.classId)
   const ancestryRules = getAncestryAttributeRules(draft, catalog)
   const errors = build.validationIssues.filter(issue => (
-    issue.step === 'attributes' && issue.severity === 'error'
+    issue.step === 'final-attributes' && issue.severity === 'error'
   ))
 
   const updateMode = (mode: Pathfinder2AttributeMode) => {
@@ -233,6 +233,34 @@ export default function AttributeRulesEditor({
                 key,
                 ancestryRules.freeBoostCount,
               ),
+            },
+          }), { immediate: true })}
+        />
+        <div className={styles.introCard}>
+          <span className={styles.introGlyph} aria-hidden="true">−1</span>
+          <div>
+            <strong>Добровольные понижения</strong>
+            <p>
+              Необязательное сюжетное решение. Оно не выдаёт дополнительного
+              повышения; итог не может стать ниже −1.
+            </p>
+          </div>
+        </div>
+        <AttributeChoiceButtons
+          selected={draft.attributeChoices.voluntaryFlaws}
+          options={PATHFINDER2_ATTRIBUTES.map(attribute => ({
+            key: attribute.key,
+            disabled: build.attributes.modifiers[attribute.key] <= -1
+              && !draft.attributeChoices.voluntaryFlaws.includes(attribute.key),
+            reason: 'Итог не может быть ниже −1',
+          }))}
+          onToggle={key => updateCharacter(current => ({
+            ...current,
+            attributeChoices: {
+              ...current.attributeChoices,
+              voluntaryFlaws: current.attributeChoices.voluntaryFlaws.includes(key)
+                ? current.attributeChoices.voluntaryFlaws.filter(value => value !== key)
+                : [...current.attributeChoices.voluntaryFlaws, key],
             },
           }), { immediate: true })}
         />

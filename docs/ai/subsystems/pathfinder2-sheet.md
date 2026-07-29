@@ -12,11 +12,11 @@ does not share the VTM character, room, bridge or Supabase contracts.
 src/app/pathfinder2/sheet/page.tsx
  → src/games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx
  → rules-data.ts
- → src/games/pathfinder2/Rules/{ancestries,backgrounds,classes,feats}.json
+ → src/games/pathfinder2/Rules/*.json
  → components/Pathfinder2SheetPage.tsx
    → character-sheet/CharacterSheetView.tsx
    → builder/CharacterBuilderView.tsx
-     → builder/{AttributeRulesEditor,SkillRulesEditor,ReviewAudit}.tsx
+     → builder/{InitialAttributes,AttributeRules,Features,Equipment,Calculations,Details,Review}*.tsx
    → choices/Pathfinder2ChoiceGallery.tsx
  → data.ts / types.ts / data/* / hooks/* / rules/*
  → localStorage `pathfinder2-character-draft-v4`
@@ -24,23 +24,30 @@ src/app/pathfinder2/sheet/page.tsx
 
 ## Current creation model
 
-- Ten steps: concept, ancestry, heritage, background, class, attributes, skills,
-  feats, equipment and review.
+- Eleven steps: concept, informational initial attributes, ancestry + heritage,
+  background, class, final attributes, features/proficiencies, equipment,
+  calculated values, details and review.
 - The route defaults to the working character sheet. The top switch moves
-  between that sheet and the ten-step builder without changing the URL or
+  between that sheet and the eleven-step builder without changing the URL or
   creating a second character object.
 - `Rules/*.json` is the owner-provided local data source. Ancestries,
   ancestry/versatile heritages, backgrounds, classes and
-  general/skill/mythic feats are connected. `archetypes.json` and `spells.json`
-  are audited but intentionally reported as present/not connected until their
-  mechanics adapters exist.
+  general/skill/mythic feats are connected. `spells.json` is normalized into
+  spell/cantrip/focus catalogs and used by the spellcasting engine.
+  `archetypes.json` remains present/not connected.
+- Descriptive item documents (including adventuring gear, armor, weapons,
+  shields, worn/held/alchemical items, consumables, runes, wands, staves and
+  other owner-provided groups) are audited. They are not used for purchases
+  because price, Bulk and combat fields are absent or buried in prose, and
+  several documents have missing/duplicate IDs.
 - `rules-data.ts` is a server-only adapter: it normalizes the owner-provided JSON
   documents into the serializable catalog used by the client component. Do not
   import the raw JSON into the client component.
 - `data/catalog-audit.ts` exposes machine-readable connected/partial/
-  present-unconnected/missing states. Missing ancestry/class feats, equipment,
-  weapons, armor, shields, deities, languages and full class progression are
-  blockers for the corresponding completion gates; do not invent their data.
+  present-unconnected/missing states. Missing ancestry/class feats, deities,
+  languages and full class progression, plus mechanically invalid descriptive
+  equipment/weapon/armor/shield documents, are blockers for the corresponding
+  completion gates; do not invent their data.
 - `data/catalog-document.ts` is the schema-v1 adapter/validator for future
   owner-provided catalogs. New catalogs need stable IDs, source/version/license
   metadata and entry-specific validation before rules-engine use.
@@ -58,25 +65,36 @@ src/app/pathfinder2/sheet/page.tsx
   boosts, separate class/Intelligence/replacement skill choices and
   level-stamped skill increases.
 - `rules/creation/decision-slots.ts` owns stable source-derived choice-slot IDs
-  and generic/feat slot completion. Actual slots still require authorized
-  ancestry/class/progression catalogs in later stages.
-- `rules/{attributes,skills,creation,progression}/*` is a pure TypeScript engine.
-  It calculates attribute breakdowns, automatic and selected skills,
-  proficiency ranks/modifiers, replacement choices and a structured validation
-  audit without React.
+  and generic/feat slot completion. Arbitrary feat adding is disabled; actual
+  ancestry/class slots still require authorized progression catalogs.
+- `rules/creation/build-character-state.ts` is the read-only v4 aggregate used
+  by the page. Pure modules under `rules/{attributes,skills,feats,
+  proficiencies,equipment,combat,spells,languages,religion,progression}` calculate
+  breakdowns, automatic grants, inventory/Bulk, attacks, spellcasting, details
+  and validation without React.
 - `rules/creation/structured-rules.ts` converts the 27 checked-in classes into
   explicit skill grants, restricted choices, base free-skill counts,
   Intelligence behavior and class-specific increase schedules. Display strings
   in `classes.json` are not parsed by the client rules engine.
 - Normal and versatile heritages are mutually exclusive. Confirming one clears
   the other; changing ancestry clears only an incompatible normal heritage.
-- Character creation is strict at level 1. The engine validates rank adjacency,
-  master/legendary minimum levels, class schedules and partial attribute boosts,
-  but the level 2–20 choice UI is intentionally not exposed yet. A character
-  above level 1 cannot be marked ready.
-- The summary calculates draft HP, unarmored AC, perception and class DC using
-  calculated attributes and selected rules records; perception and class DC
-  respect the class rank in `classes.json`.
+- The sheet exposes a one-level-at-a-time level-up panel. The engine records
+  level choices, optionally subtracts 1,000 XP, applies class features,
+  class-specific skill increases, 5/10/15/20 attribute packages and spell-slot
+  schedules. The high-level scenario keeps level 1 as the base and a target
+  level; it cannot skip history. Real owner data still blocks production
+  progression because ancestry/class feat and full class-progression catalogs
+  are missing.
+- The summary calculates HP, armor AC, perception, saves, class DC, inventory,
+  Bulk, equipped attacks and spell attack/DC from source decisions. Current HP
+  is not reset on every recalculation and is clamped if a changed build lowers
+  its maximum.
+- Currency math uses integer copper conversion; purchase/refund and carrying
+  rules work with the typed equipment contract. The UI does not present a fake
+  shop while the mechanical item catalog is unavailable.
+- Languages/deities have typed contracts and validators. Until owner catalogs
+  exist, legacy text remains notes and required language/deity decisions are
+  explicit completion blockers.
 - Draft persistence is local to the browser under
   `pathfinder2-character-draft-v4`. Text changes are debounced and choice
   confirmations save immediately. Restore reads v4 first, then retains
@@ -110,4 +128,7 @@ request data directly. Therefore:
 5. Keep raw rule schemas behind `rules-data.ts`; update
    `data/catalog-audit.ts` whenever a catalog becomes connected.
 6. Run `npm run test:pathfinder2-builder`, `npm run test:pathfinder2-data`,
-   `npm run lint`, `npm run build`, and smoke `/pathfinder2/sheet`.
+   `npm run test:pathfinder2-equipment`, `npm run test:pathfinder2-spells`,
+   `npm run test:pathfinder2-progression`,
+   `npm run test:pathfinder2-builder:e2e`, `npm run lint`, `npm run build`, and
+   smoke `/pathfinder2/sheet`.

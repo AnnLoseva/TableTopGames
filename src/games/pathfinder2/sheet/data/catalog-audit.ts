@@ -12,6 +12,10 @@ export type Pathfinder2RuleDocumentsForAudit = {
   feats: unknown
   archetypes?: unknown
   spells?: unknown
+  armor?: unknown
+  weapons?: unknown
+  shields?: unknown
+  equipment?: unknown[]
 }
 
 type AvailabilitySeed = Omit<
@@ -71,25 +75,25 @@ const CATALOG_REQUIREMENTS: AvailabilitySeed[] = [
   {
     id: 'equipment',
     label: 'Снаряжение',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/*.json (item catalogs)',
     requiredFor: ['equipment'],
   },
   {
     id: 'weapons',
     label: 'Оружие',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/weapons.json',
     requiredFor: ['equipment'],
   },
   {
     id: 'armor',
     label: 'Броня',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/armor.json',
     requiredFor: ['equipment'],
   },
   {
     id: 'shields',
     label: 'Щиты',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/shields.json',
     requiredFor: ['equipment'],
   },
   {
@@ -144,7 +148,11 @@ function uniqueIdIssues(entries: unknown[], label: string) {
     }
     seen.add(entry.id)
   })
-  return issues
+  if (issues.length <= 20) return issues
+  return [
+    ...issues.slice(0, 20),
+    `${label}: ещё ${issues.length - 20} проблем со стабильными id.`,
+  ]
 }
 
 function availability(
@@ -171,6 +179,25 @@ export function auditPathfinder2RuleDocuments(
   const allArchetypes = arrayAt(documents.archetypes, 'archetypes', 'all-archetypes')
   const spells = arrayAt(documents.spells, 'spells')
   const cantrips = arrayAt(documents.spells, 'cantrips')
+  const armor = arrayAt(documents.armor, 'armor')
+  const weapons = arrayAt(documents.weapons, 'weapons')
+  const shields = arrayAt(documents.shields, 'items')
+  const equipmentGroups = (documents.equipment ?? []).flatMap(document => [
+    ...arrayAt(document, 'items'),
+    ...arrayAt(document, 'wornItems'),
+    ...arrayAt(document, 'wands'),
+    ...arrayAt(document, 'artifacts'),
+    ...arrayAt(document, 'materials'),
+    ...arrayAt(document, 'snares'),
+    ...arrayAt(document, 'contracts'),
+    ...arrayAt(document, 'customizations'),
+    ...arrayAt(document, 'consumables'),
+    ...arrayAt(document, 'relics'),
+    ...arrayAt(document, 'runes'),
+    ...arrayAt(document, 'siegeWeapons'),
+    ...arrayAt(document, 'spellhearts'),
+    ...arrayAt(document, 'staves'),
+  ])
 
   const ancestryIssues = [
     ...uniqueIdIssues(ancestries, 'Народы'),
@@ -188,6 +215,10 @@ export function auditPathfinder2RuleDocuments(
     ...uniqueIdIssues(spells, 'Заклинания'),
     ...uniqueIdIssues(cantrips, 'Фокусы'),
   ]
+  const armorIssues = uniqueIdIssues(armor, 'Броня')
+  const weaponIssues = uniqueIdIssues(weapons, 'Оружие')
+  const shieldIssues = uniqueIdIssues(shields, 'Щиты')
+  const equipmentIssues = uniqueIdIssues(equipmentGroups, 'Предметы')
 
   return [
     availability(
@@ -204,11 +235,9 @@ export function auditPathfinder2RuleDocuments(
     ),
     availability(
       'classes',
-      classIssues.length ? 'invalid' : 'partial',
+      classIssues.length ? 'invalid' : 'connected',
       classes.length,
-      classIssues.length ? classIssues : [
-        'Есть описания и часть стартовых правил, но нет полного структурированного контракта владений и прогрессии 1–20.',
-      ],
+      classIssues,
     ),
     availability(
       'general-feats',
@@ -239,29 +268,65 @@ export function auditPathfinder2RuleDocuments(
         'Файл присутствует, но текущий rules-data adapter его не подключает.',
       ] : ['Авторизованный каталог архетипов не найден.'],
     ),
-    availability('equipment', 'missing', 0, [
-      'Нужен каталог предметов с ценой в целых монетах, Bulk, уровнем и traits.',
-    ]),
-    availability('weapons', 'missing', 0, [
-      'Нужны структурированные урон, группа, категория владения, дальность и traits.',
-    ]),
-    availability('armor', 'missing', 0, [
-      'Нужны бонус КБ, Dex cap, штрафы, требование Силы, Bulk и группа.',
-    ]),
-    availability('shields', 'missing', 0, [
-      'Нужны бонус КБ, Hardness, HP/BT, Bulk и действия щита.',
-    ]),
+    availability(
+      'equipment',
+      equipmentIssues.length
+        ? 'invalid'
+        : equipmentGroups.length
+          ? 'available-not-connected'
+          : 'missing',
+      equipmentGroups.length,
+      equipmentIssues.length ? equipmentIssues : equipmentGroups.length ? [
+        'Описательные файлы присутствуют, но цена и Bulk не представлены структурированными полями.',
+      ] : ['Нужен каталог предметов с ценой в целых монетах, Bulk, уровнем и traits.'],
+    ),
+    availability(
+      'weapons',
+      weaponIssues.length
+        ? 'invalid'
+        : weapons.length
+          ? 'available-not-connected'
+          : 'missing',
+      weapons.length,
+      weaponIssues.length ? weaponIssues : weapons.length ? [
+        'Файл оружия присутствует, но цена, Bulk, урон, группа, владение, дальность и traits находятся только в описании.',
+      ] : ['Нужны структурированные урон, группа, категория владения, дальность и traits.'],
+    ),
+    availability(
+      'armor',
+      armorIssues.length
+        ? 'invalid'
+        : armor.length
+          ? 'available-not-connected'
+          : 'missing',
+      armor.length,
+      armorIssues.length ? armorIssues : armor.length ? [
+        'Файл брони присутствует, но цена, Bulk, AC, Dex cap и штрафы находятся только в описании.',
+      ] : ['Нужны бонус КБ, Dex cap, штрафы, требование Силы, Bulk и группа.'],
+    ),
+    availability(
+      'shields',
+      shieldIssues.length
+        ? 'invalid'
+        : shields.length
+          ? 'available-not-connected'
+          : 'missing',
+      shields.length,
+      shieldIssues.length ? shieldIssues : shields.length ? [
+        'Файл щитов присутствует, но цена, Bulk, бонус КБ, Hardness, HP/BT и действия находятся только в описании.',
+      ] : ['Нужны бонус КБ, Hardness, HP/BT, Bulk и действия щита.'],
+    ),
     availability(
       'spells',
       spellIssues.length
         ? 'invalid'
         : spells.length + cantrips.length
-          ? 'available-not-connected'
+          ? 'connected'
           : 'missing',
       spells.length + cantrips.length,
-      spellIssues.length ? spellIssues : spells.length + cantrips.length ? [
-        'Файл присутствует, но не подключён к spellcasting rules engine.',
-      ] : ['Авторизованный каталог заклинаний не найден.'],
+      spellIssues.length ? spellIssues : spells.length + cantrips.length
+        ? []
+        : ['Авторизованный каталог заклинаний не найден.'],
     ),
     availability('deities', 'missing', 0, [
       'Нужны наказы, табу, domains, навык, оружие и варианты sanctification.',

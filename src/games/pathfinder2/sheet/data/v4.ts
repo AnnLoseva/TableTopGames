@@ -62,6 +62,7 @@ export function createDefaultPathfinder2DraftV4(): Pathfinder2CharacterDraftV4 {
       featChoicesByLevel: {},
     },
     attributes: {
+      priorities: [],
       finalFreeBoosts: [],
       levelBoosts: {},
     },

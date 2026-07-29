@@ -124,6 +124,7 @@ function migrateAttributeChoices(
   return {
     ancestryMode: raw.ancestryMode === 'alternate' ? 'alternate' : 'standard',
     ancestryFreeBoosts: asAttributeKeys(raw.ancestryFreeBoosts),
+    voluntaryFlaws: asAttributeKeys(raw.voluntaryFlaws),
     backgroundLimitedBoost: asAttributeKey(raw.backgroundLimitedBoost),
     backgroundFreeBoost: asAttributeKey(raw.backgroundFreeBoost),
     classKeyBoost: asAttributeKey(raw.classKeyBoost) ?? asAttributeKey(legacyKeyAbility),

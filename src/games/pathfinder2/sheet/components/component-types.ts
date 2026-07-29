@@ -1,5 +1,6 @@
 import type {
   Pathfinder2CharacterDraft,
+  Pathfinder2CharacterDraftV4,
   Pathfinder2ChoiceKind,
 } from '../types'
 
@@ -25,5 +26,12 @@ export type UpdatePathfinder2Field = <
 >(
   key: Key,
   value: Pathfinder2CharacterDraft[Key],
+  options?: { immediate?: boolean },
+) => void
+
+export type UpdatePathfinder2V4 = (
+  updater: (
+    current: Pathfinder2CharacterDraftV4,
+  ) => Pathfinder2CharacterDraftV4,
   options?: { immediate?: boolean },
 ) => void

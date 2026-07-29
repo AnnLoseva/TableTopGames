@@ -28,7 +28,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.ancestry-required',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'ancestryFreeBoosts',
       message: 'Сначала выберите народ.',
     })
@@ -36,7 +36,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.ancestry-free-count',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'ancestryFreeBoosts',
       message: `Распределите повышения народа: выбрано ${choices.ancestryFreeBoosts.length} из ${ancestryRules.freeBoostCount}.`,
     })
@@ -48,9 +48,18 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.ancestry-duplicate',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'ancestryFreeBoosts',
       message: 'На этапе народа одну характеристику нельзя повысить дважды.',
+    })
+  }
+  if (duplicateCount(choices.voluntaryFlaws) > 0) {
+    issues.push({
+      id: 'attributes.voluntary-flaw-duplicate',
+      severity: 'error',
+      step: 'final-attributes',
+      field: 'voluntaryFlaws',
+      message: 'К одной характеристике можно применить только одно добровольное понижение.',
     })
   }
 
@@ -58,7 +67,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.background-required',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'backgroundLimitedBoost',
       message: 'Сначала выберите предысторию.',
     })
@@ -69,7 +78,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.background-limited',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'backgroundLimitedBoost',
       message: 'Выберите одно из двух повышений, разрешённых предысторией.',
     })
@@ -78,7 +87,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.background-free',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'backgroundFreeBoost',
       message: 'Выберите свободное повышение предыстории.',
     })
@@ -86,7 +95,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.background-duplicate',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'backgroundFreeBoost',
       message: 'Два повышения предыстории должны применяться к разным характеристикам.',
     })
@@ -96,7 +105,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.class-required',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'classKeyBoost',
       message: 'Сначала выберите класс.',
     })
@@ -107,7 +116,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.class-key',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'classKeyBoost',
       message: 'Выберите разрешённую классу ключевую характеристику.',
     })
@@ -120,7 +129,7 @@ export function validateAttributeChoices(
     issues.push({
       id: 'attributes.final-free-count',
       severity: 'error',
-      step: 'attributes',
+      step: 'final-attributes',
       field: 'finalFreeBoosts',
       message: `Распределите четыре разных свободных повышения: выбрано ${new Set(choices.finalFreeBoosts).size} из 4.`,
     })
@@ -132,7 +141,7 @@ export function validateAttributeChoices(
       issues.push({
         id: `attributes.maximum.${key}`,
         severity: 'error',
-        step: 'attributes',
+        step: 'final-attributes',
         field: key,
         message: 'На 1-м уровне характеристика не может быть выше +4.',
       })
@@ -141,7 +150,7 @@ export function validateAttributeChoices(
       issues.push({
         id: `attributes.minimum.${key}`,
         severity: 'error',
-        step: 'attributes',
+        step: 'final-attributes',
         field: key,
         message: 'Итоговая характеристика не может быть ниже −1.',
       })

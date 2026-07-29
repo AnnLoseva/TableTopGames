@@ -79,8 +79,33 @@ From `package.json`. Run the relevant checks after edits (see
 - **Failure means:** catalog IDs/counts drifted, duplicate IDs appeared, or a
   missing/not-connected catalog was accidentally reported as ready.
 
+## `npm run test:pathfinder2-equipment`
+- **What:** integer currency, purchase/refund, Bulk/carrying, armor and weapon
+  calculation scenarios against typed fixtures.
+- **When:** after changing `rules/{equipment,combat}/*` or item contracts.
+
+## `npm run test:pathfinder2-spells`
+- **What:** tradition normalization, class slot schedules, casting modes,
+  selection limits and spell attack/DC.
+- **When:** after changing the spell catalog adapter or `rules/spells/*`.
+
+## `npm run test:pathfinder2-progression`
+- **What:** sequential one-level advancement, XP, class features, skill/attribute
+  choices and full history replay through level 20.
+- **When:** after changing progression, class features or level-stamped state.
+
+## `npm run test:pathfinder2-builder:e2e`
+- **What:** starts a local Next.js server (unless `PATHFINDER2_E2E_BASE_URL` is
+  set) and uses Playwright with local Chrome/Chromium to verify hydration, all
+  eleven steps, v4 persistence, v3 migration, catalog blockers, dialog focus,
+  clean browser console and a 1024×768 layout without horizontal overflow.
+- **When:** after changing the Pathfinder builder, persistence, catalog gates or
+  responsive layout.
+- **Local browser:** set `PATHFINDER2_E2E_CHROME_EXECUTABLE` if neither the
+  Chrome channel nor Playwright's bundled Chromium is available.
+
 ## Recommended order after a change
 1. `npm run lint` (fast type check)
-2. area audit/validate/test scripts (`test:pathfinder2-builder` for the PF2 sheet)
+2. area audit/validate/test scripts (all relevant `test:pathfinder2-*` scripts)
 3. `npm run build` (final gate)
 4. manual smoke of affected routes (`workflows/verification-checklist.md`)

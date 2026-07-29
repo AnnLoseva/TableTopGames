@@ -32,7 +32,7 @@ export function validateSkillIncreases(
     issues.push({
       id: 'skills.increases.too-many',
       severity: 'error',
-      step: 'skills',
+      step: 'features',
       field: 'skillIncreases',
       message: 'Выбрано больше повышений навыков, чем даёт прогрессия класса.',
     })
@@ -45,7 +45,7 @@ export function validateSkillIncreases(
       issues.push({
         id: `skills.increase.level.${index}`,
         severity: 'error',
-        step: 'skills',
+        step: 'features',
         field: `skillIncreases.${index}`,
         message: `Класс не даёт повышение навыка на ${increase.level}-м уровне.`,
       })
@@ -58,7 +58,7 @@ export function validateSkillIncreases(
       issues.push({
         id: `skills.increase.sequence.${index}`,
         severity: 'error',
-        step: 'skills',
+        step: 'features',
         field: `skillIncreases.${index}`,
         message: 'Ранг навыка можно повысить только на одну ступень от текущего ранга.',
       })
@@ -68,7 +68,7 @@ export function validateSkillIncreases(
       issues.push({
         id: `skills.increase.minimum-level.${index}`,
         severity: 'error',
-        step: 'skills',
+        step: 'features',
         field: `skillIncreases.${index}`,
         message: increase.toRank === 'master'
           ? 'Ранг мастера недоступен раньше 7-го уровня.'

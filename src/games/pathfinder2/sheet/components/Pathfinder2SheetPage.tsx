@@ -2,13 +2,10 @@
 
 import dynamic from 'next/dynamic'
 import { useMemo, useRef, useState } from 'react'
-import { calculateDerivedCharacterValues } from '../rules/derived-character-values'
 import { getBuilderCompletion } from '../rules/builder-progress'
-import { buildCharacter } from '../rules/creation/build-character'
+import { buildCharacterState } from '../rules/creation/build-character-state'
 import { reconcileCharacterDecisions } from '../rules/creation/reconcile-character'
 import {
-  getAncestryById,
-  getBackgroundById,
   getClassById,
 } from '../data/selectors'
 import { usePathfinder2Character } from '../hooks/usePathfinder2Character'
@@ -50,19 +47,26 @@ export default function Pathfinder2SheetPage({
   const returnFocusRef = useRef<HTMLElement | null>(null)
   const {
     draft,
+    v4Draft,
     hydrated,
     saveStatus,
     migrationWarnings,
     updateCharacter,
+    updateV4,
     updateField,
     resetCharacter,
     clearMigrationWarnings,
   } = usePathfinder2Character(rules)
-  const build = useMemo(() => buildCharacter(draft, rules), [draft, rules])
-  const derived = useMemo(
-    () => calculateDerivedCharacterValues(draft, rules, build),
-    [build, draft, rules],
+  const characterState = useMemo(
+    () => buildCharacterState(v4Draft, rules),
+    [rules, v4Draft],
   )
+  const build = useMemo(() => ({
+    ...characterState.legacyBuild,
+    validationIssues: characterState.validationIssues,
+    isReady: characterState.isReady,
+  }), [characterState])
+  const derived = characterState.derived
   const completion = useMemo(
     () => getBuilderCompletion(draft, build.validationIssues),
     [build.validationIssues, draft],
@@ -104,26 +108,9 @@ export default function Pathfinder2SheetPage({
           setNotice('Обычное наследие заменено универсальным.')
         }
       } else if (kind === 'background') {
-        const background = getBackgroundById(rules, id)
-        const previousBackground = getBackgroundById(rules, current.backgroundId)
-        const previousBackgroundFeat = rules.skillFeats.find(
-          feat => feat.name === previousBackground?.skillFeat,
-        )
-        const backgroundFeatName = background?.skillFeat
-          .replace(/\s*\([^)]*\)\s*$/, '')
-          .trim()
-        const backgroundFeat = rules.skillFeats.find(
-          feat => feat.name === backgroundFeatName,
-        )
-        const skillFeatIds = current.skillFeatIds
-          .filter(featId => featId !== previousBackgroundFeat?.id)
         const reconciled = reconcileCharacterDecisions(current, {
           ...current,
           backgroundId: id,
-          lore: background?.trainedLore || current.lore,
-          skillFeatIds: backgroundFeat
-            ? Array.from(new Set([...skillFeatIds, backgroundFeat.id]))
-            : skillFeatIds,
         }, rules)
         next = reconciled.draft
         if (reconciled.changes.length) setNotice(reconciled.changes.join(' '))
@@ -163,16 +150,58 @@ export default function Pathfinder2SheetPage({
         }
       }
 
-      const nextDerived = calculateDerivedCharacterValues(next, rules)
+      const nextState = buildCharacterState(
+        // The v4 adapter preserves details that are outside the transitional UI.
+        // This provisional state is only used to initialize current HP.
+        {
+          ...v4Draft,
+          identity: {
+            ...v4Draft.identity,
+            name: next.name,
+            player: next.player,
+            pronouns: next.pronouns,
+            concept: next.concept,
+            portrait: next.portrait,
+          },
+          ancestry: {
+            ...v4Draft.ancestry,
+            ancestryId: next.ancestryId,
+            heritageId: next.heritageId || null,
+            versatileHeritageId: next.versatileHeritageId || null,
+          },
+          background: {
+            ...v4Draft.background,
+            backgroundId: next.backgroundId,
+          },
+          class: {
+            ...v4Draft.class,
+            classId: next.classId,
+            keyAbility: next.attributeChoices.classKeyBoost,
+          },
+        },
+        rules,
+      )
       if (
         next.currentHp === 0
-        && nextDerived.maxHp
+        && nextState.derived.maxHp
         && (kind === 'ancestry' || kind === 'class')
       ) {
-        next = { ...next, currentHp: nextDerived.maxHp }
+        next = { ...next, currentHp: nextState.derived.maxHp }
+      } else if (
+        nextState.derived.maxHp !== null
+        && next.currentHp > nextState.derived.maxHp
+      ) {
+        next = { ...next, currentHp: nextState.derived.maxHp }
+        setNotice('Текущие ПЗ ограничены новым максимумом после пересчёта.')
       }
       return next
     }, { immediate: true })
+    if (kind === 'class' && draft.classId && draft.classId !== id) {
+      updateV4(current => ({
+        ...current,
+        spellcasting: { entries: [] },
+      }), { immediate: true })
+    }
     closeChoice()
   }
 
@@ -185,7 +214,7 @@ export default function Pathfinder2SheetPage({
   }
 
   const handleFinish = () => {
-    if (build.isReady) {
+    if (characterState.isReady) {
       setMode('sheet')
       return
     }
@@ -231,22 +260,28 @@ export default function Pathfinder2SheetPage({
         mode === 'sheet' ? (
           <CharacterSheetView
             draft={draft}
+            v4Draft={v4Draft}
             catalog={rules}
             build={build}
+            state={characterState}
             derived={derived}
             updateField={updateField}
+            updateV4={updateV4}
             openChoice={openChoice}
             onOpenBuilder={() => setMode('builder')}
           />
         ) : (
           <CharacterBuilderView
             draft={draft}
+            v4Draft={v4Draft}
             catalog={rules}
             build={build}
+            state={characterState}
             derived={derived}
             activeStep={activeStep}
             onStepChange={setActiveStep}
             updateCharacter={updateCharacter}
+            updateV4={updateV4}
             updateField={updateField}
             openChoice={openChoice}
             onFinish={handleFinish}

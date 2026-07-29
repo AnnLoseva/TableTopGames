@@ -40,7 +40,7 @@ export const PATHFINDER2_RULE_GUIDES: {
   },
   {
     id: 'heritage-options',
-    step: 'heritage',
+    step: 'ancestry',
     category: 'Происхождение',
     title: 'Обычные и универсальные наследия',
     summary: 'Обычное наследие связано с выбранным народом, а универсальное добавляет отдельное происхождение и не заменяет выбор народа.',
@@ -64,7 +64,7 @@ export const PATHFINDER2_RULE_GUIDES: {
   },
   {
     id: 'class-feats',
-    step: 'feats',
+    step: 'features',
     category: 'Способности',
     title: 'Классовые способности',
     summary: 'Классовые способности позволяют выбрать специализацию внутри класса. Доступные варианты зависят от класса и уровня.',
@@ -72,7 +72,7 @@ export const PATHFINDER2_RULE_GUIDES: {
   },
   {
     id: 'attribute-boosts',
-    step: 'attributes',
+    step: 'final-attributes',
     category: 'Характеристики',
     title: 'Повышения характеристик',
     summary: 'Итоговые модификаторы складываются из решений происхождения, предыстории, класса и свободных повышений персонажа.',
@@ -80,7 +80,7 @@ export const PATHFINDER2_RULE_GUIDES: {
   },
   {
     id: 'proficiency',
-    step: 'attributes',
+    step: 'final-attributes',
     category: 'Основные правила',
     title: 'Уровни умения',
     summary: 'Для обученного показателя бонус умения включает уровень персонажа и бонус ранга; необученный обычно не добавляет уровень.',
@@ -88,7 +88,7 @@ export const PATHFINDER2_RULE_GUIDES: {
   },
   {
     id: 'skills',
-    step: 'skills',
+    step: 'features',
     category: 'Навыки',
     title: 'Проверки навыков',
     summary: 'Проверка навыка использует подходящую характеристику и бонус умения. Обучение открывает действия и способности этого навыка.',
@@ -96,7 +96,7 @@ export const PATHFINDER2_RULE_GUIDES: {
   },
   {
     id: 'skill-feats',
-    step: 'feats',
+    step: 'features',
     category: 'Способности',
     title: 'Черты навыков',
     summary: 'Большинство черт навыков требует обучения соответствующему навыку; новые варианты появляются по мере роста уровня.',

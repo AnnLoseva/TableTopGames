@@ -16,7 +16,11 @@
     "test:rules-chat": "node --import tsx src/games/vampires/scripts/test-rules-chat-search.ts",
     "test:chronicle-library": "node --import tsx src/games/vampires/scripts/test-chronicle-library.ts",
     "test:pathfinder2-builder": "node --import tsx src/games/pathfinder2/sheet/rules/test-pathfinder2-builder.ts",
-    "test:pathfinder2-data": "node --import tsx src/games/pathfinder2/sheet/rules/test-pathfinder2-data.ts"
+    "test:pathfinder2-data": "node --import tsx src/games/pathfinder2/sheet/rules/test-pathfinder2-data.ts",
+    "test:pathfinder2-equipment": "node --import tsx src/games/pathfinder2/sheet/rules/equipment/test-pathfinder2-equipment.ts",
+    "test:pathfinder2-spells": "node --import tsx src/games/pathfinder2/sheet/rules/spells/test-pathfinder2-spells.ts",
+    "test:pathfinder2-progression": "node --import tsx src/games/pathfinder2/sheet/rules/progression/test-pathfinder2-progression.ts",
+    "test:pathfinder2-builder:e2e": "node --import tsx src/games/pathfinder2/sheet/e2e/test-pathfinder2-builder-e2e.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

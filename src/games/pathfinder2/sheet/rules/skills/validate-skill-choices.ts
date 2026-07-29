@@ -25,7 +25,7 @@ export function validateSkillChoices(
     issues.push({
       id: 'skills.background-required',
       severity: 'error',
-      step: 'skills',
+      step: 'features',
       message: 'Сначала выберите предысторию.',
     })
   }
@@ -33,7 +33,7 @@ export function validateSkillChoices(
     issues.push({
       id: 'skills.class-required',
       severity: 'error',
-      step: 'skills',
+      step: 'features',
       message: 'Сначала выберите класс.',
     })
   }
@@ -52,7 +52,7 @@ export function validateSkillChoices(
       issues.push({
         id: `skills.granted-choice.${rule.id}`,
         severity: 'error',
-        step: 'skills',
+        step: 'features',
         field: `grantedChoiceSelections.${rule.id}`,
         message: `${rule.label}: выберите ровно ${rule.count} допустимый навык.`,
       })
@@ -76,7 +76,7 @@ export function validateSkillChoices(
     issues.push({
       id: 'skills.choice-duplicate',
       severity: 'error',
-      step: 'skills',
+      step: 'features',
       field: 'skillChoices',
       message: 'Один навык нельзя занять сразу несколькими источниками выбора.',
     })
@@ -89,7 +89,7 @@ export function validateSkillChoices(
         ? 'skills.class-free.too-many'
         : 'skills.class-free.too-few',
       severity: 'error',
-      step: 'skills',
+      step: 'features',
       field: 'classFreeSkills',
       message: `Дополнительные навыки класса: выбрано ${classSelected.length} из ${calculated.classFreeLimit}.`,
     })
@@ -101,7 +101,7 @@ export function validateSkillChoices(
         ? 'skills.intelligence.too-many'
         : 'skills.intelligence.too-few',
       severity: 'error',
-      step: 'skills',
+      step: 'features',
       field: 'intelligenceSkills',
       message: `Интеллект даёт ${calculated.intelligenceLimit} дополнительных навыков; выбрано ${intelligenceSelected.length}.`,
     })
@@ -113,7 +113,7 @@ export function validateSkillChoices(
       issues.push({
         id: `skills.replacement.${replacement.id}`,
         severity: 'error',
-        step: 'skills',
+        step: 'features',
         field: `replacementSkills.${replacement.id}`,
         message: `Повторное обучение навыку требует выбрать допустимую замену.`,
       })

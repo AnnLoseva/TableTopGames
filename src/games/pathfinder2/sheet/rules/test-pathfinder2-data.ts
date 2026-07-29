@@ -1,10 +1,34 @@
 import assert from 'node:assert/strict'
+import adventuringGear from '../../Rules/adventuring-gear.json'
 import ancestries from '../../Rules/ancestries.json'
+import alchemicalItems from '../../Rules/alchemical-items.json'
 import archetypes from '../../Rules/archetypes.json'
+import armor from '../../Rules/armor.json'
+import artifacts from '../../Rules/artifacts.json'
+import assistiveItems from '../../Rules/assistive-items.json'
 import backgrounds from '../../Rules/backgrounds.json'
 import classes from '../../Rules/classes.json'
+import contracts from '../../Rules/contracts.json'
+import consumables from '../../Rules/consumables.json'
+import customizations from '../../Rules/customizations.json'
 import feats from '../../Rules/feats.json'
+import grafts from '../../Rules/grafts.json'
+import heldItems from '../../Rules/held-items.json'
+import materials from '../../Rules/materials.json'
+import relics from '../../Rules/relics.json'
+import runes from '../../Rules/runes.json'
+import shields from '../../Rules/shields.json'
+import siegeWeapons from '../../Rules/siege-weapons.json'
+import snares from '../../Rules/snares.json'
+import spellhearts from '../../Rules/spellhearts.json'
 import spells from '../../Rules/spells.json'
+import staves from '../../Rules/staves.json'
+import structures from '../../Rules/structures.json'
+import tattoos from '../../Rules/tattoos.json'
+import vehicles from '../../Rules/vehicles.json'
+import wands from '../../Rules/wands.json'
+import weapons from '../../Rules/weapons.json'
+import wornItems from '../../Rules/worn-items.json'
 import {
   auditPathfinder2RuleDocuments,
   getUnavailablePathfinder2Catalogs,
@@ -20,6 +44,32 @@ const tests: Array<[string, () => void]> = [
       classes,
       feats,
       spells,
+      armor,
+      weapons,
+      shields,
+      equipment: [
+        adventuringGear,
+        alchemicalItems,
+        artifacts,
+        assistiveItems,
+        contracts,
+        consumables,
+        customizations,
+        grafts,
+        heldItems,
+        materials,
+        relics,
+        runes,
+        siegeWeapons,
+        snares,
+        spellhearts,
+        staves,
+        structures,
+        tattoos,
+        vehicles,
+        wands,
+        wornItems,
+      ],
     })
     assert.equal(
       availability.find(entry => entry.id === 'ancestries')?.entryCount,
@@ -45,8 +95,12 @@ const tests: Array<[string, () => void]> = [
       availability.find(entry => entry.id === 'spells')?.entryCount,
       1167,
     )
+    assert.equal(availability.find(entry => entry.id === 'armor')?.entryCount, 136)
+    assert.equal(availability.find(entry => entry.id === 'weapons')?.entryCount, 424)
+    assert.equal(availability.find(entry => entry.id === 'shields')?.entryCount, 94)
+    assert.equal(availability.find(entry => entry.id === 'equipment')?.entryCount, 3275)
   }],
-  ['Неподключённые файлы не выдаются за работающий rules catalog', () => {
+  ['Подключённые и неподключённые файлы имеют честные статусы', () => {
     const availability = auditPathfinder2RuleDocuments({
       ancestries,
       archetypes,
@@ -54,6 +108,32 @@ const tests: Array<[string, () => void]> = [
       classes,
       feats,
       spells,
+      armor,
+      weapons,
+      shields,
+      equipment: [
+        adventuringGear,
+        alchemicalItems,
+        artifacts,
+        assistiveItems,
+        contracts,
+        consumables,
+        customizations,
+        grafts,
+        heldItems,
+        materials,
+        relics,
+        runes,
+        siegeWeapons,
+        snares,
+        spellhearts,
+        staves,
+        structures,
+        tattoos,
+        vehicles,
+        wands,
+        wornItems,
+      ],
     })
     assert.equal(
       availability.find(entry => entry.id === 'archetypes')?.status,
@@ -61,11 +141,27 @@ const tests: Array<[string, () => void]> = [
     )
     assert.equal(
       availability.find(entry => entry.id === 'spells')?.status,
-      'available-not-connected',
+      'connected',
     )
     assert.equal(
       availability.find(entry => entry.id === 'class-progression')?.status,
       'missing',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'armor')?.status,
+      'invalid',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'weapons')?.status,
+      'invalid',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'shields')?.status,
+      'invalid',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'equipment')?.status,
+      'invalid',
     )
     assert.ok(getUnavailablePathfinder2Catalogs(availability).length > 0)
   }],

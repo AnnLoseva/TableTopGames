@@ -14,6 +14,7 @@ import {
 import {
   parseAndMigratePathfinder2DraftV4,
   runtimeDraftToV4,
+  v4DraftToRuntime,
 } from '../data/migration-v4'
 import { createDefaultPathfinder2DraftV4 } from '../data/v4'
 import type {
@@ -26,10 +27,16 @@ import { clearRulesRebuildWhenConfirmed } from '../rules/creation/reconcile-char
 type CharacterUpdater = (
   current: Pathfinder2CharacterDraft,
 ) => Pathfinder2CharacterDraft
+type CharacterV4Updater = (
+  current: Pathfinder2CharacterDraftV4,
+) => Pathfinder2CharacterDraftV4
 
 export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
   const [draft, setDraft] = useState<Pathfinder2CharacterDraft>(
     createDefaultPathfinder2Draft,
+  )
+  const [v4Draft, setV4Draft] = useState<Pathfinder2CharacterDraftV4>(
+    createDefaultPathfinder2DraftV4,
   )
   const [hydrated, setHydrated] = useState(false)
   const [saveStatus, setSaveStatus] = useState('Подготовка черновика')
@@ -47,9 +54,21 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
       persistedDraftRef.current,
     )
     persistedDraftRef.current = persistedDraft
+    setV4Draft(persistedDraft)
     window.localStorage.setItem(
       PATHFINDER2_DRAFT_STORAGE_KEY,
       JSON.stringify(persistedDraft),
+    )
+    setSaveStatus('Сохранено локально')
+  }, [])
+
+  const persistV4 = useCallback((nextDraft: Pathfinder2CharacterDraftV4) => {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    persistedDraftRef.current = nextDraft
+    setV4Draft(nextDraft)
+    window.localStorage.setItem(
+      PATHFINDER2_DRAFT_STORAGE_KEY,
+      JSON.stringify(nextDraft),
     )
     setSaveStatus('Сохранено локально')
   }, [])
@@ -66,6 +85,19 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     }
     saveTimerRef.current = setTimeout(() => persist(nextDraft), 320)
   }, [persist])
+
+  const schedulePersistV4 = useCallback((
+    nextDraft: Pathfinder2CharacterDraftV4,
+    immediate: boolean,
+  ) => {
+    setSaveStatus('Сохраняю…')
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    if (immediate) {
+      persistV4(nextDraft)
+      return
+    }
+    saveTimerRef.current = setTimeout(() => persistV4(nextDraft), 320)
+  }, [persistV4])
 
   useEffect(() => {
     const currentStored = window.localStorage.getItem(PATHFINDER2_DRAFT_STORAGE_KEY)
@@ -86,6 +118,7 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     persistedDraftRef.current = parsed?.draft ?? createDefaultPathfinder2DraftV4()
     draftRef.current = nextDraft
     setDraft(nextDraft)
+    setV4Draft(persistedDraftRef.current)
     setMigrationWarnings([
       ...catalog.validationWarnings,
       ...(stored && !parsed ? ['Локальный черновик повреждён и не был загружен.'] : []),
@@ -127,9 +160,29 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
       catalog,
     )
     draftRef.current = nextDraft
+    const nextV4 = runtimeDraftToV4(nextDraft, persistedDraftRef.current)
+    persistedDraftRef.current = nextV4
     setDraft(nextDraft)
+    setV4Draft(nextV4)
     if (hydrated) schedulePersist(nextDraft, Boolean(options.immediate))
   }, [catalog, hydrated, schedulePersist])
+
+  const updateV4 = useCallback((
+    updater: CharacterV4Updater,
+    options: { immediate?: boolean } = {},
+  ) => {
+    const proposedV4 = updater(persistedDraftRef.current)
+    const nextRuntime = clearRulesRebuildWhenConfirmed(
+      v4DraftToRuntime(proposedV4),
+      catalog,
+    )
+    const nextV4 = runtimeDraftToV4(nextRuntime, proposedV4)
+    persistedDraftRef.current = nextV4
+    draftRef.current = nextRuntime
+    setV4Draft(nextV4)
+    setDraft(nextRuntime)
+    if (hydrated) schedulePersistV4(nextV4, Boolean(options.immediate))
+  }, [catalog, hydrated, schedulePersistV4])
 
   const updateField = useCallback(<Key extends keyof Pathfinder2CharacterDraft>(
     key: Key,
@@ -147,6 +200,7 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     persistedDraftRef.current = createDefaultPathfinder2DraftV4()
     draftRef.current = nextDraft
     setDraft(nextDraft)
+    setV4Draft(persistedDraftRef.current)
     setMigrationWarnings([])
     persist(nextDraft)
   }, [persist])
@@ -157,10 +211,12 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
 
   return {
     draft,
+    v4Draft,
     hydrated,
     saveStatus,
     migrationWarnings,
     updateCharacter,
+    updateV4,
     updateField,
     resetCharacter,
     clearMigrationWarnings,

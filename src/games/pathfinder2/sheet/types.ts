@@ -2,14 +2,15 @@ export type Pathfinder2Mode = 'sheet' | 'builder'
 
 export type Pathfinder2BuilderStepId =
   | 'concept'
+  | 'initial-attributes'
   | 'ancestry'
-  | 'heritage'
   | 'background'
   | 'class'
-  | 'attributes'
-  | 'skills'
-  | 'feats'
+  | 'final-attributes'
+  | 'features'
   | 'equipment'
+  | 'calculations'
+  | 'details'
   | 'review'
 
 export type Pathfinder2StepId = Pathfinder2BuilderStepId
@@ -50,6 +51,7 @@ export type Pathfinder2AttributeLevel = 5 | 10 | 15 | 20
 export type Pathfinder2AttributeChoices = {
   ancestryMode: Pathfinder2AttributeMode
   ancestryFreeBoosts: Pathfinder2AttributeKey[]
+  voluntaryFlaws: Pathfinder2AttributeKey[]
   backgroundLimitedBoost: Pathfinder2AttributeKey | null
   backgroundFreeBoost: Pathfinder2AttributeKey | null
   classKeyBoost: Pathfinder2AttributeKey | null
@@ -318,6 +320,73 @@ export type Pathfinder2SpellcastingEntry = {
   focusPoints: number
 }
 
+export type Pathfinder2SpellRule = {
+  id: string
+  name: string
+  nameEn: string
+  level: number
+  actions: string
+  rarity: 'common' | 'uncommon' | 'rare' | 'unique'
+  traits: string[]
+  traditions: Pathfinder2SpellTradition[]
+  rawTraditions: string[]
+  sourceBook: string
+  type: 'spell' | 'cantrip' | 'focus'
+  description: string
+}
+
+export type Pathfinder2LanguageRule = {
+  id: string
+  name: string
+  rarity: 'common' | 'uncommon' | 'rare' | 'unique'
+  regional: boolean
+  traits: string[]
+  sourceBook: string
+}
+
+export type Pathfinder2DeityRule = {
+  id: string
+  name: string
+  description: string
+  edicts: string[]
+  anathema: string[]
+  domains: string[]
+  sanctifications: Array<'holy' | 'unholy' | 'none'>
+  favoredWeaponId: string | null
+  grantedSkillId: Pathfinder2SkillId | null
+  sourceBook: string
+}
+
+export type Pathfinder2CalculatedLanguages = {
+  grantedLanguageIds: string[]
+  selectedLanguageIds: string[]
+  choiceLimit: number | null
+  issues: Pathfinder2ValidationIssue[]
+}
+
+export type Pathfinder2CalculatedReligion = {
+  deity: Pathfinder2DeityRule | null
+  grantedEdicts: string[]
+  grantedAnathema: string[]
+  issues: Pathfinder2ValidationIssue[]
+}
+
+export type Pathfinder2CalculatedSpellcastingEntry = {
+  entry: Pathfinder2SpellcastingEntry
+  spellAttack: number
+  spellDc: number
+  spellSlots: Record<number, number>
+  selectedSpellIds: string[]
+  issues: Pathfinder2ValidationIssue[]
+}
+
+export type Pathfinder2CalculatedSpellcasting = {
+  entries: Pathfinder2CalculatedSpellcastingEntry[]
+  expected: boolean
+  canInitialize: boolean
+  issues: Pathfinder2ValidationIssue[]
+}
+
 export type Pathfinder2CurrencyAmount = {
   cp: number
   sp: number
@@ -351,6 +420,40 @@ export type Pathfinder2EquipmentItem = {
   sourceBook: string
 }
 
+export type Pathfinder2WeaponRule = Pathfinder2EquipmentItem & {
+  category: 'weapon'
+  proficiencyCategory: 'simple' | 'martial' | 'advanced' | 'unarmed' | 'special'
+  group: string
+  damageDice: {
+    count: number
+    size: number
+  }
+  damageType: string
+  range: number | null
+  reload: number | null
+  hands: number
+  usage: 'melee' | 'ranged' | 'thrown'
+}
+
+export type Pathfinder2ArmorRule = Pathfinder2EquipmentItem & {
+  category: 'armor'
+  armorCategory: 'unarmored' | 'light' | 'medium' | 'heavy'
+  armorBonus: number
+  dexterityCap: number
+  checkPenalty: number
+  speedPenalty: number
+  strengthRequirement: number
+  group: string
+}
+
+export type Pathfinder2ShieldRule = Pathfinder2EquipmentItem & {
+  category: 'shield'
+  armorClassBonus: number
+  hardness: number
+  hitPoints: number
+  brokenThreshold: number
+}
+
 export type Pathfinder2InventoryEntry = {
   id: string
   itemId: string
@@ -362,6 +465,45 @@ export type Pathfinder2InventoryEntry = {
   containerEntryId: string | null
   customName: string
   notes: string
+}
+
+export type Pathfinder2CalculatedInventoryEntry = Pathfinder2InventoryEntry & {
+  item: Pathfinder2EquipmentItem | null
+  totalPrice: Pathfinder2CurrencyAmount
+  bulk: number
+  lightBulkCount: number
+}
+
+export type Pathfinder2CalculatedInventory = {
+  entries: Pathfinder2CalculatedInventoryEntry[]
+  spent: Pathfinder2CurrencyAmount
+  remaining: Pathfinder2CurrencyAmount
+  bulk: number
+  lightBulkCount: number
+  safeBulk: number
+  maximumBulk: number
+  encumbered: boolean
+  overloaded: boolean
+  missingItemIds: string[]
+}
+
+export type Pathfinder2CalculatedAttack = {
+  id: string
+  inventoryEntryId: string
+  weaponId: string
+  name: string
+  attackModifier: number
+  damage: string
+  damageType: string
+  range: number | null
+  reload: number | null
+  traits: string[]
+  proficiencyRank: Pathfinder2ProficiencyRank
+  breakdown: Array<{
+    label: string
+    value: number
+    source: Pathfinder2CharacterSource
+  }>
 }
 
 export type Pathfinder2UnresolvedSelectionKind =
@@ -395,6 +537,31 @@ export type Pathfinder2LevelChoices = {
   removedSpellIds: string[]
   languageChoices: string[]
 }
+
+export type Pathfinder2LevelUpPlan = {
+  fromLevel: number
+  targetLevel: number
+  experienceCost: number
+  automaticFeatures: Pathfinder2GrantedFeature[]
+  attributeBoostCount: number
+  skillIncreaseCount: number
+  featSlots: Pathfinder2FeatSlot[]
+  spellSlots: Record<number, number>
+  cantripSlots: number
+  issues: Pathfinder2ValidationIssue[]
+}
+
+export type Pathfinder2LevelUpResult =
+  | {
+      ok: true
+      draft: Pathfinder2CharacterDraftV4
+      plan: Pathfinder2LevelUpPlan
+    }
+  | {
+      ok: false
+      plan: Pathfinder2LevelUpPlan
+      issues: Pathfinder2ValidationIssue[]
+    }
 
 export type Pathfinder2CharacterDraftV4 = {
   schemaVersion: 4
@@ -442,6 +609,7 @@ export type Pathfinder2CharacterDraftV4 = {
     featChoicesByLevel: Record<number, string[]>
   }
   attributes: {
+    priorities: Pathfinder2AttributeKey[]
     finalFreeBoosts: Pathfinder2AttributeKey[]
     levelBoosts: Record<number, Pathfinder2AttributeKey[]>
   }
@@ -544,6 +712,11 @@ export type Pathfinder2AncestryRule = {
   abilityFlaw: string | null
   languages: string[]
   bonusLanguages: string
+  languageRules: {
+    grantedLanguageIds: string[]
+    bonusChoiceCount: number | null
+    bonusLanguageIds: string[]
+  }
   senses: string[]
   specialAbilities: Pathfinder2SpecialAbilityRule[]
   heritages: Pathfinder2HeritageRule[]
@@ -561,6 +734,8 @@ export type Pathfinder2BackgroundRule = {
   skillRules: Pathfinder2BackgroundSkillRules
   trainedLore: string
   skillFeat: string
+  grantedLore: Pathfinder2LoreEntry | null
+  grantedFeatIds: string[]
   sourceBook: string
   tab: string
   region: string | null
@@ -592,6 +767,9 @@ export type Pathfinder2ClassRule = {
   attacks: string
   defenses: string
   classDc: string
+  proficiencyGrants: Pathfinder2ProficiencyGrant[]
+  choiceDefinitions: Pathfinder2ClassChoiceDefinition[]
+  requiresDeity: boolean
   spellTradition: string | null
   spellSlots: Record<string, number[]> | null
   keyTerms: Pathfinder2RuleFeature[]
@@ -607,6 +785,8 @@ export type Pathfinder2FeatRule = {
   level: number
   description: string
   prerequisites: string | null
+  requirements: Pathfinder2Requirement[]
+  category: 'general' | 'skill' | 'mythic'
   traits: string[]
   skill?: string
   sourceBook?: string
@@ -664,6 +844,15 @@ export type Pathfinder2RulesCatalog = {
   generalFeats: Pathfinder2FeatRule[]
   skillFeats: Pathfinder2FeatRule[]
   mythicFeats: Pathfinder2FeatRule[]
+  equipment: Pathfinder2EquipmentItem[]
+  weapons: Pathfinder2WeaponRule[]
+  armor: Pathfinder2ArmorRule[]
+  shields: Pathfinder2ShieldRule[]
+  spells: Pathfinder2SpellRule[]
+  cantrips: Pathfinder2SpellRule[]
+  focusSpells: Pathfinder2SpellRule[]
+  languages: Pathfinder2LanguageRule[]
+  deities: Pathfinder2DeityRule[]
   sources: Pathfinder2RuleSource[]
   dataAvailability: Pathfinder2CatalogAvailability[]
   validationWarnings: string[]
@@ -683,7 +872,13 @@ export type Pathfinder2DerivedValues = {
 }
 
 export type Pathfinder2AttributeBreakdownEntry = {
-  source: 'ancestry' | 'background' | 'class' | 'free' | 'level'
+  source:
+    | 'ancestry'
+    | 'voluntary-flaw'
+    | 'background'
+    | 'class'
+    | 'free'
+    | 'level'
   sourceLabel: string
   delta: number
   automatic: boolean
@@ -742,6 +937,37 @@ export type Pathfinder2ValidationIssue = {
 export type Pathfinder2CharacterBuild = {
   attributes: Pathfinder2CalculatedAttributes
   skills: Pathfinder2CalculatedSkills
+  validationIssues: Pathfinder2ValidationIssue[]
+  isReady: boolean
+}
+
+export type Pathfinder2CalculatedProficiency = {
+  category: Pathfinder2ProficiencyCategory
+  targetId?: string
+  rank: Pathfinder2ProficiencyRank
+  bonus: number
+  sources: Pathfinder2CharacterSource[]
+}
+
+export type Pathfinder2GrantedFeature = Pathfinder2RuleFeature & {
+  source: Pathfinder2CharacterSource
+}
+
+export type Pathfinder2CharacterState = {
+  draft: Pathfinder2CharacterDraftV4
+  runtimeDraft: Pathfinder2CharacterDraft
+  legacyBuild: Pathfinder2CharacterBuild
+  derived: Pathfinder2DerivedValues
+  proficiencies: Pathfinder2CalculatedProficiency[]
+  features: Pathfinder2GrantedFeature[]
+  loreEntries: Pathfinder2LoreEntry[]
+  grantedFeatIds: string[]
+  inventory: Pathfinder2CalculatedInventory
+  attacks: Pathfinder2CalculatedAttack[]
+  spellcasting: Pathfinder2CalculatedSpellcasting
+  languages: Pathfinder2CalculatedLanguages
+  religion: Pathfinder2CalculatedReligion
+  classChoiceSlots: Pathfinder2DecisionSlot<'class-choice'>[]
   validationIssues: Pathfinder2ValidationIssue[]
   isReady: boolean
 }

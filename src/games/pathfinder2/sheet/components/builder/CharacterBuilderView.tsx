@@ -9,7 +9,6 @@ import {
   getAncestryById,
   getBackgroundById,
   getClassById,
-  getFeatById,
   getHeritageById,
   getSubclassById,
   getVersatileHeritageById,
@@ -22,6 +21,8 @@ import type {
   Pathfinder2AttributeKey,
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
+  Pathfinder2CharacterDraftV4,
+  Pathfinder2CharacterState,
   Pathfinder2DerivedValues,
   Pathfinder2RulesCatalog,
   Pathfinder2StepId,
@@ -30,21 +31,29 @@ import type {
   OpenPathfinder2Choice,
   UpdatePathfinder2Character,
   UpdatePathfinder2Field,
+  UpdatePathfinder2V4,
 } from '../component-types'
 import CharacterSummary from '../shared/CharacterSummary'
 import AttributeRulesEditor from './AttributeRulesEditor'
+import CalculationsStep from './CalculationsStep'
+import DetailsStep from './DetailsStep'
+import EquipmentStep from './EquipmentStep'
+import FeaturesStep from './FeaturesStep'
+import InitialAttributesStep from './InitialAttributesStep'
 import ReviewAudit from './ReviewAudit'
-import SkillRulesEditor from './SkillRulesEditor'
 import styles from '../Pathfinder2SheetPage.module.css'
 
 type CharacterBuilderViewProps = {
   draft: Pathfinder2CharacterDraft
+  v4Draft: Pathfinder2CharacterDraftV4
   catalog: Pathfinder2RulesCatalog
   build: Pathfinder2CharacterBuild
+  state: Pathfinder2CharacterState
   derived: Pathfinder2DerivedValues
   activeStep: Pathfinder2StepId
   onStepChange: (step: Pathfinder2StepId) => void
   updateCharacter: UpdatePathfinder2Character
+  updateV4: UpdatePathfinder2V4
   updateField: UpdatePathfinder2Field
   openChoice: OpenPathfinder2Choice
   onFinish: () => void
@@ -151,12 +160,15 @@ function EditorHeading({
 
 export default function CharacterBuilderView({
   draft,
+  v4Draft,
   catalog,
   build,
+  state,
   derived,
   activeStep,
   onStepChange,
   updateCharacter,
+  updateV4,
   updateField,
   openChoice,
   onFinish,
@@ -175,20 +187,6 @@ export default function CharacterBuilderView({
   const background = getBackgroundById(catalog, draft.backgroundId)
   const characterClass = getClassById(catalog, draft.classId)
   const subclass = getSubclassById(catalog, draft.classId, draft.subclassId)
-  const selectedGeneralFeats = draft.generalFeatIds
-    .map(id => getFeatById(catalog, id))
-    .filter(Boolean)
-  const selectedSkillFeats = draft.skillFeatIds
-    .map(id => getFeatById(catalog, id))
-    .filter(Boolean)
-
-  const removeFeat = (field: 'generalFeatIds' | 'skillFeatIds', id: string) => {
-    updateCharacter(current => ({
-      ...current,
-      [field]: current[field].filter(value => value !== id),
-    }), { immediate: true })
-  }
-
   const renderStep = () => {
     if (activeStep === 'concept') {
       return (
@@ -235,70 +233,98 @@ export default function CharacterBuilderView({
           </div>
           <div className={styles.levelCard}>
             <div>
-              <strong>Уровень героя</strong>
-              <p>Строгое завершение сейчас доступно для 1-го уровня. Уровни 2–20 сохраняются для будущей прогрессии, но не открывают ручное повышение рангов.</p>
+              <strong>Сценарий создания</strong>
+              <p>Высокоуровневый герой всё равно проходит решения каждого уровня последовательно.</p>
             </div>
-            <div className={styles.levelControl}>
+            <div className={styles.modeSwitch} aria-label="Сценарий создания">
               <button
                 type="button"
-                aria-label="Уменьшить уровень"
-                onClick={() => updateField('level', Math.max(1, draft.level - 1), { immediate: true })}
+                aria-pressed={v4Draft.progression.creationMode === 'level-1'}
+                onClick={() => updateV4(current => ({
+                  ...current,
+                  progression: {
+                    ...current.progression,
+                    level: 1,
+                    targetLevel: 1,
+                    creationMode: 'level-1',
+                  },
+                }), { immediate: true })}
               >
-                −
+                1-й уровень
               </button>
-              <input
-                type="number"
-                min={1}
-                max={20}
-                aria-label="Уровень"
-                value={draft.level}
-                onChange={event => updateField(
-                  'level',
-                  Math.min(20, Math.max(1, Number(event.target.value) || 1)),
-                  { immediate: true },
-                )}
-              />
               <button
                 type="button"
-                aria-label="Увеличить уровень"
-                onClick={() => updateField('level', Math.min(20, draft.level + 1), { immediate: true })}
+                aria-pressed={v4Draft.progression.creationMode === 'high-level'}
+                onClick={() => updateV4(current => ({
+                  ...current,
+                  progression: {
+                    ...current.progression,
+                    level: 1,
+                    targetLevel: Math.max(2, current.progression.targetLevel),
+                    creationMode: 'high-level',
+                  },
+                }), { immediate: true })}
               >
-                +
+                Высокий уровень
               </button>
             </div>
           </div>
-          {draft.level > 1 ? (
+          {v4Draft.progression.creationMode === 'high-level' ? (
             <p className={styles.ruleChangeNotice}>
-              Прогрессия 2–20 ещё не подключена к редактору. Такой черновик можно хранить, но завершить создание пока нельзя.
+              Цель:{' '}
+              <select
+                aria-label="Целевой уровень"
+                value={v4Draft.progression.targetLevel}
+                onChange={event => updateV4(current => ({
+                  ...current,
+                  progression: {
+                    ...current.progression,
+                    targetLevel: Number(event.target.value),
+                  },
+                }), { immediate: true })}
+              >
+                {Array.from({ length: 19 }, (_, index) => index + 2).map(level => (
+                  <option key={level} value={level}>{level}-й уровень</option>
+                ))}
+              </select>
+              {' '}Текущий уровень повышается только после завершения очередного level-up шага.
             </p>
           ) : null}
         </div>
       )
     }
 
-    if (activeStep === 'ancestry') {
-      return ancestry ? (
-        <SelectedChoice
-          eyebrow={`${ancestry.rarity} · ${ancestry.sourceBook}`}
-          title={ancestry.name}
-          description={ancestry.description}
-          facts={[`${ancestry.hp} ОЗ`, `${ancestry.speed} фт.`, ancestry.size]}
-          onDetails={trigger => openChoice('ancestry', { readOnly: true }, trigger)}
-          onAction={trigger => openChoice('ancestry', {}, trigger)}
-        />
-      ) : (
-        <EmptyChoice
-          title="Народ ещё не выбран"
-          copy={`В локальном справочнике доступно ${catalog.ancestries.length} народов.`}
-          action="Открыть галерею народов"
-          onAction={trigger => openChoice('ancestry', {}, trigger)}
+    if (activeStep === 'initial-attributes') {
+      return (
+        <InitialAttributesStep
+          draft={draft}
+          v4Draft={v4Draft}
+          catalog={catalog}
+          updateV4={updateV4}
         />
       )
     }
 
-    if (activeStep === 'heritage') {
+    if (activeStep === 'ancestry') {
       return (
         <div className={styles.formStack}>
+          {ancestry ? (
+            <SelectedChoice
+              eyebrow={`${ancestry.rarity} · ${ancestry.sourceBook}`}
+              title={ancestry.name}
+              description={ancestry.description}
+              facts={[`${ancestry.hp} ОЗ`, `${ancestry.speed} фт.`, ancestry.size]}
+              onDetails={trigger => openChoice('ancestry', { readOnly: true }, trigger)}
+              onAction={trigger => openChoice('ancestry', {}, trigger)}
+            />
+          ) : (
+            <EmptyChoice
+              title="Народ ещё не выбран"
+              copy={`В локальном справочнике доступно ${catalog.ancestries.length} народов.`}
+              action="Открыть галерею народов"
+              onAction={trigger => openChoice('ancestry', {}, trigger)}
+            />
+          )}
           <div className={styles.modeSwitch} aria-label="Категория наследия">
             <button
               type="button"
@@ -319,8 +345,8 @@ export default function CharacterBuilderView({
             <EmptyChoice
               title="Сначала выберите народ"
               copy="Сначала нужен народ, затем выберите ровно одно обычное или универсальное наследие."
-              action="Перейти к выбору народа"
-              onAction={() => onStepChange('ancestry')}
+              action="Выбрать народ"
+              onAction={trigger => openChoice('ancestry', {}, trigger)}
             />
           ) : heritageCategory === 'ancestry' && heritage ? (
             <SelectedChoice
@@ -354,7 +380,9 @@ export default function CharacterBuilderView({
             />
           )}
           <p className={styles.ruleChangeNotice}>
-            Активно только одно наследие: обычное или универсальное.
+            Активно только одно наследие: обычное или универсальное. Повышения
+            народа и добровольные понижения настраиваются на этапе итоговых
+            характеристик и сохраняются отдельными решениями.
           </p>
         </div>
       )
@@ -423,14 +451,16 @@ export default function CharacterBuilderView({
                 </select>
               </label>
               <label className={styles.field}>
-                <span className={styles.fieldLabel}>Путь класса</span>
+                <span className={styles.fieldLabel}>
+                  {characterClass.choiceDefinitions[0]?.label ?? 'Классовая специализация'}
+                </span>
                 <select
                   value={draft.subclassId}
                   onChange={event => updateField('subclassId', event.target.value, { immediate: true })}
                   disabled={characterClass.specializations.length === 0}
                 >
                   <option value="">
-                    {characterClass.specializations.length ? 'Выберите путь' : 'Не требуется'}
+                    {characterClass.specializations.length ? 'Сделайте обязательный выбор' : 'Не требуется'}
                   </option>
                   {characterClass.specializations.map(option => (
                     <option key={option.id} value={option.id}>{option.name}</option>
@@ -449,7 +479,7 @@ export default function CharacterBuilderView({
       )
     }
 
-    if (activeStep === 'attributes') {
+    if (activeStep === 'final-attributes') {
       return (
         <AttributeRulesEditor
           draft={draft}
@@ -460,94 +490,47 @@ export default function CharacterBuilderView({
       )
     }
 
-    if (activeStep === 'skills') {
+    if (activeStep === 'features') {
       return (
-        <>
-          <SkillRulesEditor
-            draft={draft}
-            catalog={catalog}
-            build={build}
-            updateCharacter={updateCharacter}
-          />
-          <label className={styles.field}>
-            <span className={styles.fieldLabel}>Знания (Lore)</span>
-            <input
-              value={draft.lore}
-              placeholder="Например, Знания моря"
-              onChange={event => updateField('lore', event.target.value)}
-            />
-          </label>
-        </>
-      )
-    }
-
-    if (activeStep === 'feats') {
-      return (
-        <div className={styles.formStack}>
-          <section className={styles.featPicker}>
-            <div>
-              <span className={styles.choiceKicker}>Общие и мифические способности</span>
-              <h3>{catalog.generalFeats.length + catalog.mythicFeats.length} вариантов</h3>
-              <p>Выбор добавляется к уже отмеченным способностям.</p>
-            </div>
-            <button type="button" className={styles.nextButton} onClick={event => openChoice('generalFeat', {}, event.currentTarget)}>
-              Открыть галерею
-            </button>
-            <div className={styles.selectedChips}>
-              {selectedGeneralFeats.map(feat => feat ? (
-                <button key={feat.id} type="button" onClick={() => removeFeat('generalFeatIds', feat.id)}>
-                  {feat.name}<span aria-label="Удалить">×</span>
-                </button>
-              ) : null)}
-            </div>
-          </section>
-          <section className={styles.featPicker}>
-            <div>
-              <span className={styles.choiceKicker}>Способности навыков</span>
-              <h3>{catalog.skillFeats.length} вариантов</h3>
-              <p>Фильтруйте каталог по навыку и уровню.</p>
-            </div>
-            <button type="button" className={styles.nextButton} onClick={event => openChoice('skillFeat', {}, event.currentTarget)}>
-              Открыть галерею
-            </button>
-            <div className={styles.selectedChips}>
-              {selectedSkillFeats.map(feat => feat ? (
-                <button key={feat.id} type="button" onClick={() => removeFeat('skillFeatIds', feat.id)}>
-                  {feat.name}<span aria-label="Удалить">×</span>
-                </button>
-              ) : null)}
-            </div>
-          </section>
-        </div>
+        <FeaturesStep
+          draft={draft}
+          v4Draft={v4Draft}
+          catalog={catalog}
+          build={build}
+          state={state}
+          updateCharacter={updateCharacter}
+          updateV4={updateV4}
+        />
       )
     }
 
     if (activeStep === 'equipment') {
       return (
-        <div className={styles.fieldGrid}>
-          <label className={`${styles.field} ${styles.fieldWide}`}>
-            <span className={styles.fieldLabel}>Языки</span>
-            <textarea
-              rows={3}
-              value={draft.languages}
-              placeholder="Общий, эльфийский…"
-              onChange={event => updateField('languages', event.target.value)}
-            />
-          </label>
-          <label className={`${styles.field} ${styles.fieldWide}`}>
-            <span className={styles.fieldLabel}>Снаряжение</span>
-            <textarea
-              rows={9}
-              value={draft.equipment}
-              placeholder="Оружие, броня, инструменты, монеты и припасы…"
-              onChange={event => updateField('equipment', event.target.value)}
-            />
-          </label>
-        </div>
+        <EquipmentStep draft={v4Draft} catalog={catalog} updateV4={updateV4} />
       )
     }
 
-    return <ReviewAudit draft={draft} catalog={catalog} build={build} onFinish={onFinish} />
+    if (activeStep === 'calculations') return <CalculationsStep state={state} />
+    if (activeStep === 'details') {
+      return (
+        <DetailsStep
+          draft={v4Draft}
+          catalog={catalog}
+          state={state}
+          updateV4={updateV4}
+        />
+      )
+    }
+
+    return (
+      <ReviewAudit
+        draft={draft}
+        catalog={catalog}
+        build={build}
+        state={state}
+        onFinish={onFinish}
+      />
+    )
   }
 
   return (
@@ -571,7 +554,7 @@ export default function CharacterBuilderView({
         <div className={styles.collapsiblePanelContent}>
           <span className={styles.panelEyebrow}>Маршрут героя</span>
           <h2>Создание</h2>
-          <p className={styles.panelIntro}>Десять независимых шагов, один общий черновик.</p>
+          <p className={styles.panelIntro}>Одиннадцать последовательных шагов, один общий черновик.</p>
           <nav className={styles.stepsNav} aria-label="Шаги создания персонажа">
             {PATHFINDER2_STEPS.map((item, index) => {
               const state = getBuilderStepState(draft, item.id, build.validationIssues)
@@ -623,7 +606,7 @@ export default function CharacterBuilderView({
             type="button"
             className={styles.nextButton}
             disabled={
-              (['attributes', 'skills'].includes(activeStep)
+              (['final-attributes', 'features'].includes(activeStep)
                 && build.validationIssues.some(issue => (
                   issue.step === activeStep && issue.severity === 'error'
                 )))

@@ -345,6 +345,7 @@ function normalizeV4(value: unknown): Pathfinder2CharacterDraftV4 {
       featChoicesByLevel: asStringArrayRecord(characterClass.featChoicesByLevel),
     },
     attributes: {
+      priorities: asAttributeKeys(attributes.priorities),
       finalFreeBoosts: asAttributeKeys(attributes.finalFreeBoosts),
       levelBoosts: asAttributeArrayRecord(attributes.levelBoosts),
     },
@@ -554,6 +555,7 @@ export function runtimeDraftToV4(
       versatileHeritageId: draft.versatileHeritageId || null,
       boostMode: draft.attributeChoices.ancestryMode,
       freeBoosts: [...draft.attributeChoices.ancestryFreeBoosts],
+      voluntaryFlaws: [...draft.attributeChoices.voluntaryFlaws],
       featChoicesByLevel: updateLevelOneChoices(
         base.ancestry.featChoicesByLevel,
         draft.ancestryFeatIds,
@@ -578,6 +580,7 @@ export function runtimeDraftToV4(
       ),
     },
     attributes: {
+      priorities: [...base.attributes.priorities],
       finalFreeBoosts: [...draft.attributeChoices.finalFreeBoosts],
       levelBoosts: {
         5: [...draft.attributeChoices.levelBoosts[5]],
@@ -710,6 +713,7 @@ export function v4DraftToRuntime(
     attributeChoices: {
       ancestryMode: draft.ancestry.boostMode,
       ancestryFreeBoosts: [...draft.ancestry.freeBoosts],
+      voluntaryFlaws: [...draft.ancestry.voluntaryFlaws],
       backgroundLimitedBoost: draft.background.limitedBoost,
       backgroundFreeBoost: draft.background.freeBoost,
       classKeyBoost: draft.class.keyAbility,

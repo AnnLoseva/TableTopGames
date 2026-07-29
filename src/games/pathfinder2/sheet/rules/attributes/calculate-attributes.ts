@@ -82,6 +82,11 @@ export function calculateAttributeModifiers(
       : 'Народ · свободное повышение',
     automatic: false,
   }))
+  draft.attributeChoices.voluntaryFlaws.forEach(key => apply(key, {
+    source: 'voluntary-flaw',
+    sourceLabel: 'Народ · добровольное понижение',
+    automatic: false,
+  }, -1))
 
   if (draft.attributeChoices.backgroundLimitedBoost) {
     apply(draft.attributeChoices.backgroundLimitedBoost, {

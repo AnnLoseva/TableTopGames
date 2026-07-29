@@ -3821,6 +3821,23 @@
     font-size: 13px;
   }
 
+  .builderWorkspace .summaryFacts {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .builderWorkspace .combatStats span,
+  .builderWorkspace .combatStats small {
+    overflow-wrap: anywhere;
+    font-size: 9px;
+    letter-spacing: 0.03em;
+  }
+
+  .builderWorkspace .summaryRules span {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
   .sheetFactGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -4,12 +4,13 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
-- **Pathfinder 2 full builder, staged work (2026-07-29)** — stage 1 adds
-  schema-v4 local persistence with v3/v1 migration, source/decision-slot
-  contracts and an explicit catalog audit. The level-1 UI/rules engine still
-  runs through a transitional v3 adapter. Missing ancestry/class feats,
-  equipment, languages, deities and full class progression remain real blockers;
-  `spells.json` and `archetypes.json` are present but not mechanically connected.
+- **Pathfinder 2 full builder, staged work (2026-07-29)** — schema v4 is
+  canonical and the route now uses an eleven-step builder plus unified v4
+  character state. Pure engines cover attributes, skills, proficiencies,
+  currency/Bulk, typed combat, spellcasting, details and sequential level-up.
+  `spells.json` is connected. Missing ancestry/class feats, mechanical item,
+  language, deity and full class-progression catalogs remain honest completion
+  blockers; descriptive item files are audited but not parsed into mechanics.
 - **TableTopGames portal and shared account (2026-07-29)** — `/` is the game selector, VTM lives under `/vampires/*`, and Pathfinder remains at `/pathfinder2/sheet`. The root `AccountProvider` uses the existing Vampire Supabase account, persists its session, and mirrors the profile into the legacy VTM storage keys used by the sheet, table and journal. Old root VTM URLs are compatibility redirects.
 - **Game table lite (2026-07-18)** — scene stage/background on `table_scenes`,
   character tokens (`table_tokens`) above media, `table_character_controllers`
@@ -77,8 +78,10 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - `public/vampires/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
 
 ## Last updated
-2026-07-29 — Began the staged Pathfinder 2 full-builder work with schema v4,
-catalog readiness audit and stable source/decision-slot contracts.
+2026-07-29 — Extended the staged Pathfinder 2 builder through the eleven-step
+v4 UI, unified rules state, equipment/spell/detail engines and sequential
+level-up; remaining blockers are owner-data catalogs rather than hidden manual
+fields.
   Earlier: Added the TableTopGames game selector and persistent shared account; moved canonical VTM pages to `/vampires/*` with compatibility redirects.
   Earlier: Game table lite: scene stage/background, character tokens above
   media, character controllers, geometric player visibility (see DECISIONS).

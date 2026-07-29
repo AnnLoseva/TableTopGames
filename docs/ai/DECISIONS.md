@@ -9,8 +9,8 @@ attributes, skills, feat-slot selections, spellcasting, inventory, details,
 vitals and migration state. The current level-1 UI and pure engine continue to
 use the established schema-v3 runtime shape through
 `data/migration-v4.ts`; v4-only fields are preserved on every round trip. Pure modules under
-`src/games/pathfinder2/sheet/rules/{attributes,skills,creation,progression}`
-calculate and validate the build. The localStorage key is
+`src/games/pathfinder2/sheet/rules/*` calculate and validate a unified read-only
+v4 character state. The localStorage key is
 `pathfinder2-character-draft-v4`; the v3/v1 keys remain read-only migration
 sources and are never deleted. Free legacy lore/language/equipment text is
 retained as unresolved notes with the original snapshot and never guessed into
@@ -23,9 +23,11 @@ component while the staged builder is developed.
 **Consequences:** New persistence fields belong in v4, not the transitional
 runtime shape. Migration must preserve unknown/unresolved owner data. Catalog
 readiness is explicit: partial, present-but-unconnected and missing data cannot
-be reported as fully implemented. Only level 1 has current choice UI; the v3
-runtime adapter must be retired in a later focused stage after consumers move to
-v4 selectors.
+be reported as fully implemented. UI consumers may use the transitional v3
+projection, but v4-only editors and `buildCharacterState` are canonical. Level
+changes use a one-level-at-a-time plan; they cannot write a final level/rank
+directly. The v3 runtime adapter must be retired in a later focused stage after
+all remaining consumers move to v4 selectors.
 **Affected files:** `src/games/pathfinder2/sheet/{types,data,hooks,rules,components}/*`,
 `package.json`, `docs/ai/{FILE-MAP,DEV-COMMANDS,subsystems/pathfinder2-sheet}.md`
 **Status:** active
