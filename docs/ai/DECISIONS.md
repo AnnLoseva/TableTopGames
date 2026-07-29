@@ -1,26 +1,31 @@
 # Decisions
 
-## 2026-07-29 — Pathfinder creation stores rule-source choices
+## 2026-07-29 — Pathfinder schema v4 is canonical persistence with a transitional v3 runtime adapter
 
 **Area:** Pathfinder 2 character creation / local persistence / rules engine
-**Decision:** Pathfinder draft schema v3 stores the player's rule-source
-decisions (`attributeChoices`, separated skill choice blocks and level-stamped
-skill increases) and treats attributes, ranks and skill modifiers as derived
-output. Pure modules under
+**Decision:** `pathfinder2-character-draft-v4` is the canonical local persistence
+format. It separates identity, level history, ancestry, background, class,
+attributes, skills, feat-slot selections, spellcasting, inventory, details,
+vitals and migration state. The current level-1 UI and pure engine continue to
+use the established schema-v3 runtime shape through
+`data/migration-v4.ts`; v4-only fields are preserved on every round trip. Pure modules under
 `src/games/pathfinder2/sheet/rules/{attributes,skills,creation,progression}`
 calculate and validate the build. The localStorage key is
-`pathfinder2-character-draft-v3`; the old v1 key remains a read-only migration
-source. Legacy final attributes and trained-skill names are retained only as a
-snapshot/suggestions with `needsRulesRebuild`.
+`pathfinder2-character-draft-v4`; the v3/v1 keys remain read-only migration
+sources and are never deleted. Free legacy lore/language/equipment text is
+retained as unresolved notes with the original snapshot and never guessed into
+catalog IDs.
 **Reason:** Final numbers cannot prove that PF2E stage limits, automatic grants,
 duplicate replacements or rank progression were followed. Source decisions can
 be safely recalculated after ancestry, background, class or Intelligence
-changes.
-**Consequences:** React renders options and issues returned by the engine and no
-longer edits final attributes/ranks. Only level 1 can currently become ready;
-level 2–20 rank constraints and partial boosts exist in pure rules, while their
-choice UI remains intentionally unavailable. Normal and versatile heritage IDs
-remain nullable but are mutually exclusive.
+changes. A boundary adapter avoids a simultaneous rewrite of every working
+component while the staged builder is developed.
+**Consequences:** New persistence fields belong in v4, not the transitional
+runtime shape. Migration must preserve unknown/unresolved owner data. Catalog
+readiness is explicit: partial, present-but-unconnected and missing data cannot
+be reported as fully implemented. Only level 1 has current choice UI; the v3
+runtime adapter must be retired in a later focused stage after consumers move to
+v4 selectors.
 **Affected files:** `src/games/pathfinder2/sheet/{types,data,hooks,rules,components}/*`,
 `package.json`, `docs/ai/{FILE-MAP,DEV-COMMANDS,subsystems/pathfinder2-sheet}.md`
 **Status:** active

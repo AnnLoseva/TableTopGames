@@ -1,6 +1,16 @@
 import assert from 'node:assert/strict'
-import { createDefaultPathfinder2Draft } from '../data'
+import {
+  createDefaultPathfinder2Draft,
+  PATHFINDER2_DRAFT_STORAGE_KEY,
+  PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS,
+} from '../data'
 import { migratePathfinder2Draft } from '../data/migration'
+import {
+  migratePathfinder2DraftV4,
+  runtimeDraftToV4,
+  v4DraftToRuntime,
+} from '../data/migration-v4'
+import { createDefaultPathfinder2DraftV4 } from '../data/v4'
 import type {
   Pathfinder2AncestryRule,
   Pathfinder2BackgroundRule,
@@ -12,6 +22,11 @@ import type {
 import { calculateAttributeModifiers } from './attributes/calculate-attributes'
 import { validateAttributeChoices } from './attributes/validate-attribute-choices'
 import { buildCharacter } from './creation/build-character'
+import {
+  createDecisionSlot,
+  createFeatSlot,
+  isDecisionSlotComplete,
+} from './creation/decision-slots'
 import { reconcileCharacterDecisions } from './creation/reconcile-character'
 import { validateCharacterBuild } from './creation/validate-character'
 import {
@@ -144,6 +159,7 @@ const catalog: Pathfinder2RulesCatalog = {
   skillFeats: [],
   mythicFeats: [],
   sources: [],
+  dataAvailability: [],
   validationWarnings: [],
 }
 
@@ -358,6 +374,133 @@ const tests: Array<[string, () => void]> = [
     assert.equal(migrated.draft.name, 'Старый')
     assert.equal(migrated.draft.concept, 'Концепция')
     assert.equal(migrated.draft.notes, 'Заметки')
+  }],
+  ['Schema v4 использует новый ключ и сохраняет ключ v3 для чтения', () => {
+    assert.equal(PATHFINDER2_DRAFT_STORAGE_KEY, 'pathfinder2-character-draft-v4')
+    assert.ok(PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS.includes(
+      'pathfinder2-character-draft-v3',
+    ))
+  }],
+  ['Новый v4-черновик начинает с 15 зм и 1 пункта героизма', () => {
+    const draft = createDefaultPathfinder2DraftV4()
+    assert.equal(draft.schemaVersion, 4)
+    assert.deepEqual(draft.inventory.currency, { cp: 0, sp: 0, gp: 15, pp: 0 })
+    assert.equal(draft.progression.heroPoints, 1)
+  }],
+  ['Миграция v3 → v4 сохраняет решения и свободные строки без угадывания ID', () => {
+    const v3 = validDraft()
+    v3.player = 'Игрок'
+    v3.pronouns = 'они/их'
+    v3.lore = 'Знания моря'
+    v3.languages = 'Всеобщий, эльфийский'
+    v3.equipment = 'Меч и старый набор'
+    v3.notes = 'Не потерять'
+    v3.currentHp = 11
+    v3.tempHp = 2
+    v3.generalFeatIds = ['toughness']
+
+    const migrated = migratePathfinder2DraftV4(v3, catalog)
+    assert.equal(migrated.draft.schemaVersion, 4)
+    assert.equal(migrated.draft.identity.name, 'Тест')
+    assert.equal(migrated.draft.identity.player, 'Игрок')
+    assert.equal(migrated.draft.background.backgroundId, 'field-medic')
+    assert.equal(migrated.draft.class.classId, 'alchemist')
+    assert.equal(migrated.draft.vitals.currentHp, 11)
+    assert.equal(migrated.draft.vitals.tempHp, 2)
+    assert.equal(migrated.draft.migration.legacyNotes.lore, 'Знания моря')
+    assert.equal(
+      migrated.draft.migration.legacyNotes.languages,
+      'Всеобщий, эльфийский',
+    )
+    assert.equal(
+      migrated.draft.migration.legacyNotes.equipment,
+      'Меч и старый набор',
+    )
+    assert.equal(migrated.draft.migration.needsReview, true)
+    assert.ok(migrated.draft.migration.legacySnapshot)
+    assert.ok(migrated.draft.migration.unresolvedSelections.some(
+      entry => entry.kind === 'equipment',
+    ))
+    assert.ok(migrated.draft.migration.unresolvedSelections.some(
+      entry => entry.suggestedId === 'toughness',
+    ))
+  }],
+  ['V4 round-trip сохраняет вложенные данные при работе старого runtime UI', () => {
+    const v4 = createDefaultPathfinder2DraftV4()
+    v4.identity.backstory = 'История остаётся в v4'
+    v4.details.personalEdicts = ['Помогать путникам']
+    v4.progression.experience = 750
+    v4.ancestry.featChoicesByLevel = {
+      1: ['ancestry-feat-1'],
+      5: ['ancestry-feat-5'],
+    }
+    v4.skills.freeSelections['intelligence:level:5'] = ['arcana']
+    v4.feats.suggestedSelectionsByType['mythic-feat'] = ['mythic-feat-1']
+    const runtime = v4DraftToRuntime(v4)
+    runtime.name = 'Новое имя'
+    const updated = runtimeDraftToV4(runtime, v4)
+    assert.equal(updated.identity.name, 'Новое имя')
+    assert.equal(updated.identity.backstory, 'История остаётся в v4')
+    assert.deepEqual(updated.details.personalEdicts, ['Помогать путникам'])
+    assert.equal(updated.progression.experience, 750)
+    assert.deepEqual(updated.ancestry.featChoicesByLevel, {
+      1: ['ancestry-feat-1'],
+      5: ['ancestry-feat-5'],
+    })
+    assert.deepEqual(
+      updated.skills.freeSelections['intelligence:level:5'],
+      ['arcana'],
+    )
+    assert.deepEqual(
+      updated.feats.suggestedSelectionsByType['mythic-feat'],
+      ['mythic-feat-1'],
+    )
+    assert.ok(!updated.feats.suggestedSelectionsByType['general-feat'].includes(
+      'mythic-feat-1',
+    ))
+  }],
+  ['Слоты решений имеют стабильный источник и отдельную заполненность', () => {
+    const source = {
+      type: 'level' as const,
+      id: 'level-1',
+      label: '1-й уровень',
+      level: 1,
+    }
+    const decision = createDecisionSlot({
+      source,
+      type: 'language',
+      level: 1,
+      count: 2,
+      selectedIds: ['common'],
+    })
+    const feat = createFeatSlot({
+      source,
+      type: 'ancestry-feat',
+      level: 1,
+    })
+    assert.equal(decision.id, 'level:level-1:language:1:0')
+    assert.equal(isDecisionSlotComplete(decision), false)
+    assert.equal(isDecisionSlotComplete(feat), false)
+    assert.equal(isDecisionSlotComplete({ ...feat, selectedFeatId: 'feat-1' }), true)
+  }],
+  ['Отсутствующий обязательный каталог блокирует готовность', () => {
+    const incompleteCatalog: Pathfinder2RulesCatalog = {
+      ...catalog,
+      dataAvailability: [{
+        id: 'equipment',
+        label: 'Снаряжение',
+        status: 'missing',
+        entryCount: 0,
+        file: null,
+        requiredFor: ['equipment'],
+        issues: ['Нет авторизованных данных.'],
+      }],
+    }
+    const build = buildCharacter(validDraft(), incompleteCatalog)
+    assert.equal(build.isReady, false)
+    assert.ok(build.validationIssues.some(issue => (
+      issue.id === 'catalog.equipment' && issue.severity === 'error'
+    )))
   }],
 ]
 

@@ -16,6 +16,7 @@ import { calculateAttributeModifiers } from '../attributes/calculate-attributes'
 import { validateAttributeChoices } from '../attributes/validate-attribute-choices'
 import { calculateSkills } from '../skills/calculate-skills'
 import { validateSkillChoices } from '../skills/validate-skill-choices'
+import { validateCatalogReadiness } from './validate-catalog-readiness'
 
 export function validateCharacterBuild(
   draft: Pathfinder2CharacterDraft,
@@ -136,6 +137,7 @@ export function validateCharacterBuild(
     ?? calculateSkills(draft, catalog, attributes.modifiers)
   issues.push(...validateAttributeChoices(draft, catalog))
   issues.push(...validateSkillChoices(draft, catalog, skills))
+  issues.push(...validateCatalogReadiness(draft, catalog))
 
   return Array.from(new Map(issues.map(issue => [issue.id, issue])).values())
 }

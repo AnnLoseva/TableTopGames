@@ -78,9 +78,12 @@ physical boundary does not add a URL segment.
 ```text
 /pathfinder2/sheet
  → src/games/pathfinder2/sheet/Pathfinder2SheetRoute
- → Pathfinder2SheetPage (six-step client creator)
- → starter options + original short rules guides
- → localStorage `pathfinder2-character-draft-v1`
+ → rules-data.ts (connected catalogs + explicit availability audit)
+ → Pathfinder2SheetPage (sheet + ten-step client creator)
+ → pure attribute/skill/creation/progression rules
+ → schema-v3 runtime adapter
+ → localStorage `pathfinder2-character-draft-v4`
+ → read-only migration from v3/v1 keys
  → contextual external searches on pf2.ru (full source text stays there)
 ```
 

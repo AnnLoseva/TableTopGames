@@ -5,8 +5,9 @@ import type {
   Pathfinder2StepId,
 } from './types'
 
-export const PATHFINDER2_DRAFT_STORAGE_KEY = 'pathfinder2-character-draft-v3'
+export const PATHFINDER2_DRAFT_STORAGE_KEY = 'pathfinder2-character-draft-v4'
 export const PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS = [
+  'pathfinder2-character-draft-v3',
   'pathfinder2-character-draft-v1',
 ] as const
 

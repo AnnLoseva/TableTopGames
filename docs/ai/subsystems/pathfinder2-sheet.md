@@ -19,7 +19,7 @@ src/app/pathfinder2/sheet/page.tsx
      → builder/{AttributeRulesEditor,SkillRulesEditor,ReviewAudit}.tsx
    → choices/Pathfinder2ChoiceGallery.tsx
  → data.ts / types.ts / data/* / hooks/* / rules/*
- → localStorage `pathfinder2-character-draft-v3`
+ → localStorage `pathfinder2-character-draft-v4`
 ```
 
 ## Current creation model
@@ -29,18 +29,37 @@ src/app/pathfinder2/sheet/page.tsx
 - The route defaults to the working character sheet. The top switch moves
   between that sheet and the ten-step builder without changing the URL or
   creating a second character object.
-- `Rules/*.json` is the authoritative local catalog for ancestries, ancestry and
-  versatile heritages, backgrounds, classes and general/skill/mythic feats.
+- `Rules/*.json` is the owner-provided local data source. Ancestries,
+  ancestry/versatile heritages, backgrounds, classes and
+  general/skill/mythic feats are connected. `archetypes.json` and `spells.json`
+  are audited but intentionally reported as present/not connected until their
+  mechanics adapters exist.
 - `rules-data.ts` is a server-only adapter: it normalizes the owner-provided JSON
   documents into the serializable catalog used by the client component. Do not
   import the raw JSON into the client component.
+- `data/catalog-audit.ts` exposes machine-readable connected/partial/
+  present-unconnected/missing states. Missing ancestry/class feats, equipment,
+  weapons, armor, shields, deities, languages and full class progression are
+  blockers for the corresponding completion gates; do not invent their data.
+- `data/catalog-document.ts` is the schema-v1 adapter/validator for future
+  owner-provided catalogs. New catalogs need stable IDs, source/version/license
+  metadata and entry-specific validation before rules-engine use.
 - One native-dialog gallery handles ancestries, normal/versatile heritages,
   backgrounds, classes and feats. Search/filter state and preview selection are
   transient; only explicit confirmation writes the selected ID to the draft.
-- The schema-v3 draft stores source decisions, not editable final values:
+- Local persistence uses schema v4 and stores identity, progression,
+  source-separated ancestry/background/class/attribute/skill/feat decisions,
+  spellcasting, inventory, final details, vitals and migration state. The
+  existing level-1 components and rules engine temporarily use the v3 runtime
+  shape through the explicit adapter in `data/migration-v4.ts`; v4-only fields
+  survive round trips through that adapter.
+- The v3 runtime draft stores source decisions, not editable final values:
   ancestry mode/free boosts, background boosts, class key boost, final free
   boosts, separate class/Intelligence/replacement skill choices and
   level-stamped skill increases.
+- `rules/creation/decision-slots.ts` owns stable source-derived choice-slot IDs
+  and generic/feat slot completion. Actual slots still require authorized
+  ancestry/class/progression catalogs in later stages.
 - `rules/{attributes,skills,creation,progression}/*` is a pure TypeScript engine.
   It calculates attribute breakdowns, automatic and selected skills,
   proficiency ranks/modifiers, replacement choices and a structured validation
@@ -58,12 +77,13 @@ src/app/pathfinder2/sheet/page.tsx
 - The summary calculates draft HP, unarmored AC, perception and class DC using
   calculated attributes and selected rules records; perception and class DC
   respect the class rank in `classes.json`.
-- Draft persistence is local to the browser under the versioned storage key.
-  Text changes are debounced, choice confirmations save immediately, and the
-  schema-v3 draft stores catalog and skill selections by stable IDs. The restore
-  path reads the old `pathfinder2-character-draft-v1` key, preserves legacy
-  attributes/skills as a snapshot and suggestions, sets `needsRulesRebuild`,
-  and never invents source choices to match old totals.
+- Draft persistence is local to the browser under
+  `pathfinder2-character-draft-v4`. Text changes are debounced and choice
+  confirmations save immediately. Restore reads v4 first, then retains
+  `pathfinder2-character-draft-v3` and v1 as read-only migration sources.
+  Migration preserves the source draft as `legacySnapshot`, keeps free
+  lore/language/equipment strings as unresolved legacy notes, marks the draft
+  for review and never invents catalog IDs.
 
 ## Rules source policy
 
@@ -87,6 +107,7 @@ request data directly. Therefore:
 3. Do not add a home-screen link unless the user explicitly requests discovery.
 4. Version the localStorage key if the saved draft shape becomes incompatible;
    retain a read migration from the previous key.
-5. Keep raw rule schemas behind `rules-data.ts`; validate all four JSON files.
-6. Run `npm run test:pathfinder2-builder`, `npm run lint`, `npm run build`, and
-   smoke `/pathfinder2/sheet`.
+5. Keep raw rule schemas behind `rules-data.ts`; update
+   `data/catalog-audit.ts` whenever a catalog becomes connected.
+6. Run `npm run test:pathfinder2-builder`, `npm run test:pathfinder2-data`,
+   `npm run lint`, `npm run build`, and smoke `/pathfinder2/sheet`.

@@ -68,7 +68,16 @@ From `package.json`. Run the relevant checks after edits (see
 - **Failure means:** a level-1 legality rule, stable-ID skill contract,
   migration guarantee or completion gate regressed.
 - **Usual culprits:** `src/games/pathfinder2/sheet/rules/{attributes,skills,creation,progression}/*`
-  and `src/games/pathfinder2/sheet/data/migration.ts`.
+  and `src/games/pathfinder2/sheet/data/{migration,migration-v4}.ts`.
+
+## `npm run test:pathfinder2-data`
+- **What:** audits the owner-provided Pathfinder JSON counts/IDs, explicit
+  connected/partial/missing catalog states and the generic catalog-document
+  adapter.
+- **When:** after changing `src/games/pathfinder2/Rules/*.json`,
+  `sheet/rules-data.ts` or `sheet/data/catalog-*`.
+- **Failure means:** catalog IDs/counts drifted, duplicate IDs appeared, or a
+  missing/not-connected catalog was accidentally reported as ready.
 
 ## Recommended order after a change
 1. `npm run lint` (fast type check)

@@ -12,10 +12,13 @@ import {
   PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS,
 } from '../data'
 import {
-  parseAndMigratePathfinder2Draft,
-} from '../data/migration'
+  parseAndMigratePathfinder2DraftV4,
+  runtimeDraftToV4,
+} from '../data/migration-v4'
+import { createDefaultPathfinder2DraftV4 } from '../data/v4'
 import type {
   Pathfinder2CharacterDraft,
+  Pathfinder2CharacterDraftV4,
   Pathfinder2RulesCatalog,
 } from '../types'
 import { clearRulesRebuildWhenConfirmed } from '../rules/creation/reconcile-character'
@@ -32,13 +35,21 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
   const [saveStatus, setSaveStatus] = useState('Подготовка черновика')
   const [migrationWarnings, setMigrationWarnings] = useState<string[]>([])
   const draftRef = useRef(draft)
+  const persistedDraftRef = useRef<Pathfinder2CharacterDraftV4>(
+    createDefaultPathfinder2DraftV4(),
+  )
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const persist = useCallback((nextDraft: Pathfinder2CharacterDraft) => {
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    const persistedDraft = runtimeDraftToV4(
+      nextDraft,
+      persistedDraftRef.current,
+    )
+    persistedDraftRef.current = persistedDraft
     window.localStorage.setItem(
       PATHFINDER2_DRAFT_STORAGE_KEY,
-      JSON.stringify(nextDraft),
+      JSON.stringify(persistedDraft),
     )
     setSaveStatus('Сохранено локально')
   }, [])
@@ -58,12 +69,21 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
 
   useEffect(() => {
     const currentStored = window.localStorage.getItem(PATHFINDER2_DRAFT_STORAGE_KEY)
-    const legacyStored = PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS
-      .map(key => window.localStorage.getItem(key))
-      .find((value): value is string => Boolean(value))
-    const stored = currentStored ?? legacyStored
-    const parsed = stored ? parseAndMigratePathfinder2Draft(stored, catalog) : null
-    const nextDraft = parsed?.draft ?? createDefaultPathfinder2Draft()
+    const legacyStoredEntry = PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS
+      .map(key => ({ key, value: window.localStorage.getItem(key) }))
+      .find((entry): entry is { key: typeof PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS[number]; value: string } => (
+        Boolean(entry.value)
+      ))
+    const parsedCurrent = currentStored
+      ? parseAndMigratePathfinder2DraftV4(currentStored, catalog)
+      : null
+    const parsedLegacy = !parsedCurrent && legacyStoredEntry
+      ? parseAndMigratePathfinder2DraftV4(legacyStoredEntry.value, catalog)
+      : null
+    const parsed = parsedCurrent ?? parsedLegacy
+    const stored = currentStored ?? legacyStoredEntry?.value ?? null
+    const nextDraft = parsed?.runtimeDraft ?? createDefaultPathfinder2Draft()
+    persistedDraftRef.current = parsed?.draft ?? createDefaultPathfinder2DraftV4()
     draftRef.current = nextDraft
     setDraft(nextDraft)
     setMigrationWarnings([
@@ -73,10 +93,10 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     ])
     setHydrated(true)
 
-    if (parsed?.migrated || (legacyStored && !currentStored)) {
+    if (parsed && (parsed.migrated || (parsedLegacy && !parsedCurrent))) {
       window.localStorage.setItem(
         PATHFINDER2_DRAFT_STORAGE_KEY,
-        JSON.stringify(nextDraft),
+        JSON.stringify(parsed.draft),
       )
       setSaveStatus('Черновик обновлён и сохранён')
     } else {
@@ -86,9 +106,13 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     return () => {
       if (saveTimerRef.current) {
         clearTimeout(saveTimerRef.current)
+        const persistedDraft = runtimeDraftToV4(
+          draftRef.current,
+          persistedDraftRef.current,
+        )
         window.localStorage.setItem(
           PATHFINDER2_DRAFT_STORAGE_KEY,
-          JSON.stringify(draftRef.current),
+          JSON.stringify(persistedDraft),
         )
       }
     }
@@ -120,6 +144,7 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
 
   const resetCharacter = useCallback(() => {
     const nextDraft = createDefaultPathfinder2Draft()
+    persistedDraftRef.current = createDefaultPathfinder2DraftV4()
     draftRef.current = nextDraft
     setDraft(nextDraft)
     setMigrationWarnings([])

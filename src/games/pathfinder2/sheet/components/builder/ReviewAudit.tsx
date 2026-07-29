@@ -36,6 +36,9 @@ export default function ReviewAudit({
   const errors = build.validationIssues.filter(issue => issue.severity === 'error')
   const warnings = build.validationIssues.filter(issue => issue.severity === 'warning')
   const activeHeritage = heritage?.name ?? versatileHeritage?.name ?? 'Не выбрано'
+  const unavailableCatalogs = catalog.dataAvailability.filter(
+    entry => entry.status !== 'connected',
+  )
 
   return (
     <div className={styles.auditPage}>
@@ -99,6 +102,31 @@ export default function ReviewAudit({
           ))}
         </div>
       </section>
+
+      {unavailableCatalogs.length ? (
+        <section className={styles.validationList} aria-label="Готовность справочников">
+          <strong>Справочники механик</strong>
+          <ul>
+            {unavailableCatalogs.map(entry => (
+              <li key={entry.id} data-severity={
+                entry.status === 'missing' || entry.status === 'invalid'
+                  ? 'error'
+                  : 'warning'
+              }>
+                {entry.label} · {
+                  entry.status === 'missing'
+                    ? 'отсутствует'
+                    : entry.status === 'invalid'
+                      ? 'ошибка данных'
+                      : entry.status === 'available-not-connected'
+                        ? 'файл есть, движок не подключён'
+                        : 'подключено частично'
+                }
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {build.validationIssues.length ? (
         <section className={styles.validationList} aria-label="Полный аудит персонажа">

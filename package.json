@@ -15,7 +15,8 @@
     "test:master-console": "node --import tsx src/games/vampires/scripts/test-master-console.ts",
     "test:rules-chat": "node --import tsx src/games/vampires/scripts/test-rules-chat-search.ts",
     "test:chronicle-library": "node --import tsx src/games/vampires/scripts/test-chronicle-library.ts",
-    "test:pathfinder2-builder": "node --import tsx src/games/pathfinder2/sheet/rules/test-pathfinder2-builder.ts"
+    "test:pathfinder2-builder": "node --import tsx src/games/pathfinder2/sheet/rules/test-pathfinder2-builder.ts",
+    "test:pathfinder2-data": "node --import tsx src/games/pathfinder2/sheet/rules/test-pathfinder2-data.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

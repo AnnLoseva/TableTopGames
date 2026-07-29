@@ -1,9 +1,12 @@
 import 'server-only'
 
 import ancestriesRules from '../Rules/ancestries.json'
+import archetypesRules from '../Rules/archetypes.json'
 import backgroundsRules from '../Rules/backgrounds.json'
 import classesRules from '../Rules/classes.json'
 import featsRules from '../Rules/feats.json'
+import spellsRules from '../Rules/spells.json'
+import { auditPathfinder2RuleDocuments } from './data/catalog-audit'
 import {
   getSpecializationGrantedSkills,
   getStructuredBackgroundAbilityOptions,
@@ -241,6 +244,14 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
       mythic?: RawFeat[]
     }
   }>
+  const dataAvailability = auditPathfinder2RuleDocuments({
+    ancestries: ancestryDocument,
+    backgrounds: backgroundDocument,
+    classes: classDocument,
+    feats: featDocument,
+    archetypes: archetypesRules,
+    spells: spellsRules,
+  })
 
   const rawGeneralFeats = safeArray(featDocument.feats?.general)
   const rawSkillFeats = safeArray(featDocument.feats?.skill)
@@ -387,6 +398,7 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
       sourceFrom('classes', classDocument),
       sourceFrom('feats', featDocument),
     ],
+    dataAvailability,
     validationWarnings: validateDocuments({
       ancestries: ancestryDocument.ancestries,
       versatileHeritages: ancestryDocument.versatileHeritages,
