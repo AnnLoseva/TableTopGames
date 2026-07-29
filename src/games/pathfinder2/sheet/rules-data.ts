@@ -539,6 +539,60 @@ function normalizeRoleplaying(value?: RawClassRoleplaying): Pathfinder2ClassRole
   }
 }
 
+function toEquipmentItem(entry: Pathfinder2EquipmentItem): Pathfinder2EquipmentItem {
+  return {
+    id: entry.id,
+    name: entry.name,
+    level: entry.level,
+    rarity: entry.rarity,
+    price: entry.price,
+    bulk: entry.bulk,
+    traits: entry.traits,
+    category: entry.category,
+    sourceBook: entry.sourceBook,
+  }
+}
+
+function toWeaponRule(entry: Pathfinder2WeaponRule): Pathfinder2WeaponRule {
+  return {
+    ...toEquipmentItem(entry),
+    category: 'weapon',
+    proficiencyCategory: entry.proficiencyCategory,
+    group: entry.group,
+    damageDice: entry.damageDice,
+    damageType: entry.damageType,
+    range: entry.range,
+    reload: entry.reload,
+    hands: entry.hands,
+    usage: entry.usage,
+  }
+}
+
+function toArmorRule(entry: Pathfinder2ArmorRule): Pathfinder2ArmorRule {
+  return {
+    ...toEquipmentItem(entry),
+    category: 'armor',
+    armorCategory: entry.armorCategory,
+    armorBonus: entry.armorBonus,
+    dexterityCap: entry.dexterityCap,
+    checkPenalty: entry.checkPenalty,
+    speedPenalty: entry.speedPenalty,
+    strengthRequirement: entry.strengthRequirement,
+    group: entry.group,
+  }
+}
+
+function toShieldRule(entry: Pathfinder2ShieldRule): Pathfinder2ShieldRule {
+  return {
+    ...toEquipmentItem(entry),
+    category: 'shield',
+    armorClassBonus: entry.armorClassBonus,
+    hardness: entry.hardness,
+    hitPoints: entry.hitPoints,
+    brokenThreshold: entry.brokenThreshold,
+  }
+}
+
 function validateDocuments(documents: {
   ancestries?: unknown
   versatileHeritages?: unknown
@@ -887,10 +941,14 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
     ancestryFeats,
     classFeats,
     classProgression,
-    equipment: catalogEntries(equipmentCatalog) as Pathfinder2EquipmentItem[],
-    weapons: catalogEntries(weaponsCatalog) as Pathfinder2WeaponRule[],
-    armor: catalogEntries(armorCatalog) as Pathfinder2ArmorRule[],
-    shields: catalogEntries(shieldsCatalog) as Pathfinder2ShieldRule[],
+    equipment: (catalogEntries(equipmentCatalog) as Pathfinder2EquipmentItem[])
+      .map(toEquipmentItem),
+    weapons: (catalogEntries(weaponsCatalog) as Pathfinder2WeaponRule[])
+      .map(toWeaponRule),
+    armor: (catalogEntries(armorCatalog) as Pathfinder2ArmorRule[])
+      .map(toArmorRule),
+    shields: (catalogEntries(shieldsCatalog) as Pathfinder2ShieldRule[])
+      .map(toShieldRule),
     spells,
     cantrips,
     focusSpells,
