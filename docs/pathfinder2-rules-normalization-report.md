@@ -1,6 +1,6 @@
 # PF2 Rules Normalization Report
 
-Generated: 2026-07-29T23:18:28.878831
+Generated: 2026-07-29T23:51:53.006217
 Total issues: 0
 
 ## Issues
