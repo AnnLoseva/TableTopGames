@@ -4,10 +4,13 @@ How the app fits together at runtime. For per-file risk/protocol see `FILE-MAP.m
 For a prose RU overview see `../architecture.md`.
 
 ## Runtime overview
-Next.js App Router serves React routes. The **home screen, game table, journal, reference and private chronicle reader**
+Next.js App Router serves React routes under the TableTopGames product shell.
+The `games/vampires/` and `games/pathfinder2/` directories define game ownership
+at the route boundary. The **VTM home screen, game table, journal, reference and private chronicle reader**
 are modern React/TypeScript. The **full character sheet** is a legacy vanilla
 HTML/JS app served from `public/` and embedded via an `<iframe>`. Both layers
-persist to the same Supabase project.
+persist to the same Supabase project. Pathfinder 2 is an isolated React/localStorage
+domain and does not access the VTM Supabase or iframe contracts.
 
 ## Routes
 | Route | Component | Layer |
@@ -19,7 +22,12 @@ persist to the same Supabase project.
 | `/reference` | `modules/reference/ReferenceRoute` | React |
 | `/library/chronicles` | `modules/chronicle-library/ChronicleLibraryRoute` | React + Supabase Auth/RLS |
 | `/master` | `modules/master-console/MasterConsoleRoute` → `MasterConsoleShell` | React master console (6 modules, search, detached windows) |
+| `/pathfinder2/sheet` | `games/pathfinder2/sheet/Pathfinder2SheetRoute` | React local character-creation draft |
 | `/old` | `app/old/page.tsx` | redirect → `/character-sheet` |
+
+The VTM route files import small facades from `games/vampires/routes/*`. Those
+facades keep the existing load-bearing implementation in `modules/`,
+`core/systems/vtm5/` and `public/` while making game ownership explicit.
 
 ## Flow: master console
 ```text
@@ -65,6 +73,17 @@ persist to the same Supabase project.
  → links to /character-sheet, /table, /journal, /reference, /library/chronicles
 ```
 
+## Flow: Pathfinder 2 character creator
+
+```text
+/pathfinder2/sheet
+ → games/pathfinder2/sheet/Pathfinder2SheetRoute
+ → Pathfinder2SheetPage (six-step client creator)
+ → starter options + original short rules guides
+ → localStorage `pathfinder2-character-draft-v1`
+ → contextual external searches on pf2.ru (full source text stays there)
+```
+
 ## Flow: private chronicle library
 
 ```text
@@ -101,8 +120,10 @@ Vanilla, no build step. `old-sheet.html` (markup/styles) + `main.js` (logic) +
 (translation). Reads `rules.json` / `rules_eng.json`. Communicates with the React
 shell only through URL params, localStorage, and `postMessage`.
 
-## React / Next layer (`app/`, `components/`)
+## React / Next layer (`app/`, `games/`, `components/`)
 App Router route files are thin wrappers over `modules/*Route` entries.
+VTM wrappers pass through `games/vampires/routes/*`; Pathfinder 2 is implemented
+directly under `games/pathfinder2/`.
 `modules/home/*` owns the entry screen. Canonical table/chat/music/journal/reference/chronicle-library
 code lives in `modules/*`; deprecated component and `lib/table/*` re-export shims
 have been removed. Shared state and Supabase I/O for the table currently
@@ -174,3 +195,5 @@ filtered by room; linked character subscriptions are filtered by their IDs.
 Extract legacy logic into `core/systems/vtm5/rules/*` and `modules/table/*` in small, verified steps;
 keep the iframe until a dedicated migration task exists; never regress the UI or
 change VTM rules content during a refactor. See `ROADMAP.md` and `DECISIONS.md`.
+Move VTM internals behind `games/vampires/` only subsystem-by-subsystem; do not
+bulk-move `public/` or the shared module tree.

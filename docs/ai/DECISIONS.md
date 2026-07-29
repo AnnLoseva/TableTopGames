@@ -1,5 +1,31 @@
 # Decisions
 
+## 2026-07-29 — TableTopGames uses explicit game-domain boundaries
+
+**Area:** Product shell / routing / Pathfinder 2 / legacy VTM
+**Decision:** Rename the package and product shell to `TableTopGames`. Introduce
+`games/vampires/` and `games/pathfinder2/` as explicit game boundaries. VTM App
+Router entries now import thin facades from `games/vampires/routes/*`, while the
+load-bearing implementation stays in `modules/`, `core/systems/vtm5/` and
+`public/`. The first Pathfinder implementation lives entirely under
+`games/pathfinder2/sheet/` and is served at the intentionally unlisted
+`/pathfinder2/sheet` route. Its versioned draft is localStorage-only. Because
+`pf2.ru` explicitly asks clients not to parse the site, the repo stores only
+short original rule summaries with contextual source links; a full local corpus
+requires an authorized export from the site owner.
+**Reason:** Support more than one game without destabilizing the production VTM
+iframe, public asset paths, Supabase data model or large shared module graph.
+**Consequences:** The checkout directory and existing VTM internal paths remain
+unchanged for compatibility. Future VTM moves happen one subsystem at a time.
+Pathfinder data cannot silently depend on VTM rules or persistence. The root
+home screen remains VTM-only until discovery is explicitly requested.
+**Affected files:** `games/{vampires,pathfinder2}/*`,
+`app/{page,character-sheet,table,journal,reference,master,library/*,pathfinder2/sheet}/page.tsx`,
+`package*.json`, `app/layout.tsx`, `README.md`, `AGENTS.md`, `docs/ai/*`
+**Status:** active
+
+---
+
 ## 2026-07-18 — Game table gets a scene stage, character tokens and controllers
 
 **Area:** Game table / Supabase persistence / realtime

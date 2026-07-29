@@ -29,6 +29,7 @@ This is the catalog of the project's AI context. Every agent starts here after
 | Add / change a VTM mechanic | `subsystems/vtm-mechanics` → `workflows/vtm-mechanics-edit-protocol` → check legacy duplicate |
 | Fix dice / rolls | `subsystems/dice-and-rolls` → `subsystems/vtm-mechanics` → relevant workflow |
 | Add a feature to the game table | `subsystems/game-table` → `workflows/react-table-edit-protocol` |
+| Add / change the Pathfinder 2 sheet | `subsystems/pathfinder2-sheet` → `workflows/before-any-change` |
 | Check / change Supabase saving | `subsystems/supabase-persistence` → `workflows/supabase-edit-protocol` |
 | Update rules.json / rules_eng.json | `subsystems/rules-data` → `subsystems/i18n` (RU/EN drift) |
 | Clean up / reduce a monolith | `DECISIONS` → the file's subsystem → its workflow (needs an explicit task) |
@@ -47,5 +48,6 @@ This is the catalog of the project's AI context. Every agent starts here after
 - `subsystems/music-and-media.md` — `modules/music/*`, table media/layers
 - `subsystems/dice-and-rolls.md` — rolls, rouse checks, overlays
 - `subsystems/i18n.md` — RU/EN naming, `lib/i18n/*` and legacy i18n JS
+- `subsystems/pathfinder2-sheet.md` — isolated `/pathfinder2/sheet` creator, local draft and pf2.ru source links
 
 See also the older RU overview at `../architecture.md`.

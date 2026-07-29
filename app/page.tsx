@@ -1,4 +1,4 @@
-import HomeRoute from '@/modules/home/HomeRoute'
+import HomeRoute from '@/games/vampires/routes/HomeRoute'
 
 export default function HomePage() {
   return <HomeRoute />

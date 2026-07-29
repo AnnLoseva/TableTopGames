@@ -4,8 +4,11 @@ import { LanguageProvider } from '@/lib/i18n/LanguageProvider'
 import { GlobalMusicEngineMount } from '@/modules/music/components/GlobalMusicEngineMount'
 
 export const metadata: Metadata = {
-  title: 'VTM V5 — Character Sheet & Table',
-  description: 'Вампиры: Маскарад V5',
+  title: {
+    default: 'TableTopGames',
+    template: '%s · TableTopGames',
+  },
+  description: 'Цифровые листы персонажей и игровые столы для настольных ролевых игр',
   icons: {
     icon: '/favicon.ico',
   },

@@ -17,7 +17,18 @@ opening code**. Risk levels drive how careful you must be.
 | `app/character-sheet/page.tsx` | `/character-sheet` route | low | before-any-change | Thin wrapper |
 | `app/table/page.tsx` | `/table` route | low | before-any-change | Thin wrapper |
 | `app/master/page.tsx` | `/master` route | low | before-any-change | Thin wrapper; explicit `room` required |
+| `app/pathfinder2/sheet/page.tsx` | `/pathfinder2/sheet` route | low | before-any-change | Thin wrapper; intentionally unlinked from `/` |
 | `app/old/page.tsx` | legacy redirect | low | before-any-change | Redirects to `/character-sheet` |
+
+## Game domain boundaries (`games/*`)
+
+| Path | Role | Risk | Edit protocol | Notes |
+|---|---|---|---|---|
+| `games/vampires/routes/*` | VTM route facades | low | before-any-change | Existing VTM implementation remains load-bearing in `modules/`, `core/`, `public/` |
+| `games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx` | Pathfinder 2 route entry | low | before-any-change | Thin wrapper |
+| `games/pathfinder2/sheet/components/*` | Six-step Pathfinder 2 creator UI | medium | before-any-change | Local-only, no Supabase |
+| `games/pathfinder2/sheet/{data,types}.ts` | Starter character-creation model and options | medium | before-any-change | Independent from VTM rules data |
+| `games/pathfinder2/sheet/rules-source.ts` | Short rule guides + pf2.ru search links | medium | before-any-change | Do not scrape or vendor full site content |
 
 ## Home module (`modules/home/*`)
 | Path | Role | Risk | Edit protocol | Notes |

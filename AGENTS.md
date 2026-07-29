@@ -1,9 +1,10 @@
 # AGENTS.md — entry point for every AI agent
 
-You are working in **vampires-character-sheet**: a Vampire: The Masquerade V5
-digital character sheet + online game table (campaign room). This is a **live,
-non-trivial project**, not a blank slate. Do not "rebuild it properly from
-scratch." Make small, safe, well-scoped changes.
+You are working in **TableTopGames**: a multi-game tabletop RPG workspace whose
+load-bearing production domain is Vampire: The Masquerade V5 (digital character
+sheet + campaign room) and whose isolated Pathfinder 2 domain starts at
+`/pathfinder2/sheet`. This is a **live, non-trivial project**, not a blank slate.
+Do not "rebuild it properly from scratch." Make small, safe, well-scoped changes.
 
 The full AI context lives in **`docs/ai/`**. This file is only the protocol.
 

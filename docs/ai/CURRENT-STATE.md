@@ -4,6 +4,10 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
+- **TableTopGames / Pathfinder 2 foundation (2026-07-29)** — the product now
+  has explicit `games/vampires` and `games/pathfinder2` boundaries. The unlisted
+  `/pathfinder2/sheet` route provides a six-step local character draft with
+  contextual `pf2.ru` links; it intentionally has no Supabase persistence yet.
 - **Game table lite (2026-07-18)** — scene stage/background on `table_scenes`,
   character tokens (`table_tokens`) above media, `table_character_controllers`
   (several characters per player), geometric player visibility (outside-stage
@@ -25,8 +29,8 @@
 
 ## What is stable enough
 - Routes `/`, `/character-sheet`, `/table`, `/journal`, `/reference`,
-  `/library/chronicles`, `/master` — all thin
-  `app/*/page.tsx` wrappers over `modules/*/*Route`.
+  `/library/chronicles`, `/master`, `/pathfinder2/sheet` — all thin
+  `app/*/page.tsx` wrappers over game-owned route entries.
 - The iframe character sheet loads, saves and loads characters.
 - The game table renders and syncs a room via Supabase.
 - `core/systems/vtm5/rules/*` pure modules (health, humanity, damage, derived stats, disciplines).
@@ -66,7 +70,9 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - `public/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
 
 ## Last updated
-2026-07-18 — Game table lite: scene stage/background, character tokens above
+2026-07-29 — TableTopGames rename and game boundaries; isolated Pathfinder 2
+  character creator at `/pathfinder2/sheet`.
+  Earlier: Game table lite: scene stage/background, character tokens above
   media, character controllers, geometric player visibility (see DECISIONS).
   Earlier: `/library/chronicles` now separates official history from
   owner-only, resumable AI-processed player transcripts (full clean text + short

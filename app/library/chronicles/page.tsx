@@ -1,4 +1,4 @@
-import ChronicleLibraryRoute from '@/modules/chronicle-library/ChronicleLibraryRoute'
+import ChronicleLibraryRoute from '@/games/vampires/routes/ChronicleLibraryRoute'
 
 export default function ChronicleLibrary() {
   return <ChronicleLibraryRoute />

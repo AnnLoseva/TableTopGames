@@ -1,20 +1,24 @@
 # Project Brief
 
 ## One-line description
-A Vampire: The Masquerade V5 digital character sheet plus an online game table
-(campaign room) for a master and players.
+TableTopGames is a multi-game tabletop RPG workspace: a production Vampire:
+The Masquerade V5 character sheet and campaign room plus an isolated Pathfinder
+2 character-creation route.
 
 ## Product goal
 Let a VTM V5 group run a chronicle online: each player keeps a full character
 sheet, and everyone shares a real-time game table with scenes, media, dice rolls,
 chat, journal, music, and a rules reference — persisted so a room can be left and
-resumed.
+resumed. Let Pathfinder 2 players build a local character draft without coupling
+that new game to the VTM persistence contracts.
 
 ## Target user
 - **Players** — fill in and maintain their vampire character sheet, roll dice,
   take damage, track hunger/willpower/humanity.
 - **Master (Storyteller)** — runs the room: scenes, media layers, music, NPCs,
   and adjudicates rolls.
+- **Pathfinder 2 players** — build a six-step local character draft and consult
+  contextual Russian rules links.
 
 Single app, two roles, driven by a `role` (`master` | `player`) parameter.
 
@@ -30,6 +34,8 @@ Single app, two roles, driven by a `role` (`master` | `player`) parameter.
    transcripts/personal recaps.
 6. **Master console** — `/master?room=...`, a desktop shell for future
    Storyteller modules; currently protected by the compatibility master-password gate.
+7. **Pathfinder 2 character creator** — `/pathfinder2/sheet`, an unlisted,
+   browser-local creation draft.
 
 Typical flow: **main screen → pick/create character → open room → jump between
 sheet and table**, carrying `room`, `role`, `characterId`.
@@ -51,6 +57,7 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 | `/reference` | Reference pages | Markdown rules reference |
 | `/library/chronicles` | `ChronicleLibraryRoute` | Official Chronicle reader, Storyteller upload and owner-only player transcript processing |
 | `/master?room=<room-id>` | `MasterConsoleRoute` → `MasterConsoleShell` | Desktop Storyteller workspace shell; room is required |
+| `/pathfinder2/sheet` | `games/pathfinder2/sheet/Pathfinder2SheetRoute` | Unlisted local Pathfinder 2 character creator |
 | `/old` | redirect | Legacy redirect → `/character-sheet` |
 
 ## Main data sources
@@ -65,6 +72,9 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 - **Supabase storage buckets** — `table-images` and a music bucket for uploaded
   table/media assets.
 - **localStorage** — room/role and character-creation drafts (bridge state).
+- **Pathfinder 2 local data** — starter creation options and short original
+  rules notes in `games/pathfinder2/sheet/*`; the draft uses its own localStorage
+  key and links to `pf2.ru` for complete source text.
 
 ## Non-goals
 - Not rebuilding the app from scratch or imposing a "perfect" architecture.
@@ -74,6 +84,7 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 - Not a generic AI-memory system — this context is specific to this site.
 
 ## Design direction
-Dark, blood-red VTM aesthetic. Keep the current UI stable. Evolve gradually from
-the legacy monolith toward modular React + `core/systems/vtm5/rules/*` rules, in small safe steps
-— without abrupt rewrites or UI regressions.
+Each game owns its visual language: dark blood-red VTM and parchment/forest
+Pathfinder 2. Keep the current VTM UI stable. Evolve gradually from the legacy
+monolith toward modular React + `core/systems/vtm5/rules/*` rules, in small safe
+steps — without abrupt rewrites or UI regressions.

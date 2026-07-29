@@ -1,6 +1,7 @@
-# vampires-character-sheet
+# TableTopGames
 
-VTM V5 character sheet and online campaign table (Next.js + Supabase + legacy iframe sheet).
+Digital character sheets and online campaign tools for tabletop roleplaying
+games. The current game domains are Vampire: The Masquerade V5 and Pathfinder 2.
 
 ## Routes
 
@@ -12,6 +13,7 @@ VTM V5 character sheet and online campaign table (Next.js + Supabase + legacy if
 | `/master` | Master console (desktop; requires `?room=` + master gate) |
 | `/journal` | Player personal journal (localStorage) |
 | `/reference` | Rules reference |
+| `/pathfinder2/sheet` | Pathfinder 2 character creation draft (not linked from `/`) |
 
 Master console deep links:
 
@@ -52,6 +54,7 @@ Infrastructure → Hub → Game Systems → Modules
 |-------|------|------|
 | Infrastructure | `core/infrastructure/` | Low-level shared contracts (placeholder) |
 | Hub | `core/hub/` | Chronicle setup, module/system registry, runtime bootstrap |
+| Game Domains | `games/{vampires,pathfinder2}/` | Game-specific route boundary and Pathfinder 2 implementation |
 | Game Systems | `core/systems/vtm5/` | Pure VTM5 rules + adapters for modules |
 | Modules | `modules/*/` | Feature areas: table, chat, music, rolls, … |
 
@@ -74,6 +77,8 @@ const runtime = bootstrapChronicleRuntime(hub, {
 ### Key folders
 
 - `app/` — Next.js route shells
+- `games/vampires/` — VTM route facades over the load-bearing implementation
+- `games/pathfinder2/` — isolated Pathfinder 2 sheet and local rules guide
 - `components/` — screens and `GameTable` orchestrator (transition)
 - `modules/table/` — table data layer, API, hooks, components
 - `modules/chat/`, `modules/music/` — extracted feature modules
