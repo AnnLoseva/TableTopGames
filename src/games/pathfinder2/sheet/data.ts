@@ -19,10 +19,22 @@ export const PATHFINDER2_STEPS: {
     description: 'Имя, образ и уровень героя',
   },
   {
-    id: 'origin',
-    label: 'Происхождение',
+    id: 'ancestry',
+    label: 'Народ',
     shortLabel: 'Корни',
-    description: 'Народ, наследие и предыстория',
+    description: 'Происхождение, черты и базовые параметры',
+  },
+  {
+    id: 'heritage',
+    label: 'Наследие',
+    shortLabel: 'Кровь',
+    description: 'Обычное и универсальное наследие',
+  },
+  {
+    id: 'background',
+    label: 'Предыстория',
+    shortLabel: 'Прошлое',
+    description: 'Жизнь до приключений и первое обучение',
   },
   {
     id: 'class',
@@ -43,10 +55,22 @@ export const PATHFINDER2_STEPS: {
     description: 'Обученные навыки и знания',
   },
   {
+    id: 'feats',
+    label: 'Способности',
+    shortLabel: 'Таланты',
+    description: 'Общие способности и способности навыков',
+  },
+  {
     id: 'equipment',
     label: 'Снаряжение',
+    shortLabel: 'Инвентарь',
+    description: 'Языки, оружие, защита и припасы',
+  },
+  {
+    id: 'review',
+    label: 'Проверка',
     shortLabel: 'Финал',
-    description: 'Языки, способности и инвентарь',
+    description: 'Проверьте решения и вернитесь к листу',
   },
 ]
 
@@ -63,141 +87,6 @@ export const PATHFINDER2_ATTRIBUTES: {
   { key: 'wisdom', shortLabel: 'МДР', label: 'Мудрость', description: 'Восприятие и воля' },
   { key: 'charisma', shortLabel: 'ХАР', label: 'Харизма', description: 'Влияние и самовыражение' },
 ]
-
-export const PATHFINDER2_ANCESTRIES = [
-  {
-    id: 'human',
-    name: 'Человек',
-    tagline: 'Гибкость и амбиции',
-    hp: 8,
-    speed: 25,
-    heritages: ['Умелый человек', 'Зимостойкий человек', 'Разностороннее наследие'],
-  },
-  {
-    id: 'elf',
-    name: 'Эльф',
-    tagline: 'Долгая память и проворство',
-    hp: 6,
-    speed: 30,
-    heritages: ['Лесной эльф', 'Древний эльф', 'Шепчущий эльф'],
-  },
-  {
-    id: 'dwarf',
-    name: 'Дварф',
-    tagline: 'Крепость камня и традиций',
-    hp: 10,
-    speed: 20,
-    heritages: ['Кузнечный дварф', 'Древний дварф', 'Дварф-смертоносец'],
-  },
-  {
-    id: 'halfling',
-    name: 'Полурослик',
-    tagline: 'Удача, любопытство и отвага',
-    hp: 6,
-    speed: 25,
-    heritages: ['Сумеречный полурослик', 'Кочевой полурослик', 'Дикий полурослик'],
-  },
-  {
-    id: 'goblin',
-    name: 'Гоблин',
-    tagline: 'Энергия, огонь и находчивость',
-    hp: 6,
-    speed: 25,
-    heritages: ['Несокрушимый гоблин', 'Острозубый гоблин', 'Снежный гоблин'],
-  },
-  {
-    id: 'orc',
-    name: 'Орк',
-    tagline: 'Выносливость и прямота',
-    hp: 10,
-    speed: 25,
-    heritages: ['Дождевой орк', 'Могильный орк', 'Глубинный орк'],
-  },
-] as const
-
-export const PATHFINDER2_BACKGROUNDS = [
-  {
-    id: 'acolyte',
-    name: 'Послушник',
-    detail: 'Мудрость или Интеллект · Религия',
-  },
-  {
-    id: 'artisan',
-    name: 'Ремесленник',
-    detail: 'Сила или Интеллект · Ремесло',
-  },
-  {
-    id: 'criminal',
-    name: 'Преступник',
-    detail: 'Ловкость или Интеллект · Скрытность',
-  },
-  {
-    id: 'field-medic',
-    name: 'Полевой медик',
-    detail: 'Телосложение или Мудрость · Медицина',
-  },
-  {
-    id: 'farmhand',
-    name: 'Батрак',
-    detail: 'Сила или Телосложение · Атлетика',
-  },
-  {
-    id: 'scholar',
-    name: 'Учёный',
-    detail: 'Интеллект или Мудрость · академический навык',
-  },
-] as const
-
-export const PATHFINDER2_CLASSES = [
-  {
-    id: 'fighter',
-    name: 'Воин',
-    role: 'Мастер оружия и контроля поля',
-    hp: 10,
-    keyAbilities: ['strength', 'dexterity'] satisfies Pathfinder2AttributeKey[],
-    accent: 'Сталь',
-  },
-  {
-    id: 'rogue',
-    name: 'Плут',
-    role: 'Эксперт, разведчик и точный боец',
-    hp: 8,
-    keyAbilities: ['dexterity'] satisfies Pathfinder2AttributeKey[],
-    accent: 'Тень',
-  },
-  {
-    id: 'wizard',
-    name: 'Волшебник',
-    role: 'Подготовленная тайная магия',
-    hp: 6,
-    keyAbilities: ['intelligence'] satisfies Pathfinder2AttributeKey[],
-    accent: 'Аркана',
-  },
-  {
-    id: 'cleric',
-    name: 'Жрец',
-    role: 'Божественная магия и вера',
-    hp: 8,
-    keyAbilities: ['wisdom'] satisfies Pathfinder2AttributeKey[],
-    accent: 'Вера',
-  },
-  {
-    id: 'ranger',
-    name: 'Следопыт',
-    role: 'Охотник и исследователь',
-    hp: 10,
-    keyAbilities: ['strength', 'dexterity'] satisfies Pathfinder2AttributeKey[],
-    accent: 'Тропа',
-  },
-  {
-    id: 'bard',
-    name: 'Бард',
-    role: 'Оккультная магия и поддержка',
-    hp: 8,
-    keyAbilities: ['charisma'] satisfies Pathfinder2AttributeKey[],
-    accent: 'Муза',
-  },
-] as const
 
 export const PATHFINDER2_SKILLS = [
   'Акробатика',
@@ -219,18 +108,20 @@ export const PATHFINDER2_SKILLS = [
 ] as const
 
 export const DEFAULT_PATHFINDER2_DRAFT: Pathfinder2CharacterDraft = {
+  schemaVersion: 2,
   name: '',
   player: '',
   pronouns: '',
   concept: '',
   level: 1,
+  portrait: '',
   ancestryId: '',
-  heritage: '',
+  heritageId: '',
+  versatileHeritageId: '',
   backgroundId: '',
   classId: '',
+  subclassId: '',
   keyAbility: '',
-  specialization: '',
-  classFeat: '',
   attributes: {
     strength: 0,
     dexterity: 0,
@@ -241,8 +132,14 @@ export const DEFAULT_PATHFINDER2_DRAFT: Pathfinder2CharacterDraft = {
   },
   trainedSkills: [],
   lore: '',
+  ancestryFeatIds: [],
+  classFeatIds: [],
+  skillFeatIds: [],
+  generalFeatIds: [],
   languages: '',
-  generalFeat: '',
   equipment: '',
   notes: '',
+  currentHp: 0,
+  tempHp: 0,
+  unresolvedSelections: {},
 }

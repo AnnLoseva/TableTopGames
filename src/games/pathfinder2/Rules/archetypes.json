@@ -1,0 +1,784 @@
+{
+  "title": "Архетипы Pathfinder 2e (Remastered) — Полный справочник",
+  "source": "https://pf2.ru/archetypes",
+  "baseSource": "Archives of Nethys, Player Core 2, War of Immortals, Guns & Gears, Rage of Elements, Dark Archives, Battlecry!, Howl of the Wild, Divine Mysteries",
+  "version": "2026-07",
+  "note": "Все названия и описания на русском. Вкладки: multiclass (мультиклассовые посвящения, 27 шт.), all-archetypes (общие архетипы, 40+ шт.), mythic-destinies (мифические судьбы, 9 шт.), class-archetypes (классовые архетипы, 5 шт.).",
+  "tabs": {
+    "multiclass": "Мультиклассовые архетипы — посвящения в другие классы (уровень 2)",
+    "all-archetypes": "Общие архетипы — специализации и стили (уровень 2-6)",
+    "mythic-destinies": "Мифические судьбы — путь к бессмертию (уровень 12, War of Immortals)",
+    "class-archetypes": "Классовые архетипы — модификации классов (уровень 2)"
+  },
+  "archetypes": {
+    "multiclass": [
+      {
+        "id": "mc-alchemist",
+        "name": "Алхимик (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение алхимика. Вы получаете доступ к алхимическим формулам, созданию бомб и эликсиров. Алхимическое ремесло на уровне обучен, 4 формулы 1-го уровня, продвинутая алхимия (2 предмета в день, уровень ≤ половине вашего).",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-barbarian",
+        "name": "Варвар (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение варвара. Вы получаете доступ к Ярости (Rage): +2 урона в ближнем бою, временные ПЗ = уровень + Тел. Нельзя использовать concentrate-действия. Длится 1 минуту. Получаете обучение Атлетике.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-bard",
+        "name": "Бард (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение барда. Вы получаете оккультную магию (спонтанную): 2 заговора, 1 слот 1-го круга. Обучение Оккультизму и Выступлению. Можете брать черты барда и композиции.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-champion",
+        "name": "Чемпион (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение чемпиона. Вы получаете обучение Религии, броне (всей), воинскому оружию. Выберите божество и Дело — получаете реакцию чемпиона (без relentless/exalted улучшений).",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-cleric",
+        "name": "Жрец (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение жреца. Божественная магия (подготовленная): 2 заговора, 1 слот 1-го круга. Обучение Религии. Выберите божество — получаете божественный источник (1 доп. слот heal/harm высшего круга).",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-druid",
+        "name": "Друид (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение друида. Первородная магия (подготовленная): 2 заговора, 1 слот 1-го круга. Обучение Природе. Получаете анафему друида и Голос Природы (эмпатия животных ИЛИ растений).",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-fighter",
+        "name": "Воин (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение воина. Вы получаете обучение всему простому и воинскому оружию, Акробатике или Атлетике, и черту Reactive Strike (реакция на manipulate/движение/дальнюю атаку).",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-guardian",
+        "name": "Хранитель (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение хранителя. Обучение всей броне, Атлетике или Обществу. Получаете реакцию перехвата (Intercept): принять урон вместо союзника, уменьшив на 2+пол.уровня.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-investigator",
+        "name": "Следователь (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение следователя. Обучение Обществу. Получаете Strategem [1 д.]: бросок d20 против цели для планирования атаки.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-kineticist",
+        "name": "Кинетик (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение кинетика. Откройте Врата к одному элементу. Получаете Elemental Blast (1d8) и один импульс. Обучение Природе.",
+        "dedicationLevel": 2,
+        "sourceBook": "Rage of Elements"
+      },
+      {
+        "id": "mc-magus",
+        "name": "Маг (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение мага. Арканная магия (подготовленная): 2 заговора, 1 слот 1-го круга. Spellstrike [2 д.] — зарядка оружия заклинанием. Обучение Аркане.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-monk",
+        "name": "Монах (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение монаха. Обучение безоружным атакам, Акробатике или Атлетике. Получаете Flurry of Blows [1 д.] — две безоружные атаки с одним МАП.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-oracle",
+        "name": "Оракул (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение оракула. Божественная магия (спонтанная): 2 заговора, 1 слот 1-го круга. Cursebound-способности. Обучение Религии.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-psychic",
+        "name": "Псионик (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение псионика. Оккультная магия (спонтанная): 2 заговора, 1 слот 1-го круга. Amp-усиление заговоров через Очки Фокуса. Обучение Оккультизму.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-ranger",
+        "name": "Следопыт (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение следопыта. Обучение Природе и Выживанию. Получаете Hunt Prey [1 д.] — выбор цели с бонусами к отслеживанию и атакам.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-rogue",
+        "name": "Плут (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение плута. Обучение лёгкой броне, Скрытности или Воровству. Получаете Sneak Attack (+1d6 precision против flat-footed). +1 повышение навыка.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-sorcerer",
+        "name": "Чародей (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение чародея. Магия (спонтанная): 2 заговора, 1 слот 1-го круга. Традиция зависит от выбранной Кровавой Линии.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-summoner",
+        "name": "Призыватель (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение призывателя. Вы получаете эйдолона, с которым делите ПЗ и действия (Act Together). Магия: 2 заговора, 1 слот 1-го круга.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-swashbuckler",
+        "name": "Дуэлянт (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение дуэлянта. Обучение Акробатике. Получаете Panache (стильные действия) и один Финишёр (precision-урон).",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-thaumaturge",
+        "name": "Тауматург (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение тауматурга. Обучение эзотерическим знаниям. Получаете Exploit Vulnerability [1 д.] — нахождение слабостей цели и дополнительный урон.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-witch",
+        "name": "Ведьма (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение ведьмы. Магия (подготовленная): 2 заговора, 1 слот 1-го круга. Традиция зависит от Патрона. Фамильяр с 1 способностью.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "mc-wizard",
+        "name": "Волшебник (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение волшебника. Арканная магия (подготовленная): 2 заговора, 1 слот 1-го круга. Книга заклинаний с 4 заклинаниями 1-го круга. Обучение Аркане.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "mc-gunslinger",
+        "name": "Стрелок (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "uncommon",
+        "description": "Посвящение стрелка. Обучение огнестрельному оружию (до expert). Перезарядка с пользой: действие перезарядки совмещается с полезным действием. Доступ: персонажи из регионов с огнестрелом.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "mc-inventor",
+        "name": "Изобретатель (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "uncommon",
+        "description": "Посвящение изобретателя. Обучение Ремеслу. Вы получаете инновацию (оружие/броня/конструкт) и Overdrive [1 д.]: +Инт/2 к урону. Доступ: технологичные регионы.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "mc-exemplar",
+        "name": "Экземпляр (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "rare",
+        "description": "Посвящение экземпляра. Вы получаете одну Икону с пассивным бонусом и Transcendence-способностью. Обучение Религии.",
+        "dedicationLevel": 2,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "mc-animist",
+        "name": "Анимист (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение анимиста. Божественная магия (подготовленная): 2 заговора, 1 слот. Выберите одного духа-покровителя. Обучение Природе или Религии.",
+        "dedicationLevel": 2,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "mc-commander",
+        "name": "Командир (мультикласс)",
+        "tab": "multiclass",
+        "rarity": "common",
+        "description": "Посвящение командира. Обучение Дипломатии и Запугиванию. Приказ [1 д.]: союзник в 30 фт. получает дополнительное действие (Strike/Stride/Interact).",
+        "dedicationLevel": 2,
+        "sourceBook": "War of Immortals"
+      }
+    ],
+    "all-archetypes": [
+      {
+        "id": "acrobat",
+        "name": "Акробат",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер акробатики. Автоматическое повышение Акробатики до expert на 2-м, master на 7-м, legendary на 15-м. Черты для улучшения баланса, прыжков и полёта.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "archaeologist",
+        "name": "Археолог",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Исследователь древностей. Обучение Обществу и Знанию (выбранная древняя культура). +1 ситуативный к проверкам ловушек в руинах.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "archer",
+        "name": "Лучник",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер лука и арбалета. Черты для улучшения стрельбы: Crossbow Terror, Bow Sniping, прицеливание, игнорирование штрафов за дальность.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "assassin",
+        "name": "Убийца",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер скрытого убийства. Mark for Death: выбор цели и дополнительный precision-урон против неё. Черты для отравления, скрытности и Anglerfish-киллов.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "bastion",
+        "name": "Бастион",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер щита. Реактивный Shield Block, улучшенная защита щитом, отражение заклинаний щитом. Требуется Shield Block.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "beastmaster",
+        "name": "Повелитель зверей",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Хозяин нескольких зверей-компаньонов. Можно иметь до 4 спутников (animal companions) и переключаться между ними. Спутники получают бонусы.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "blessed-one",
+        "name": "Благословенный",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Отмеченный божеством. Фокусное заклинание Lay on Hands (исцеление + бонус к КД). Черты для улучшения исцеления и защиты от зла.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "bounty-hunter",
+        "name": "Охотник за головами",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер поимки целей. Бонусы к отслеживанию, захвату живьём, обезвреживанию. Черты для Opportunity Attack и Pursuit.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "cavalier",
+        "name": "Кавалерист",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер верховой езды. Получаете скакуна (horse companion). Бонусы к атакам верхом, таранным ударам и манёвренности.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "celebrity",
+        "name": "Знаменитость",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Известная личность. Бонусы к Дипломатии, Выступлению, созданию впечатления. Можете использовать славу для получения доступа и услуг.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "dandy",
+        "name": "Денди",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Светский лев. Бонусы к Обществу, Дипломатии, этикету. Gossip Lore: знание слухов. Party Crasher: проход на любые мероприятия.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "dual-weapon-warrior",
+        "name": "Воин с двумя оружиями",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер парного оружия. Double Slice: две атаки с комбинированным МАП. Черты для увеличения урона и защиты с двумя оружиями.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "duelist",
+        "name": "Дуэлянт",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер фехтования одной рукой. Dueling Parry: +2 КД с одной рукой. Черты для разоружения, парирования и контратак.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "eldritch-archer",
+        "name": "Элдрический лучник",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Лучник, заряжающий стрелы магией. Eldritch Shot [3 д.]: Spellstrike через лук (заклинание + стрела). Требуется эксперт в луке.",
+        "dedicationLevel": 6,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "familiar-master",
+        "name": "Мастер фамильяров",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Усиленный фамильяр с дополнительными способностями. Enhanced Familiar: +2 способности. Familiar Conduit: заклинания через фамильяра.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "gladiator",
+        "name": "Гладиатор",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Боец арены. Бонусы к Выступлению и Запугиванию. Performative Combat: стильные боевые приёмы, привлекающие внимание публики.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "martial",
+        "name": "Боевой артист",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Сочетание боя и выступления. Выступление в бою даёт бонусы союзникам и штрафы врагам.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "medic",
+        "name": "Медик",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Эксперт по лечению. Автоматическое повышение Медицины до expert на 2-м, master на 7-м, legendary на 15-м. Улучшенное Treat Wounds и Battle Medicine.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "pirate",
+        "name": "Пират",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Морской разбойник. Бонусы к Атлетике (плавание, лазание по канатам), Запугиванию. Boarding Assault: абордажная атака.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "scout",
+        "name": "Разведчик",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер разведки. Бонусы к Скрытности и Выживанию. Scout's Warning: союзники получают +1 к инициативе.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "scroll-trickster",
+        "name": "Трикстер свитков",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер использования свитков. Можете использовать свитки любой традиции через Обман или Воровство. Создание временных свитков.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "soul-warden",
+        "name": "Страж душ",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Защитник от нежити. Обнаружение нежити, бонусы против неё, исцеление от void-урона.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "talisman-dabbler",
+        "name": "Любитель талисманов",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер талисманов. Бесплатные талисманы каждый день, возможность носить больше талисманов, улучшенная активация.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "weapon-improviser",
+        "name": "Импровизатор оружия",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер подручных предметов. Использует стулья, бутылки, рыбу как оружие без штрафов. Урон масштабируется с уровнем.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "wrestler",
+        "name": "Борец",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер захватов. Бонусы к Grapple, Trip, Shove. Мощные приёмы: титаническая сила, захват и бросок, удушение.",
+        "dedicationLevel": 2,
+        "sourceBook": "Player Core 2"
+      },
+      {
+        "id": "elementalist",
+        "name": "Элементалист",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Заклинатель, фокусирующийся на стихийной магии. Изменяет список заклинаний: только заклинания с elemental-чертами. Получает бонусы к elemental-заклинаниям.",
+        "dedicationLevel": 2,
+        "sourceBook": "Rage of Elements"
+      },
+      {
+        "id": "artillerist",
+        "name": "Артиллерист",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер осадных орудий и бомб. Бонусы к использованию алхимических бомб, огнестрельного оружия и осадных машин.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "bullet-dancer",
+        "name": "Танцор с пулями",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Монашеский стиль с огнестрельным оружием. Использует пистолеты как монашеское оружие, Bullet Storm, стрельба в ближнем бою без провокаций.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "demolitionist",
+        "name": "Подрывник",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Мастер взрывчатки. Бонусы к созданию и использованию бомб, детонация на расстоянии, увеличенный радиус взрыва.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "firework-technician",
+        "name": "Пиротехник",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Мастер фейерверков. Создание и использование фейерверков для атак и отвлечения внимания. Ослепление, звуковой урон.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "sniping-duo",
+        "name": "Снайперский дуэт",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Парная снайперская работа. Вы и союзник получаете бонусы при атаке одной цели. Комбинированные выстрелы.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "clawdancer",
+        "name": "Когтетанцор",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер когтей и клыков. Использует естественное оружие (когти, челюсти) в танцевальном стиле. Улучшенные безоружные атаки.",
+        "dedicationLevel": 2,
+        "sourceBook": "Howl of the Wild"
+      },
+      {
+        "id": "aldori-duelist",
+        "name": "Дуэлянт Алдори",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Мастер алдорийского дуэльного меча. Бонусы к фехтованию, парированию, разоружению. SA: Aldori Riposte.",
+        "dedicationLevel": 2,
+        "sourceBook": "Battlecry!"
+      },
+      {
+        "id": "beast-gunner",
+        "name": "Звериный стрелок",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Стрелок, использующий магических зверей как оружие. Живое оружие растёт с уровнем, получает новые способности.",
+        "dedicationLevel": 2,
+        "sourceBook": "Guns & Gears"
+      },
+      {
+        "id": "captain",
+        "name": "Капитан",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Лидер команды. Бонусы к командованию, тактике, вдохновению союзников. Приказы как у Командира.",
+        "dedicationLevel": 2,
+        "sourceBook": "Battlecry!"
+      },
+      {
+        "id": "crossbow-infiltrator",
+        "name": "Арбалетный лазутчик",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер арбалета для скрытных операций. Бесшумные выстрелы, скрытое оружие, бонусы в городской среде.",
+        "dedicationLevel": 2,
+        "sourceBook": "Battlecry!"
+      },
+      {
+        "id": "field-propagandist",
+        "name": "Полевой пропагандист",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Мастер пропаганды и манипуляции. Массовое убеждение, распространение слухов, подрыв морали врагов.",
+        "dedicationLevel": 2,
+        "sourceBook": "Battlecry!"
+      },
+      {
+        "id": "guerrilla",
+        "name": "Партизан",
+        "tab": "all-archetypes",
+        "rarity": "common",
+        "description": "Мастер засад и уличного боя. Бонусы к скрытности в городе, внезапным атакам, отступлению после удара.",
+        "dedicationLevel": 2,
+        "sourceBook": "Battlecry!"
+      },
+      {
+        "id": "dragon-disciple",
+        "name": "Драконий ученик",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Последователь драконьего пути. Чешуя, когти, дыхание, крылья. Выберите тип дракона, определяющий энергию и способности.",
+        "dedicationLevel": 2,
+        "sourceBook": "Advanced Player's Guide"
+      },
+      {
+        "id": "chronoskimmer",
+        "name": "Хроноскиммер",
+        "tab": "all-archetypes",
+        "rarity": "rare",
+        "description": "Путешественник во времени. Манипуляции со временем: ускорение, замедление, взгляд в прошлое/будущее, временные петли.",
+        "dedicationLevel": 2,
+        "sourceBook": "Dark Archives"
+      },
+      {
+        "id": "curse-maelstrom",
+        "name": "Водоворот проклятий",
+        "tab": "all-archetypes",
+        "rarity": "rare",
+        "description": "Носитель мощного проклятия. Проклятие растёт с уровнем, давая и штрафы, и бонусы. Взрыв проклятия для нанесения урона врагам.",
+        "dedicationLevel": 2,
+        "sourceBook": "Dark Archives"
+      },
+      {
+        "id": "alter-ego",
+        "name": "Альтер эго",
+        "tab": "all-archetypes",
+        "rarity": "uncommon",
+        "description": "Мастер двойной жизни. Вторая личность с отдельной репутацией. Мгновенная смена облика, разделение ресурсов между личностями.",
+        "dedicationLevel": 2,
+        "sourceBook": "Dark Archives"
+      },
+      {
+        "id": "crystal-keeper",
+        "name": "Хранитель кристаллов",
+        "tab": "all-archetypes",
+        "rarity": "rare",
+        "description": "Хранитель магических кристаллов. Использование кристаллов для заклинаний, защиты и усиления.",
+        "dedicationLevel": 2,
+        "sourceBook": "Age of Ashes"
+      }
+    ],
+    "mythic-destinies": [
+      {
+        "id": "apocalypse-rider",
+        "name": "Всадник Апокалипсиса",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: предвестник конца. Ваше присутствие вызывает страх и разрушение. Способности: аура страха, массовое уничтожение, неуязвимость к смерти. На 20-м уровне: иммунитет к старению и смертельным эффектам.",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "archfiend",
+        "name": "Архидьявол",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined стать архидьяволом Ада. Способности: адский контракт, призыв дьяволов, адский огонь. На 20-м уровне: бессмертие (возрождение в Аду), контроль над дьявольскими легионами.",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "ascended-celestial",
+        "name": "Вознёсшийся Небожитель",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined стать ангелом или архонтом. Способности: исцеляющие крылья, божественный свет, аура защиты. На 20-м уровне: бессмертие (вознесение на Небеса), иммунитет к злу.",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "beast-lord",
+        "name": "Владыка Зверей",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined стать повелителем всех зверей. Способности: призыв мифических зверей, слияние со зверем, превращение в primal-зверей. На 20-м уровне: бессмертие (становитесь духом зверя), контроль над всеми животными в радиусе мили.",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "broken-chain",
+        "name": "Разорванная Цепь",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined освободить мир от всех оков. Способности: разрушение оков (буквальных и метафорических), освобождение союзников от контроля, иммунитет к захвату и удержанию. На 20-м уровне: бессмертие (становитесь концепцией свободы).",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "eternal-legend",
+        "name": "Вечная Легенда",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined стать легендой, чьё имя будут помнить вечно. Способности: усиление фирменных приёмов, легендарные навыки, вдохновение через славу. На 20-м уровне: бессмертие (возрождение через рассказы и легенды о вас).",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "godling",
+        "name": "Полубог",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined стать божеством. Способности: божественная аура, божественный источник (heal/harm), владения божества. На 20-м уровне: бессмертие (полубожественность), поклонение последователей.",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "prophesied-monarch",
+        "name": "Предсказанный Монарх",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined стать величайшим правителем. Способности: аура лидерства, приказы, контроль над судьбой (переброс). На 20-м уровне: бессмертие (ваше королевство живёт вечно), управление нацией.",
+        "dedicationLevel": 12,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "avenging-runelord",
+        "name": "Мстительный Рунный Владыка",
+        "tab": "mythic-destinies",
+        "rarity": "rare",
+        "description": "Мифическая судьба: destined возродить или свергнуть империю Трассилон. Способности: рунная магия, древние знания, контроль над грехом (роскошь, гнев, гордыня и т.д.). На 20-м уровне: бессмертие (становитесь воплощением рунной магии).",
+        "dedicationLevel": 12,
+        "sourceBook": "Adventure Path #219"
+      }
+    ],
+    "class-archetypes": [
+      {
+        "id": "avenger",
+        "name": "Мститель",
+        "tab": "class-archetypes",
+        "rarity": "common",
+        "description": "Классовый архетип Плута. Заменяет Sneak Attack на священную кару. Святость (holy) — охота на врагов божества. Реакция кары против врагов, нарушающих эдикты.",
+        "baseClass": "rogue",
+        "dedicationLevel": 2,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "bloodrager",
+        "name": "Кровавый Яростник",
+        "tab": "class-archetypes",
+        "rarity": "common",
+        "description": "Классовый архетип Варвара. Сочетает ярость и спонтанную магию. В ярости может сотворять заклинания. Кровавая линия как у Чародея.",
+        "baseClass": "barbarian",
+        "dedicationLevel": 2,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "battle-harbinger",
+        "name": "Боевой Предвестник",
+        "tab": "class-archetypes",
+        "rarity": "common",
+        "description": "Классовый архетип Жреца. Фокус на боевых благословениях и проклятиях вместо лечения. Аура предвестника, боевые молитвы.",
+        "baseClass": "cleric",
+        "dedicationLevel": 2,
+        "sourceBook": "Divine Mysteries"
+      },
+      {
+        "id": "avenger-rogue",
+        "name": "Плут-Мститель",
+        "tab": "class-archetypes",
+        "rarity": "common",
+        "description": "Классовый архетип: Плут, посвящённый божественной мести. Заменяет стандартные способности плута на священные охотничьи инстинкты.",
+        "baseClass": "rogue",
+        "dedicationLevel": 2,
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "elementalist-class",
+        "name": "Элементалист (классовый)",
+        "tab": "class-archetypes",
+        "rarity": "common",
+        "description": "Классовый архетип для заклинателей. Заменяет стандартный список заклинаний элементальным (только стихийные заклинания). +1 заклинание на круг, +1 фокусное заклинание.",
+        "baseClass": "любой заклинатель",
+        "dedicationLevel": 2,
+        "sourceBook": "Rage of Elements"
+      }
+    ]
+  }
+}
