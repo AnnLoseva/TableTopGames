@@ -130,10 +130,15 @@ export function calculateSkills(
 
   const skills = Object.fromEntries(PATHFINDER2_SKILLS.map(skill => {
     const rank = ranks[skill.id]
+    const attributeModifier = attributes[skill.attribute]
+    const proficiencyBonus = getProficiencyBonus(rank, draft.level)
     return [skill.id, {
       skillId: skill.id,
+      attribute: skill.attribute,
+      attributeModifier,
       rank,
-      modifier: attributes[skill.attribute] + getProficiencyBonus(rank, draft.level),
+      proficiencyBonus,
+      modifier: attributeModifier + proficiencyBonus,
       sources: sources.get(skill.id) ?? [],
     }]
   })) as Pathfinder2CalculatedSkills['skills']

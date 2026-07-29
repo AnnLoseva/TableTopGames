@@ -2,6 +2,7 @@
 
 import { PATHFINDER2_SKILLS } from '../../data'
 import {
+  ATTRIBUTE_LABELS,
   PROFICIENCY_LABELS,
   getBackgroundById,
   getClassById,
@@ -280,9 +281,17 @@ export default function SkillRulesEditor({
             const calculated = build.skills.skills[skill.id]
             return (
               <article key={skill.id}>
-                <div><strong>{skill.label}</strong><small>{skill.attribute.toUpperCase()}</small></div>
-                <span>{PROFICIENCY_LABELS[calculated.rank]}</span>
-                <b>{signedModifier(calculated.modifier)}</b>
+                <div>
+                  <strong>{skill.label}</strong>
+                  <small>
+                    {ATTRIBUTE_LABELS[calculated.attribute]} {signedModifier(calculated.attributeModifier)}
+                  </small>
+                </div>
+                <span>
+                  {PROFICIENCY_LABELS[calculated.rank]}
+                  <small>{signedModifier(calculated.proficiencyBonus)}</small>
+                </span>
+                <b>= {signedModifier(calculated.modifier)}</b>
               </article>
             )
           })}

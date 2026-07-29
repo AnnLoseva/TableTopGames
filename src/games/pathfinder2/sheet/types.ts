@@ -350,7 +350,10 @@ export type Pathfinder2ReplacementChoice = {
 
 export type Pathfinder2CalculatedSkill = {
   skillId: Pathfinder2SkillId
+  attribute: Pathfinder2AttributeKey
+  attributeModifier: number
   rank: Pathfinder2ProficiencyRank
+  proficiencyBonus: number
   modifier: number
   sources: Pathfinder2SkillSource[]
 }

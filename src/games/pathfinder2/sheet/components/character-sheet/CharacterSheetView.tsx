@@ -7,6 +7,7 @@ import {
 } from '../../data'
 import {
   ATTRIBUTE_LABELS,
+  PROFICIENCY_LABELS,
   getAncestryById,
   getBackgroundById,
   getClassById,
@@ -15,10 +16,7 @@ import {
   getSubclassById,
   getVersatileHeritageById,
 } from '../../data/selectors'
-import {
-  getSkillModifier,
-  signedModifier,
-} from '../../rules/derived-character-values'
+import { signedModifier } from '../../rules/derived-character-values'
 import type {
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
@@ -321,8 +319,15 @@ export default function CharacterSheetView({
                   <div key={skill.id} className={styles.skillReadOnly} data-trained={trained}>
                     <span className={styles.checkMark}>{trained ? '✓' : ''}</span>
                     <strong>{skill.label}</strong>
-                    <small>{ATTRIBUTE_LABELS[skill.attribute]} · {calculated.rank}</small>
-                    <b>{signedModifier(getSkillModifier(build, skill.id))}</b>
+                    <div className={styles.skillReadOnlyFormula}>
+                      <small>
+                        {ATTRIBUTE_LABELS[calculated.attribute]} {signedModifier(calculated.attributeModifier)}
+                      </small>
+                      <small>
+                        {PROFICIENCY_LABELS[calculated.rank]} {signedModifier(calculated.proficiencyBonus)}
+                      </small>
+                    </div>
+                    <b>= {signedModifier(calculated.modifier)}</b>
                   </div>
                 )
               })}

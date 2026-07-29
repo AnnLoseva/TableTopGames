@@ -85,6 +85,16 @@ const CHOICE_COPY: Record<
   },
 }
 
+const ANCESTRY_CARD_IMAGES: Partial<Record<string, string>> = {
+  athamaru: '/pathfinder2/ancestries/athamaru.jpg',
+  automaton: '/pathfinder2/ancestries/automaton.jpg',
+  centaur: '/pathfinder2/ancestries/centaur.png',
+  dwarf: '/pathfinder2/ancestries/dwarf.jpg',
+  gnome: '/pathfinder2/ancestries/gnome.jpg',
+  goblin: '/pathfinder2/ancestries/goblin.jpg',
+  wayang: '/pathfinder2/ancestries/wayang.jpg',
+}
+
 function ChoiceTags({ values }: { values: string[] }) {
   if (values.length === 0) return null
   return (
@@ -471,7 +481,6 @@ export default function Pathfinder2ChoiceGallery({
       return left.name.localeCompare(right.name, 'ru')
     })
   }, [category, kind, level, query, rarity, rawItems, size, skill, sort, source])
-
   useEffect(() => {
     if (!open || items.length === 0) return
     if (!items.some(item => item.id === previewId)) {
@@ -588,6 +597,25 @@ export default function Pathfinder2ChoiceGallery({
       onConfirm={id => onConfirm(kind, id)}
       onClose={onClose}
       renderCard={(item, state) => {
+        const ancestryCardImage = kind === 'ancestry'
+          ? ANCESTRY_CARD_IMAGES[item.id]
+          : undefined
+        if (ancestryCardImage) {
+          return (
+            <span className={styles.galleryCardArtwork}>
+              <img
+                src={ancestryCardImage}
+                alt={`Карточка народа «${item.name}»`}
+                width="768"
+                height="1152"
+                loading="lazy"
+                decoding="async"
+                className={styles.galleryCardArtworkImage}
+              />
+            </span>
+          )
+        }
+
         let meta = ''
         if ('hp' in item && 'size' in item) {
           meta = `${item.hp} ОЗ · ${displaySize(item.size)} · ${item.speed} фт.`

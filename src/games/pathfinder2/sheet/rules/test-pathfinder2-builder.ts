@@ -259,6 +259,13 @@ const tests: Array<[string, () => void]> = [
     assert.equal(skills.classFreeLimit, 3)
     assert.equal(skills.intelligenceLimit, 4)
   }],
+  ['Модификатор навыка объясняется характеристикой и владением', () => {
+    const crafting = buildCharacter(validDraft(), catalog).skills.skills.crafting
+    assert.equal(crafting.attribute, 'intelligence')
+    assert.equal(crafting.attributeModifier, 4)
+    assert.equal(crafting.proficiencyBonus, 3)
+    assert.equal(crafting.modifier, 7)
+  }],
   ['Нельзя выбрать больше навыков, чем доступно', () => {
     const draft = validDraft()
     draft.skillChoices.classFreeSkills.push('survival')
