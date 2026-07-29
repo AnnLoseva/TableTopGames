@@ -10,6 +10,7 @@ from collections import OrderedDict
 RULES_DIR = os.path.join(os.path.dirname(__file__), '..', 'Rules')
 CATALOGS_DIR = os.path.join(RULES_DIR, 'catalogs')
 REPORT_PATH = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'docs', 'pathfinder2-rules-normalization-report.md')
+PF2R_SOURCE = 'https://gitlab.com/gnuraco/pf2r'
 
 issues = []
 
@@ -166,7 +167,7 @@ def normalize_equipment():
         if e.get('bulk') and e['bulk'] != 0: s += 5
         return s
 
-    return make_catalog('equipment', 'Pathfinder 2 Equipment', 'Compiled from Rules/*.json', '2026-07', dedup(all_items, score))
+    return make_catalog('equipment', 'Pathfinder 2 Equipment', PF2R_SOURCE, '2026-07', dedup(all_items, score))
 
 # ═══════════════ WEAPONS ═══════════════
 def normalize_weapons():
@@ -230,7 +231,7 @@ def normalize_weapons():
         if e['price']['gp'] > 0: s += 5
         return s
 
-    return make_catalog('weapons', 'Pathfinder 2 Weapons', 'https://pf2.ru/weapons', '2026-07', dedup(entries, score))
+    return make_catalog('weapons', 'Pathfinder 2 Weapons', PF2R_SOURCE, '2026-07', dedup(entries, score))
 
 # ═══════════════ ARMOR ═══════════════
 def normalize_armor():
@@ -276,7 +277,7 @@ def normalize_armor():
         if e['price']['gp'] > 0: s += 3
         return s
 
-    return make_catalog('armor', 'Pathfinder 2 Armor', 'https://pf2.ru/armor', '2026-07', dedup(entries, score))
+    return make_catalog('armor', 'Pathfinder 2 Armor', PF2R_SOURCE, '2026-07', dedup(entries, score))
 
 # ═══════════════ SHIELDS ═══════════════
 def normalize_shields():
@@ -314,7 +315,7 @@ def normalize_shields():
         if e['price']['gp'] > 0: s += 3
         return s
 
-    return make_catalog('shields', 'Pathfinder 2 Shields', 'https://pf2.ru/shields', '2026-07', dedup(entries, score))
+    return make_catalog('shields', 'Pathfinder 2 Shields', PF2R_SOURCE, '2026-07', dedup(entries, score))
 
 # ═══════════════ MAIN ═══════════════
 def main():

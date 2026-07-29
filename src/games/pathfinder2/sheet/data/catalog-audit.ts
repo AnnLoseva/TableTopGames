@@ -205,7 +205,10 @@ export function auditPathfinder2RuleDocuments(
   const generalFeats = arrayAt(documents.feats, 'feats', 'general')
   const skillFeats = arrayAt(documents.feats, 'feats', 'skill')
   const mythicFeats = arrayAt(documents.feats, 'feats', 'mythic')
-  const allArchetypes = arrayAt(documents.archetypes, 'archetypes', 'all-archetypes')
+  const nestedArchetypes = arrayAt(documents.archetypes, 'archetypes', 'all-archetypes')
+  const allArchetypes = nestedArchetypes.length
+    ? nestedArchetypes
+    : arrayAt(documents.archetypes, 'archetypes')
   const spells = arrayAt(documents.spells, 'spells')
   const cantrips = arrayAt(documents.spells, 'cantrips')
   const armor = arrayAt(documents.armor, 'armor')

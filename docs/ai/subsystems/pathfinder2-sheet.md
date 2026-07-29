@@ -106,17 +106,19 @@ src/app/pathfinder2/sheet/page.tsx
 
 ## Rules source policy
 
-`pf2.ru` is the requested Russian source. The checked-in `Rules/*.json` files
-are the owner-provided data source and retain their source/version metadata.
-The public pages explicitly ask automated clients not to parse the site and to
-request data directly. Therefore:
+The Russian catalog source is the owner-selected
+[`gnuraco/pf2r`](https://gitlab.com/gnuraco/pf2r) repository. The checked-in
+`Rules/*.json` files are generated from its Babele translation packs and retain
+the repository URL plus import version metadata. Therefore:
 
-- do not scrape or mirror complete `pf2.ru` text;
+- import only from a pinned local checkout of `gnuraco/pf2r`;
+- keep the pinned pf2r commit in the migration report or generated metadata;
+- do not mix `pf2.ru` text into pf2r-derived catalogs;
 - keep only concise, original summaries in `rules-source.ts`;
 - load structured catalog data only from the checked-in `Rules/*.json` files;
-- link each summary and catalog attribution to the contextual `pf2.ru` page;
-- if the site owner supplies an authorized JSON/CSV export, add a versioned
-  importer or extend `rules-data.ts` rather than expanding UI literals;
+- use `scripts/migrate-from-pf2r.py` for full imports and
+  `scripts/update-rules-from-pf2r.py` for translation-name refreshes;
+- keep raw pf2r schemas behind `rules-data.ts` rather than expanding UI literals;
 - preserve source attribution and any license metadata shipped with that export.
 
 ## Safe edit protocol

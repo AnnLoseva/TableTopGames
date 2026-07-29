@@ -43,6 +43,7 @@ import weaponsCatalog from '../Rules/catalogs/weapons.json'
 import { auditPathfinder2RuleDocuments } from './data/catalog-audit'
 import {
   getSpecializationGrantedSkills,
+  getStructuredBackgroundAbilityText,
   getStructuredBackgroundAbilityOptions,
   getStructuredBackgroundLore,
   getStructuredBackgroundSkillRules,
@@ -563,7 +564,9 @@ function validateDocuments(documents: {
     )
   }
   const backgroundsWithoutBoosts = safeArray(documents.backgrounds as RawBackground[])
-    .filter(background => !hasStructuredBackgroundAbilityOptions(background.abilityBoosts ?? ''))
+    .filter(background => !hasStructuredBackgroundAbilityOptions(
+      background.abilityBoosts ?? background.description ?? '',
+    ))
     .map(background => background.id ?? background.name ?? '?')
   if (backgroundsWithoutBoosts.length > 0) {
     warnings.push(
@@ -726,7 +729,9 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
   ).map((background, index) => {
     const backgroundId = background.id ?? `background-${index + 1}`
     const backgroundName = background.name ?? 'Неизвестная предыстория'
-    const abilityBoosts = background.abilityBoosts ?? ''
+    const abilityBoosts = getStructuredBackgroundAbilityText(
+      background.abilityBoosts ?? background.description ?? '',
+    )
     const trainedSkills = background.trainedSkills ?? ''
     const parsedLore = getStructuredBackgroundLore(trainedSkills)
     const trainedLore = background.trainedLore || parsedLore.name

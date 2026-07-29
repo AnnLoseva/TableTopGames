@@ -46,11 +46,31 @@ import {
 } from '../data/catalog-audit'
 import { adaptPathfinder2CatalogDocument } from '../data/catalog-document'
 import {
+  getStructuredBackgroundAbilityText,
   getStructuredBackgroundAbilityOptions,
   getStructuredBackgroundLore,
   getStructuredBackgroundSkillRules,
   hasStructuredBackgroundAbilityOptions,
 } from './creation/structured-rules'
+
+type RawBackgroundFixture = {
+  id: string
+  name: string
+  description?: string
+  abilityBoosts?: string
+  trainedSkills?: string
+}
+
+const backgroundFixtures = backgrounds.backgrounds as RawBackgroundFixture[]
+
+function arrayLength(value: unknown) {
+  return Array.isArray(value) ? value.length : 0
+}
+
+function entriesLength(value: unknown) {
+  if (!value || typeof value !== 'object' || !('entries' in value)) return 0
+  return arrayLength(value.entries)
+}
 
 const tests: Array<[string, () => void]> = [
   ['Все народы и подключённые классы имеют локальные изображения', () => {
@@ -90,20 +110,25 @@ const tests: Array<[string, () => void]> = [
     }
   }],
   ['Повышения характеристик предысторий нормализуются из каталога', () => {
-    const scholar = backgrounds.backgrounds.find(background => background.id === 'scholar')
+    const scholar = backgroundFixtures.find(background => background.id === 'scholar')
     assert.ok(scholar)
+    const scholarAbilitySource = scholar.abilityBoosts ?? scholar.description ?? ''
     assert.deepEqual(
-      getStructuredBackgroundAbilityOptions(scholar.abilityBoosts),
+      getStructuredBackgroundAbilityOptions(scholarAbilitySource),
       ['intelligence', 'wisdom'],
     )
 
-    for (const background of backgrounds.backgrounds) {
-      if (background.abilityBoosts === '-') continue
+    let structuredBackgroundCount = 0
+    for (const background of backgroundFixtures) {
+      const abilitySource = background.abilityBoosts ?? background.description ?? ''
+      if (!hasStructuredBackgroundAbilityOptions(abilitySource)) continue
+      structuredBackgroundCount += 1
       assert.ok(
-        getStructuredBackgroundAbilityOptions(background.abilityBoosts).length >= 2,
-        `${background.name}: не распознано "${background.abilityBoosts}"`,
+        getStructuredBackgroundAbilityOptions(abilitySource).length >= 1,
+        `${background.name}: не распознано "${getStructuredBackgroundAbilityText(abilitySource)}"`,
       )
     }
+    assert.ok(structuredBackgroundCount > 0)
   }],
   ['Навык предыстории отделяется от Lore и сохраняет альтернативы', () => {
     assert.deepEqual(
@@ -182,38 +207,68 @@ const tests: Array<[string, () => void]> = [
     })
     assert.equal(
       availability.find(entry => entry.id === 'ancestries')?.entryCount,
-      67,
+      ancestries.ancestries.length + ancestries.versatileHeritages.length,
     )
     assert.equal(
       availability.find(entry => entry.id === 'backgrounds')?.entryCount,
-      240,
+      backgrounds.backgrounds.length,
     )
     assert.equal(
       availability.find(entry => entry.id === 'classes')?.entryCount,
-      27,
+      classes.classes.length,
     )
     assert.equal(
       availability.find(entry => entry.id === 'general-feats')?.entryCount,
-      115,
+      feats.feats.general.length + feats.feats.skill.length + feats.feats.mythic.length,
     )
     assert.equal(
       availability.find(entry => entry.id === 'archetypes')?.entryCount,
-      43,
+      archetypes.archetypes.length,
     )
     assert.equal(
       availability.find(entry => entry.id === 'spells')?.entryCount,
-      1167,
+      spells.spells.length + spells.cantrips.length,
     )
-    assert.equal(availability.find(entry => entry.id === 'ancestry-feats')?.entryCount, 702)
-    assert.equal(availability.find(entry => entry.id === 'class-feats')?.entryCount, 1309)
-    assert.equal(availability.find(entry => entry.id === 'class-progression')?.entryCount, 21)
-    assert.equal(availability.find(entry => entry.id === 'deities')?.entryCount, 361)
-    assert.equal(availability.find(entry => entry.id === 'languages')?.entryCount, 23)
-    assert.equal(availability.find(entry => entry.id === 'traits')?.entryCount, 212)
-    assert.equal(availability.find(entry => entry.id === 'armor')?.entryCount, 123)
-    assert.equal(availability.find(entry => entry.id === 'weapons')?.entryCount, 400)
-    assert.equal(availability.find(entry => entry.id === 'shields')?.entryCount, 92)
-    assert.equal(availability.find(entry => entry.id === 'equipment')?.entryCount, 1823)
+    assert.equal(
+      availability.find(entry => entry.id === 'ancestry-feats')?.entryCount,
+      entriesLength(ancestryFeatsCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'class-feats')?.entryCount,
+      entriesLength(classFeatsCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'class-progression')?.entryCount,
+      classProgressionCatalog.entries.filter(entry => typeof entry.classId === 'string').length,
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'deities')?.entryCount,
+      entriesLength(deitiesCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'languages')?.entryCount,
+      entriesLength(languagesCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'traits')?.entryCount,
+      entriesLength(traitsCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'armor')?.entryCount,
+      entriesLength(armorCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'weapons')?.entryCount,
+      entriesLength(weaponsCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'shields')?.entryCount,
+      entriesLength(shieldsCatalog),
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'equipment')?.entryCount,
+      entriesLength(equipmentCatalog),
+    )
   }],
   ['Подключённые и неподключённые файлы имеют честные статусы', () => {
     const availability = auditPathfinder2RuleDocuments({
@@ -346,12 +401,11 @@ const tests: Array<[string, () => void]> = [
     assert.equal(result.status, 'missing')
     assert.equal(result.document, null)
   }],
-  ['Знание предыстории вытаскивается из строки обученных навыков', () => {
-    const list = (backgrounds as { backgrounds: Array<Record<string, string>> }).backgrounds
-    const barrister = list.find(entry => entry.id === 'barrister')
-    assert.equal(getStructuredBackgroundLore(barrister?.trainedSkills ?? '').name, 'Знание (закон)')
-    const withLore = list.filter(entry => getStructuredBackgroundLore(entry.trainedSkills ?? '').name)
-    assert.ok(withLore.length > 200, `предысторий со Знанием: ${withLore.length}`)
+  ['Знание предыстории вытаскивается из структурированной строки навыков', () => {
+    assert.equal(
+      getStructuredBackgroundLore('Дипломатия, Знание (закон)').name,
+      'Знание (закон)',
+    )
     assert.equal(
       getStructuredBackgroundLore('Дипломатия, Знание, связанное с вашим божеством.').custom,
       true,

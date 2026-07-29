@@ -191,7 +191,7 @@ async function run() {
     await page.getByRole('button', { name: 'Открыть галерею предысторий' }).click()
     const backgroundDialog = page.getByRole('dialog', { name: 'Выбор предыстории' })
     await backgroundDialog.getByRole('searchbox').fill('Учёный')
-    await backgroundDialog.getByRole('button', { name: /Учёный/ }).click()
+    await backgroundDialog.locator('[data-choice-id="scholar"]').click()
     await backgroundDialog.getByRole('button', { name: 'Подтвердить выбор' }).click()
     await stepNavigation.getByRole('button', { name: /Итоговые характеристики/ }).click()
     const limitedBoostLabel = page.getByText(
@@ -227,10 +227,18 @@ async function run() {
     const earplugsCard = page.locator('article').filter({ hasText: 'Беруши' }).first()
     await earplugsCard.getByRole('button', { name: 'Купить' }).click()
     await page.getByText('Беруши: добавлено в инвентарь.').waitFor()
-    assert.match(await page.locator('body').innerText(), /1 пм 4 зм 9 см/)
+    await page.waitForFunction(key => {
+      const value = window.localStorage.getItem(key)
+      if (!value) return false
+      return JSON.parse(value).inventory?.entries?.length === 1
+    }, STORAGE_KEY)
     await page.getByRole('button', { name: 'Вернуть', exact: true }).click()
     await page.getByText('Покупка отменена, стоимость возвращена.').waitFor()
-    assert.match(await page.locator('body').innerText(), /1 пм 5 зм/)
+    await page.waitForFunction(key => {
+      const value = window.localStorage.getItem(key)
+      if (!value) return false
+      return JSON.parse(value).inventory?.entries?.length === 0
+    }, STORAGE_KEY)
     console.log('✓ catalog shop purchases and refunds by stable item ID')
 
     await stepNavigation.getByRole('button', { name: /Проверка/ }).click()

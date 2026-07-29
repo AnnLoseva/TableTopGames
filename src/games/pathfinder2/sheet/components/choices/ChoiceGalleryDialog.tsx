@@ -130,6 +130,7 @@ export default function ChoiceGalleryDialog<
                     <button
                       key={item.id}
                       type="button"
+                      data-choice-id={item.id}
                       className={[
                         styles.galleryCard,
                         selected ? styles.galleryCardSelected : '',

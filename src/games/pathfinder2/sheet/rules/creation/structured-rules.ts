@@ -29,13 +29,20 @@ const BACKGROUND_SKILL_NAMES: Array<{
 
 const ATTRIBUTE_ID_BY_RUSSIAN_NAME: Record<string, Pathfinder2AttributeKey> = {
   Сила: 'strength',
+  Силы: 'strength',
   Ловкость: 'dexterity',
+  Ловкости: 'dexterity',
   Dexteriry: 'dexterity',
   Телосложение: 'constitution',
+  Телосложения: 'constitution',
   Выносливость: 'constitution',
+  Выносливости: 'constitution',
   Интеллект: 'intelligence',
+  Интеллекта: 'intelligence',
   Мудрость: 'wisdom',
+  Мудрости: 'wisdom',
   Харизма: 'charisma',
+  Харизмы: 'charisma',
 }
 
 const ALL_ATTRIBUTE_IDS = [
@@ -176,7 +183,7 @@ export function getSpecializationGrantedSkills(
 export function getStructuredBackgroundAbilityOptions(
   value: string,
 ): Pathfinder2AttributeKey[] {
-  const options = value
+  const options = getStructuredBackgroundAbilityText(value)
     .split(/\s*(?:,|или)\s*/iu)
     .flatMap(part => part.trim() === 'Универсальное'
       ? ALL_ATTRIBUTE_IDS
@@ -189,8 +196,16 @@ export function getStructuredBackgroundAbilityOptions(
   return [...new Set(options)]
 }
 
+export function getStructuredBackgroundAbilityText(value: string) {
+  const normalized = value.replace(/\s+/gu, ' ').trim()
+  const descriptionMatch = normalized.match(
+    /одно должно быть использовано для\s+(.+?)\s*,?\s+а другое/iu,
+  )
+  return descriptionMatch?.[1].trim() ?? normalized
+}
+
 export function hasStructuredBackgroundAbilityOptions(value: string) {
-  return value
+  return getStructuredBackgroundAbilityText(value)
     .split(/\s*(?:,|или)\s*/iu)
     .some(part => part.trim() === 'Универсальное'
       || Boolean(ATTRIBUTE_ID_BY_RUSSIAN_NAME[part.trim()]))

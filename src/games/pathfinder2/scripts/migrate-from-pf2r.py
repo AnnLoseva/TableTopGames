@@ -603,6 +603,11 @@ def make_background_entry(en_name, v):
     eid = slugify(en_name)
     rarity = parse_rarity(desc_clean, en_name)
     source = parse_source_book(desc_clean)
+    ability_match = re.search(
+        r'одно должно быть использовано для\s+(.+?)\s*,?\s+а другое',
+        desc_clean,
+        re.IGNORECASE,
+    )
 
     return {
         'id': eid,
@@ -611,6 +616,7 @@ def make_background_entry(en_name, v):
         'rarity': rarity,
         'traits': parse_traits_from_desc(desc_clean),
         'sourceBook': source,
+        'abilityBoosts': ability_match.group(1).strip() if ability_match else '',
         'description': desc_clean or desc_html,
     }
 
