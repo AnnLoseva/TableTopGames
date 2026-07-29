@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { existsSync } from 'node:fs'
 import adventuringGear from '../../Rules/adventuring-gear.json'
 import ancestries from '../../Rules/ancestries.json'
 import alchemicalItems from '../../Rules/alchemical-items.json'
@@ -44,8 +45,96 @@ import {
   getUnavailablePathfinder2Catalogs,
 } from '../data/catalog-audit'
 import { adaptPathfinder2CatalogDocument } from '../data/catalog-document'
+import {
+  getStructuredBackgroundAbilityOptions,
+  getStructuredBackgroundLore,
+  getStructuredBackgroundSkillRules,
+  hasStructuredBackgroundAbilityOptions,
+} from './creation/structured-rules'
 
 const tests: Array<[string, () => void]> = [
+  ['Все народы и подключённые классы имеют локальные изображения', () => {
+    for (const ancestry of ancestries.ancestries) {
+      assert.ok(
+        existsSync(`public/pathfinder2/ancestries/${ancestry.id}.png`),
+        `${ancestry.name}: отсутствует изображение ${ancestry.id}.png`,
+      )
+    }
+    for (const classId of [
+      'alchemist',
+      'animist',
+      'barbarian',
+      'bard',
+      'champion',
+      'cleric',
+      'druid',
+      'exemplar',
+      'fighter',
+      'gunslinger',
+      'investigator',
+      'inventor',
+      'kineticist',
+      'monk',
+      'oracle',
+      'ranger',
+      'rogue',
+      'sorcerer',
+      'swashbuckler',
+      'witch',
+      'wizard',
+    ]) {
+      assert.ok(
+        existsSync(`public/pathfinder2/classes/${classId}.png`),
+        `${classId}: отсутствует изображение класса`,
+      )
+    }
+  }],
+  ['Повышения характеристик предысторий нормализуются из каталога', () => {
+    const scholar = backgrounds.backgrounds.find(background => background.id === 'scholar')
+    assert.ok(scholar)
+    assert.deepEqual(
+      getStructuredBackgroundAbilityOptions(scholar.abilityBoosts),
+      ['intelligence', 'wisdom'],
+    )
+
+    for (const background of backgrounds.backgrounds) {
+      if (background.abilityBoosts === '-') continue
+      assert.ok(
+        getStructuredBackgroundAbilityOptions(background.abilityBoosts).length >= 2,
+        `${background.name}: не распознано "${background.abilityBoosts}"`,
+      )
+    }
+  }],
+  ['Навык предыстории отделяется от Lore и сохраняет альтернативы', () => {
+    assert.deepEqual(
+      getStructuredBackgroundSkillRules(
+        'barrister',
+        'Дипломатия, Знание (закон)',
+      ).grantedSkills.map(rule => rule.skillId),
+      ['diplomacy'],
+    )
+    assert.deepEqual(
+      getStructuredBackgroundSkillRules(
+        'martial-disciple',
+        'Акробатика или Атлетика, Знание (военное дело)',
+      ).grantedSkillChoices[0]?.allowedSkills,
+      ['acrobatics', 'athletics'],
+    )
+    assert.deepEqual(
+      getStructuredBackgroundSkillRules(
+        'teacher',
+        'Исполнение или Общество, Знание (академические науки)',
+      ).grantedSkillChoices[0]?.allowedSkills,
+      ['performance', 'society'],
+    )
+    assert.deepEqual(
+      getStructuredBackgroundSkillRules(
+        'feral-child',
+        'Выживание и Природа',
+      ).grantedSkills.map(rule => rule.skillId),
+      ['survival', 'nature'],
+    )
+  }],
   ['Аудит считает фактически предоставленные записи', () => {
     const availability = auditPathfinder2RuleDocuments({
       ancestries,
@@ -256,6 +345,25 @@ const tests: Array<[string, () => void]> = [
     )
     assert.equal(result.status, 'missing')
     assert.equal(result.document, null)
+  }],
+  ['Знание предыстории вытаскивается из строки обученных навыков', () => {
+    const list = (backgrounds as { backgrounds: Array<Record<string, string>> }).backgrounds
+    const barrister = list.find(entry => entry.id === 'barrister')
+    assert.equal(getStructuredBackgroundLore(barrister?.trainedSkills ?? '').name, 'Знание (закон)')
+    const withLore = list.filter(entry => getStructuredBackgroundLore(entry.trainedSkills ?? '').name)
+    assert.ok(withLore.length > 200, `предысторий со Знанием: ${withLore.length}`)
+    assert.equal(
+      getStructuredBackgroundLore('Дипломатия, Знание, связанное с вашим божеством.').custom,
+      true,
+    )
+  }],
+  ['Предыстория без указанных повышений даёт два универсальных', () => {
+    assert.equal(hasStructuredBackgroundAbilityOptions('-'), false)
+    assert.equal(getStructuredBackgroundAbilityOptions('-').length, 6)
+    assert.deepEqual(
+      getStructuredBackgroundAbilityOptions('Интеллект, Харизма'),
+      ['intelligence', 'charisma'],
+    )
   }],
 ]
 

@@ -85,41 +85,29 @@ const CHOICE_COPY: Record<
   },
 }
 
-const ANCESTRY_CARD_IMAGES: Partial<Record<string, string>> = {
-  athamaru: '/pathfinder2/ancestries/athamaru.png',
-  automaton: '/pathfinder2/ancestries/automaton.png',
-  'awakened-animal': '/pathfinder2/ancestries/awakened-animal.png',
-  catfolk: '/pathfinder2/ancestries/catfolk.png',
-  centaur: '/pathfinder2/ancestries/centaur.png',
-  dwarf: '/pathfinder2/ancestries/dwarf.png',
-  elf: '/pathfinder2/ancestries/elf.png',
-  gnome: '/pathfinder2/ancestries/gnome.png',
-  goblin: '/pathfinder2/ancestries/goblin.png',
-  halfling: '/pathfinder2/ancestries/halfling.png',
-  hobgoblin: '/pathfinder2/ancestries/hobgoblin.png',
-  human: '/pathfinder2/ancestries/human.png',
-  kholo: '/pathfinder2/ancestries/kholo.png',
-  kitsune: '/pathfinder2/ancestries/kitsune.png',
-  kobold: '/pathfinder2/ancestries/kobold.png',
-  leshy: '/pathfinder2/ancestries/leshy.png',
-  lizardfolk: '/pathfinder2/ancestries/lizardfolk.png',
-  merfolk: '/pathfinder2/ancestries/merfolk.png',
-  minotaur: '/pathfinder2/ancestries/minotaur.png',
-  nagaji: '/pathfinder2/ancestries/nagaji.png',
-  orc: '/pathfinder2/ancestries/orc.png',
-  poppet: '/pathfinder2/ancestries/poppet.png',
-  ratfolk: '/pathfinder2/ancestries/ratfolk.png',
-  samsaran: '/pathfinder2/ancestries/samsaran.png',
-  sarangay: '/pathfinder2/ancestries/sarangay.png',
-  sprite: '/pathfinder2/ancestries/sprite.png',
-  surki: '/pathfinder2/ancestries/surki.png',
-  tanuki: '/pathfinder2/ancestries/tanuki.png',
-  tengu: '/pathfinder2/ancestries/tengu.png',
-  tripkee: '/pathfinder2/ancestries/tripkee.png',
-  wayang: '/pathfinder2/ancestries/wayang.png',
-  yaksha: '/pathfinder2/ancestries/yaksha.png',
-  yaoguai: '/pathfinder2/ancestries/yaoguai.png',
-}
+const CLASS_CARD_IMAGE_IDS = new Set([
+  'alchemist',
+  'animist',
+  'barbarian',
+  'bard',
+  'champion',
+  'cleric',
+  'druid',
+  'exemplar',
+  'fighter',
+  'gunslinger',
+  'investigator',
+  'inventor',
+  'kineticist',
+  'monk',
+  'oracle',
+  'ranger',
+  'rogue',
+  'sorcerer',
+  'swashbuckler',
+  'witch',
+  'wizard',
+])
 
 function ChoiceTags({ values }: { values: string[] }) {
   if (values.length === 0) return null
@@ -623,15 +611,17 @@ export default function Pathfinder2ChoiceGallery({
       onConfirm={id => onConfirm(kind, id)}
       onClose={onClose}
       renderCard={(item, state) => {
-        const ancestryCardImage = kind === 'ancestry'
-          ? ANCESTRY_CARD_IMAGES[item.id]
-          : undefined
-        if (ancestryCardImage) {
+        const cardImage = kind === 'ancestry'
+          ? `/pathfinder2/ancestries/${item.id}.png`
+          : kind === 'class' && CLASS_CARD_IMAGE_IDS.has(item.id)
+            ? `/pathfinder2/classes/${item.id}.png`
+            : undefined
+        if (cardImage) {
           return (
             <span className={styles.galleryCardArtwork}>
               <img
-                src={ancestryCardImage}
-                alt={`Карточка народа «${item.name}»`}
+                src={cardImage}
+                alt={`Карточка ${kind === 'ancestry' ? 'народа' : 'класса'} «${item.name}»`}
                 width="1024"
                 height="1536"
                 loading="lazy"

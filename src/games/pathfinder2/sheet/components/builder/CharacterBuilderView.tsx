@@ -103,14 +103,16 @@ function SelectedChoice({
   onAction: (trigger: HTMLElement) => void
   onDetails?: (trigger: HTMLElement) => void
 }) {
+  const uniqueFacts = [...new Set(facts?.filter(Boolean) ?? [])]
+
   return (
     <article className={styles.selectedChoice}>
       <span className={styles.choiceKicker}>{eyebrow}</span>
       <h3>{title}</h3>
       <p>{description}</p>
-      {facts?.length ? (
+      {uniqueFacts.length ? (
         <div className={styles.choiceTags}>
-          {facts.map(value => <span key={value}>{value}</span>)}
+          {uniqueFacts.map(value => <span key={value}>{value}</span>)}
         </div>
       ) : null}
       <div className={styles.choiceActions}>

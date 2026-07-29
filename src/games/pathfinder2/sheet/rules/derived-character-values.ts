@@ -1,9 +1,11 @@
 import { PATHFINDER2_SKILLS } from '../data'
 import type {
   Pathfinder2AttributeKey,
+  Pathfinder2CalculatedProficiency,
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
   Pathfinder2DerivedValues,
+  Pathfinder2ProficiencyCategory,
   Pathfinder2RulesCatalog,
   Pathfinder2SkillId,
 } from '../types'
@@ -51,6 +53,7 @@ export function calculateDerivedCharacterValues(
   draft: Pathfinder2CharacterDraft,
   catalog: Pathfinder2RulesCatalog,
   existingBuild?: Pathfinder2CharacterBuild,
+  proficiencies: Pathfinder2CalculatedProficiency[] = [],
 ): Pathfinder2DerivedValues {
   const characterBuild = existingBuild ?? buildCharacter(draft, catalog)
   const attributes = characterBuild.attributes.modifiers
@@ -63,21 +66,23 @@ export function calculateDerivedCharacterValues(
     ? selectedKeyAbility
     : ''
   const keyModifier = keyAbility ? attributes[keyAbility] : 0
-  const perceptionProficiency = characterClass
-    ? getRuleProficiency(characterClass.perception, draft.level)
-    : proficiency
-  const classProficiency = characterClass
-    ? getRuleProficiency(characterClass.classDc, draft.level)
-    : proficiency
-  const fortitudeProficiency = characterClass
-    ? getRuleProficiency(characterClass.fortitude, draft.level)
-    : proficiency
-  const reflexProficiency = characterClass
-    ? getRuleProficiency(characterClass.reflex, draft.level)
-    : proficiency
-  const willProficiency = characterClass
-    ? getRuleProficiency(characterClass.will, draft.level)
-    : proficiency
+  // Ранги растут по таблице развития класса, поэтому прогрессия из каталога
+  // важнее строки 1-го уровня в описании класса.
+  const progressed = (
+    category: Pathfinder2ProficiencyCategory,
+    classValue: string | undefined,
+  ) => {
+    const grant = proficiencies.find(entry => entry.category === category)
+    if (grant) return grant.bonus
+    return classValue === undefined
+      ? proficiency
+      : getRuleProficiency(classValue, draft.level)
+  }
+  const perceptionProficiency = progressed('perception', characterClass?.perception)
+  const classProficiency = progressed('class-dc', characterClass?.classDc)
+  const fortitudeProficiency = progressed('fortitude', characterClass?.fortitude)
+  const reflexProficiency = progressed('reflex', characterClass?.reflex)
+  const willProficiency = progressed('will', characterClass?.will)
 
   return {
     maxHp: ancestry && characterClass
@@ -88,6 +93,8 @@ export function calculateDerivedCharacterValues(
       )
       : null,
     armorClass: 10 + proficiency + attributes.dexterity,
+    shieldBonus: 0,
+    armorCheckPenalty: 0,
     perception: perceptionProficiency + attributes.wisdom,
     classDc: characterClass ? 10 + classProficiency + keyModifier : null,
     fortitude: fortitudeProficiency + attributes.constitution,

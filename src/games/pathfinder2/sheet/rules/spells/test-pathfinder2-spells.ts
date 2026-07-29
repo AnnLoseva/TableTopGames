@@ -9,6 +9,7 @@ import {
   calculateSpellcasting,
   createClassSpellcastingEntry,
   getSpellSlotsAtLevel,
+  isSpellAvailable,
   normalizeSpellTradition,
 } from './calculate-spellcasting'
 
@@ -198,6 +199,12 @@ const tests: Array<[string, () => void]> = [
     draft.spellcasting.entries = [entry]
     const result = calculateSpellcasting(draft, catalog, attributes)
     assert.ok(result.issues.some(issue => issue.id.includes('.illegal.')))
+  }],
+  ['Заклинание без указанной традиции не становится универсальным', () => {
+    assert.equal(
+      isSpellAvailable(spell('unknown-source', 1, 'spell', []), 'divine', 1),
+      false,
+    )
   }],
 ]
 

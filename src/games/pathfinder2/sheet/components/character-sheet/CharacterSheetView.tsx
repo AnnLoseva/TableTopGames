@@ -17,6 +17,7 @@ import {
   getVersatileHeritageById,
 } from '../../data/selectors'
 import { signedModifier } from '../../rules/derived-character-values'
+import { getFeatsForSlot } from '../../rules/feats/requirements'
 import type {
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
@@ -137,7 +138,21 @@ export default function CharacterSheetView({
   const background = getBackgroundById(catalog, draft.backgroundId)
   const characterClass = getClassById(catalog, draft.classId)
   const subclass = getSubclassById(catalog, draft.classId, draft.subclassId)
-  const feats = state.grantedFeatIds.map(id => getFeatById(catalog, id)).filter(Boolean)
+  const selectedSlotFeatIds = new Set(
+    state.featSlots.map(slot => slot.selectedFeatId).filter(Boolean),
+  )
+  const feats = [
+    ...state.featSlots.flatMap(slot => {
+      if (!slot.selectedFeatId) return []
+      const feat = getFeatsForSlot(slot, catalog)
+        .find(candidate => candidate.id === slot.selectedFeatId)
+      return feat ? [feat] : []
+    }),
+    ...state.grantedFeatIds
+      .filter(id => !selectedSlotFeatIds.has(id))
+      .map(id => getFeatById(catalog, id))
+      .filter(Boolean),
+  ]
 
   return (
     <main className={styles.characterSheet}>
@@ -198,7 +213,15 @@ export default function CharacterSheetView({
             />
           </div>
         </div>
-        <div><span>КБ</span><strong>{derived.armorClass}</strong><small>класс брони</small></div>
+        <div>
+          <span>КБ</span>
+          <strong>{derived.armorClass}</strong>
+          <small>
+            {derived.shieldBonus > 0
+              ? `${derived.armorClass + derived.shieldBonus} с поднятым щитом`
+              : 'класс брони'}
+          </small>
+        </div>
         <div><span>Скорость</span><strong>{derived.speed ?? '—'}</strong><small>футов</small></div>
         <div><span>Восприятие</span><strong>{signedModifier(derived.perception)}</strong><small>модификатор</small></div>
         <div><span>КС класса</span><strong>{derived.classDc ?? '—'}</strong><small>сложность</small></div>
@@ -337,6 +360,9 @@ export default function CharacterSheetView({
                       <small>
                         {PROFICIENCY_LABELS[calculated.rank]} {signedModifier(calculated.proficiencyBonus)}
                       </small>
+                      {calculated.armorCheckPenalty !== 0 ? (
+                        <small>броня {signedModifier(calculated.armorCheckPenalty)}</small>
+                      ) : null}
                     </div>
                     <b>= {signedModifier(calculated.modifier)}</b>
                   </div>

@@ -44,8 +44,10 @@ import { auditPathfinder2RuleDocuments } from './data/catalog-audit'
 import {
   getSpecializationGrantedSkills,
   getStructuredBackgroundAbilityOptions,
+  getStructuredBackgroundLore,
   getStructuredBackgroundSkillRules,
   getStructuredClassSkillRules,
+  hasStructuredBackgroundAbilityOptions,
 } from './rules/creation/structured-rules'
 import type {
   Pathfinder2AncestryRule,
@@ -410,7 +412,12 @@ function parseKeyAbilities(value = ''): Pathfinder2AttributeKey[] {
 
 function canonicalFeatName(value: string, feats: Pathfinder2FeatRule[]) {
   const withoutEnglishName = value.replace(/\s*\([^)]*\)\s*$/, '').trim()
-  return feats.find(feat => feat.name === value || feat.name === withoutEnglishName)?.name
+  const normalized = withoutEnglishName
+    .toLocaleLowerCase('ru')
+    .replace(/\s+/g, ' ')
+  return feats.find(feat => (
+    feat.name.toLocaleLowerCase('ru').replace(/\s+/g, ' ') === normalized
+  ))?.name
     ?? withoutEnglishName
 }
 
@@ -538,10 +545,32 @@ function validateDocuments(documents: {
   classes?: unknown
   generalFeats?: unknown
   skillFeats?: unknown
+  classProgression?: Pathfinder2ClassProgressionRule[]
 }): string[] {
   const warnings: string[] = []
   for (const [label, value] of Object.entries(documents)) {
     if (!Array.isArray(value)) warnings.push(`Справочник «${label}» имеет неизвестный формат.`)
+  }
+  const progressionIds = new Set(
+    safeArray(documents.classProgression).map(entry => entry.classId),
+  )
+  const classesWithoutProgression = safeArray(documents.classes as RawClass[])
+    .map(characterClass => characterClass.id ?? characterClass.name ?? '?')
+    .filter(classId => !progressionIds.has(classId))
+  if (classesWithoutProgression.length > 0) {
+    warnings.push(
+      `Нет таблицы развития 1–20 для классов: ${classesWithoutProgression.join(', ')}.`,
+    )
+  }
+  const backgroundsWithoutBoosts = safeArray(documents.backgrounds as RawBackground[])
+    .filter(background => !hasStructuredBackgroundAbilityOptions(background.abilityBoosts ?? ''))
+    .map(background => background.id ?? background.name ?? '?')
+  if (backgroundsWithoutBoosts.length > 0) {
+    warnings.push(
+      `В предысториях не указаны повышения характеристик (взяты два универсальных): ${
+        backgroundsWithoutBoosts.join(', ')
+      }.`,
+    )
   }
   return warnings
 }
@@ -699,7 +728,8 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
     const backgroundName = background.name ?? 'Неизвестная предыстория'
     const abilityBoosts = background.abilityBoosts ?? ''
     const trainedSkills = background.trainedSkills ?? ''
-    const trainedLore = background.trainedLore ?? ''
+    const parsedLore = getStructuredBackgroundLore(trainedSkills)
+    const trainedLore = background.trainedLore || parsedLore.name
     const skillFeat = canonicalFeatName(background.skillFeat ?? '', skillFeats)
     const skillFeatId = skillFeats.find(feat => feat.name === skillFeat)?.id
     const source: Pathfinder2CharacterSource = {
@@ -725,7 +755,7 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
             name: trainedLore,
             rank: 'trained',
             source,
-            custom: false,
+            custom: background.trainedLore ? false : parsedLore.custom,
           }
         : null,
       grantedFeatIds: skillFeatId ? [skillFeatId] : [],
@@ -937,6 +967,7 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
       classes: classDocument.classes,
       generalFeats: featDocument.feats?.general,
       skillFeats: featDocument.feats?.skill,
+      classProgression,
     }),
   }
 }

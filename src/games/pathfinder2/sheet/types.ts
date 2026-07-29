@@ -915,6 +915,8 @@ export type Pathfinder2RulesCatalog = {
 export type Pathfinder2DerivedValues = {
   maxHp: number | null
   armorClass: number
+  shieldBonus: number
+  armorCheckPenalty: number
   perception: number
   classDc: number | null
   fortitude: number
@@ -964,6 +966,7 @@ export type Pathfinder2CalculatedSkill = {
   attributeModifier: number
   rank: Pathfinder2ProficiencyRank
   proficiencyBonus: number
+  armorCheckPenalty: number
   modifier: number
   sources: Pathfinder2SkillSource[]
 }

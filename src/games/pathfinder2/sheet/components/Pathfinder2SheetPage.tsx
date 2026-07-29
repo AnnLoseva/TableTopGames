@@ -5,10 +5,7 @@ import { useMemo, useRef, useState } from 'react'
 import { getBuilderCompletion } from '../rules/builder-progress'
 import { buildCharacterState } from '../rules/creation/build-character-state'
 import { reconcileCharacterDecisions } from '../rules/creation/reconcile-character'
-import {
-  getClassById,
-  getFeatById,
-} from '../data/selectors'
+import { getClassById } from '../data/selectors'
 import { usePathfinder2Character } from '../hooks/usePathfinder2Character'
 import type {
   Pathfinder2ChoiceKind,
@@ -207,8 +204,10 @@ export default function Pathfinder2SheetPage({
         feats: {
           ...current.feats,
           selectedBySlot: Object.fromEntries(
-            Object.entries(current.feats.selectedBySlot).filter(([, featId]) => (
-              getFeatById(rules, featId)?.category !== 'ancestry'
+            Object.entries(current.feats.selectedBySlot).filter(([slotId]) => (
+              !characterState.featSlots.some(slot => (
+                slot.id === slotId && slot.type === 'ancestry-feat'
+              ))
             )),
           ),
         },
@@ -224,8 +223,10 @@ export default function Pathfinder2SheetPage({
         feats: {
           ...current.feats,
           selectedBySlot: Object.fromEntries(
-            Object.entries(current.feats.selectedBySlot).filter(([, featId]) => (
-              getFeatById(rules, featId)?.category !== 'class'
+            Object.entries(current.feats.selectedBySlot).filter(([slotId]) => (
+              !characterState.featSlots.some(slot => (
+                slot.id === slotId && slot.type === 'class-feat'
+              ))
             )),
           ),
         },

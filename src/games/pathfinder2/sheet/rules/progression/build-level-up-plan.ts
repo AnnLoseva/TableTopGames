@@ -1,4 +1,4 @@
-import { getClassById, getFeatById } from '../../data/selectors'
+import { getClassById } from '../../data/selectors'
 import { v4DraftToRuntime } from '../../data/migration-v4'
 import type {
   Pathfinder2CharacterDraftV4,
@@ -181,8 +181,9 @@ function validateFeatSelections(
       }
       return
     }
-    const feat = getFeatById(catalog, selectedId)
-    if (!feat || !getFeatsForSlot(slot, catalog).some(entry => entry.id === selectedId)) {
+    const feat = getFeatsForSlot(slot, catalog)
+      .find(entry => entry.id === selectedId)
+    if (!feat) {
       issues.push({
         id: `level-up.feat.missing.${choices.level}.${slot.id}`,
         severity: 'error',

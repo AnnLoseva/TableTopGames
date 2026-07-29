@@ -80,6 +80,7 @@ export default function AttributeRulesEditor({
   const background = getBackgroundById(catalog, draft.backgroundId)
   const characterClass = getClassById(catalog, draft.classId)
   const ancestryRules = getAncestryAttributeRules(draft, catalog)
+  const backgroundBoostsReady = Boolean(background?.abilityBoostOptions.length)
   const errors = build.validationIssues.filter(issue => (
     issue.step === 'final-attributes' && issue.severity === 'error'
   ))
@@ -269,8 +270,14 @@ export default function AttributeRulesEditor({
       <section className={styles.rulesSection}>
         <header>
           <div><span className={styles.choiceKicker}>Источник 2</span><h3>Предыстория</h3></div>
-          <span className={background ? styles.rulesStatusRequired : styles.rulesStatusError}>
-            {background ? '2 обязательных выбора' : 'нужна предыстория'}
+          <span className={backgroundBoostsReady
+            ? styles.rulesStatusRequired
+            : styles.rulesStatusError}>
+            {!background
+              ? 'нужна предыстория'
+              : backgroundBoostsReady
+                ? '2 обязательных выбора'
+                : 'нет данных повышений'}
           </span>
         </header>
         <p>{background?.name ?? 'Выберите предысторию на предыдущем шаге.'}</p>

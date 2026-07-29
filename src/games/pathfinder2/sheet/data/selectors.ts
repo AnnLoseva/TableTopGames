@@ -136,6 +136,7 @@ export function getClassById(
 export function getFeatById(
   catalog: Pathfinder2RulesCatalog,
   id: string,
+  category?: Pathfinder2FeatRule['category'],
 ): Pathfinder2FeatRule | undefined {
   return [
     ...catalog.generalFeats,
@@ -144,7 +145,7 @@ export function getFeatById(
     ...catalog.ancestryFeats,
     ...catalog.classFeats,
   ]
-    .find(feat => feat.id === id)
+    .find(feat => feat.id === id && (!category || feat.category === category))
 }
 
 export function getClassFeatureById(

@@ -113,7 +113,7 @@ export function isSpellAvailable(
   rank: number,
 ) {
   return spell.level <= rank
-    && (spell.traditions.length === 0 || spell.traditions.includes(tradition))
+    && spell.traditions.includes(tradition)
 }
 
 function selectionIssues(

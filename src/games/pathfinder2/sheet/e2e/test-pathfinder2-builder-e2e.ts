@@ -142,6 +142,11 @@ async function run() {
     await galleryTrigger.click()
     const dialog = page.getByRole('dialog', { name: 'Выбор народа' })
     await dialog.waitFor({ state: 'visible' })
+    assert.equal(
+      await dialog.locator('img[alt^="Карточка народа"]').count(),
+      50,
+      'Every ancestry should render its local artwork.',
+    )
     const closeButton = page.getByRole('button', { name: 'Закрыть каталог' })
     await closeButton.waitFor({ state: 'visible' })
     assert.equal(
@@ -162,6 +167,51 @@ async function run() {
       'Closing the modal should restore focus to its trigger.',
     )
     console.log('✓ choice dialog focus, Escape and scroll lock work')
+
+    await stepNavigation.getByRole('button', { name: /Класс/ }).click()
+    await page.getByRole('button', { name: 'Открыть галерею классов' }).click()
+    const classDialog = page.getByRole('dialog', { name: 'Выбор класса' })
+    assert.equal(
+      await classDialog.locator('img[alt^="Карточка класса"]').count(),
+      21,
+      'Every supplied class artwork should be connected.',
+    )
+    await page.keyboard.press('Escape')
+    await classDialog.waitFor({ state: 'hidden' })
+    console.log('✓ all supplied ancestry and class artworks are connected')
+
+    await stepNavigation.getByRole('button', { name: /Предыстория/ }).click()
+    await page.getByRole('button', { name: 'Открыть галерею предысторий' }).click()
+    const backgroundDialog = page.getByRole('dialog', { name: 'Выбор предыстории' })
+    await backgroundDialog.getByRole('searchbox').fill('Учёный')
+    await backgroundDialog.getByRole('button', { name: /Учёный/ }).click()
+    await backgroundDialog.getByRole('button', { name: 'Подтвердить выбор' }).click()
+    await stepNavigation.getByRole('button', { name: /Итоговые характеристики/ }).click()
+    const limitedBoostLabel = page.getByText(
+      'Ограниченное повышение: Интеллект или Мудрость',
+      { exact: true },
+    )
+    await limitedBoostLabel.waitFor()
+    const limitedBoostChoices = limitedBoostLabel.locator('+ div')
+    assert.equal(
+      await limitedBoostChoices.getByRole('button', {
+        name: 'ИНТ Интеллект',
+        exact: true,
+      }).isEnabled(),
+      true,
+    )
+    assert.equal(
+      await limitedBoostChoices.getByRole('button', {
+        name: 'МДР Мудрость',
+        exact: true,
+      }).isEnabled(),
+      true,
+    )
+    assert.equal(
+      await limitedBoostChoices.getByRole('button', { name: /СИЛ Сила/ }).isDisabled(),
+      true,
+    )
+    console.log('✓ Scholar background exposes its two limited ability boosts')
 
     await stepNavigation.getByRole('button', { name: /Снаряжение/ }).click()
     await page.getByRole('searchbox', {
@@ -231,7 +281,7 @@ async function run() {
       `The browser console should stay clean:\n${browserErrors.join('\n')}`,
     )
     console.log('✓ browser console has no errors')
-    console.log('Pathfinder 2 builder E2E: 9 checks passed.')
+    console.log('Pathfinder 2 builder E2E: 11 checks passed.')
   } finally {
     await context.close()
     await browser.close()

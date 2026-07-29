@@ -71,6 +71,14 @@ export function validateAttributeChoices(
       field: 'backgroundLimitedBoost',
       message: 'Сначала выберите предысторию.',
     })
+  } else if (background.abilityBoostOptions.length === 0) {
+    issues.push({
+      id: 'attributes.background-data-missing',
+      severity: 'error',
+      step: 'final-attributes',
+      field: 'backgroundLimitedBoost',
+      message: `Для предыстории «${background.name}» в справочнике не указаны варианты повышения характеристик.`,
+    })
   } else if (
     !choices.backgroundLimitedBoost
     || !background.abilityBoostOptions.includes(choices.backgroundLimitedBoost)

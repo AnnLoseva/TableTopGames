@@ -51,26 +51,31 @@ export function calculateArmorClass({
   const armor = catalog.armor.find(item => item.id === armorEntry?.itemId)
   const armorCategory = armor?.armorCategory ?? 'unarmored'
   const proficiency = matchingProficiency(proficiencies, 'armor', armorCategory)
-  const dexterity = Math.min(
-    dexterityModifier,
-    armor?.dexterityCap ?? dexterityModifier,
-  )
-  const shieldEntry = shieldRaised
-    ? inventory.entries.find(entry => (
-        entry.equipped && catalog.shields.some(shield => shield.id === entry.itemId)
-      ))
-    : null
-  const shield = catalog.shields.find(item => item.id === shieldEntry?.itemId)
+  // Ноль в справочнике означает «предел Ловкости не указан» (например, «Без брони»).
+  const dexterityCap = armor && armor.dexterityCap > 0 ? armor.dexterityCap : null
+  const dexterity = dexterityCap === null
+    ? dexterityModifier
+    : Math.min(dexterityModifier, dexterityCap)
+  const equippedShield = catalog.shields.find(shield => (
+    inventory.entries.some(entry => entry.equipped && entry.itemId === shield.id)
+  )) ?? null
+  // Бонус щита работает только при действии «Поднять щит».
+  const shield = shieldRaised ? equippedShield : null
   const value = 10
     + dexterity
     + (proficiency?.bonus ?? 0)
     + (armor?.armorBonus ?? 0)
     + (shield?.armorClassBonus ?? 0)
 
+  // Требование брони к Силе: при его выполнении штраф к навыкам исчезает,
+  // а штраф к скорости уменьшается на 5 футов.
+  const meetsStrength = Boolean(armor) && strengthModifier >= (armor?.strengthRequirement ?? 0)
   return {
     value,
-    speedPenalty: armor && strengthModifier < armor.strengthRequirement
-      ? armor.speedPenalty
+    shieldBonus: equippedShield?.armorClassBonus ?? 0,
+    checkPenalty: armor && !meetsStrength ? armor.checkPenalty : 0,
+    speedPenalty: armor
+      ? (meetsStrength ? Math.min(0, armor.speedPenalty + 5) : armor.speedPenalty)
       : 0,
     breakdown: [
       { label: 'Базовое значение', value: 10, source: CUSTOM_SOURCE },
@@ -178,6 +183,7 @@ export function equippedArmor(
   inventory: Pathfinder2CalculatedInventory,
   catalog: Pathfinder2RulesCatalog,
 ): Pathfinder2ArmorRule | null {
-  const entry = inventory.entries.find(candidate => candidate.equipped)
-  return catalog.armor.find(armor => armor.id === entry?.itemId) ?? null
+  return catalog.armor.find(armor => (
+    inventory.entries.some(entry => entry.equipped && entry.itemId === armor.id)
+  )) ?? null
 }

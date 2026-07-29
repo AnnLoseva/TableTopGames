@@ -11,6 +11,7 @@ import {
   v4DraftToRuntime,
 } from '../data/migration-v4'
 import { createDefaultPathfinder2DraftV4 } from '../data/v4'
+import { getFeatById } from '../data/selectors'
 import type {
   Pathfinder2AncestryRule,
   Pathfinder2BackgroundRule,
@@ -282,6 +283,20 @@ const tests: Array<[string, () => void]> = [
     draft.attributeChoices.backgroundFreeBoost = 'wisdom'
     assert.ok(validateAttributeChoices(draft, catalog).some(issue => (
       issue.id === 'attributes.background-duplicate'
+    )))
+  }],
+  ['Неполная запись предыстории сообщает об отсутствии механики', () => {
+    const draft = validDraft()
+    const incompleteBackgroundCatalog: Pathfinder2RulesCatalog = {
+      ...catalog,
+      backgrounds: [{
+        ...catalog.backgrounds[0],
+        abilityBoosts: '-',
+        abilityBoostOptions: [],
+      }],
+    }
+    assert.ok(validateAttributeChoices(draft, incompleteBackgroundCatalog).some(issue => (
+      issue.id === 'attributes.background-data-missing'
     )))
   }],
   ['Четыре финальных повышения должны быть разными', () => {
@@ -588,6 +603,37 @@ const tests: Array<[string, () => void]> = [
     assert.equal(
       getFeatAvailability({ ...feat, level: 2 }, slot, state).available,
       false,
+    )
+  }],
+  ['Одинаковые ID черт различаются по категории слота', () => {
+    const sharedGeneral = {
+      id: 'shared-feat',
+      name: 'Общая версия',
+      level: 1,
+      description: '',
+      prerequisites: null,
+      requirements: [],
+      category: 'general' as const,
+      traits: [],
+    }
+    const sharedAncestry = {
+      ...sharedGeneral,
+      name: 'Версия народа',
+      category: 'ancestry' as const,
+      ancestryIds: ['dwarf'],
+    }
+    const collisionCatalog: Pathfinder2RulesCatalog = {
+      ...catalog,
+      generalFeats: [sharedGeneral],
+      ancestryFeats: [sharedAncestry],
+    }
+    assert.equal(
+      getFeatById(collisionCatalog, 'shared-feat', 'general')?.name,
+      'Общая версия',
+    )
+    assert.equal(
+      getFeatById(collisionCatalog, 'shared-feat', 'ancestry')?.name,
+      'Версия народа',
     )
   }],
   ['Отсутствующий обязательный каталог блокирует готовность', () => {

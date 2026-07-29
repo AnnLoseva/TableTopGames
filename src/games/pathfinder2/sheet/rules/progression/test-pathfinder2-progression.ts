@@ -5,6 +5,7 @@ import type {
   Pathfinder2LevelChoices,
   Pathfinder2RulesCatalog,
 } from '../../types'
+import { buildCharacterState } from '../creation/build-character-state'
 import {
   applyLevelUp,
   buildLevelUpPlan,
@@ -225,6 +226,23 @@ const tests: Array<[string, () => void]> = [
     }
     classProgression.levels = []
     catalog.classFeats = []
+  }],
+  ['Ранги испытаний растут по прогрессии класса, а не по строке 1-го уровня', () => {
+    const classProgression = catalog.classProgression[1]
+    classProgression.levels = [{
+      level: 3,
+      automaticFeatureIds: [],
+      proficiencyGrants: [{ category: 'will', rank: 'expert', level: 3 }],
+      featSlots: [],
+      skillIncreaseCount: 0,
+      attributeBoostCount: 0,
+    }]
+    const draft = draftAt(5)
+    const before = buildCharacterState(draftAt(2), catalog).derived.will
+    const after = buildCharacterState(draft, catalog).derived.will
+    assert.equal(before, 2 + 2, 'на 2-м уровне воля обучена: уровень + 2')
+    assert.equal(after, 5 + 4, 'с 3-го уровня воля экспертная: уровень + 4')
+    classProgression.levels = []
   }],
   ['Высокоуровневая история воспроизводится последовательно до 20-го', () => {
     let draft = draftAt(1)

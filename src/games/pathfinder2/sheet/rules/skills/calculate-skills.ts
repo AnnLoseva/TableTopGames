@@ -63,6 +63,7 @@ export function calculateSkills(
   draft: Pathfinder2CharacterDraft,
   catalog: Pathfinder2RulesCatalog,
   attributes: Pathfinder2Attributes,
+  armorCheckPenalty = 0,
 ): Pathfinder2CalculatedSkills {
   const { grants, choiceRules, characterClass } = getSkillRuleBlocks(draft, catalog)
   const sources = new Map<Pathfinder2SkillId, Pathfinder2SkillSource[]>()
@@ -132,13 +133,18 @@ export function calculateSkills(
     const rank = ranks[skill.id]
     const attributeModifier = attributes[skill.attribute]
     const proficiencyBonus = getProficiencyBonus(rank, draft.level)
+    // Штраф брони к навыкам действует на проверки Силы и Ловкости.
+    const checkPenalty = skill.attribute === 'strength' || skill.attribute === 'dexterity'
+      ? armorCheckPenalty
+      : 0
     return [skill.id, {
       skillId: skill.id,
       attribute: skill.attribute,
       attributeModifier,
       rank,
       proficiencyBonus,
-      modifier: attributeModifier + proficiencyBonus,
+      armorCheckPenalty: checkPenalty,
+      modifier: attributeModifier + proficiencyBonus + checkPenalty,
       sources: sources.get(skill.id) ?? [],
     }]
   })) as Pathfinder2CalculatedSkills['skills']

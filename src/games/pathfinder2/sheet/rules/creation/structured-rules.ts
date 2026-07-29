@@ -15,18 +15,37 @@ const ACCELERATED_SKILL_INCREASE_LEVELS = [
 
 const ALL_SKILL_IDS = PATHFINDER2_SKILLS.map(skill => skill.id)
 
-const SKILL_ID_BY_RUSSIAN_NAME = new Map<string, Pathfinder2SkillId>(
-  PATHFINDER2_SKILLS.map(skill => [skill.label, skill.id]),
-)
+const BACKGROUND_SKILL_NAMES: Array<{
+  id: Pathfinder2SkillId
+  names: string[]
+}> = PATHFINDER2_SKILLS.map(skill => ({
+  id: skill.id,
+  names: [skill.label.toLocaleLowerCase('ru')],
+})).map(skill => {
+  if (skill.id === 'arcana') return { ...skill, names: [...skill.names, 'мистицизм'] }
+  if (skill.id === 'performance') return { ...skill, names: [...skill.names, 'исполнение'] }
+  return skill
+})
 
 const ATTRIBUTE_ID_BY_RUSSIAN_NAME: Record<string, Pathfinder2AttributeKey> = {
   Сила: 'strength',
   Ловкость: 'dexterity',
+  Dexteriry: 'dexterity',
   Телосложение: 'constitution',
+  Выносливость: 'constitution',
   Интеллект: 'intelligence',
   Мудрость: 'wisdom',
   Харизма: 'charisma',
 }
+
+const ALL_ATTRIBUTE_IDS = [
+  'strength',
+  'dexterity',
+  'constitution',
+  'intelligence',
+  'wisdom',
+  'charisma',
+] satisfies Pathfinder2AttributeKey[]
 
 function granted(
   skillId: Pathfinder2SkillId,
@@ -157,10 +176,51 @@ export function getSpecializationGrantedSkills(
 export function getStructuredBackgroundAbilityOptions(
   value: string,
 ): Pathfinder2AttributeKey[] {
+  const options = value
+    .split(/\s*(?:,|или)\s*/iu)
+    .flatMap(part => part.trim() === 'Универсальное'
+      ? ALL_ATTRIBUTE_IDS
+      : ATTRIBUTE_ID_BY_RUSSIAN_NAME[part.trim()] ?? [])
+
+  // Предыстория всегда даёт два повышения, поэтому нераспознанный список
+  // («-» у редких предысторий) трактуем как два универсальных повышения,
+  // а не как запрет на выбор.
+  if (options.length === 0) return [...ALL_ATTRIBUTE_IDS]
+  return [...new Set(options)]
+}
+
+export function hasStructuredBackgroundAbilityOptions(value: string) {
   return value
-    .split(/\s+или\s+/iu)
-    .map(part => ATTRIBUTE_ID_BY_RUSSIAN_NAME[part.trim()])
-    .filter((key): key is Pathfinder2AttributeKey => Boolean(key))
+    .split(/\s*(?:,|или)\s*/iu)
+    .some(part => part.trim() === 'Универсальное'
+      || Boolean(ATTRIBUTE_ID_BY_RUSSIAN_NAME[part.trim()]))
+}
+
+const LORE_CHOICE_MARKERS = [
+  'или',
+  'по вашему выбору',
+  'связанное',
+  'которому вы поклоняетесь',
+]
+
+/**
+ * В справочнике предысторий Знание не вынесено в отдельное поле, а дописано
+ * в конец строки обученных навыков: «Дипломатия, Знание (закон)».
+ */
+export function getStructuredBackgroundLore(trainedSkills: string) {
+  const loreStart = trainedSkills.search(/знани/iu)
+  if (loreStart < 0) return { name: '', custom: false }
+  const name = trainedSkills
+    .slice(loreStart)
+    .replace(/\s+/gu, ' ')
+    .trim()
+    .replace(/[.;,]+$/u, '')
+  if (!name) return { name: '', custom: false }
+  const normalized = name.toLocaleLowerCase('ru')
+  return {
+    name,
+    custom: LORE_CHOICE_MARKERS.some(marker => normalized.includes(marker)),
+  }
 }
 
 export function getStructuredBackgroundSkillRules(
@@ -180,10 +240,36 @@ export function getStructuredBackgroundSkillRules(
     }
   }
 
-  const directName = trainedSkills.split(/\s+\(/u)[0]?.trim()
-  const skillId = SKILL_ID_BY_RUSSIAN_NAME.get(directName)
+  const loreStart = trainedSkills.search(/знани/iu)
+  const skillText = (loreStart >= 0
+    ? trainedSkills.slice(0, loreStart)
+    : trainedSkills
+  ).toLocaleLowerCase('ru')
+  const skillIds = BACKGROUND_SKILL_NAMES
+    .flatMap(({ id, names }) => {
+      const position = Math.min(
+        ...names
+          .map(name => skillText.indexOf(name))
+          .filter(index => index >= 0),
+      )
+      return Number.isFinite(position) ? [{ id, position }] : []
+    })
+    .sort((left, right) => left.position - right.position)
+    .map(({ id }) => id)
+  const isChoice = skillIds.length > 1 && /или/iu.test(skillText)
+
   return {
-    grantedSkills: skillId ? [granted(skillId, 'Предыстория')] : [],
-    grantedSkillChoices: [],
+    grantedSkills: isChoice
+      ? []
+      : skillIds.map(skillId => granted(skillId, 'Предыстория')),
+    grantedSkillChoices: isChoice
+      ? [{
+          id: `background:${backgroundId}:skill`,
+          label: 'Навык предыстории',
+          count: 1,
+          allowedSkills: skillIds,
+          sourceLabel: 'Предыстория',
+        }]
+      : [],
   }
 }

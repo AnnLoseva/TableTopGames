@@ -1,7 +1,6 @@
 import {
   getBackgroundById,
   getClassById,
-  getFeatById,
 } from '../../data/selectors'
 import { v4DraftToRuntime } from '../../data/migration-v4'
 import type {
@@ -21,6 +20,7 @@ import { calculateInventory } from '../equipment/calculate-inventory'
 import { calculateLanguages } from '../languages/calculate-languages'
 import { calculateProficiencies } from '../proficiencies/calculate-proficiencies'
 import { calculateReligion } from '../religion/calculate-religion'
+import { calculateSkills } from '../skills/calculate-skills'
 import { calculateSpellcasting } from '../spells/calculate-spellcasting'
 import {
   getFeatAvailability,
@@ -150,19 +150,27 @@ function featSlotIssues(
 
   return state.featSlots.flatMap(slot => {
     if (!slot.selectedFeatId) {
+      const availableCount = getFeatsForSlot(slot, catalog)
+        .filter(feat => getFeatAvailability(feat, slot, state).available)
+        .length
       return slot.required ? [{
-        id: `feat-slot.required.${slot.id}`,
+        id: availableCount === 0
+          ? `feat-slot.no-options.${slot.id}`
+          : `feat-slot.required.${slot.id}`,
         severity: 'error' as const,
         step: 'features' as const,
         section: 'feats',
         field: slot.id,
         level: slot.level,
         relatedChoiceId: slot.id,
-        message: `Выберите черту для слота «${slot.type}» ${slot.level}-го уровня.`,
+        message: availableCount === 0
+          ? `В справочнике нет доступных вариантов для обязательного слота «${slot.type}» ${slot.level}-го уровня.`
+          : `Выберите черту для слота «${slot.type}» ${slot.level}-го уровня.`,
       }] : []
     }
-    const feat = getFeatById(catalog, slot.selectedFeatId)
-    if (!feat || !getFeatsForSlot(slot, catalog).some(entry => entry.id === feat.id)) {
+    const feat = getFeatsForSlot(slot, catalog)
+      .find(entry => entry.id === slot.selectedFeatId)
+    if (!feat) {
       return [{
         id: `feat-slot.missing.${slot.id}`,
         severity: 'error' as const,
@@ -240,15 +248,24 @@ export function buildCharacterState(
     inventory,
     proficiencies,
     catalog,
-    shieldRaised: inventory.entries.some(entry => (
-      entry.equipped
-      && catalog.shields.some(shield => shield.id === entry.itemId)
-    )),
   })
+  // Пересчитываем навыки, когда известен штраф надетой брони.
+  const build: typeof legacyBuild = armorClass.checkPenalty === 0
+    ? legacyBuild
+    : {
+        ...legacyBuild,
+        skills: calculateSkills(
+          runtimeDraft,
+          catalog,
+          legacyBuild.attributes.modifiers,
+          armorClass.checkPenalty,
+        ),
+      }
   const baseDerived = calculateDerivedCharacterValues(
     runtimeDraft,
     catalog,
     legacyBuild,
+    proficiencies,
   )
   const spellcasting = calculateSpellcasting(
     draft,
@@ -277,13 +294,15 @@ export function buildCharacterState(
   const state: Pathfinder2CharacterState = {
     draft,
     runtimeDraft,
-    legacyBuild,
+    legacyBuild: build,
     derived: {
       ...baseDerived,
       armorClass: armorClass.value,
+      shieldBonus: armorClass.shieldBonus,
+      armorCheckPenalty: armorClass.checkPenalty,
       speed: baseDerived.speed === null
         ? null
-        : Math.max(0, baseDerived.speed + armorClass.speedPenalty),
+        : Math.max(5, baseDerived.speed + armorClass.speedPenalty),
     },
     proficiencies,
     features: buildClassFeatures(draft, catalog),
