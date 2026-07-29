@@ -28,7 +28,7 @@ file.
 | Area | Workflow |
 |---|---|
 | `public/*.js`, `old-sheet.html`, the bridge | `legacy-edit-protocol.md` |
-| `games/vampires/modules/table/*` | `react-table-edit-protocol.md` |
-| `games/vampires/core/vtm5/rules/*`, disciplines, rolls logic | `vtm-mechanics-edit-protocol.md` |
+| `src/games/vampires/modules/table/*` | `react-table-edit-protocol.md` |
+| `src/games/vampires/core/vtm5/rules/*`, disciplines, rolls logic | `vtm-mechanics-edit-protocol.md` |
 | Supabase tables/buckets/saved shape | `supabase-edit-protocol.md` |
 | Verifying anything | `verification-checklist.md` |

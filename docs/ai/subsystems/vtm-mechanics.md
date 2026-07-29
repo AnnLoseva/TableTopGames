@@ -5,7 +5,7 @@ Pure, framework-independent VTM V5 rules logic. These modules take data and
 return data — no React, no DOM, no Supabase. They are the intended single source
 of truth as logic migrates out of the legacy sheet.
 
-## Modules (`games/vampires/core/vtm5/rules/*`)
+## Modules (`src/games/vampires/core/vtm5/rules/*`)
 - `health/index.ts` — health/damage tracker (superficial/aggravated, max,
   impaired, physical state for vampire/mortal/ghoul/thinblood/custom).
 - `humanity/index.ts` — humanity, stains, remorse.
@@ -24,7 +24,7 @@ of truth as logic migrates out of the legacy sheet.
 
 ## Actor adapter
 
-`games/vampires/core/vtm5/adapters/actors.ts` normalizes display vitals and simple
+`src/games/vampires/core/vtm5/adapters/actors.ts` normalizes display vitals and simple
 trait-based roll pools for linked and compact actors. It remains pure and does
 not know about React, Supabase or master-console UI.
 
@@ -43,7 +43,7 @@ Willpower damage is modeled via the same damage/target machinery (`target:
 ## Humanity / stains / remorse
 `humanity/index.ts` handles the humanity track, stains, and remorse resolution
 (`applyRemorseCheckResult` — dice rolling stays in UI). Table quick-preview uses
-`games/vampires/modules/rolls/utils/remorse-roll.ts` on top of the same core function.
+`src/games/vampires/modules/rolls/utils/remorse-roll.ts` on top of the same core function.
 **Legacy duplicate:** `public/vampires/vtm-humanity.js` (includes `applyRemorseCheckResult`).
 Guarded by `npm run test:vtm-parity`.
 
@@ -58,8 +58,8 @@ The discipline layer loads rules from the JSON data, validates them against
 `engine/index.ts`. This is the most test-covered area — use the scripts below.
 
 ## Legacy duplication
-- `games/vampires/core/vtm5/rules/health/index.ts` ↔ `public/vampires/vtm-health.js`
-- `games/vampires/core/vtm5/rules/humanity/index.ts` ↔ `public/vampires/vtm-humanity.js`
+- `src/games/vampires/core/vtm5/rules/health/index.ts` ↔ `public/vampires/vtm-health.js`
+- `src/games/vampires/core/vtm5/rules/humanity/index.ts` ↔ `public/vampires/vtm-humanity.js`
 - discipline cost/effect parsing ↔ legacy parsing in `public/vampires/main.js`
   (`legacy-cost-parser.ts` exists to bridge old cost strings)
 

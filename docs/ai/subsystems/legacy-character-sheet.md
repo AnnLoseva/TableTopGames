@@ -14,9 +14,9 @@ bundler — files load directly in the browser.
   `characters` table (create/update/load/list, with a `charactersListCache`).
 - `public/vampires/creation-wizard.js` (~1.4k lines) — guided character creation.
 - `public/vampires/vtm-health.js` — legacy health/damage tracker (duplicate of
-  `games/vampires/core/vtm5/rules/health/index.ts`).
+  `src/games/vampires/core/vtm5/rules/health/index.ts`).
 - `public/vampires/vtm-humanity.js` — legacy humanity/stains/remorse (duplicate of
-  `games/vampires/core/vtm5/rules/humanity/index.ts`).
+  `src/games/vampires/core/vtm5/rules/humanity/index.ts`).
 - `public/vampires/i18n-runtime.js` — legacy translation runtime.
 - `public/vampires/i18n-dictionary.js` — legacy translation strings.
 - Reads `public/vampires/rules.json` / `public/vampires/rules_eng.json` for rules data.
@@ -61,8 +61,8 @@ import-tracked.
    confirm `characterId` appears in the URL (postMessage worked), reload.
 
 ## What should eventually move to TypeScript
-- Health and humanity mechanics → already mirrored in `games/vampires/core/vtm5/rules/*`; converge there.
-- Discipline cost/effect parsing → `games/vampires/core/vtm5/rules/disciplines/*`.
+- Health and humanity mechanics → already mirrored in `src/games/vampires/core/vtm5/rules/*`; converge there.
+- Discipline cost/effect parsing → `src/games/vampires/core/vtm5/rules/disciplines/*`.
 - Character data typing and Supabase access → shared with `lib/*`.
 These moves require **explicit tasks** and `DECISIONS.md` entries — not drive-by
 refactors.

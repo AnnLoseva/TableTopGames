@@ -3,7 +3,7 @@
 Applies to: `public/vampires/main.js`, `public/vampires/old-sheet.html`, `public/vampires/supabase.js`,
 `public/vampires/creation-wizard.js`, `public/vampires/vtm-health.js`, `public/vampires/vtm-humanity.js`,
 `public/vampires/i18n-runtime.js`, `public/vampires/i18n-dictionary.js`, and the bridge shell
-`games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx`.
+`src/games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx`.
 
 Read `../subsystems/legacy-character-sheet.md` and
 `../subsystems/character-sheet-bridge.md` first.
@@ -36,8 +36,8 @@ Read `../subsystems/legacy-character-sheet.md` and
 5. Navigate sheet → `/table` → room/role preserved.
 
 If you edited `vtm-health.js` / `vtm-humanity.js`, also check whether
-`games/vampires/core/vtm5/rules/health/index.ts` /
-`games/vampires/core/vtm5/rules/humanity/index.ts` need the same change (see
+`src/games/vampires/core/vtm5/rules/health/index.ts` /
+`src/games/vampires/core/vtm5/rules/humanity/index.ts` need the same change (see
 `vtm-mechanics-edit-protocol.md`).
 
 ## Update docs?

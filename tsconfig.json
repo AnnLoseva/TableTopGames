@@ -22,11 +22,8 @@
       }
     ],
     "paths": {
-      "@/core/*": [
-        "./core/*"
-      ],
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     },
     "target": "ES2017"
@@ -35,13 +32,12 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.d.ts" // ← добавь эту строку
-    ,
+    ".next/types/**/*.d.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "games/vampires/supabase/functions"
+    "src/games/vampires/supabase/functions"
   ]
 }

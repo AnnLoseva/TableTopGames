@@ -17,7 +17,7 @@ repository. The shared protocol, reading order, and rules live in `AGENTS.md` an
   `public/vampires/main.js` / `public/vampires/old-sheet.html` → `docs/ai/workflows/legacy-edit-protocol.md`.
   Before touching `components/table/GameTable.tsx` →
   `docs/ai/workflows/react-table-edit-protocol.md`. Before touching
-  `games/vampires/core/vtm5/rules/*` → `docs/ai/workflows/vtm-mechanics-edit-protocol.md`.
+  `src/games/vampires/core/vtm5/rules/*` → `docs/ai/workflows/vtm-mechanics-edit-protocol.md`.
 - **Record long-term architectural decisions** in `docs/ai/DECISIONS.md` using
   the template in `docs/ai/templates/decision-entry-template.md`. One entry per
   real decision — not per bug.

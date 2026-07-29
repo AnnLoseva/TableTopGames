@@ -29,17 +29,17 @@ legacy-iframe или сохранённые данные.
 - `public/vampires/old-sheet.html`, `public/vampires/main.js` и связанные JS-файлы - legacy-лист
   персонажа. Он работает как статическое приложение без сборки и открывается
   внутри iframe.
-- `app/`, `components/table/`, `games/vampires/modules/music/`, `components/journal/`,
-  `components/reference/`, `lib/table/`, `games/vampires/core/vtm5/` - современная
+- `src/app/`, `components/table/`, `src/games/vampires/modules/music/`, `components/journal/`,
+  `components/reference/`, `lib/table/`, `src/games/vampires/core/vtm5/` - современная
   React/TypeScript зона.
 
 Важные текущие факты:
 
-- `app/layout.tsx` сейчас является корневой оболочкой: подключает
+- `src/app/layout.tsx` сейчас является корневой оболочкой: подключает
   `LanguageProvider`, тёмную тему и `GlobalMusicEngineMount` из
-  `games/vampires/modules/music/`. Это естественная точка роста Hub, но бизнес-логику туда
+  `src/games/vampires/modules/music/`. Это естественная точка роста Hub, но бизнес-логику туда
   добавлять нельзя.
-- Маршруты в `app/*/page.tsx` в основном тонкие и импортируют экран или стол.
+- Маршруты в `src/app/*/page.tsx` в основном тонкие и импортируют экран или стол.
   Это правильно: маршруты должны оставаться оболочками.
 - `components/table/GameTable.tsx` (~9k строк) - главный оркестратор стола:
   комната, роль, Supabase I/O, realtime, персонажи, броски, чат, сцены, слои,
@@ -48,14 +48,14 @@ legacy-iframe или сохранённые данные.
   длинные списки props из `GameTable.tsx`. Это первый признак, что нужен слой
   hooks/services/context, а не только разнос JSX по файлам.
 - `lib/table/` уже хранит типы, константы, мапперы и часть чистых утилит стола.
-  Supabase-запросы стола — в `games/vampires/modules/table/api/`; chat — в `games/vampires/modules/chat/api/`; music — в `games/vampires/modules/music/`.
-- `games/vampires/core/vtm5/rules/` является ядром правил: health, humanity, damage,
+  Supabase-запросы стола — в `src/games/vampires/modules/table/api/`; chat — в `src/games/vampires/modules/chat/api/`; music — в `src/games/vampires/modules/music/`.
+- `src/games/vampires/core/vtm5/rules/` является ядром правил: health, humanity, damage,
   derived stats, disciplines. Этот слой должен оставаться без React, DOM и
   Supabase.
 - Часть VTM-логики ещё живёт внутри `GameTable.tsx`: базовые d10-броски,
   hunger/rouse, willpower helpers, blood surge, сборка пулов, contested rolls.
   Это кандидаты на перенос в VTM core.
-- Музыкальные таблицы и bucket сейчас объявлены в `games/vampires/modules/music/utils.ts`,
+- Музыкальные таблицы и bucket сейчас объявлены в `src/games/vampires/modules/music/utils.ts`,
   а часть table-констант - в `lib/table/constants.ts`. Их можно объединять только
   как перенос констант без переименования реальных таблиц/buckets.
 
@@ -83,7 +83,7 @@ Hub не должен:
 ### 2. Game System Cores
 
 Game System Core - чистый TypeScript-слой конкретной системы правил. Текущий
-runtime core VTM V5 живёт в `games/vampires/core/vtm5/rules/`.
+runtime core VTM V5 живёт в `src/games/vampires/core/vtm5/rules/`.
 
 Правила core:
 
@@ -105,9 +105,9 @@ runtime core VTM V5 живёт в `games/vampires/core/vtm5/rules/`.
 
 ## VTM5 Core
 
-`games/vampires/core/vtm5/` - фактический дом VTM5 core после переноса из `lib/vtm/`.
-Публичная точка входа системы: `games/vampires/core/vtm5/index.ts`, barrel правил:
-`games/vampires/core/vtm5/rules/index.ts`.
+`src/games/vampires/core/vtm5/` - фактический дом VTM5 core после переноса из `lib/vtm/`.
+Публичная точка входа системы: `src/games/vampires/core/vtm5/index.ts`, barrel правил:
+`src/games/vampires/core/vtm5/rules/index.ts`.
 
 Структура:
 
@@ -118,7 +118,7 @@ runtime core VTM V5 живёт в `games/vampires/core/vtm5/rules/`.
 - `adapters/` - адаптеры между чистыми правилами и module contracts (`table`, `rolls`);
 - `system-core.ts` - `createVtm5SystemCore()` отдаёт систему и адаптеры модулям.
 
-Правило зависимости: `games/vampires/core/vtm5/rules/*` может импортировать только
+Правило зависимости: `src/games/vampires/core/vtm5/rules/*` может импортировать только
 чистые helpers, типы и rules data adapters. UI, Supabase, React и browser APIs
 должны оставаться вне core.
 
@@ -126,7 +126,7 @@ runtime core VTM V5 живёт в `games/vampires/core/vtm5/rules/`.
 
 Модуль - feature-область, которую Hub подключает через стабильный контракт.
 Модуль может иметь UI, hooks, services, realtime и storage adapters, но его
-внутренняя логика не должна расползаться в `app/layout.tsx` или `GameTable.tsx`.
+внутренняя логика не должна расползаться в `src/app/layout.tsx` или `GameTable.tsx`.
 
 Текущие и будущие модули:
 
@@ -194,7 +194,7 @@ Legacy-лист остаётся load-bearing частью проекта:
 - не менять `vtm-character-saved` postMessage без отдельного решения;
 - не менять `characters` row shape без миграции;
 - legacy-дубликаты VTM-механик держать в синхроне с
-  `games/vampires/core/vtm5/rules/*`.
+  `src/games/vampires/core/vtm5/rules/*`.
 
 ## Миграционный план
 
@@ -204,8 +204,8 @@ Legacy-лист остаётся load-bearing частью проекта:
 
 Шаги:
 
-- держать `app/*/page.tsx` тонкими route shells;
-- зафиксировать текущую роль `app/layout.tsx` как Hub shell;
+- держать `src/app/*/page.tsx` тонкими route shells;
+- зафиксировать текущую роль `src/app/layout.tsx` как Hub shell;
 - описать table, character-sheet, music, journal, reference как будущие modules;
 - не менять runtime-поведение;
 - после любой реальной правки кода запускать `npm run build`.
@@ -217,10 +217,10 @@ Legacy-лист остаётся load-bearing частью проекта:
 Кандидаты:
 
 - `rollD10Pool`, `countD10Successes`, `getRollOutcomeMeta`, die kind helpers из
-  `GameTable.tsx` -> `games/vampires/core/vtm5/rules/rolls/`;
-- hunger/rouse/blood surge helpers -> `games/vampires/core/vtm5/rules/hunger/` и
-  `games/vampires/core/vtm5/rules/blood/`;
-- willpower tracker helpers -> `games/vampires/core/vtm5/rules/willpower/`;
+  `GameTable.tsx` -> `src/games/vampires/core/vtm5/rules/rolls/`;
+- hunger/rouse/blood surge helpers -> `src/games/vampires/core/vtm5/rules/hunger/` и
+  `src/games/vampires/core/vtm5/rules/blood/`;
+- willpower tracker helpers -> `src/games/vampires/core/vtm5/rules/willpower/`;
 - pure table helpers для layer tree, selection, ordering -> `lib/table/*`;
 - room/role URL/localStorage helpers -> `lib/table/session.ts` или
   `lib/hub/session.ts`, но только если bridge-контракт остаётся прежним;
@@ -258,9 +258,9 @@ lib/table/api/
 Безопасный порядок:
 
 1. read-only loaders: roll history, scene list (`chat` already moved to
-   `games/vampires/modules/chat/api/chat-api.ts`);
+   `src/games/vampires/modules/chat/api/chat-api.ts`);
 2. simple inserts: roll insert (`chat message` already moved to
-   `games/vampires/modules/chat/api/chat-api.ts`);
+   `src/games/vampires/modules/chat/api/chat-api.ts`);
 3. scene CRUD;
 4. layer/media CRUD;
 5. character updates, только после отдельной проверки `characters` contract.
@@ -273,7 +273,7 @@ lib/table/api/
 Кандидаты:
 
 ```txt
-games/vampires/modules/table/hooks/
+src/games/vampires/modules/table/hooks/
   useTableSession.ts
   useTableRealtime.ts
   useRolls.ts
@@ -301,11 +301,11 @@ games/vampires/modules/table/hooks/
 Порядок:
 
 1. `components/table/{SceneManager,LayerManager,MediaLibrary}` ->
-   `games/vampires/modules/table/components/{scenes,layers,media}/`;
-2. `TableCanvas` -> `games/vampires/modules/table/components/canvas/`;
+   `src/games/vampires/modules/table/components/{scenes,layers,media}/`;
+2. `TableCanvas` -> `src/games/vampires/modules/table/components/canvas/`;
 3. `MasterPanel`, `JournalPanel` -> соответствующие module folders
-   (`ChatPanel` уже перенесён в `games/vampires/modules/chat/components/`);
-4. `DiceRollOverlay` -> `games/vampires/modules/table/components/rolls/`, но 3D/rendering
+   (`ChatPanel` уже перенесён в `src/games/vampires/modules/chat/components/`);
+4. `DiceRollOverlay` -> `src/games/vampires/modules/table/components/rolls/`, но 3D/rendering
    оставить изолированным от VTM core;
 5. `GameTableStyles.tsx` дробить последним и только вместе с визуальной проверкой.
 
@@ -319,7 +319,7 @@ games/vampires/modules/table/hooks/
 Будущие файлы:
 
 ```txt
-games/vampires/modules/character-sheet/
+src/games/vampires/modules/character-sheet/
   CharacterSheetRoute.tsx
   legacy/
     bridge.ts
@@ -338,14 +338,14 @@ games/vampires/modules/character-sheet/
 
 ### Фаза 6. Core relocation
 
-Статус: базовый перенос `lib/vtm/*` в `games/vampires/core/vtm5/rules/*` выполнен.
+Статус: базовый перенос `lib/vtm/*` в `src/games/vampires/core/vtm5/rules/*` выполнен.
 Дальнейшие шаги должны только уточнять внутреннюю структуру core и добавлять
 адаптеры без изменения поведения правил.
 
 Вариант перехода:
 
 ```txt
-games/vampires/core/vtm5/
+src/games/vampires/core/vtm5/
   index.ts
   types.ts
   rules/
@@ -361,7 +361,7 @@ lib/vtm/*
 ```
 
 После этой фазы следующий безопасный шаг - перенос оставшихся pure helpers из
-`GameTable.tsx` в `games/vampires/core/vtm5/rules/*` или adapters с отдельной проверкой
+`GameTable.tsx` в `src/games/vampires/core/vtm5/rules/*` или adapters с отдельной проверкой
 поведения.
 
 ## Финальная структура папок
@@ -369,7 +369,7 @@ lib/vtm/*
 Целевая структура. Это не инструкция сделать всё одним PR.
 
 ```txt
-app/
+src/app/
   layout.tsx
   page.tsx
   character-sheet/page.tsx
@@ -403,7 +403,7 @@ core/
           schema/
       adapters/
 
-games/vampires/modules/
+src/games/vampires/modules/
   table/
     TableRoute.tsx
     GameTable.tsx
@@ -479,7 +479,7 @@ lib/
     module-registry.ts
     session.ts
     permissions.ts
-  games/vampires/supabase/
+  src/games/vampires/supabase/
     client.ts
     browser.ts
   i18n/
@@ -487,9 +487,9 @@ lib/
     dictionary.ts
     ruleNames.ts
   table/
-    // transitional re-exports while games/vampires/modules/table/contracts is introduced
+    // transitional re-exports while src/games/vampires/modules/table/contracts is introduced
   vtm/
-    // transitional re-exports while games/vampires/core/vtm5 is introduced
+    // transitional re-exports while src/games/vampires/core/vtm5 is introduced
 
 public/
   old-sheet.html
@@ -510,8 +510,8 @@ public/
 
 Самые безопасные первые модули:
 
-- чистые dice helpers из `GameTable.tsx` в `games/vampires/core/vtm5/rules/rolls/`;
-- willpower/hunger/blood surge helpers в `games/vampires/core/vtm5/rules/*`;
+- чистые dice helpers из `GameTable.tsx` в `src/games/vampires/core/vtm5/rules/rolls/`;
+- willpower/hunger/blood surge helpers в `src/games/vampires/core/vtm5/rules/*`;
 - дополнительные pure layer/scene/media helpers в `lib/table/*`;
 - table/music constants в общий contracts-слой без изменения значений;
 - Supabase read-only loaders в `lib/table/api/*`;
@@ -536,7 +536,7 @@ public/
 - замена legacy-листа React-листом;
 - перенос `public/vampires/rules.json` / `rules_eng.json` schema;
 - дробление `GameTableStyles.tsx`;
-- дальнейшая внутренняя реорганизация `games/vampires/core/vtm5/rules/*` без изменения
+- дальнейшая внутренняя реорганизация `src/games/vampires/core/vtm5/rules/*` без изменения
   поведения.
 
 ## Правила дальнейших изменений

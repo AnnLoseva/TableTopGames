@@ -1,6 +1,6 @@
 # VTM Mechanics Edit Protocol
 
-Applies to: `games/vampires/core/vtm5/rules/*` (`health/index.ts`,
+Applies to: `src/games/vampires/core/vtm5/rules/*` (`health/index.ts`,
 `humanity/index.ts`, `damage/index.ts`, `derived-stats/index.ts`,
 `disciplines/*`) and mechanics that feed rolls.
 
@@ -8,7 +8,7 @@ Read `../subsystems/vtm-mechanics.md` first.
 
 ## Rules
 1. **Keep it pure and testable.** No React, no DOM, no Supabase imports in
-   `games/vampires/core/vtm5/rules/*`. Input data → output data.
+   `src/games/vampires/core/vtm5/rules/*`. Input data → output data.
 2. **Don't couple mechanics to UI.** The overlay/panels call the mechanics, not
    the other way around.
 3. **Check disciplines and derived stats** for knock-on effects when you change
@@ -36,5 +36,5 @@ table rolls).
 
 ## Update docs?
 Per `../UPDATE-RULES.md`: a new mechanic or a changed public contract of a
-`games/vampires/core/vtm5/rules/*` module updates `../subsystems/vtm-mechanics.md` (and likely
+`src/games/vampires/core/vtm5/rules/*` module updates `../subsystems/vtm-mechanics.md` (and likely
 `../DECISIONS.md`).

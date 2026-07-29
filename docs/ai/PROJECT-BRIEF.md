@@ -57,7 +57,7 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 | `/reference` | Reference pages | Markdown rules reference |
 | `/library/chronicles` | `ChronicleLibraryRoute` | Official Chronicle reader, Storyteller upload and owner-only player transcript processing |
 | `/master?room=<room-id>` | `MasterConsoleRoute` → `MasterConsoleShell` | Desktop Storyteller workspace shell; room is required |
-| `/pathfinder2/sheet` | `games/pathfinder2/sheet/Pathfinder2SheetRoute` | Unlisted local Pathfinder 2 character creator |
+| `/pathfinder2/sheet` | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute` | Unlisted local Pathfinder 2 character creator |
 | `/old` | redirect | Legacy redirect → `/character-sheet` |
 
 ## Main data sources
@@ -73,7 +73,7 @@ sheet and table**, carrying `room`, `role`, `characterId`.
   table/media assets.
 - **localStorage** — room/role and character-creation drafts (bridge state).
 - **Pathfinder 2 local data** — starter creation options and short original
-  rules notes in `games/pathfinder2/sheet/*`; the draft uses its own localStorage
+  rules notes in `src/games/pathfinder2/sheet/*`; the draft uses its own localStorage
   key and links to `pf2.ru` for complete source text.
 
 ## Non-goals
@@ -86,5 +86,5 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 ## Design direction
 Each game owns its visual language: dark blood-red VTM and parchment/forest
 Pathfinder 2. Keep the current VTM UI stable. Evolve gradually from the legacy
-monolith toward modular React + `games/vampires/core/vtm5/rules/*` rules, in small safe
+monolith toward modular React + `src/games/vampires/core/vtm5/rules/*` rules, in small safe
 steps — without abrupt rewrites or UI regressions.

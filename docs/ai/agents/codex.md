@@ -14,8 +14,8 @@ Entry points: `../../AGENTS.md`, then `../FILE-MAP.md` and the relevant workflow
 ## Guardrails
 - **Prefer small diffs.** One task, one focused change.
 - **No broad refactors** unless the task explicitly says so — especially in
-  `public/vampires/main.js`, `public/vampires/old-sheet.html`, `games/vampires/modules/table/GameTable.tsx`.
-- Never hardcode Supabase table/bucket names — use `games/vampires/modules/table/constants.ts`.
+  `public/vampires/main.js`, `public/vampires/old-sheet.html`, `src/games/vampires/modules/table/GameTable.tsx`.
+- Never hardcode Supabase table/bucket names — use `src/games/vampires/modules/table/constants.ts`.
 - Never change the bridge params/postMessage, Supabase schema, or rules-data
   shape as a side effect.
 - **Run checks when available:** `npm run lint`, `npm run build`, and the

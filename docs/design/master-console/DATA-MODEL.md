@@ -1,6 +1,6 @@
 # Предварительная модель данных
 
-Foundation SQL создан в `games/vampires/supabase/master_console_persistence.sql`. Все master
+Foundation SQL создан в `src/games/vampires/supabase/master_console_persistence.sql`. Все master
 сущности используют `chronicle_id` как authoritative scope; `room` сохраняется
 как совместимый индексируемый slug и проверяется trigger-ом против `chronicles`.
 UUID из Supabase Auth membership, а не строка из URL, определяет право доступа.

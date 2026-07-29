@@ -42,6 +42,23 @@ npm run test:disciplines
 npm run test:vtm-parity
 ```
 
+## Project layout
+
+```text
+src/
+  app/                 Next.js routes
+  games/
+    vampires/          Vampire-only code and database files
+    pathfinder2/        Pathfinder 2 sheet and rules data
+  platform/            Shared game-neutral contracts
+public/
+  vampires/            VTM legacy sheet and static assets
+tooling/                Repository maintenance scripts
+docs/                   Architecture and developer notes
+```
+
+The repository root is intentionally limited to configuration, documentation, static assets, source code and tooling.
+
 ## Architecture
 
 The project is migrating to a layered model:
@@ -52,11 +69,11 @@ Infrastructure → Hub → Game Systems → Modules
 
 | Layer | Path | Role |
 |-------|------|------|
-| Infrastructure | `core/infrastructure/` | Low-level shared contracts (placeholder) |
-| Hub | `core/hub/` | Game-neutral chronicle, module and system registry contracts |
-| Game Domains | `games/{vampires,pathfinder2}/` | Game-specific route boundary and Pathfinder 2 implementation |
-| Game Systems | `games/vampires/core/vtm5/` | Pure VTM5 rules + adapters for modules |
-| Modules | `games/vampires/modules/*/` | Feature areas: table, chat, music, rolls, … |
+| Infrastructure | `src/platform/infrastructure/` | Low-level shared contracts (placeholder) |
+| Hub | `src/platform/hub/` | Game-neutral chronicle, module and system registry contracts |
+| Game Domains | `src/games/{vampires,pathfinder2}/` | Game-specific route boundary and Pathfinder 2 implementation |
+| Game Systems | `src/games/vampires/core/vtm5/` | Pure VTM5 rules + adapters for modules |
+| Modules | `src/games/vampires/modules/*/` | Feature areas: table, chat, music, rolls, … |
 
 **Full documentation:** [`docs/new-architecture.md`](docs/new-architecture.md)
 
@@ -79,13 +96,13 @@ const runtime = bootstrapChronicleRuntime(hub, {
 
 ### Key folders
 
-- `app/` — Next.js route shells
-- `app/(vampires)/` — URL-neutral App Router group for VTM routes and providers
-- `games/vampires/` — VTM modules, mechanics, client helpers, scripts and Supabase files
-- `games/pathfinder2/` — isolated Pathfinder 2 sheet and local rules guide
-- `games/vampires/modules/table/` — table data layer, API, hooks, components
-- `games/vampires/modules/chat/`, `games/vampires/modules/music/` — extracted feature modules
-- `games/vampires/core/vtm5/rules/` — framework-independent VTM5 mechanics
+- `src/app/` — Next.js route shells
+- `src/app/(vampires)/` — URL-neutral App Router group for VTM routes and providers
+- `src/games/vampires/` — VTM modules, mechanics, client helpers, scripts and Supabase files
+- `src/games/pathfinder2/` — isolated Pathfinder 2 sheet and local rules guide
+- `src/games/vampires/modules/table/` — table data layer, API, hooks, components
+- `src/games/vampires/modules/chat/`, `src/games/vampires/modules/music/` — extracted feature modules
+- `src/games/vampires/core/vtm5/rules/` — framework-independent VTM5 mechanics
 - `public/vampires/` — legacy character sheet and VTM static assets
 
 ### Legacy sheet

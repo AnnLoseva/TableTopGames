@@ -5,13 +5,13 @@ Working list of directions — not a fantasy plan. Keep it realistic and current
 ## Now
 - Keep the current site stable; no UI regressions.
 - Legacy character sheet phase: small incremental work in `public/vampires/main.js` only with
-  explicit tasks; bridge in `games/vampires/modules/character-sheet/`.
+  explicit tasks; bridge in `src/games/vampires/modules/character-sheet/`.
 - Run `npm run test:vtm-parity` after health/humanity edits; discipline scripts for
   discipline work.
-- Do **not** add chaos to `games/vampires/modules/table/GameTable.tsx` or `public/vampires/main.js`.
+- Do **not** add chaos to `src/games/vampires/modules/table/GameTable.tsx` or `public/vampires/main.js`.
 
 ## Next
-- Gradually extract logic from `public/vampires/main.js` into `games/vampires/core/vtm5/rules/*` / `games/vampires/modules/table/*`
+- Gradually extract logic from `public/vampires/main.js` into `src/games/vampires/core/vtm5/rules/*` / `src/games/vampires/modules/table/*`
   (small, verified steps; one explicit task each).
 - Sync the full sheet and the quick/summary sheet representations.
 - Improve the character creation wizard (`public/vampires/creation-wizard.js`).

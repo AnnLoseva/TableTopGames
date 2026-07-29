@@ -7,12 +7,12 @@ an iframe and reports back when a character is saved. This contract is small but
 load-bearing — breaking it loses characters or role state.
 
 ## Route
-- `/character-sheet` → `games/vampires/modules/character-sheet/CharacterSheetRoute.tsx` →
-  `games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx`.
-- Bridge helpers: `games/vampires/modules/character-sheet/legacy/{params,events,bridge}.ts`.
+- `/character-sheet` → `src/games/vampires/modules/character-sheet/CharacterSheetRoute.tsx` →
+  `src/games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx`.
+- Bridge helpers: `src/games/vampires/modules/character-sheet/legacy/{params,events,bridge}.ts`.
 - The shell renders `<iframe src="/vampires/old-sheet.html?...">`.
   `/old-sheet.html` remains a compatibility rewrite for old saved links.
-- `/old` (`app/(vampires)/old/page.tsx`) is a legacy redirect to `/character-sheet`,
+- `/old` (`src/app/(vampires)/old/page.tsx`) is a legacy redirect to `/character-sheet`,
   preserving `room`.
 
 ## Query params (shell ⇄ iframe)

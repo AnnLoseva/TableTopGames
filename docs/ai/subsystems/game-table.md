@@ -6,8 +6,8 @@ canvas, layers, dice rolls, chat, an in-table journal, and music — all synced 
 real time through Supabase and keyed by `room`.
 
 ## Main entry
-- Route: `/table` (`app/(vampires)/table/page.tsx`) → `games/vampires/modules/table/TableRoute` →
-  `games/vampires/modules/table/GameTable.tsx`.
+- Route: `/table` (`src/app/(vampires)/table/page.tsx`) → `src/games/vampires/modules/table/TableRoute` →
+  `src/games/vampires/modules/table/GameTable.tsx`.
 - `GameTable.tsx` (~2.6k lines) is the **orchestrator**: it holds room state, does
   Supabase reads/writes and realtime subscriptions, and coordinates the child
   panels/modals.
@@ -20,31 +20,31 @@ real time through Supabase and keyed by `room`.
 - Manage modals/overlays (e.g. dice roll overlay).
 
 > **Do not grow this file.** New sizeable behavior goes to child components,
-> hooks, or `games/vampires/modules/table/utils/*` / `games/vampires/core/vtm5/rules/*`. See
+> hooks, or `src/games/vampires/modules/table/utils/*` / `src/games/vampires/core/vtm5/rules/*`. See
 > `../workflows/react-table-edit-protocol.md` and the `DECISIONS.md` entry.
 
-## Important child components (`games/vampires/modules/table/components/*`)
+## Important child components (`src/games/vampires/modules/table/components/*`)
 - `TableCanvas.tsx` — the tldraw canvas (media/layer rendering).
 - `TableLeftPanel.tsx`, `TableRightPanel.tsx`, `MasterPanel.tsx` — panel shells.
 - `SceneManager.tsx`, `LayerManager.tsx`, `MediaLibrary.tsx` — scenes / layers /
-  media UI (use `games/vampires/modules/table/utils/*` helpers).
+  media UI (use `src/games/vampires/modules/table/utils/*` helpers).
 - `DiceRollOverlay.tsx` — roll UI/overlay (see `dice-and-rolls.md`).
-- Chat: `games/vampires/modules/chat/*`.
+- Chat: `src/games/vampires/modules/chat/*`.
 - `JournalPanel.tsx` — in-table journal.
 - `GameTableStyles.tsx` — large global style block for the table.
-- Music: `games/vampires/modules/music/*` (see `music-and-media.md`).
+- Music: `src/games/vampires/modules/music/*` (see `music-and-media.md`).
 
 ## Table data model
-Canonical types/constants/mappers live in `games/vampires/modules/table/*`:
+Canonical types/constants/mappers live in `src/games/vampires/modules/table/*`:
 - `types.ts` — shared table types (rolls, scenes, layers, media…); chat types
-  re-exported from `games/vampires/modules/chat/types.ts`.
+  re-exported from `src/games/vampires/modules/chat/types.ts`.
 - `constants.ts` — table/bucket names + keys (see below).
 - `mappers.ts` — map Supabase rows ↔ app objects.
 - `api/*` — Supabase API scaffolds (stubs; I/O still in `GameTable.tsx`).
 - `utils/*` — scene/layer/media/roll/room helpers.
 
 ## Supabase dependencies
-Table names come from `games/vampires/modules/table/constants.ts` (and a couple defined near their
+Table names come from `src/games/vampires/modules/table/constants.ts` (and a couple defined near their
 use): `table_rolls`, `table_chat_messages`, `table_images`, `table_scenes`,
 `table_scene_music`, `table_tokens`, `table_character_controllers`,
 `table_music`, `table_music_library`; plus `characters` for
@@ -71,7 +71,7 @@ always visible. Control is many-to-many via `table_character_controllers`
 (`useCharacterControllers`), surfaced in `CharactersPanel` (master left-toolbar
 tab «Персонажи», player right-rail tab «Мои персонажи»).
 Root layer drop id is `ROOT_LAYER_DROP_ID` (`__root__`). Helpers live in
-`games/vampires/modules/table/utils/*`. See `music-and-media.md`.
+`src/games/vampires/modules/table/utils/*`. See `music-and-media.md`.
 
 ## Dice / roll integration
 Rolls are stored in `table_rolls` and surfaced via `DiceRollOverlay.tsx`; the
@@ -87,9 +87,9 @@ signals). See `dice-and-rolls.md`.
 
 ## Safe edit protocol
 1. Read `../workflows/react-table-edit-protocol.md`.
-2. Put UI in a component, table data in `games/vampires/modules/table/*`, utils in `games/vampires/modules/table/utils/*`,
-   rules in `games/vampires/core/vtm5/rules/*`.
-3. Keep Supabase table/bucket names in `games/vampires/modules/table/constants.ts` — never
+2. Put UI in a component, table data in `src/games/vampires/modules/table/*`, utils in `src/games/vampires/modules/table/utils/*`,
+   rules in `src/games/vampires/core/vtm5/rules/*`.
+3. Keep Supabase table/bucket names in `src/games/vampires/modules/table/constants.ts` — never
    hardcode new ones.
 4. Verify: `/table?room=campaign-666&role=master` and `&role=player` — room/role
    persistence, a dice roll, scene/layer visibility, chat, and the music panel.

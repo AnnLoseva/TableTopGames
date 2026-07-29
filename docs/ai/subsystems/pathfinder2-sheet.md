@@ -9,8 +9,8 @@ does not share the VTM character, room, bridge or Supabase contracts.
 ## Runtime flow
 
 ```text
-app/pathfinder2/sheet/page.tsx
- → games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx
+src/app/pathfinder2/sheet/page.tsx
+ → src/games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx
  → components/Pathfinder2SheetPage.tsx
  → data.ts / types.ts / rules-source.ts
  → localStorage `pathfinder2-character-draft-v1`
@@ -40,7 +40,7 @@ automated clients not to parse the site and to request data directly. Therefore:
 
 ## Safe edit protocol
 
-1. Keep all Pathfinder code inside `games/pathfinder2/`.
+1. Keep all Pathfinder code inside `src/games/pathfinder2/`.
 2. Do not import VTM `public/rules*.json` or VTM mechanics.
 3. Do not add a home-screen link unless the user explicitly requests discovery.
 4. Version the localStorage key if the saved draft shape becomes incompatible.

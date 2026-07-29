@@ -42,14 +42,14 @@ the files that subsystem names.
    character sheet. Follow `docs/ai/workflows/legacy-edit-protocol.md`. No broad
    refactors without an explicit task for it.
 5. **The game table is an orchestrator, not a dumping ground.**
-   `games/vampires/modules/table/GameTable.tsx` must not grow. Extract UI into
+   `src/games/vampires/modules/table/GameTable.tsx` must not grow. Extract UI into
    its owning VTM module and rules into
-   `games/vampires/core/vtm5/rules/*`. See
+   `src/games/vampires/core/vtm5/rules/*`. See
    `docs/ai/workflows/react-table-edit-protocol.md`.
-6. **VTM mechanics stay pure.** Logic in `games/vampires/core/vtm5/rules/*` must be
+6. **VTM mechanics stay pure.** Logic in `src/games/vampires/core/vtm5/rules/*` must be
    framework-independent and testable. See
    `docs/ai/workflows/vtm-mechanics-edit-protocol.md`. If you change
-   `games/vampires/core/vtm5/rules/health/index.ts` or `humanity/index.ts`, check
+   `src/games/vampires/core/vtm5/rules/health/index.ts` or `humanity/index.ts`, check
    whether the legacy duplicate (`public/vampires/vtm-health.js`,
    `public/vampires/vtm-humanity.js`) needs the same change.
 7. **Supabase contracts are shared state.** Never rename tables/buckets or change
