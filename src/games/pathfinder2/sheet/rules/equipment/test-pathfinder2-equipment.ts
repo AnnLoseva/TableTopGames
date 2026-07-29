@@ -79,6 +79,22 @@ const lightItem = {
   sourceBook: 'test',
 }
 
+const shield = {
+  id: 'steel-shield',
+  name: 'Стальной щит',
+  level: 0,
+  rarity: 'common' as const,
+  price: { cp: 0, sp: 0, gp: 2, pp: 0 },
+  bulk: 1 as const,
+  traits: [],
+  category: 'shield' as const,
+  sourceBook: 'test',
+  armorClassBonus: 2,
+  hardness: 5,
+  hitPoints: 20,
+  brokenThreshold: 10,
+}
+
 const catalog: Pathfinder2RulesCatalog = {
   ancestries: [],
   versatileHeritages: [],
@@ -87,15 +103,19 @@ const catalog: Pathfinder2RulesCatalog = {
   generalFeats: [],
   skillFeats: [],
   mythicFeats: [],
+  ancestryFeats: [],
+  classFeats: [],
+  classProgression: [],
   equipment: [lightItem],
   weapons: [weapon],
   armor: [armor],
-  shields: [],
+  shields: [shield],
   spells: [],
   cantrips: [],
   focusSpells: [],
   languages: [],
   deities: [],
+  traits: [],
   sources: [],
   dataAvailability: [],
   validationWarnings: [],
@@ -107,7 +127,8 @@ function entry(
   quantity: number,
   equipped = false,
 ): Pathfinder2InventoryEntry {
-  const item = [weapon, armor, lightItem].find(candidate => candidate.id === itemId)
+  const item = [weapon, armor, shield, lightItem]
+    .find(candidate => candidate.id === itemId)
   return {
     id,
     itemId,
@@ -237,6 +258,23 @@ const tests: Array<[string, () => void]> = [
     assert.equal(attack.attackModifier, 6)
     assert.equal(attack.damage, '1d8+3')
     assert.equal(attack.proficiencyRank, 'trained')
+  }],
+  ['Поднятый щит добавляет свой бонус к КБ', () => {
+    const inventory = calculateInventory(
+      [entry('shield', 'steel-shield', 1, true)],
+      { cp: 0, sp: 0, gp: 13, pp: 0 },
+      0,
+      catalog,
+    )
+    const result = calculateArmorClass({
+      dexterityModifier: 2,
+      strengthModifier: 0,
+      inventory,
+      proficiencies,
+      catalog,
+      shieldRaised: true,
+    })
+    assert.equal(result.value, 14)
   }],
 ]
 

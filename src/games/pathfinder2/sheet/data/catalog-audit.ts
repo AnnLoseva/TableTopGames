@@ -2,6 +2,7 @@ import type {
   Pathfinder2CatalogAvailability,
   Pathfinder2CatalogId,
 } from '../types'
+import { adaptPathfinder2CatalogDocument } from './catalog-document'
 
 type UnknownRecord = Record<string, unknown>
 
@@ -16,6 +17,16 @@ export type Pathfinder2RuleDocumentsForAudit = {
   weapons?: unknown
   shields?: unknown
   equipment?: unknown[]
+  ancestryFeats?: unknown
+  classFeats?: unknown
+  classProgression?: unknown
+  normalizedEquipment?: unknown
+  normalizedWeapons?: unknown
+  normalizedArmor?: unknown
+  normalizedShields?: unknown
+  deities?: unknown
+  languages?: unknown
+  traits?: unknown
 }
 
 type AvailabilitySeed = Omit<
@@ -51,19 +62,19 @@ const CATALOG_REQUIREMENTS: AvailabilitySeed[] = [
   {
     id: 'ancestry-feats',
     label: 'Черты народов',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/catalogs/ancestry-feats.json',
     requiredFor: ['level-1', 'feats', 'progression'],
   },
   {
     id: 'class-feats',
     label: 'Классовые черты',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/catalogs/class-feats.json',
     requiredFor: ['level-1', 'feats', 'progression'],
   },
   {
     id: 'class-progression',
     label: 'Прогрессия классов 1–20',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/catalogs/class-progression.json',
     requiredFor: ['progression'],
   },
   {
@@ -75,25 +86,25 @@ const CATALOG_REQUIREMENTS: AvailabilitySeed[] = [
   {
     id: 'equipment',
     label: 'Снаряжение',
-    file: 'src/games/pathfinder2/Rules/*.json (item catalogs)',
+    file: 'src/games/pathfinder2/Rules/catalogs/equipment.json',
     requiredFor: ['equipment'],
   },
   {
     id: 'weapons',
     label: 'Оружие',
-    file: 'src/games/pathfinder2/Rules/weapons.json',
+    file: 'src/games/pathfinder2/Rules/catalogs/weapons.json',
     requiredFor: ['equipment'],
   },
   {
     id: 'armor',
     label: 'Броня',
-    file: 'src/games/pathfinder2/Rules/armor.json',
+    file: 'src/games/pathfinder2/Rules/catalogs/armor.json',
     requiredFor: ['equipment'],
   },
   {
     id: 'shields',
     label: 'Щиты',
-    file: 'src/games/pathfinder2/Rules/shields.json',
+    file: 'src/games/pathfinder2/Rules/catalogs/shields.json',
     requiredFor: ['equipment'],
   },
   {
@@ -105,19 +116,19 @@ const CATALOG_REQUIREMENTS: AvailabilitySeed[] = [
   {
     id: 'deities',
     label: 'Божества',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/catalogs/deities.json',
     requiredFor: ['details'],
   },
   {
     id: 'languages',
     label: 'Языки',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/catalogs/languages.json',
     requiredFor: ['level-1', 'details'],
   },
   {
     id: 'traits',
     label: 'Структурированные traits',
-    file: null,
+    file: 'src/games/pathfinder2/Rules/catalogs/traits.json',
     requiredFor: ['feats', 'equipment', 'spellcasting'],
   },
 ]
@@ -164,6 +175,24 @@ function availability(
   const seed = CATALOG_REQUIREMENTS.find(entry => entry.id === id)
   if (!seed) throw new Error(`Unknown Pathfinder 2 catalog: ${id}`)
   return { ...seed, status, entryCount, issues }
+}
+
+function canonicalAvailability(
+  id: Pathfinder2CatalogId,
+  document: unknown,
+  countEntries: (entries: UnknownRecord[]) => number = entries => entries.length,
+) {
+  const result = adaptPathfinder2CatalogDocument<{
+    id: string
+    name: string
+  }>(document, id)
+  const entries = (result.document?.entries ?? []) as UnknownRecord[]
+  return availability(
+    id,
+    result.status,
+    countEntries(entries),
+    result.issues.map(issue => `${issue.path}: ${issue.message}`),
+  )
 }
 
 export function auditPathfinder2RuleDocuments(
@@ -219,6 +248,35 @@ export function auditPathfinder2RuleDocuments(
   const weaponIssues = uniqueIdIssues(weapons, 'Оружие')
   const shieldIssues = uniqueIdIssues(shields, 'Щиты')
   const equipmentIssues = uniqueIdIssues(equipmentGroups, 'Предметы')
+  const ancestryFeatAvailability = canonicalAvailability(
+    'ancestry-feats',
+    documents.ancestryFeats,
+  )
+  const classFeatAvailability = canonicalAvailability(
+    'class-feats',
+    documents.classFeats,
+  )
+  const classProgressionAvailability = canonicalAvailability(
+    'class-progression',
+    documents.classProgression,
+    entries => entries.filter(entry => typeof entry.classId === 'string').length,
+  )
+  const normalizedEquipmentAvailability = canonicalAvailability(
+    'equipment',
+    documents.normalizedEquipment,
+  )
+  const normalizedWeaponAvailability = canonicalAvailability(
+    'weapons',
+    documents.normalizedWeapons,
+  )
+  const normalizedArmorAvailability = canonicalAvailability(
+    'armor',
+    documents.normalizedArmor,
+  )
+  const normalizedShieldAvailability = canonicalAvailability(
+    'shields',
+    documents.normalizedShields,
+  )
 
   return [
     availability(
@@ -244,21 +302,45 @@ export function auditPathfinder2RuleDocuments(
       featIssues.length ? 'invalid' : 'partial',
       generalFeats.length + skillFeats.length + mythicFeats.length,
       featIssues.length ? featIssues : [
-        'Prerequisites остаются текстом; каталог не содержит ancestry/class feats.',
+        'Часть prerequisites остаётся текстом и требует ручной проверки.',
       ],
     ),
-    availability('ancestry-feats', 'connected', 702, []),
-    availability('class-feats', 'connected', 1309, []),
-    availability('class-progression', 'connected', 21, [
-      '21 класс с реальными feat-расписаниями и proficiency-прогрессией 1–20.',
-    ]),
-    availability('archetypes', 'available-not-connected', allArchetypes.length, [
-      'Файл archetypes.json присутствует (' + allArchetypes.length + ' архетипов). Адаптер пока не подключает.',
-    ]),
-    availability('equipment', 'connected', equipmentGroups.length, []),
-    availability('weapons', 'connected', weapons.length, []),
-    availability('armor', 'connected', armor.length, []),
-    availability('shields', 'connected', shields.length, []),
+    ancestryFeatAvailability,
+    classFeatAvailability,
+    classProgressionAvailability,
+    availability('archetypes', 'connected', allArchetypes.length, []),
+    documents.normalizedEquipment === undefined
+      ? availability(
+          'equipment',
+          equipmentIssues.length ? 'invalid' : 'available-not-connected',
+          equipmentGroups.length,
+          equipmentIssues,
+        )
+      : normalizedEquipmentAvailability,
+    documents.normalizedWeapons === undefined
+      ? availability(
+          'weapons',
+          weaponIssues.length ? 'invalid' : 'available-not-connected',
+          weapons.length,
+          weaponIssues,
+        )
+      : normalizedWeaponAvailability,
+    documents.normalizedArmor === undefined
+      ? availability(
+          'armor',
+          armorIssues.length ? 'invalid' : 'available-not-connected',
+          armor.length,
+          armorIssues,
+        )
+      : normalizedArmorAvailability,
+    documents.normalizedShields === undefined
+      ? availability(
+          'shields',
+          shieldIssues.length ? 'invalid' : 'available-not-connected',
+          shields.length,
+          shieldIssues,
+        )
+      : normalizedShieldAvailability,
     availability(
       'spells',
       spellIssues.length
@@ -271,9 +353,9 @@ export function auditPathfinder2RuleDocuments(
         ? []
         : ['Авторизованный каталог заклинаний не найден.'],
     ),
-    availability('deities', 'connected', 361, []),
-    availability('languages', 'connected', 23, []),
-    availability('traits', 'connected', 212, []),
+    canonicalAvailability('deities', documents.deities),
+    canonicalAvailability('languages', documents.languages),
+    canonicalAvailability('traits', documents.traits),
   ]
 }
 

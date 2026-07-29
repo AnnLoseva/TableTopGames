@@ -8,6 +8,10 @@ import {
 } from '../../rules/progression/build-level-up-plan'
 import { canReachSkillRankAtLevel } from '../../rules/progression/skill-progression'
 import { getNextProficiencyRank } from '../../rules/skills/proficiency'
+import {
+  getFeatAvailability,
+  getFeatsForSlot,
+} from '../../rules/feats/requirements'
 import type {
   Pathfinder2CharacterDraftV4,
   Pathfinder2CharacterState,
@@ -152,6 +156,42 @@ export default function LevelUpPanel({
           </select>
         </label>
       ) : null}
+
+      {plan.featSlots.map(slot => {
+        const selectedId = choices.featSelections[slot.id] ?? ''
+        const options = getFeatsForSlot(slot, catalog)
+          .filter(feat => (
+            feat.id === selectedId
+            || getFeatAvailability(feat, slot, state).available
+          ))
+          .sort((left, right) => (
+            left.level - right.level || left.name.localeCompare(right.name, 'ru')
+          ))
+        return (
+          <label className={styles.field} key={slot.id}>
+            <span className={styles.fieldLabel}>
+              {slot.type} · уровень {slot.level}{slot.required ? ' · обязательно' : ''}
+            </span>
+            <select
+              value={selectedId}
+              onChange={event => setChoices(current => ({
+                ...current,
+                featSelections: {
+                  ...current.featSelections,
+                  [slot.id]: event.target.value,
+                },
+              }))}
+            >
+              <option value="">{slot.required ? 'Выберите черту' : 'Не выбирать'}</option>
+              {options.map(feat => (
+                <option key={feat.id} value={feat.id}>
+                  {feat.name} · {feat.level} ур.{feat.sourceBook ? ` · ${feat.sourceBook}` : ''}
+                </option>
+              ))}
+            </select>
+          </label>
+        )
+      })}
 
       <p>
         Ячейки после повышения: фокусы {plan.cantripSlots}; {

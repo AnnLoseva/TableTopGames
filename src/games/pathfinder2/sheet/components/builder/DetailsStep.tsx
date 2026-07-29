@@ -1,5 +1,6 @@
 'use client'
 
+import { getAncestryById } from '../../data/selectors'
 import type {
   Pathfinder2CharacterDraftV4,
   Pathfinder2CharacterState,
@@ -19,6 +20,14 @@ export default function DetailsStep({
   state: Pathfinder2CharacterState
   updateV4: UpdatePathfinder2V4
 }) {
+  const ancestry = getAncestryById(catalog, draft.ancestry.ancestryId)
+  const grantedLanguageIds = new Set(state.languages.grantedLanguageIds)
+  const allowedLanguageIds = new Set(ancestry?.languageRules.bonusLanguageIds ?? [])
+  const availableLanguages = catalog.languages.filter(language => (
+    !grantedLanguageIds.has(language.id)
+    && (allowedLanguageIds.size === 0 || allowedLanguageIds.has(language.id))
+  ))
+  const deity = state.religion.deity
   const updateIdentity = (
     field: keyof Pathfinder2CharacterDraftV4['identity'],
     value: string,
@@ -133,31 +142,46 @@ export default function DetailsStep({
           </span>
         </header>
         {catalog.languages.length ? (
-          <label className={styles.field}>
-            <span className={styles.fieldLabel}>
-              Дополнительные языки · {state.languages.selectedLanguageIds.length} из {
-                state.languages.choiceLimit ?? '—'
-              }
-            </span>
-            <select
-              multiple
-              value={draft.details.languageChoices}
-              onChange={event => updateV4(current => ({
-                ...current,
-                details: {
-                  ...current.details,
-                  languageChoices: Array.from(
-                    event.target.selectedOptions,
-                    option => option.value,
-                  ),
-                },
-              }), { immediate: true })}
-            >
-              {catalog.languages.map(language => (
-                <option key={language.id} value={language.id}>{language.name}</option>
+          <>
+            <div className={styles.selectedChips}>
+              {state.languages.grantedLanguageIds.map(languageId => (
+                <span key={languageId}>
+                  Автоматически · {
+                    catalog.languages.find(language => language.id === languageId)?.name
+                      ?? languageId
+                  }
+                </span>
               ))}
-            </select>
-          </label>
+            </div>
+            <label className={styles.field}>
+              <span className={styles.fieldLabel}>
+                Дополнительные языки · {state.languages.selectedLanguageIds.length} из {
+                  state.languages.choiceLimit ?? '—'
+                }
+              </span>
+              <select
+                multiple
+                size={Math.min(8, Math.max(3, availableLanguages.length))}
+                value={draft.details.languageChoices}
+                onChange={event => updateV4(current => ({
+                  ...current,
+                  details: {
+                    ...current.details,
+                    languageChoices: Array.from(
+                      event.target.selectedOptions,
+                      option => option.value,
+                    ),
+                  },
+                }), { immediate: true })}
+              >
+                {availableLanguages.map(language => (
+                  <option key={language.id} value={language.id}>
+                    {language.name}{language.rarity !== 'common' ? ` · ${language.rarity}` : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </>
         ) : (
           <p>Каталог LanguageId не подключён; свободная строка не считается механическим выбором.</p>
         )}
@@ -182,13 +206,21 @@ export default function DetailsStep({
           <select
             value={draft.details.deityId ?? ''}
             disabled={!catalog.deities.length}
-            onChange={event => updateV4(current => ({
-              ...current,
-              details: {
-                ...current.details,
-                deityId: event.target.value || null,
-              },
-            }), { immediate: true })}
+            onChange={event => {
+              const deityId = event.target.value || null
+              const selectedDeity = catalog.deities.find(entry => entry.id === deityId)
+              updateV4(current => ({
+                ...current,
+                details: {
+                  ...current.details,
+                  deityId,
+                  sanctification: selectedDeity
+                    && !selectedDeity.sanctifications.includes(current.details.sanctification)
+                    ? selectedDeity.sanctifications[0] ?? 'none'
+                    : current.details.sanctification,
+                },
+              }), { immediate: true })
+            }}
           >
             <option value="">
               {catalog.deities.length ? 'Без божества' : 'Каталог не подключён'}
@@ -210,11 +242,25 @@ export default function DetailsStep({
               },
             }), { immediate: true })}
           >
-            <option value="none">Нет</option>
-            <option value="holy">Святое</option>
-            <option value="unholy">Нечестивое</option>
+            {(['none', 'holy', 'unholy'] as const)
+              .filter(value => !deity || deity.sanctifications.includes(value))
+              .map(value => (
+                <option key={value} value={value}>
+                  {value === 'none' ? 'Нет' : value === 'holy' ? 'Святое' : 'Нечестивое'}
+                </option>
+              ))}
           </select>
         </label>
+        {deity ? (
+          <article className={styles.selectedChoice}>
+            <span className={styles.choiceKicker}>{deity.sourceBook}</span>
+            <h3>{deity.name}</h3>
+            <p>{deity.description.slice(0, 420)}</p>
+            <p><strong>Наказы:</strong> {deity.edicts.join('; ') || 'не указаны'}</p>
+            <p><strong>Табу:</strong> {deity.anathema.join('; ') || 'не указаны'}</p>
+            <p><strong>Домены:</strong> {deity.domains.join(', ') || 'не указаны'}</p>
+          </article>
+        ) : null}
         <label className={styles.field}>
           <span className={styles.fieldLabel}>Личные наказы · по одному на строку</span>
           <textarea

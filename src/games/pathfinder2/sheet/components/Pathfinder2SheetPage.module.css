@@ -4127,6 +4127,63 @@
   background: rgba(140, 50, 50, 0.1);
 }
 
+.catalogShopGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.catalogShopCard {
+  min-width: 0;
+  padding: 13px;
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  border: 1px solid var(--line-paper);
+  border-radius: var(--radius-control);
+  background: rgba(246, 235, 209, 0.48);
+}
+
+.catalogShopCard h4,
+.catalogShopCard p {
+  margin: 0;
+}
+
+.catalogShopCard small {
+  min-height: 2.8em;
+  color: var(--ink-muted);
+}
+
+.catalogShopCard button {
+  justify-self: start;
+}
+
+.inventoryList {
+  display: grid;
+  gap: 8px;
+}
+
+.inventoryRow {
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--line-paper);
+  border-radius: var(--radius-control);
+  background: rgba(246, 235, 209, 0.38);
+}
+
+.inventoryRow > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.inventoryRow small {
+  color: var(--ink-muted);
+}
+
 .modeSwitch {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4514,6 +4571,11 @@
   .ruleChoiceGrid,
   .attributeGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .inventoryRow {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 }
 

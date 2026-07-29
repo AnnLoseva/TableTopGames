@@ -29,6 +29,16 @@ import vehicles from '../../Rules/vehicles.json'
 import wands from '../../Rules/wands.json'
 import weapons from '../../Rules/weapons.json'
 import wornItems from '../../Rules/worn-items.json'
+import ancestryFeatsCatalog from '../../Rules/catalogs/ancestry-feats.json'
+import armorCatalog from '../../Rules/catalogs/armor.json'
+import classFeatsCatalog from '../../Rules/catalogs/class-feats.json'
+import classProgressionCatalog from '../../Rules/catalogs/class-progression.json'
+import deitiesCatalog from '../../Rules/catalogs/deities.json'
+import equipmentCatalog from '../../Rules/catalogs/equipment.json'
+import languagesCatalog from '../../Rules/catalogs/languages.json'
+import shieldsCatalog from '../../Rules/catalogs/shields.json'
+import traitsCatalog from '../../Rules/catalogs/traits.json'
+import weaponsCatalog from '../../Rules/catalogs/weapons.json'
 import {
   auditPathfinder2RuleDocuments,
   getUnavailablePathfinder2Catalogs,
@@ -47,6 +57,16 @@ const tests: Array<[string, () => void]> = [
       armor,
       weapons,
       shields,
+      ancestryFeats: ancestryFeatsCatalog,
+      classFeats: classFeatsCatalog,
+      classProgression: classProgressionCatalog,
+      normalizedEquipment: equipmentCatalog,
+      normalizedWeapons: weaponsCatalog,
+      normalizedArmor: armorCatalog,
+      normalizedShields: shieldsCatalog,
+      deities: deitiesCatalog,
+      languages: languagesCatalog,
+      traits: traitsCatalog,
       equipment: [
         adventuringGear,
         alchemicalItems,
@@ -77,7 +97,7 @@ const tests: Array<[string, () => void]> = [
     )
     assert.equal(
       availability.find(entry => entry.id === 'backgrounds')?.entryCount,
-      81,
+      240,
     )
     assert.equal(
       availability.find(entry => entry.id === 'classes')?.entryCount,
@@ -95,10 +115,16 @@ const tests: Array<[string, () => void]> = [
       availability.find(entry => entry.id === 'spells')?.entryCount,
       1167,
     )
-    assert.equal(availability.find(entry => entry.id === 'armor')?.entryCount, 136)
-    assert.equal(availability.find(entry => entry.id === 'weapons')?.entryCount, 424)
-    assert.equal(availability.find(entry => entry.id === 'shields')?.entryCount, 94)
-    assert.equal(availability.find(entry => entry.id === 'equipment')?.entryCount, 3275)
+    assert.equal(availability.find(entry => entry.id === 'ancestry-feats')?.entryCount, 702)
+    assert.equal(availability.find(entry => entry.id === 'class-feats')?.entryCount, 1309)
+    assert.equal(availability.find(entry => entry.id === 'class-progression')?.entryCount, 21)
+    assert.equal(availability.find(entry => entry.id === 'deities')?.entryCount, 361)
+    assert.equal(availability.find(entry => entry.id === 'languages')?.entryCount, 23)
+    assert.equal(availability.find(entry => entry.id === 'traits')?.entryCount, 212)
+    assert.equal(availability.find(entry => entry.id === 'armor')?.entryCount, 123)
+    assert.equal(availability.find(entry => entry.id === 'weapons')?.entryCount, 400)
+    assert.equal(availability.find(entry => entry.id === 'shields')?.entryCount, 92)
+    assert.equal(availability.find(entry => entry.id === 'equipment')?.entryCount, 1823)
   }],
   ['Подключённые и неподключённые файлы имеют честные статусы', () => {
     const availability = auditPathfinder2RuleDocuments({
@@ -111,6 +137,16 @@ const tests: Array<[string, () => void]> = [
       armor,
       weapons,
       shields,
+      ancestryFeats: ancestryFeatsCatalog,
+      classFeats: classFeatsCatalog,
+      classProgression: classProgressionCatalog,
+      normalizedEquipment: equipmentCatalog,
+      normalizedWeapons: weaponsCatalog,
+      normalizedArmor: armorCatalog,
+      normalizedShields: shieldsCatalog,
+      deities: deitiesCatalog,
+      languages: languagesCatalog,
+      traits: traitsCatalog,
       equipment: [
         adventuringGear,
         alchemicalItems,
@@ -137,7 +173,7 @@ const tests: Array<[string, () => void]> = [
     })
     assert.equal(
       availability.find(entry => entry.id === 'archetypes')?.status,
-      'available-not-connected',
+      'connected',
     )
     assert.equal(
       availability.find(entry => entry.id === 'spells')?.status,

@@ -137,7 +137,13 @@ export function getFeatById(
   catalog: Pathfinder2RulesCatalog,
   id: string,
 ): Pathfinder2FeatRule | undefined {
-  return [...catalog.generalFeats, ...catalog.skillFeats, ...catalog.mythicFeats]
+  return [
+    ...catalog.generalFeats,
+    ...catalog.skillFeats,
+    ...catalog.mythicFeats,
+    ...catalog.ancestryFeats,
+    ...catalog.classFeats,
+  ]
     .find(feat => feat.id === id)
 }
 

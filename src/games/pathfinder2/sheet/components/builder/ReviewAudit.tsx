@@ -39,9 +39,6 @@ export default function ReviewAudit({
   const errors = build.validationIssues.filter(issue => issue.severity === 'error')
   const warnings = build.validationIssues.filter(issue => issue.severity === 'warning')
   const activeHeritage = heritage?.name ?? versatileHeritage?.name ?? 'Не выбрано'
-  const unavailableCatalogs = catalog.dataAvailability.filter(
-    entry => entry.status !== 'connected',
-  )
 
   return (
     <div className={styles.auditPage}>
@@ -143,18 +140,22 @@ export default function ReviewAudit({
         </div>
       </section>
 
-      {unavailableCatalogs.length ? (
+      {catalog.dataAvailability.length ? (
         <section className={styles.validationList} aria-label="Готовность справочников">
           <strong>Справочники механик</strong>
           <ul>
-            {unavailableCatalogs.map(entry => (
+            {catalog.dataAvailability.map(entry => (
               <li key={entry.id} data-severity={
                 entry.status === 'missing' || entry.status === 'invalid'
                   ? 'error'
-                  : 'warning'
+                  : entry.status === 'connected'
+                    ? 'info'
+                    : 'warning'
               }>
                 {entry.label} · {
-                  entry.status === 'missing'
+                  entry.status === 'connected'
+                    ? `подключено (${entry.entryCount})`
+                    : entry.status === 'missing'
                     ? 'отсутствует'
                     : entry.status === 'invalid'
                       ? 'ошибка данных'

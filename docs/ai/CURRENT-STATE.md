@@ -8,13 +8,16 @@
   canonical and the route now uses an eleven-step builder plus unified v4
   character state. Pure engines cover attributes, skills, proficiencies,
   currency/Bulk, typed combat, spellcasting, details and sequential level-up.
-  `spells.json` is connected. `catalogs/` now provides normalized canonical
-  documents for equipment (1825 entries), weapons (418), armor (132), shields
-  (92), deities (361), languages (23), traits (212), and class-progression
-  (28 entries covering global + 27 classes 1–20). All catalogs use schemaVersion
-  1 with stable IDs. Missing ancestry/class feats, complete item mechanics
-  (price/Bulk/combat stats from prose) and full class-progression tables remain
-  honest blockers. Normalizer script at
+  Canonical schema-v1 catalogs now drive ancestry feats (702), class feats
+  (1309), 21 class progressions plus the global schedule, equipment (1823),
+  weapons (400), armor (123), shields (92), deities (361), languages (23) and
+  traits (212); `spells.json` supplies 1167 spells/cantrips/focus spells.
+  Feat slots, progression grants, the shop, inventory/Bulk, attacks/AC,
+  languages and deity validation are connected to schema v4. The six classes
+  without a class-progression entry remain explicitly blocked. Normalized
+  weapon/armor/shield values are consumed as provided, but entries marked by
+  the source normalizer as needing owner mechanics still require data-quality
+  review before rules-accurate production use. Normalizer script at
   `src/games/pathfinder2/scripts/normalize-rules.ts` is deterministic and
   idempotent.
 - **TableTopGames portal and shared account (2026-07-29)** — `/` is the game selector, VTM lives under `/vampires/*`, and Pathfinder remains at `/pathfinder2/sheet`. The root `AccountProvider` uses the existing Vampire Supabase account, persists its session, and mirrors the profile into the legacy VTM storage keys used by the sheet, table and journal. Old root VTM URLs are compatibility redirects.
@@ -84,10 +87,9 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - `public/vampires/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
 
 ## Last updated
-2026-07-29 — Extended the staged Pathfinder 2 builder through the eleven-step
-v4 UI, unified rules state, equipment/spell/detail engines and sequential
-level-up; remaining blockers are owner-data catalogs rather than hidden manual
-fields.
+2026-07-29 — Connected the normalized Pathfinder catalogs to feat slots,
+class progression, proficiencies, shop/inventory/combat, languages, deity
+validation and the catalog-readiness UI.
   Earlier: Added the TableTopGames game selector and persistent shared account; moved canonical VTM pages to `/vampires/*` with compatibility redirects.
   Earlier: Game table lite: scene stage/background, character tokens above
   media, character controllers, geometric player visibility (see DECISIONS).

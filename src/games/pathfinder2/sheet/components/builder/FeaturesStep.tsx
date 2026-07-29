@@ -1,6 +1,10 @@
 'use client'
 
 import { PROFICIENCY_LABELS } from '../../data/selectors'
+import {
+  getFeatAvailability,
+  getFeatsForSlot,
+} from '../../rules/feats/requirements'
 import type {
   Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
@@ -36,6 +40,44 @@ export default function FeaturesStep({
   const blockers = state.validationIssues.filter(issue => (
     issue.step === 'features' && issue.severity === 'error'
   ))
+  const selectFeat = (slotId: string, featId: string) => {
+    const slot = state.featSlots.find(entry => entry.id === slotId)
+    if (!slot) return
+    updateV4(current => {
+      const selectedBySlot = { ...current.feats.selectedBySlot }
+      if (featId) selectedBySlot[slot.id] = featId
+      else delete selectedBySlot[slot.id]
+      const selectedForType = state.featSlots
+        .filter(entry => entry.level === slot.level && entry.type === slot.type)
+        .map(entry => entry.id === slot.id ? featId : selectedBySlot[entry.id])
+        .filter(Boolean)
+      return {
+        ...current,
+        feats: {
+          ...current.feats,
+          selectedBySlot,
+        },
+        ancestry: slot.type === 'ancestry-feat'
+          ? {
+              ...current.ancestry,
+              featChoicesByLevel: {
+                ...current.ancestry.featChoicesByLevel,
+                [slot.level]: selectedForType,
+              },
+            }
+          : current.ancestry,
+        class: slot.type === 'class-feat'
+          ? {
+              ...current.class,
+              featChoicesByLevel: {
+                ...current.class.featChoicesByLevel,
+                [slot.level]: selectedForType,
+              },
+            }
+          : current.class,
+      }
+    }, { immediate: true })
+  }
 
   return (
     <div className={styles.formStack}>
@@ -91,9 +133,43 @@ export default function FeaturesStep({
           </div>
         </header>
         <p>
-          Произвольное добавление черт отключено. Выбор появится только для слота,
-          который выдаёт структурированная прогрессия.
+          Доступные варианты отфильтрованы по типу слота, уровню, народу,
+          классу и структурированным требованиям.
         </p>
+        {state.featSlots.map(slot => {
+          const selectedId = slot.selectedFeatId ?? ''
+          const options = getFeatsForSlot(slot, catalog)
+            .filter(feat => (
+              feat.id === selectedId
+              || getFeatAvailability(feat, slot, state).available
+            ))
+            .sort((left, right) => (
+              left.level - right.level || left.name.localeCompare(right.name, 'ru')
+            ))
+          return (
+            <label className={styles.field} key={slot.id}>
+              <span className={styles.fieldLabel}>
+                {slot.type} · {slot.level} уровень{slot.required ? ' · обязательно' : ''}
+              </span>
+              <select
+                value={selectedId}
+                onChange={event => selectFeat(slot.id, event.target.value)}
+              >
+                <option value="">{slot.required ? 'Выберите черту' : 'Не выбирать'}</option>
+                {options.map(feat => (
+                  <option key={feat.id} value={feat.id}>
+                    {feat.name} · {feat.level} ур.{feat.sourceBook ? ` · ${feat.sourceBook}` : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )
+        })}
+        {!state.featSlots.length ? (
+          <p className={styles.ruleChangeNotice}>
+            Для выбранного класса нет структурированных слотов черт.
+          </p>
+        ) : null}
         {blockers.length ? (
           <div className={styles.validationList} role="alert">
             <strong>Нужны данные справочников</strong>

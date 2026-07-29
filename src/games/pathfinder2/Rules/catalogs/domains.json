@@ -1,0 +1,3386 @@
+{
+  "schemaVersion": 1,
+  "id": "domains",
+  "title": "Pathfinder 2 Domains",
+  "version": "2026-07",
+  "source": "https://pf2.ru/setting?tab=domains",
+  "license": null,
+  "entries": [
+    {
+      "id": "abadar",
+      "name": "Абадар",
+      "nameEn": "Abadar",
+      "description": "Общество",
+      "spells": "Арбалет",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "arazni",
+      "name": "Аразни",
+      "nameEn": "Arazni",
+      "description": "Запугивание",
+      "spells": "рапира",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "asmodeus",
+      "name": "Асмодей",
+      "nameEn": "Asmodeus",
+      "description": "Обман",
+      "spells": "Булава",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "gozreh",
+      "name": "Гозрей",
+      "nameEn": "Gozreh",
+      "description": "Выживание",
+      "spells": "Трезубец",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "desna",
+      "name": "Дезна",
+      "nameEn": "Desna",
+      "description": "Акробатика",
+      "spells": "Нож-звезда",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "zon-kuthon",
+      "name": "Зон-Кутон",
+      "nameEn": "Zon-Kuthon",
+      "description": "Запугивание",
+      "spells": "Шипастая цепь",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "iomedae",
+      "name": "Иомедэй",
+      "nameEn": "Iomedae",
+      "description": "Запугивание",
+      "spells": "Длинный меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "irori",
+      "name": "Ирори",
+      "nameEn": "Irori",
+      "description": "Атлетика",
+      "spells": "Кулак",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "cayden-cailean",
+      "name": "Кайден Кайлин",
+      "nameEn": "Cayden Cailean",
+      "description": "Атлетика",
+      "spells": "Рапира",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "calistria",
+      "name": "Калистрия",
+      "nameEn": "Calistria",
+      "description": "Обман",
+      "spells": "Кнут",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "lamashtu",
+      "name": "Ламашту",
+      "nameEn": "Lamashtu",
+      "description": "Выживание",
+      "spells": "Фальшион",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "nethys",
+      "name": "Нефис",
+      "nameEn": "Nethys",
+      "description": "Мистицизм",
+      "spells": "Посох",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "norgorber",
+      "name": "Норгорбер",
+      "nameEn": "Norgorber",
+      "description": "Скрытность",
+      "spells": "Короткий меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "rovagug",
+      "name": "Ровагуг",
+      "nameEn": "Rovagug",
+      "description": "Атлетика",
+      "spells": "Двуручный топор",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "sarenrae",
+      "name": "Саренрэй",
+      "nameEn": "Sarenrae",
+      "description": "Медицина",
+      "spells": "Скимитар",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "torag",
+      "name": "Тораг",
+      "nameEn": "Torag",
+      "description": "Ремесло",
+      "spells": "Боевой молот",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "urgathoa",
+      "name": "Ургатоа",
+      "nameEn": "Urgathoa",
+      "description": "Запугивание",
+      "spells": "Коса",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "pharasma",
+      "name": "Фаразма",
+      "nameEn": "Pharasma",
+      "description": "Медицина",
+      "spells": "Кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "shelyn",
+      "name": "Шелин",
+      "nameEn": "Shelyn",
+      "description": "Ремесло",
+      "spells": "Глефа",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "erastil",
+      "name": "Эрастил",
+      "nameEn": "Erastil",
+      "description": "Выживание",
+      "spells": "Длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "atheism",
+      "name": "Атеизм",
+      "nameEn": "Atheism",
+      "description": "-",
+      "spells": "-",
+      "sourceBook": "-"
+    },
+    {
+      "id": "green-faith",
+      "name": "Зелёная вера",
+      "nameEn": "Green Faith",
+      "description": "-",
+      "spells": "-",
+      "sourceBook": "-"
+    },
+    {
+      "id": "laws-of-mortality",
+      "name": "Людские законы",
+      "nameEn": "Laws of Mortality",
+      "description": "Медицина",
+      "spells": "-",
+      "sourceBook": "-"
+    },
+    {
+      "id": "prophecies-of-kalistrade",
+      "name": "Пророчество Калистрада",
+      "nameEn": "Prophecies of Kalistrade",
+      "description": "Дипломатия",
+      "spells": "-",
+      "sourceBook": "-"
+    },
+    {
+      "id": "whispering-way",
+      "name": "Путь Шёпота",
+      "nameEn": "Whispering Way",
+      "description": "Мистицизм",
+      "spells": "-",
+      "sourceBook": "-"
+    },
+    {
+      "id": "rivethun",
+      "name": "Риветун",
+      "nameEn": "Rivethun",
+      "description": "Природа",
+      "spells": "булава",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "esoteric-order-of-the-palatine-eye",
+      "name": "Тайный Орден Княжьего Ока",
+      "nameEn": "Esoteric Order Of The Palatine Eye",
+      "description": "Оккультизм",
+      "spells": "меч-трость",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "abraxas",
+      "name": "Абраксас",
+      "nameEn": "Abraxas",
+      "description": "Мистицизм",
+      "spells": "кнут",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "azathoth",
+      "name": "Азатот",
+      "nameEn": "Azathoth",
+      "description": "Исполнение",
+      "spells": "боевой молот",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ayrzul",
+      "name": "Айрзул",
+      "nameEn": "Ayrzul",
+      "description": "Обман",
+      "spells": "моргенштерн",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "acavna",
+      "name": "Акавна",
+      "nameEn": "Acavna",
+      "description": "Дипломатия",
+      "spells": "копьё",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "alazhra",
+      "name": "Алазра",
+      "nameEn": "Alazhra",
+      "description": "Оккультизм",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "aleth",
+      "name": "Алет",
+      "nameEn": "Aleth",
+      "description": "Скрытность",
+      "spells": "умбон",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "alglenweis",
+      "name": "Альгленвейс",
+      "nameEn": "Alglenweis",
+      "description": "Природа",
+      "spells": "боевой цеп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "alseta",
+      "name": "Альсета",
+      "nameEn": "Alseta",
+      "description": "Дипломатия",
+      "spells": "кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "amaznen",
+      "name": "Амазнен",
+      "nameEn": "Amaznen",
+      "description": "Мистицизм",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ananshea",
+      "name": "Ананшея",
+      "nameEn": "Ananshea",
+      "description": "Запугивание",
+      "spells": "кукри",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "angradd",
+      "name": "Анградд",
+      "nameEn": "Angradd",
+      "description": "Атлетика",
+      "spells": "двуручный топор",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "andoletta",
+      "name": "Андолетта",
+      "nameEn": "Andoletta",
+      "description": "Общество",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "anogetz",
+      "name": "Анохец",
+      "nameEn": "Anogetz",
+      "description": "Запугивание",
+      "spells": "шипованная латная рукавица",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "anubis",
+      "name": "Анубис",
+      "nameEn": "Anubis",
+      "description": "Оккультизм",
+      "spells": "цеп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "aonaurious",
+      "name": "Аонаурий",
+      "nameEn": "Aonaurious",
+      "description": "Атлетика",
+      "spells": "коса",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "apollyon",
+      "name": "Аполлион",
+      "nameEn": "Apollyon",
+      "description": "Медицина",
+      "spells": "коса",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "apsu",
+      "name": "Апсу",
+      "nameEn": "Apsu",
+      "description": "Дипломатия",
+      "spells": "кулак или \n                            посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ardad-lili",
+      "name": "Ардад Лили",
+      "nameEn": "Ardad Lili",
+      "description": "Дипломатия",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ahriman",
+      "name": "Ариман",
+      "nameEn": "Ahriman",
+      "description": "Обман",
+      "spells": "кнут",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "aroden",
+      "name": "Ароден",
+      "nameEn": "Aroden",
+      "description": "Общество",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "arundhat",
+      "name": "Арундхат",
+      "nameEn": "Arundhat",
+      "description": "Природа",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "arshea",
+      "name": "Аршей",
+      "nameEn": "Arshea",
+      "description": "Дипломатия",
+      "spells": "цеп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "atreia",
+      "name": "Атрейя",
+      "nameEn": "Atreia",
+      "description": "Исполнение",
+      "spells": "катар",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "atrogine",
+      "name": "Атрогин",
+      "nameEn": "Atrogine",
+      "description": "Оккультизм",
+      "spells": "коса",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "atropos",
+      "name": "Атропос",
+      "nameEn": "Atropos",
+      "description": "Оккультизм",
+      "spells": "кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ah-pook",
+      "name": "Ах пук",
+      "nameEn": "Ah Pook",
+      "description": "Обман",
+      "spells": "макуауитль",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "achaekek",
+      "name": "Ачакек",
+      "nameEn": "Achaekek",
+      "description": "Скрытность",
+      "spells": "зазубренная сабля",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ashava",
+      "name": "Ашава",
+      "nameEn": "Ashava",
+      "description": "Исполнение",
+      "spells": "шарф с лезвиями",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ashukharma",
+      "name": "Ашухарма",
+      "nameEn": "Ashukharma",
+      "description": "Ремесло",
+      "spells": "двуручный меч",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "grandmother-spider",
+      "name": "Бабушка-паучиха",
+      "nameEn": "Grandmother Spider",
+      "description": "Ремесло",
+      "spells": "болас",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "barbatos",
+      "name": "Барбатос",
+      "nameEn": "Barbatos",
+      "description": "Природа",
+      "spells": "посох",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "barzahk",
+      "name": "Барзахк",
+      "nameEn": "Barzahk",
+      "description": "Выживание",
+      "spells": "дубинка",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "bharnarol",
+      "name": "Барнарол",
+      "nameEn": "Bharnarol",
+      "description": "Ремесло",
+      "spells": "серп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "baphomet",
+      "name": "Бафомет",
+      "nameEn": "Baphomet",
+      "description": "Выживание",
+      "spells": "глефа",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "immaculate-growth",
+      "name": "Безупречная поросль",
+      "nameEn": "Immaculate Growth",
+      "description": "Природа",
+      "spells": "коса",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "nameless",
+      "name": "Безымянный",
+      "nameEn": "Nameless",
+      "description": "Дипломатия",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "belial",
+      "name": "Белиал",
+      "nameEn": "Belial",
+      "description": "Дипломатия",
+      "spells": "рунка",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "bergelmir",
+      "name": "Бергельмир",
+      "nameEn": "Bergelmir",
+      "description": "Общество",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "besmara",
+      "name": "Бесмара",
+      "nameEn": "Besmara",
+      "description": "Атлетика",
+      "spells": "рапира",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "bifrons",
+      "name": "Бифронс",
+      "nameEn": "Bifrons",
+      "description": "Оккультизм",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "the-pale-horse",
+      "name": "Бледный конь",
+      "nameEn": "The Pale Horse",
+      "description": "Запугивание",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "bokrug",
+      "name": "Бокруг",
+      "nameEn": "Bokrug",
+      "description": "Природа",
+      "spells": "рунка",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "bolka",
+      "name": "Болка",
+      "nameEn": "Bolka",
+      "description": "Дипломатия",
+      "spells": "булава",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "brigh",
+      "name": "Брай",
+      "nameEn": "Brigh",
+      "description": "Ремесло",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "baekho-the-lord-of-the-seasons-",
+      "name": "Бэкхо (повелитель времён года)",
+      "nameEn": "Baekho (The Lord of the Seasons)",
+      "description": "Природа",
+      "spells": "катана",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "vavaalrav",
+      "name": "Ваваалрав",
+      "nameEn": "Vavaalrav",
+      "description": "Религия",
+      "spells": "короткий лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "valani",
+      "name": "Валани",
+      "nameEn": "Valani",
+      "description": "Запугивание",
+      "spells": "дубинка",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "vapula",
+      "name": "Вапула",
+      "nameEn": "Vapula",
+      "description": "Дипломатия",
+      "spells": "посох",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "vale",
+      "name": "Вейл",
+      "nameEn": "Vale",
+      "description": "Оккультизм",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "velgaas",
+      "name": "Вельгаас",
+      "nameEn": "Velgaas",
+      "description": "Обман",
+      "spells": "шипастая цепь",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "baalzebul",
+      "name": "Вельзевул",
+      "nameEn": "Baalzebul",
+      "description": "Обман",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "venkelvore",
+      "name": "Венкелвор",
+      "nameEn": "Venkelvore",
+      "description": "Общество",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "faith-in-the-fallen",
+      "name": "Вера в павших",
+      "nameEn": "Faith in the Fallen",
+      "description": "Общество",
+      "spells": "глефа",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "verilorn",
+      "name": "Верилорн",
+      "nameEn": "Verilorn",
+      "description": "Природа",
+      "spells": "серп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "vildeis",
+      "name": "Вильдейс",
+      "nameEn": "Vildeis",
+      "description": "Медицина",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "vineshvakhi",
+      "name": "Винешвахи",
+      "nameEn": "Vineshvakhi",
+      "description": "Запугивание",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "the-lady-of-the-north-star-mother-of-secrets-",
+      "name": "Владычица Северной звезды (мать тайн)",
+      "nameEn": "The Lady of the North Star (Mother of Secrets)",
+      "description": "Оккультизм",
+      "spells": "глефа",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "waves-of-the-boundless-sea",
+      "name": "Волны безграничного моря",
+      "nameEn": "Waves of the Boundless Sea",
+      "description": "Атлетика",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "vonymos",
+      "name": "Вонимос",
+      "nameEn": "Vonymos",
+      "description": "Выживание",
+      "spells": "коса",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "vorasha",
+      "name": "Вораша",
+      "nameEn": "Vorasha",
+      "description": "Природа",
+      "spells": "шипастая цепь",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "vudravati",
+      "name": "Вудравати",
+      "nameEn": "Vudravati",
+      "description": "Дипломатия",
+      "spells": "длинное копьё",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "wulgren",
+      "name": "Вулгрен",
+      "nameEn": "Wulgren",
+      "description": "Crafting",
+      "spells": "Barricade Buster",
+      "sourceBook": "Harm or Heal"
+    },
+    {
+      "id": "vulot",
+      "name": "Вулот",
+      "nameEn": "Vulot",
+      "description": "Обман",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "varg",
+      "name": "Вэрг",
+      "nameEn": "Varg",
+      "description": "Crafting",
+      "spells": "Greataxe",
+      "sourceBook": "Harm"
+    },
+    {
+      "id": "general-susumu-the-black-daimyo-",
+      "name": "Генерал Сусуму (чёрный даймё)",
+      "nameEn": "General Susumu (The Black Daimyo)",
+      "description": "Атлетика",
+      "spells": "длинный лук",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "genzaeri",
+      "name": "Гензэри",
+      "nameEn": "Genzaeri",
+      "description": "Ремесло",
+      "spells": "Bladed Gauntlet",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "geryon",
+      "name": "Герион",
+      "nameEn": "Geryon",
+      "description": "Оккультизм",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "gyronna",
+      "name": "Гиронна",
+      "nameEn": "Gyronna",
+      "description": "Запугивание",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ghlaunder",
+      "name": "Глаундер",
+      "nameEn": "Ghlaunder",
+      "description": "Природа",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "gogunta",
+      "name": "Гогунта",
+      "nameEn": "Gogunta",
+      "description": "Запугивание",
+      "spells": "кнут",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "horus",
+      "name": "Гор",
+      "nameEn": "Horus",
+      "description": "Дипломатия",
+      "spells": "хопеш",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "gorum",
+      "name": "Горум",
+      "nameEn": "Gorum",
+      "description": "Атлетика",
+      "spells": "Двуручный меч",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "grask-uldeth",
+      "name": "Граск Ульдет",
+      "nameEn": "Grask Uldeth",
+      "description": "Intimidation",
+      "spells": "Warhammer",
+      "sourceBook": "Harm or Heal"
+    },
+    {
+      "id": "count-ranalc",
+      "name": "Граф Ранальк",
+      "nameEn": "Count Ranalc",
+      "description": "Скрытность",
+      "spells": "рапира",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "groetus",
+      "name": "Гротус",
+      "nameEn": "Groetus",
+      "description": "Запугивание",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "grundinnar",
+      "name": "Грундиннар",
+      "nameEn": "Grundinnar",
+      "description": "Дипломатия",
+      "spells": "лёгкий молот",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "gruhastha",
+      "name": "Грухаста",
+      "nameEn": "Gruhastha",
+      "description": "Общество",
+      "spells": "короткий лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "dagon",
+      "name": "Дагон",
+      "nameEn": "Dagon",
+      "description": "Атлетика",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "dajermube",
+      "name": "Даджермуб",
+      "nameEn": "Dajermube",
+      "description": "Атлетика",
+      "spells": "двуручный клевец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "daikitsu-lady-of-foxes-",
+      "name": "Дайкицу (госпожа лис)",
+      "nameEn": "Daikitsu (Lady of Foxes)",
+      "description": "Ремесло",
+      "spells": "цеп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "dalenydra",
+      "name": "Даленидра",
+      "nameEn": "Dalenydra",
+      "description": "Дипломатия",
+      "spells": "лёгкая булава",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "dammar",
+      "name": "Даммар",
+      "nameEn": "Dammar",
+      "description": "Медицина",
+      "spells": "короткий меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "dahak",
+      "name": "Дахак",
+      "nameEn": "Dahak",
+      "description": "Атлетика",
+      "spells": "кулак или \n                            кнут",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "dachzerul",
+      "name": "Дахзерул",
+      "nameEn": "Dachzerul",
+      "description": "Воровство",
+      "spells": "рапира",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "children-of-the-night",
+      "name": "Дети Ночи",
+      "nameEn": "Children of the Night",
+      "description": "Скрытность",
+      "spells": "рапира",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "jaidi",
+      "name": "Джайди",
+      "nameEn": "Jaidi",
+      "description": "Природа",
+      "spells": "коса",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "jezelda",
+      "name": "Джезельда",
+      "nameEn": "Jezelda",
+      "description": "Атлетика",
+      "spells": "кулак или \n                            скимитар",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "jin-li-the-golden-dragon-carp-",
+      "name": "Дзин Ли (золотой дракон-карп)",
+      "nameEn": "Jin Li (The Golden Dragon Carp)",
+      "description": "Атлетика",
+      "spells": "сансэцукон",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "diomazul",
+      "name": "Диомазуль",
+      "nameEn": "Diomazul",
+      "description": "Атлетика",
+      "spells": "скимитар",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "dispater",
+      "name": "Диспатер",
+      "nameEn": "Dispater",
+      "description": "Общество",
+      "spells": "булава",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "good-neighbors",
+      "name": "Добрые соседи",
+      "nameEn": "Good Neighbors",
+      "description": "Общество",
+      "spells": "длинный меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "dolok-darkfur",
+      "name": "Долок Темношкурый",
+      "nameEn": "Dolok Darkfur",
+      "description": "Атлетика",
+      "spells": "кулак или \n                            боевой молоток",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "doloras",
+      "name": "Долорас",
+      "nameEn": "Doloras",
+      "description": "Медицина",
+      "spells": "кукри",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "dramindyr",
+      "name": "Драминдир",
+      "nameEn": "Dramindyr",
+      "description": "Мистицизм",
+      "spells": "шипы для щита",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "dranngvit",
+      "name": "Дрангвит",
+      "nameEn": "Dranngvit",
+      "description": "Запугивание",
+      "spells": "лёгкий клевец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "treerazer",
+      "name": "Древотёс",
+      "nameEn": "Treerazer",
+      "description": "Природа",
+      "spells": "двуручный топор",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "droskar",
+      "name": "Дроскар",
+      "nameEn": "Droskar",
+      "description": "Ремесло",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "the-spirit-wall",
+      "name": "Духовная стена",
+      "nameEn": "The Spirit Wall",
+      "description": "Выживание",
+      "spells": "кулак или \n                            умбон",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "dhalavei",
+      "name": "Дхалавей",
+      "nameEn": "Dhalavei",
+      "description": "Обман",
+      "spells": "храмовый меч",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "breath-of-the-endless-sky",
+      "name": "Дыхание бесконечного неба",
+      "nameEn": "Breath of the Endless Sky",
+      "description": "Акробатика",
+      "spells": "длинный лук",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "zjar-tovan",
+      "name": "Жар-Тован",
+      "nameEn": "Zjar-Tovan",
+      "description": "Атлетика",
+      "spells": "двуручный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zarongel",
+      "name": "Заронгель",
+      "nameEn": "Zarongel",
+      "description": "Выживание",
+      "spells": "собачий тесак",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zevgavizeb",
+      "name": "Зевгавизеб",
+      "nameEn": "Zevgavizeb",
+      "description": "Выживание",
+      "spells": "шипованная латная рукавица",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "the-green-mother",
+      "name": "Зелёная матерь",
+      "nameEn": "The Green Mother",
+      "description": "Природа",
+      "spells": "серп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "zelishkar",
+      "name": "Зелишкар",
+      "nameEn": "Zelishkar",
+      "description": "Акробатика",
+      "spells": "рунка",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zyphus",
+      "name": "Зифус",
+      "nameEn": "Zyphus",
+      "description": "Воровство",
+      "spells": "клевец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "xoveron",
+      "name": "Зоверон",
+      "nameEn": "Xoveron",
+      "description": "Скрытность",
+      "spells": "рунка",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zogmugot",
+      "name": "Зогмугот",
+      "nameEn": "Zogmugot",
+      "description": "Ремесло",
+      "spells": "серп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zohls",
+      "name": "Золс",
+      "nameEn": "Zohls",
+      "description": "Общество",
+      "spells": "тяжёлый арбалет",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "zugero",
+      "name": "Зугеро",
+      "nameEn": "Zugero",
+      "description": "Акробатика",
+      "spells": "болас",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zura-the-vampire-queen-",
+      "name": "Зура (королева вампиров)",
+      "nameEn": "Zura (The Vampire Queen)",
+      "description": "Дипломатия",
+      "spells": "рапира",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "szuriel",
+      "name": "Зуриэль",
+      "nameEn": "Szuriel",
+      "description": "Атлетика",
+      "spells": "двуручный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "zursvaater",
+      "name": "Зурсваатер",
+      "nameEn": "Zursvaater",
+      "description": "Ремесло",
+      "spells": "двуручный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "iggeret",
+      "name": "Иггерет",
+      "nameEn": "Iggeret",
+      "description": "Скрытность",
+      "spells": "короткий лук",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ydajisk",
+      "name": "Идаджиск",
+      "nameEn": "Ydajisk",
+      "description": "Общество",
+      "spells": "кулак или \n                            двуручная дубина",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ydersius",
+      "name": "Идерсий",
+      "nameEn": "Ydersius",
+      "description": "Обман",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "izuyaku",
+      "name": "Изуйяку",
+      "nameEn": "Izuyaku",
+      "description": "Медицина",
+      "spells": "молот-метеор",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ylimancha",
+      "name": "Илиманча",
+      "nameEn": "Ylimancha",
+      "description": "Акробатика",
+      "spells": "длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "il-surrish",
+      "name": "Иль’Сурриш",
+      "nameEn": "Il’Surrish",
+      "description": "Скрытность",
+      "spells": "кулак или \n                            кулак",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "imbrex",
+      "name": "Имбрекс",
+      "nameEn": "Imbrex",
+      "description": "Оккультизм",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ymeri",
+      "name": "Имери",
+      "nameEn": "Ymeri",
+      "description": "Запугивание",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "inna",
+      "name": "Инна",
+      "nameEn": "Inna",
+      "description": "Ремесло",
+      "spells": "алхимическая бомба",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "irez",
+      "name": "Ирез",
+      "nameEn": "Irez",
+      "description": "Мистицизм",
+      "spells": "дротик",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "yrmidar",
+      "name": "Ирмидар",
+      "nameEn": "Yrmidar",
+      "description": "Ремесло",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "isis",
+      "name": "Исида",
+      "nameEn": "Isis",
+      "description": "Мистицизм",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "isph-aun-vuln",
+      "name": "Испх-Аун-Вулн",
+      "nameEn": "Isph-Aun-Vuln",
+      "description": "Обман",
+      "spells": "длинный лук",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "yhidothrus",
+      "name": "Ихидотрус",
+      "nameEn": "Yhidothrus",
+      "description": "Общество",
+      "spells": "шипастая цепь",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "yig",
+      "name": "Йиг",
+      "nameEn": "Yig",
+      "description": "Природа",
+      "spells": "кулак или \n                            катар",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "yog-sothoth",
+      "name": "Йог-Сотот",
+      "nameEn": "Yog-Sothoth",
+      "description": "Оккультизм",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "kabriri",
+      "name": "Кабрири",
+      "nameEn": "Kabriri",
+      "description": "Скрытность",
+      "spells": "кулак или \n                            цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "kagia",
+      "name": "Кагия",
+      "nameEn": "Kagia",
+      "description": "Выживание",
+      "spells": "серп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "kazutal",
+      "name": "Казуталь",
+      "nameEn": "Kazutal",
+      "description": "Общество",
+      "spells": "Мачете",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "kaldemash",
+      "name": "Калдемаш",
+      "nameEn": "Kaldemash",
+      "description": "Ремесло",
+      "spells": "дуэльный пистоль",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "camazotz-lord-of-stolen-blood-",
+      "name": "Камазотц (владыка похищенной крови)",
+      "nameEn": "Camazotz (Lord Of Stolen Blood)",
+      "description": "Скрытность",
+      "spells": "пилум",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "casandalee",
+      "name": "Касандали",
+      "nameEn": "Casandalee",
+      "description": "Общество",
+      "spells": "мультитул",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "kelizandri",
+      "name": "Келизандри",
+      "nameEn": "Kelizandri",
+      "description": "Атлетика",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "kelinahat",
+      "name": "Келинахат",
+      "nameEn": "Kelinahat",
+      "description": "Скрытность",
+      "spells": "короткий меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "keltheald",
+      "name": "Келтиэльд",
+      "nameEn": "Keltheald",
+      "description": "Природа",
+      "spells": "алебарда",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "cernunnos",
+      "name": "Кернунн",
+      "nameEn": "Cernunnos",
+      "description": "Выживание",
+      "spells": "длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ketephys",
+      "name": "Кетэфис",
+      "nameEn": "Ketephys",
+      "description": "Выживание",
+      "spells": "длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "cyth-v-sug",
+      "name": "Киф-в’зуг",
+      "nameEn": "Cyth-V’sug",
+      "description": "Природа",
+      "spells": "скимитар",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "wheels-of-innovation",
+      "name": "Колёса инноваций",
+      "nameEn": "Wheels of Innovation",
+      "description": "Ремесло",
+      "spells": "мультитул",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "kols",
+      "name": "Колс",
+      "nameEn": "Kols",
+      "description": "Общество",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "cong",
+      "name": "Конг",
+      "nameEn": "Cong",
+      "description": "Воровство",
+      "spells": "Сковорода",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "korada",
+      "name": "Корада",
+      "nameEn": "Korada",
+      "description": "Дипломатия",
+      "spells": "кулак",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "corosbel",
+      "name": "Коросбел",
+      "nameEn": "Corosbel",
+      "description": "Обман",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "kofusachi-the-laughing-god-",
+      "name": "Кофусати (смеющийся бог)",
+      "nameEn": "Kofusachi (The Laughing God)",
+      "description": "Исполнение",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "stone-s-blood",
+      "name": "Кровь камня",
+      "nameEn": "Stone's Blood",
+      "description": "Дипломатия",
+      "spells": "боевой молот",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "xhamen-dor",
+      "name": "Ксамен-Дор",
+      "nameEn": "Xhamen-Dor",
+      "description": "Природа",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "xsistaid",
+      "name": "Ксистайд",
+      "nameEn": "Xsistaid",
+      "description": "Медицина",
+      "spells": "дротик",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "cthulhu",
+      "name": "Ктулху",
+      "nameEn": "Cthulhu",
+      "description": "Оккультизм",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "kurgess",
+      "name": "Кургесс",
+      "nameEn": "Kurgess",
+      "description": "Атлетика",
+      "spells": "пилум",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "laivatiniel",
+      "name": "Лайватиниэль",
+      "nameEn": "Laivatiniel",
+      "description": "Обман",
+      "spells": "арбалет",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "lalaci",
+      "name": "Лалаци",
+      "nameEn": "Lalaci",
+      "description": "Исполнение",
+      "spells": "праща",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "lao-shu-po-old-rat-woman-",
+      "name": "Лао Шу По (старая крыса)",
+      "nameEn": "Lao Shu Po (Old Rat Woman)",
+      "description": "Воровство",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "laudinmio",
+      "name": "Лаудинмио",
+      "nameEn": "Laudinmio",
+      "description": "Ремесло",
+      "spells": "алхимическая бомба",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "lahkgya",
+      "name": "Лахкгья",
+      "nameEn": "Lahkgya",
+      "description": "Воровство",
+      "spells": "кулак",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "lady-nanbyo-the-widow-of-suffering-",
+      "name": "Леди Нанбё (вдова страданий)",
+      "nameEn": "Lady Nanbyo (The Widow of Suffering)",
+      "description": "Природа",
+      "spells": "боевой молот",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "lady-jingxi-the-poet-of-dawn-and-dusk-",
+      "name": "Леди Цзинси (поэт рассвета и сумерек)",
+      "nameEn": "Lady Jingxi (The Poet of Dawn and Dusk)",
+      "description": "Исполнение",
+      "spells": "боевой веер",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "liisglan",
+      "name": "Лийсглан",
+      "nameEn": "Liisglan",
+      "description": "Исполнение",
+      "spells": "копьё танцора",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "lysianassa",
+      "name": "Лисианасса",
+      "nameEn": "Lysianassa",
+      "description": "Выживание",
+      "spells": "копьё",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "lissala",
+      "name": "Лиссала (Доблестный порядок)",
+      "nameEn": "Lissala",
+      "description": "Мистицизм",
+      "spells": "кнут",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "likha",
+      "name": "Лиха",
+      "nameEn": "Likha",
+      "description": "Исполнение",
+      "spells": "топорик",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "lorris",
+      "name": "Лоррис",
+      "nameEn": "Lorris",
+      "description": "Общество",
+      "spells": "копьё",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "lurlup",
+      "name": "Лурлуп",
+      "nameEn": "Lurlup",
+      "description": "Запугивание",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ma-at",
+      "name": "Маат",
+      "nameEn": "Ma’at",
+      "description": "Общество",
+      "spells": "нож-звезда",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "magdh",
+      "name": "Магд",
+      "nameEn": "Magdh",
+      "description": "Оккультизм",
+      "spells": "коса",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "magrim",
+      "name": "Магрим",
+      "nameEn": "Magrim",
+      "description": "Ремесло",
+      "spells": "боевой молот",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "malthus",
+      "name": "Мальтус",
+      "nameEn": "Malthus",
+      "description": "Ремесло",
+      "spells": "арбалет",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "mammon",
+      "name": "Маммон",
+      "nameEn": "Mammon",
+      "description": "Воровство",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "matravash",
+      "name": "Матраваш",
+      "nameEn": "Matravash",
+      "description": "Выживание",
+      "spells": "кнут",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "stag-mother-of-the-forest-of-stones",
+      "name": "Мать-олень леса камней",
+      "nameEn": "Stag Mother of the Forest of Stones",
+      "description": "Медицина",
+      "spells": "рунка",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "mother-vulture",
+      "name": "Мать-стервятница",
+      "nameEn": "Mother Vulture",
+      "description": "Выживание",
+      "spells": "серп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "mahathallah",
+      "name": "Махаталла",
+      "nameEn": "Mahathallah",
+      "description": "Обман",
+      "spells": "болас",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "mahja-firehair",
+      "name": "Махжа Огнегривая",
+      "nameEn": "Mahja Firehair",
+      "description": "Athletics",
+      "spells": "Scimitar",
+      "sourceBook": "Harm or Heal"
+    },
+    {
+      "id": "mestama",
+      "name": "Местама",
+      "nameEn": "Mestama",
+      "description": "Оккультизм",
+      "spells": "катар",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "mephistopheles",
+      "name": "Мефистофель",
+      "nameEn": "Mephistopheles",
+      "description": "Обман",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "milani",
+      "name": "Милани",
+      "nameEn": "Milani",
+      "description": "Общество",
+      "spells": "моргенштерн",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "minderhal",
+      "name": "Миндерхал",
+      "nameEn": "Minderhal",
+      "description": "Ремесло",
+      "spells": "боевой молот",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "myr",
+      "name": "Мир",
+      "nameEn": "Myr",
+      "description": "Общество",
+      "spells": "длинный меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "moloch-the-ashen-bull-",
+      "name": "Молох (пепельный бык)",
+      "nameEn": "Moloch (The Ashen Bull)",
+      "description": "Атлетика",
+      "spells": "кнут",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "monad",
+      "name": "Монада",
+      "nameEn": "Monad",
+      "description": "Оккультизм",
+      "spells": "кулак",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "mrtyu",
+      "name": "Мритью",
+      "nameEn": "Mrtyu",
+      "description": "Исполнение",
+      "spells": "двуручный меч",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "mugura-and-nrithu-the-divine-dancers-",
+      "name": "Мугура и Нриту (божественные танцоры)",
+      "nameEn": "Mugura and Nrithu (The Divine Dancers)",
+      "description": "Исполнение",
+      "spells": "кулак",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "mhar",
+      "name": "Мхар",
+      "nameEn": "Mhar",
+      "description": "Природа",
+      "spells": "двуручный клевец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nalinivati-the-serpent-s-kiss-",
+      "name": "Налинивати (змеиный поцелуй)",
+      "nameEn": "Nalinivati (The Serpent's Kiss)",
+      "description": "Мистицизм",
+      "spells": "кулак или \n                            уруми",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "narriseminek",
+      "name": "Наррисеминек",
+      "nameEn": "Narriseminek",
+      "description": "Оккультизм",
+      "spells": "топорик",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ng",
+      "name": "Нг",
+      "nameEn": "Ng",
+      "description": "Выживание",
+      "spells": "латная рукавица",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "cosmic-caravan",
+      "name": "Небесный караван",
+      "nameEn": "Cosmic Caravan",
+      "description": "Оккультизм",
+      "spells": "нож-звезда",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "nergal",
+      "name": "Нергал",
+      "nameEn": "Nergal",
+      "description": "Запугивание",
+      "spells": "шипастая цепь",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "neshen",
+      "name": "Нешен",
+      "nameEn": "Neshen",
+      "description": "Атлетика",
+      "spells": "рунка",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "nivi-rhombodazzle",
+      "name": "Ниви ромбодаззл",
+      "nameEn": "Nivi Rhombodazzle",
+      "description": "Скрытность",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "nhimbaloth",
+      "name": "Нимбалот",
+      "nameEn": "Nhimbaloth",
+      "description": "Природа",
+      "spells": "цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nin-the-immaculate-solution-",
+      "name": "Нин (безупречное решение)",
+      "nameEn": "Nin (The Immaculate Solution)",
+      "description": "Оккультизм",
+      "spells": "меч-трость",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nocticula",
+      "name": "Ноктикула",
+      "nameEn": "Nocticula",
+      "description": "Общество",
+      "spells": "кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "nulgreth",
+      "name": "Нулгрет",
+      "nameEn": "Nulgreth",
+      "description": "Intimidation",
+      "spells": "Greataxe",
+      "sourceBook": "Harm"
+    },
+    {
+      "id": "nurgal",
+      "name": "Нургал",
+      "nameEn": "Nurgal",
+      "description": "Выживание",
+      "spells": "булава",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nyuo-ogh",
+      "name": "Ньюо-Ог",
+      "nameEn": "Nyuo-Ogh",
+      "description": "Мистицизм",
+      "spells": "кавалерийская пика",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nyarlathotep-the-faceless-sphinx-",
+      "name": "Ньярлатхотеп (безликий сфинкс)",
+      "nameEn": "Nyarlathotep (The Faceless Sphinx)",
+      "description": "Дипломатия",
+      "spells": "катар",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nyarlathotep-the-crawling-chaos-",
+      "name": "Ньярлатхотеп (ползучий хаос)",
+      "nameEn": "Nyarlathotep (The Crawling Chaos)",
+      "description": "Мистицизм",
+      "spells": "посох",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "nyarlathotep-the-veiled-voice-",
+      "name": "Ньярлатхотеп (скрытый голос)",
+      "nameEn": "Nyarlathotep (The Veiled Voice)",
+      "description": "Обман",
+      "spells": "бо",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "oaur-ooung",
+      "name": "Оаур-Оунг",
+      "nameEn": "Oaur-Ooung",
+      "description": "Медицина",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "obari",
+      "name": "Обари",
+      "nameEn": "Obari",
+      "description": "Выживание",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ozranvial",
+      "name": "Озранвиаль",
+      "nameEn": "Ozranvial",
+      "description": "Обман",
+      "spells": "кнут",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "olheon",
+      "name": "Ольхеон",
+      "nameEn": "Olheon",
+      "description": "Дипломатия",
+      "spells": "алебарда",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "onos",
+      "name": "Онос",
+      "nameEn": "Onos",
+      "description": "Дипломатия",
+      "spells": "чакра",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "orgesh",
+      "name": "Оргеш",
+      "nameEn": "Orgesh",
+      "description": "Ремесло",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "osiris",
+      "name": "Осирис",
+      "nameEn": "Osiris",
+      "description": "Природа",
+      "spells": "цеп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "talons-of-the-godclaw",
+      "name": "Острия божьего когтя",
+      "nameEn": "Talons of the Godclaw",
+      "description": "Запугивание",
+      "spells": "моргенштерн",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "pavnuri",
+      "name": "Павнури",
+      "nameEn": "Pavnuri",
+      "description": "Выживание",
+      "spells": "моргенштерн",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "pazuzu",
+      "name": "Пазузу",
+      "nameEn": "Pazuzu",
+      "description": "Дипломатия",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "the-pandemonia",
+      "name": "Пандемония",
+      "nameEn": "The Pandemonia",
+      "description": "Обман",
+      "spells": "гномий кистень",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "pahti-coatl",
+      "name": "Пахти Коатль",
+      "nameEn": "Pahti Coatl",
+      "description": "Выживание",
+      "spells": "серп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "the-readied-strike",
+      "name": "Подготовленный удар",
+      "nameEn": "The Readied Strike",
+      "description": "Общество",
+      "spells": "кавалерийская пика",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "the-devourer",
+      "name": "Пожиратель",
+      "nameEn": "The Devourer",
+      "description": "Атлетика",
+      "spells": "двуручный молот",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "followers-of-fate",
+      "name": "Последователи судьбы",
+      "nameEn": "Followers of Fate",
+      "description": "Оккультизм",
+      "spells": "-",
+      "sourceBook": "-"
+    },
+    {
+      "id": "the-lost-prince",
+      "name": "Потерянный Принц",
+      "nameEn": "The Lost Prince",
+      "description": "Общество",
+      "spells": "посох",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "pulura",
+      "name": "Пулура",
+      "nameEn": "Pulura",
+      "description": "Выживание",
+      "spells": "праща",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ra",
+      "name": "Ра",
+      "nameEn": "Ra",
+      "description": "Общество",
+      "spells": "копьё",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ravithra",
+      "name": "Равитхра",
+      "nameEn": "Ravithra",
+      "description": "Оккультизм",
+      "spells": "кулак",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ragadahn",
+      "name": "Рагадан",
+      "nameEn": "Ragadahn",
+      "description": "Оккультизм",
+      "spells": "кнут",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ragathiel",
+      "name": "Рагатиэль",
+      "nameEn": "Ragathiel",
+      "description": "Запугивание",
+      "spells": "меч-бастард",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ragdya",
+      "name": "Рагдья",
+      "nameEn": "Ragdya",
+      "description": "Акробатика",
+      "spells": "булава",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "razmir",
+      "name": "Размир",
+      "nameEn": "Razmir",
+      "description": "Обман",
+      "spells": "булава",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "ranginori",
+      "name": "Рангинори",
+      "nameEn": "Ranginori",
+      "description": "Акробатика",
+      "spells": "кнут",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "blooms-of-the-spreading-weald",
+      "name": "Расцвет расширяющейся пущи",
+      "nameEn": "Blooms of the Spreading Weald",
+      "description": "Природа",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "raumya",
+      "name": "Раумья",
+      "nameEn": "Raumya",
+      "description": "Исполнение",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "reymenda",
+      "name": "Рейменда",
+      "nameEn": "Reymenda",
+      "description": "Общество",
+      "spells": "фальшион",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ristrentho",
+      "name": "Ристренто",
+      "nameEn": "Ristrentho",
+      "description": "Атлетика",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "rull",
+      "name": "Рулл Громовержец",
+      "nameEn": "Rull",
+      "description": "Nature",
+      "spells": "Falchion",
+      "sourceBook": "Harm"
+    },
+    {
+      "id": "rhan-tegoth",
+      "name": "Рхан-Тегот",
+      "nameEn": "Rhan-Tegoth",
+      "description": "Оккультизм",
+      "spells": "серп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "sairazul",
+      "name": "Сайразуль",
+      "nameEn": "Sairazul",
+      "description": "Природа",
+      "spells": "клевец",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "saloc",
+      "name": "Салок",
+      "nameEn": "Saloc",
+      "description": "Дипломатия",
+      "spells": "гвизарма",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "light-of-the-everlasting-flame",
+      "name": "Свет неугасимого пламени",
+      "nameEn": "Light of the Everlasting Flame",
+      "description": "Запугивание",
+      "spells": "скимитар",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ceyannan",
+      "name": "Сейяннан",
+      "nameEn": "Ceyannan",
+      "description": "Выживание",
+      "spells": "посох",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "seramaydiel",
+      "name": "Серамайдиэль",
+      "nameEn": "Seramaydiel",
+      "description": "Исполнение",
+      "spells": "духовая трубка",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "sivanah",
+      "name": "Сивана",
+      "nameEn": "Sivanah",
+      "description": "Обман",
+      "spells": "шарф с лезвиями",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "shizuru",
+      "name": "Сидзурю",
+      "nameEn": "Shizuru",
+      "description": "Общество",
+      "spells": "катана",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "sicva",
+      "name": "Сиква",
+      "nameEn": "Sicva",
+      "description": "Природа",
+      "spells": "серп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "cixyron",
+      "name": "Сиксирон",
+      "nameEn": "Cixyron",
+      "description": "Ремесло",
+      "spells": "кремневый мушкет",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "sithhud",
+      "name": "Ситххуд",
+      "nameEn": "Sithhud",
+      "description": "Выживание",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "sifkesh",
+      "name": "Сифкеш",
+      "nameEn": "Sifkesh",
+      "description": "Обман",
+      "spells": "боевая бритва",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "cihua-coatl",
+      "name": "Сихуа Коатль",
+      "nameEn": "Cihua Coatl",
+      "description": "Атлетика",
+      "spells": "копьё",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "radiant-prism",
+      "name": "Сияющая призма",
+      "nameEn": "Radiant Prism",
+      "description": "Дипломатия",
+      "spells": "короткий меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "the-lantern-king",
+      "name": "Сияющий король",
+      "nameEn": "The Lantern King",
+      "description": "Обман",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "skode",
+      "name": "Скади",
+      "nameEn": "Skode",
+      "description": "Выживание",
+      "spells": "длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "scal",
+      "name": "Скал",
+      "nameEn": "Scal",
+      "description": "Атлетика",
+      "spells": "молот-метеор",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "skrymir",
+      "name": "Скримир",
+      "nameEn": "Skrymir",
+      "description": "Обман",
+      "spells": "рапира",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "smiad",
+      "name": "Смиад",
+      "nameEn": "Smiad",
+      "description": "Атлетика",
+      "spells": "двуручный меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "sovyrian-conclave",
+      "name": "Совирианский конклав",
+      "nameEn": "Sovyrian Conclave",
+      "description": "Выживание",
+      "spells": "длинный лук или \n                            короткий лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "treasures-of-the-eternal-delve",
+      "name": "Сокровища вечных недр",
+      "nameEn": "Treasures of the Eternal Delve",
+      "description": "Выживание",
+      "spells": "клевец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "soralyon",
+      "name": "Соралион",
+      "nameEn": "Soralyon",
+      "description": "Мистицизм",
+      "spells": "клевец",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ssila-meshnik",
+      "name": "Ссила’мешник",
+      "nameEn": "Ssila’meshnik",
+      "description": "Оккультизм",
+      "spells": "лёгкий молот",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "sturovenen",
+      "name": "Стуровенен",
+      "nameEn": "Sturovenen",
+      "description": "Дипломатия",
+      "spells": "Дага",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "fortune-s-fate",
+      "name": "Судьбоносная удача",
+      "nameEn": "Fortune's Fate",
+      "description": "Воровство",
+      "spells": "боевой веер",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "sun-wukong-the-monkey-king-",
+      "name": "Сунь Укун (царь обезьян)",
+      "nameEn": "Sun Wukong (The Monkey King)",
+      "description": "Акробатика",
+      "spells": "бо",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "suyuddha",
+      "name": "Суюддха",
+      "nameEn": "Suyuddha",
+      "description": "Атлетика",
+      "spells": "Тэкко-Каги",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "thamir",
+      "name": "Тамир",
+      "nameEn": "Thamir",
+      "description": "Воровство",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "teki-stronggut",
+      "name": "Теки железобрюх",
+      "nameEn": "Teki Stronggut",
+      "description": "Дипломатия",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "telastmar",
+      "name": "Теластмар",
+      "nameEn": "Telastmar",
+      "description": "Природа",
+      "spells": "болас",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "shadow-cabinet",
+      "name": "Теневой кабинет",
+      "nameEn": "Shadow Cabinet",
+      "description": "Дипломатия",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "teshallas",
+      "name": "Тешаллас",
+      "nameEn": "Teshallas",
+      "description": "Медицина",
+      "spells": "чакра",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "titivilus",
+      "name": "Титивилл",
+      "nameEn": "Titivilus",
+      "description": "Обман",
+      "spells": "длинный меч",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "tolte-coatl",
+      "name": "Тольте коатль",
+      "nameEn": "Tolte Coatl",
+      "description": "Общество",
+      "spells": "осадный арбалет",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "thoth",
+      "name": "Тот",
+      "nameEn": "Thoth",
+      "description": "Мистицизм",
+      "spells": "серп",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "trelmarixian",
+      "name": "Трелмариксиан",
+      "nameEn": "Trelmarixian",
+      "description": "Природа",
+      "spells": "шипованная латная рукавица",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "thremyr",
+      "name": "Тремир",
+      "nameEn": "Thremyr",
+      "description": "Религия",
+      "spells": "двуручный топор",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "tresmalvos",
+      "name": "Тресмальвос",
+      "nameEn": "Tresmalvos",
+      "description": "Общество",
+      "spells": "алебарда",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "trudd",
+      "name": "Трудд",
+      "nameEn": "Trudd",
+      "description": "Атлетика",
+      "spells": "боевой молот",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "tsukiyo",
+      "name": "Тсукийо",
+      "nameEn": "Tsukiyo",
+      "description": "Оккультизм",
+      "spells": "копьё",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "thuskchoon",
+      "name": "Тускчун",
+      "nameEn": "Thuskchoon",
+      "description": "Запугивание",
+      "spells": "двуручная дубина",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "tjasse",
+      "name": "Тьяссе",
+      "nameEn": "Tjasse",
+      "description": "Запугивание",
+      "spells": "копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "weight-of-the-world",
+      "name": "Тяжесть мира",
+      "nameEn": "Weight of the World",
+      "description": "Природа",
+      "spells": "пилум",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "uirch",
+      "name": "Уирч",
+      "nameEn": "Uirch",
+      "description": "Medicine",
+      "spells": "Tekko-Kagi",
+      "sourceBook": "Heal"
+    },
+    {
+      "id": "ulon",
+      "name": "Улон",
+      "nameEn": "Ulon",
+      "description": "Обман",
+      "spells": "ручной арбалет",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "urazra",
+      "name": "Уразра",
+      "nameEn": "Urazra",
+      "description": "Атлетика",
+      "spells": "шипованная латная рукавица",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "uskyeria",
+      "name": "Ускири",
+      "nameEn": "Uskyeria",
+      "description": "Природа",
+      "spells": "скимитар",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "ussharassim",
+      "name": "Ушшарассим",
+      "nameEn": "Ussharassim",
+      "description": "Исполнение",
+      "spells": "дуэльный пистоль",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "falayna-warrior-s-ring-",
+      "name": "Фалайна (кольцо воина)",
+      "nameEn": "Falayna (Warrior’s Ring)",
+      "description": "Атлетика",
+      "spells": "длинный меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "fandarra",
+      "name": "Фандарра",
+      "nameEn": "Fandarra",
+      "description": "Природа",
+      "spells": "кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ferrumnestra",
+      "name": "Феррумнестра",
+      "nameEn": "Ferrumnestra",
+      "description": "Атлетика",
+      "spells": "клевец",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "phi-deva-the-thousand-souled-chorus-",
+      "name": "Фи Дева (хор тысячи душ)",
+      "nameEn": "Phi Deva (The Thousand-Souled Chorus)",
+      "description": "Медицина",
+      "spells": "короткий лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "findeladlara",
+      "name": "Финделадлара",
+      "nameEn": "Findeladlara",
+      "description": "Ремесло",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "phlegyas",
+      "name": "Флегиас",
+      "nameEn": "Phlegyas",
+      "description": "Ремесло",
+      "spells": "длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "folgrit",
+      "name": "Фольгрит",
+      "nameEn": "Folgrit",
+      "description": "Медицина",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "shapes-of-the-fading-luster",
+      "name": "Формы тускнеющего блеска",
+      "nameEn": "Shapes of the Fading Luster",
+      "description": "Ремесло",
+      "spells": "боевой молот",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "fumeiyoshi-lord-of-envy-",
+      "name": "Фумэйёши (владыка зависти)",
+      "nameEn": "Fumeiyoshi (Lord of Envy)",
+      "description": "Запугивание",
+      "spells": "нагината",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "furcas",
+      "name": "Фуркас",
+      "nameEn": "Furcas",
+      "description": "Природа",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "haagenti",
+      "name": "Хаагенти",
+      "nameEn": "Haagenti",
+      "description": "Ремесло",
+      "spells": "боевой топор",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "haborym",
+      "name": "Хаборим",
+      "nameEn": "Haborym",
+      "description": "Запугивание",
+      "spells": "длинное копьё",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "haggakal",
+      "name": "Хаггакал",
+      "nameEn": "Haggakal",
+      "description": "Скрытность",
+      "spells": "двуручная дубина",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "hadregash",
+      "name": "Хадрегаш",
+      "nameEn": "Hadregash",
+      "description": "Атлетика",
+      "spells": "цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "hanspur",
+      "name": "Ханспур",
+      "nameEn": "Hanspur",
+      "description": "Атлетика",
+      "spells": "трезубец",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "charon",
+      "name": "Харон",
+      "nameEn": "Charon",
+      "description": "Оккультизм",
+      "spells": "посох",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "hastur",
+      "name": "Хастур",
+      "nameEn": "Hastur",
+      "description": "Обман",
+      "spells": "рапира",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "hataam",
+      "name": "Хатаам",
+      "nameEn": "Hataam",
+      "description": "Природа",
+      "spells": "болас",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "guardians-of-the-sacred-self",
+      "name": "Хранители истинной сущности",
+      "nameEn": "Guardians of the Sacred Self",
+      "description": "Медицина",
+      "spells": "умбон",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "hshurha",
+      "name": "Хшурха",
+      "nameEn": "Hshurha",
+      "description": "Скрытность",
+      "spells": "длинный лук",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "hei-feng",
+      "name": "Хэй Фэнь",
+      "nameEn": "Hei Feng",
+      "description": "Исполнение",
+      "spells": "цзю хуан дао",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "chavazvug",
+      "name": "Чавазвуг",
+      "nameEn": "Chavazvug",
+      "description": "Выживание",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "chaldira",
+      "name": "Чалдира",
+      "nameEn": "Chaldira",
+      "description": "Воровство",
+      "spells": "короткий меч",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "chamiaholom",
+      "name": "Чамиахолом",
+      "nameEn": "Chamiaholom",
+      "description": "Оккультизм",
+      "spells": "посох",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "chamidu",
+      "name": "Чамиду",
+      "nameEn": "Chamidu",
+      "description": "Медицина",
+      "spells": "копьё",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "charg",
+      "name": "Чарг",
+      "nameEn": "Charg",
+      "description": "Выживание",
+      "spells": "фальшион",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "black-butterfly",
+      "name": "Чёрная бабочка",
+      "nameEn": "Black Butterfly",
+      "description": "Скрытность",
+      "spells": "нож-звезда",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "qi-zhong-master-of-medicine-",
+      "name": "Чи Джон (мастер медицины)",
+      "nameEn": "Qi Zhong (Master of Medicine)",
+      "description": "Медицина",
+      "spells": "булава",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "shawnari",
+      "name": "Шавнари",
+      "nameEn": "Shawnari",
+      "description": "Оккультизм",
+      "spells": "мягкая дубинка",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "shax",
+      "name": "Шакс",
+      "nameEn": "Shax",
+      "description": "Запугивание",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "shivaska",
+      "name": "Шиваска",
+      "nameEn": "Shivaska",
+      "description": "Запугивание",
+      "spells": "боевой цеп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "shyka",
+      "name": "Шика",
+      "nameEn": "Shyka",
+      "description": "Оккультизм",
+      "spells": "лёгкая булава",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "srikalis-sritaming-and-sribaril-the-three-headed-god-of-raiding-and-war-",
+      "name": "Шрикалис, Шритаминг и Шрибарил (трёхглавый бог набегов и войны)",
+      "nameEn": "Srikalis, Sritaming, and Sribaril (The Three-headed God of Raiding and War)",
+      "description": "Общество",
+      "spells": "крис или \n                            аркебуза",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "shumunue",
+      "name": "Шумунуэ",
+      "nameEn": "Shumunue",
+      "description": "Обман",
+      "spells": "дубинка",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "aegirran",
+      "name": "Эгирран",
+      "nameEn": "Aegirran",
+      "description": "Акробатика",
+      "spells": "трезубец",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "aesocar",
+      "name": "Эзокар",
+      "nameEn": "Aesocar",
+      "description": "Медицина",
+      "spells": "цеп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "eiseth",
+      "name": "Эйсет",
+      "nameEn": "Eiseth",
+      "description": "Запугивание",
+      "spells": "длинный лук",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "elion",
+      "name": "Элион",
+      "nameEn": "Elion",
+      "description": "Выживание",
+      "spells": "длинный лук",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "embaral",
+      "name": "Эмбарал",
+      "nameEn": "Embaral",
+      "description": "Общество",
+      "spells": "wish knife",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "emmeton-galardaria",
+      "name": "Эмметон Галардария",
+      "nameEn": "Emmeton Galardaria",
+      "description": "Общество",
+      "spells": "Сковорода",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "erecura",
+      "name": "Эрекура",
+      "nameEn": "Erecura",
+      "description": "Обман",
+      "spells": "лёгкая булава",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "areshkagal",
+      "name": "Эрешкагаль",
+      "nameEn": "Areshkagal",
+      "description": "Обман",
+      "spells": "серп",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "eritrice",
+      "name": "Эритрице",
+      "nameEn": "Eritrice",
+      "description": "Дипломатия",
+      "spells": "кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "jukha",
+      "name": "Юка",
+      "nameEn": "Jukha",
+      "description": "Survival",
+      "spells": "Longbow",
+      "sourceBook": "Heal"
+    },
+    {
+      "id": "yuelral",
+      "name": "Юэлрал",
+      "nameEn": "Yuelral",
+      "description": "Мистицизм",
+      "spells": "кинжал",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "yamasoth",
+      "name": "Ямасот",
+      "nameEn": "Yamasoth",
+      "description": "Ремесло",
+      "spells": "алебарда",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "yamatsumi-the-mountain-lord-",
+      "name": "Ямацуми (владыка гор)",
+      "nameEn": "Yamatsumi (The Mountain Lord)",
+      "description": "Атлетика",
+      "spells": "двуручная дубина",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "yaezhing-the-minister-of-blood-",
+      "name": "Яэчжин (кровавый министр)",
+      "nameEn": "Yaezhing (The Minister of Blood)",
+      "description": "Скрытность",
+      "spells": "сюрикен",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "urban-prosperity",
+      "name": "Городское процветание",
+      "nameEn": "Urban Prosperity",
+      "description": "дипломатия",
+      "spells": "кинжал",
+      "sourceBook": "Повреждение или исцеление"
+    },
+    {
+      "id": "the-offering-plate",
+      "name": "Жертвенная чаша",
+      "nameEn": "The Offering Plate",
+      "description": "общество",
+      "spells": "цеп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "lorthact",
+      "name": "Лортакт",
+      "nameEn": "Lorthact",
+      "description": "Мистицизм",
+      "spells": "Посох",
+      "sourceBook": "Повреждение"
+    },
+    {
+      "id": "seafarer-s-hope",
+      "name": "Надежда морехода",
+      "nameEn": "Seafarer's Hope",
+      "description": "выживание",
+      "spells": "рапира",
+      "sourceBook": "Повреждение или Исцеление"
+    },
+    {
+      "id": "the-laborer-s-bastion",
+      "name": "Оплот тружеников",
+      "nameEn": "The Laborer's Bastion",
+      "description": "атлетика",
+      "spells": "боевой молот",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "hearth-and-harvest",
+      "name": "Очаг и урожай",
+      "nameEn": "Hearth and Harvest",
+      "description": "ремесло",
+      "spells": "серп",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "the-enlightened-scholar-s-path",
+      "name": "Путь просвещённого учёного",
+      "nameEn": "The Enlightened Scholar's Path",
+      "description": "Знание",
+      "spells": "посох",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "the-deliberate-journey",
+      "name": "Размеренный путь",
+      "nameEn": "The Deliberate Journey",
+      "description": "выживание",
+      "spells": "арбалет",
+      "sourceBook": "Исцеление"
+    },
+    {
+      "id": "ambition",
+      "name": "Амбиции",
+      "nameEn": "Ambition",
+      "description": "Ослепляющие амбиции",
+      "spells": "Конкурентное преимущество",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "vigil",
+      "name": "Бдение",
+      "nameEn": "Vigil",
+      "description": "Память предмета",
+      "spells": "Память о забытых",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "wealth",
+      "name": "Богатство",
+      "nameEn": "Wealth",
+      "description": "видимость богатства",
+      "spells": "Драгоценные металлы",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "pain",
+      "name": "Боль",
+      "nameEn": "Pain",
+      "description": "укол возмездия",
+      "spells": "Карающая боль",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "water",
+      "name": "Вода",
+      "nameEn": "Water",
+      "description": "Приливная волна",
+      "spells": "Ливень",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "air",
+      "name": "Воздух",
+      "nameEn": "Air",
+      "description": "Отталкивающий порыв",
+      "spells": "растворение в воздухе",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "time",
+      "name": "Время",
+      "nameEn": "Time",
+      "description": "отложить последствие",
+      "spells": "стазис",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "glyph",
+      "name": "Глифы",
+      "nameEn": "Glyph",
+      "description": "Вымарывание",
+      "spells": "Призрачная транскрипция",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "cities",
+      "name": "Города",
+      "nameEn": "Cities",
+      "description": "лицо в толпе",
+      "spells": "ритм цивилизации",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "wood",
+      "name": "Дерево",
+      "nameEn": "Wood",
+      "description": "руки природы",
+      "spells": "прогулка по дереву",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "duty",
+      "name": "Долг",
+      "nameEn": "Duty",
+      "description": "Swear Oath",
+      "spells": "Dutiful Challenge",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "dragon",
+      "name": "Драконы",
+      "nameEn": "Dragon",
+      "description": "Драконий залп",
+      "spells": "Рёв дракона",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "soul",
+      "name": "Душа",
+      "nameEn": "Soul",
+      "description": "Отделение души",
+      "spells": "Эктоплазменный зазор",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "protection",
+      "name": "Защита",
+      "nameEn": "Protection",
+      "description": "жертва защитника",
+      "spells": "сфера защитника",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "star",
+      "name": "Звёзды",
+      "nameEn": "Star",
+      "description": "Звезда в зените",
+      "spells": "Скопление звёзд",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "earth",
+      "name": "Земля",
+      "nameEn": "Earth",
+      "description": "Летящий камень",
+      "spells": "Локальное землетрясение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "knowledge",
+      "name": "Знание",
+      "nameEn": "Knowledge",
+      "description": "Сосредоточенность учёного",
+      "spells": "знай врага своего",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "change",
+      "name": "Изменения",
+      "nameEn": "Change",
+      "description": "Самоадаптация",
+      "spells": "Адаптивное сопротивление",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "truth",
+      "name": "Истина",
+      "nameEn": "Truth",
+      "description": "слово истины",
+      "spells": "проблеск истины",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "nightmares",
+      "name": "Кошмары",
+      "nameEn": "Nightmares",
+      "description": "Кошмар наяву",
+      "spells": "Общий кошмар",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "healing",
+      "name": "Лечение",
+      "nameEn": "Healing",
+      "description": "благословение целителя",
+      "spells": "Отрицание смерти",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "trickery",
+      "name": "Лукавство",
+      "nameEn": "Trickery",
+      "description": "Внезапное смещение",
+      "spells": "двойник трикстера",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "moon",
+      "name": "Луна",
+      "nameEn": "Moon",
+      "description": "Лунный свет",
+      "spells": "лунное прикосновение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "magic",
+      "name": "Магия",
+      "nameEn": "Magic",
+      "description": "вместилище магии",
+      "spells": "Магический светоч",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "metal",
+      "name": "Металл",
+      "nameEn": "Metal",
+      "description": "зазубренное оружие",
+      "spells": "отторжение металла",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "lightning",
+      "name": "Молния",
+      "nameEn": "Lightning",
+      "description": "Charged Javelin",
+      "spells": "Bottle the Storm",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "might",
+      "name": "Мощь",
+      "nameEn": "Might",
+      "description": "Атлетический подвиг",
+      "spells": "Несокрушимая мощь",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "naga",
+      "name": "Наги",
+      "nameEn": "Naga",
+      "description": "Обличающий ответ",
+      "spells": "Указание пути",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "nothingness",
+      "name": "Небытиё",
+      "nameEn": "Nothingness",
+      "description": "пустота внутри",
+      "spells": "дверь вникуда",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "undeath",
+      "name": "Нежить",
+      "nameEn": "Undeath",
+      "description": "мертвенное прикосновение",
+      "spells": "Пагубное насыщение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "fire",
+      "name": "Огонь",
+      "nameEn": "Fire",
+      "description": "Огненный луч",
+      "spells": "Преграда для огня",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "abomination",
+      "name": "Отвращение",
+      "nameEn": "Abomination",
+      "description": "снять покров природы",
+      "spells": "жуткое пиршество",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "sorrow",
+      "name": "Печаль",
+      "nameEn": "Sorrow",
+      "description": "Стенание",
+      "spells": "Переполняющая печаль",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "repose",
+      "name": "Покой",
+      "nameEn": "Repose",
+      "description": "Разделение бремени",
+      "spells": "Источник спокойствия",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "indulgence",
+      "name": "Потворство",
+      "nameEn": "Indulgence",
+      "description": "Переедание",
+      "spells": "развитие событий",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "nature",
+      "name": "Природа",
+      "nameEn": "Nature",
+      "description": "Живые шипы",
+      "spells": "дары природы",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "travel",
+      "name": "Путешествия",
+      "nameEn": "Travel",
+      "description": "Быстрые шаги",
+      "spells": "переход путешественника",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "dust",
+      "name": "Пыль",
+      "nameEn": "Dust",
+      "description": "Иссушение",
+      "spells": "Пыльная буря",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "decay",
+      "name": "Разложение",
+      "nameEn": "Decay",
+      "description": "иссушающий захват",
+      "spells": "паровое поле",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "destruction",
+      "name": "Разрушение",
+      "nameEn": "Destruction",
+      "description": "разрушительный крик",
+      "spells": "Разрушительная аура",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "zeal",
+      "name": "Рвение",
+      "nameEn": "Zeal",
+      "description": "Усиление оружия",
+      "spells": "боевое рвение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "introspection",
+      "name": "Самоанализ",
+      "nameEn": "Introspection",
+      "description": "Guided Introspection",
+      "spells": "Confront Selves",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "freedom",
+      "name": "Свобода",
+      "nameEn": "Freedom",
+      "description": "Беспрепятственное перемещение",
+      "spells": "слово свободы",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "family",
+      "name": "Семья",
+      "nameEn": "Family",
+      "description": "Умиротворяющие слова",
+      "spells": "Единство",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "death",
+      "name": "Смерть",
+      "nameEn": "Death",
+      "description": "зов смерти",
+      "spells": "Истребление нежити",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "disorientation",
+      "name": "Смятение",
+      "nameEn": "Disorientation",
+      "description": "затуманенный фокус",
+      "spells": "эфемерные опасности",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "dreams",
+      "name": "Сны",
+      "nameEn": "Dreams",
+      "description": "Сладкий сон",
+      "spells": "зов сновидца",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "perfection",
+      "name": "Совершенство",
+      "nameEn": "Perfection",
+      "description": "Идеальный разум",
+      "spells": "Идеальное тело",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "sun",
+      "name": "Солнце",
+      "nameEn": "Sun",
+      "description": "Ослепительная вспышка",
+      "spells": "Свечение жизни",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "swarm",
+      "name": "Стая",
+      "nameEn": "Swarm",
+      "description": "Чутье стаи",
+      "spells": "Форма стаи",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "passion",
+      "name": "Страсть",
+      "nameEn": "Passion",
+      "description": "Чарующее прикосновение",
+      "spells": "Чарующее прикосновение",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "fate",
+      "name": "Судьба",
+      "nameEn": "Fate",
+      "description": "Чтение судьбы",
+      "spells": "Искушение судьбы",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "secrecy",
+      "name": "Тайна",
+      "nameEn": "Secrecy",
+      "description": "Вынужденная тишина",
+      "spells": "Охраняемый секрет",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "creation",
+      "name": "Творение",
+      "nameEn": "Creation",
+      "description": "Всплеск искусства",
+      "spells": "Художественная доработка",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "tyranny",
+      "name": "Тирания",
+      "nameEn": "Tyranny",
+      "description": "подавляющее прикосновение",
+      "spells": "Подчиняющий удар",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "toil",
+      "name": "Труд",
+      "nameEn": "Toil",
+      "description": "Practice Makes Perfect",
+      "spells": "Tireless Worker",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "darkness",
+      "name": "Тьма",
+      "nameEn": "Darkness",
+      "description": "плащ теней",
+      "spells": "Помрачение очей",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "confidence",
+      "name": "Уверенность",
+      "nameEn": "Confidence",
+      "description": "напускная уверенность",
+      "spells": "Мания величия",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "luck",
+      "name": "Удача",
+      "nameEn": "Luck",
+      "description": "толика удачи",
+      "spells": "Счастливая случайность",
+      "sourceBook": "Основная книга игрока"
+    },
+    {
+      "id": "cold",
+      "name": "Холод",
+      "nameEn": "Cold",
+      "description": "Winter Bolt",
+      "spells": "Diamond Dust",
+      "sourceBook": "Сакральные таинства"
+    },
+    {
+      "id": "plague",
+      "name": "Чума",
+      "nameEn": "Plague",
+      "description": "сакральная чума",
+      "spells": "гнилые миазмы",
+      "sourceBook": "Сакральные таинства"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import type {
   Pathfinder2ProficiencyRank,
   Pathfinder2RulesCatalog,
 } from '../../types'
+import { getClassProgressionGrants } from '../progression/class-progression'
 import { getProficiencyBonus, PROFICIENCY_RANKS } from '../skills/proficiency'
 
 function grantKey(grant: Pathfinder2ProficiencyGrant) {
@@ -62,7 +63,14 @@ export function calculateProficiencies(
 ) {
   const characterClass = getClassById(catalog, draft.class.classId)
   return calculateProficiencyGrants(
-    characterClass?.proficiencyGrants ?? [],
+    [
+      ...(characterClass?.proficiencyGrants ?? []),
+      ...getClassProgressionGrants(
+        catalog,
+        draft.class.classId,
+        draft.progression.level,
+      ),
+    ],
     draft.progression.level,
   )
 }

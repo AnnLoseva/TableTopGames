@@ -1,6 +1,7 @@
 import {
   getBackgroundById,
   getClassById,
+  getFeatById,
 } from '../../data/selectors'
 import { v4DraftToRuntime } from '../../data/migration-v4'
 import type {
@@ -21,8 +22,13 @@ import { calculateLanguages } from '../languages/calculate-languages'
 import { calculateProficiencies } from '../proficiencies/calculate-proficiencies'
 import { calculateReligion } from '../religion/calculate-religion'
 import { calculateSpellcasting } from '../spells/calculate-spellcasting'
+import {
+  getFeatAvailability,
+  getFeatsForSlot,
+} from '../feats/requirements'
+import { getClassProgressionLevel } from '../progression/class-progression'
 import { buildCharacter } from './build-character'
-import { createDecisionSlot } from './decision-slots'
+import { createDecisionSlot, createFeatSlot } from './decision-slots'
 
 function uniqueById<T extends { id: string }>(values: T[]) {
   return Array.from(new Map(values.map(value => [value.id, value])).values())
@@ -99,6 +105,119 @@ function classChoiceIssues(
   })
 }
 
+function buildFeatSlots(
+  draft: Pathfinder2CharacterDraftV4,
+  catalog: Pathfinder2RulesCatalog,
+) {
+  const characterClass = getClassById(catalog, draft.class.classId)
+  if (!characterClass) return []
+  return Array.from(
+    { length: Math.max(0, draft.progression.level) },
+    (_, index) => index + 1,
+  ).flatMap(level => {
+    const progression = getClassProgressionLevel(
+      catalog,
+      characterClass.id,
+      level,
+    )
+    return (progression?.featSlots ?? []).map((definition, index) => ({
+      ...createFeatSlot({
+        source: {
+          type: 'level',
+          id: `level-${level}`,
+          label: `${level}-й уровень`,
+          level,
+        },
+        type: definition.type,
+        level,
+        required: definition.required,
+        selectedFeatId: draft.feats.selectedBySlot[definition.id] ?? null,
+        index,
+      }),
+      id: definition.id,
+    }))
+  })
+}
+
+function featSlotIssues(
+  state: Pathfinder2CharacterState,
+  catalog: Pathfinder2RulesCatalog,
+): Pathfinder2ValidationIssue[] {
+  const selectedCounts = state.featSlots.reduce<Record<string, number>>((counts, slot) => {
+    if (slot.selectedFeatId) counts[slot.selectedFeatId] = (counts[slot.selectedFeatId] ?? 0) + 1
+    return counts
+  }, {})
+
+  return state.featSlots.flatMap(slot => {
+    if (!slot.selectedFeatId) {
+      return slot.required ? [{
+        id: `feat-slot.required.${slot.id}`,
+        severity: 'error' as const,
+        step: 'features' as const,
+        section: 'feats',
+        field: slot.id,
+        level: slot.level,
+        relatedChoiceId: slot.id,
+        message: `Выберите черту для слота «${slot.type}» ${slot.level}-го уровня.`,
+      }] : []
+    }
+    const feat = getFeatById(catalog, slot.selectedFeatId)
+    if (!feat || !getFeatsForSlot(slot, catalog).some(entry => entry.id === feat.id)) {
+      return [{
+        id: `feat-slot.missing.${slot.id}`,
+        severity: 'error' as const,
+        step: 'features' as const,
+        section: 'feats',
+        field: slot.id,
+        level: slot.level,
+        relatedChoiceId: slot.id,
+        message: `Выбранная черта отсутствует в каталоге для слота «${slot.type}».`,
+      }]
+    }
+    const availability = getFeatAvailability(
+      feat,
+      slot,
+      state,
+      { ignoreAlreadyGranted: true },
+    )
+    const issues: Pathfinder2ValidationIssue[] = availability.available ? [] : [{
+      id: `feat-slot.invalid.${slot.id}`,
+      severity: 'error',
+      step: 'features',
+      section: 'feats',
+      field: slot.id,
+      level: slot.level,
+      relatedChoiceId: slot.id,
+      message: availability.reasons.join(' '),
+    }]
+    if (selectedCounts[feat.id] > 1) {
+      issues.push({
+        id: `feat-slot.duplicate.${slot.id}`,
+        severity: 'error',
+        step: 'features',
+        section: 'feats',
+        field: slot.id,
+        level: slot.level,
+        relatedChoiceId: slot.id,
+        message: `Черта «${feat.name}» уже выбрана в другом слоте.`,
+      })
+    }
+    if (availability.needsManualReview) {
+      issues.push({
+        id: `feat-slot.manual.${slot.id}`,
+        severity: 'warning',
+        step: 'features',
+        section: 'feats',
+        field: slot.id,
+        level: slot.level,
+        relatedChoiceId: slot.id,
+        message: `${feat.name}: ${availability.reasons.join(' ')}`,
+      })
+    }
+    return issues
+  })
+}
+
 export function buildCharacterState(
   draft: Pathfinder2CharacterDraftV4,
   catalog: Pathfinder2RulesCatalog,
@@ -107,6 +226,7 @@ export function buildCharacterState(
   const legacyBuild = buildCharacter(runtimeDraft, catalog)
   const background = getBackgroundById(catalog, draft.background.backgroundId)
   const classChoiceSlots = buildClassChoiceSlots(draft, catalog)
+  const featSlots = buildFeatSlots(draft, catalog)
   const proficiencies = calculateProficiencies(draft, catalog)
   const inventory = calculateInventory(
     draft.inventory.entries,
@@ -120,6 +240,10 @@ export function buildCharacterState(
     inventory,
     proficiencies,
     catalog,
+    shieldRaised: inventory.entries.some(entry => (
+      entry.equipped
+      && catalog.shields.some(shield => shield.id === entry.itemId)
+    )),
   })
   const baseDerived = calculateDerivedCharacterValues(
     runtimeDraft,
@@ -137,7 +261,7 @@ export function buildCharacterState(
     legacyBuild.attributes.modifiers.intelligence,
   )
   const religion = calculateReligion(draft, catalog)
-  const validationIssues = [
+  const baseValidationIssues = [
     ...legacyBuild.validationIssues,
     ...classChoiceIssues(draft, catalog, classChoiceSlots),
     ...spellcasting.issues,
@@ -150,7 +274,7 @@ export function buildCharacterState(
     ...Object.values(draft.class.featChoicesByLevel).flat(),
   ].filter(Boolean)
 
-  return {
+  const state: Pathfinder2CharacterState = {
     draft,
     runtimeDraft,
     legacyBuild,
@@ -183,7 +307,14 @@ export function buildCharacterState(
     languages,
     religion,
     classChoiceSlots,
-    validationIssues,
-    isReady: !validationIssues.some(issue => issue.severity === 'error'),
+    featSlots,
+    validationIssues: baseValidationIssues,
+    isReady: false,
   }
+  state.validationIssues = [
+    ...baseValidationIssues,
+    ...featSlotIssues(state, catalog),
+  ]
+  state.isReady = !state.validationIssues.some(issue => issue.severity === 'error')
+  return state
 }

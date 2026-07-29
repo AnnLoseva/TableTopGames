@@ -4,6 +4,7 @@ import type {
   Pathfinder2FeatSlot,
   Pathfinder2ProficiencyRank,
   Pathfinder2Requirement,
+  Pathfinder2RulesCatalog,
 } from '../../types'
 import { PROFICIENCY_RANKS } from '../skills/proficiency'
 
@@ -58,6 +59,7 @@ export function getFeatAvailability(
   feat: Pathfinder2FeatRule,
   slot: Pathfinder2FeatSlot,
   state: Pathfinder2CharacterState,
+  options: { ignoreAlreadyGranted?: boolean } = {},
 ) {
   const expectedCategory = slot.type === 'skill-feat'
     ? 'skill'
@@ -65,19 +67,58 @@ export function getFeatAvailability(
       ? 'mythic'
       : slot.type === 'general-feat'
         ? 'general'
+        : slot.type === 'ancestry-feat'
+          ? 'ancestry'
+          : slot.type === 'class-feat'
+            ? 'class'
         : null
   const reasons: string[] = []
   if (!expectedCategory || feat.category !== expectedCategory) {
     reasons.push('Тип черты не соответствует слоту.')
   }
   if (feat.level > slot.level) reasons.push('Уровень черты выше уровня слота.')
-  if (state.grantedFeatIds.includes(feat.id)) reasons.push('Черта уже получена.')
+  if (!options.ignoreAlreadyGranted && state.grantedFeatIds.includes(feat.id)) {
+    reasons.push('Черта уже получена.')
+  }
+  if (
+    feat.category === 'ancestry'
+    && feat.ancestryIds?.length
+    && !feat.ancestryIds.includes(state.draft.ancestry.ancestryId)
+  ) {
+    reasons.push('Черта недоступна выбранному народу.')
+  }
+  if (
+    feat.category === 'class'
+    && feat.classIds?.length
+    && !feat.classIds.includes(state.draft.class.classId)
+  ) {
+    reasons.push('Черта недоступна выбранному классу.')
+  }
+  const manualReview: string[] = []
   feat.requirements.forEach(requirement => {
+    if (requirement.type === 'custom') {
+      manualReview.push(`Ручная проверка: ${requirement.description}`)
+      return
+    }
     if (!evaluateRequirement(requirement, state)) {
-      reasons.push(requirement.type === 'custom'
-        ? `Требует ручной проверки: ${requirement.description}`
-        : 'Не выполнено структурированное требование.')
+      reasons.push('Не выполнено структурированное требование.')
     }
   })
-  return { available: reasons.length === 0, reasons }
+  return {
+    available: reasons.length === 0,
+    reasons: [...reasons, ...manualReview],
+    needsManualReview: manualReview.length > 0,
+  }
+}
+
+export function getFeatsForSlot(
+  slot: Pathfinder2FeatSlot,
+  catalog: Pathfinder2RulesCatalog,
+) {
+  if (slot.type === 'ancestry-feat') return catalog.ancestryFeats
+  if (slot.type === 'class-feat') return catalog.classFeats
+  if (slot.type === 'skill-feat') return catalog.skillFeats
+  if (slot.type === 'general-feat') return catalog.generalFeats
+  if (slot.type === 'mythic-feat') return catalog.mythicFeats
+  return []
 }

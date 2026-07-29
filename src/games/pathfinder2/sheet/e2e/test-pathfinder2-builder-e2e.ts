@@ -163,19 +163,34 @@ async function run() {
     )
     console.log('✓ choice dialog focus, Escape and scroll lock work')
 
+    await stepNavigation.getByRole('button', { name: /Снаряжение/ }).click()
+    await page.getByRole('searchbox', {
+      name: /Поиск по названию, ID, источнику или черте/,
+    }).fill('Беруши')
+    const earplugsCard = page.locator('article').filter({ hasText: 'Беруши' }).first()
+    await earplugsCard.getByRole('button', { name: 'Купить' }).click()
+    await page.getByText('Беруши: добавлено в инвентарь.').waitFor()
+    assert.match(await page.locator('body').innerText(), /1 пм 4 зм 9 см/)
+    await page.getByRole('button', { name: 'Вернуть', exact: true }).click()
+    await page.getByText('Покупка отменена, стоимость возвращена.').waitFor()
+    assert.match(await page.locator('body').innerText(), /1 пм 5 зм/)
+    console.log('✓ catalog shop purchases and refunds by stable item ID')
+
     await stepNavigation.getByRole('button', { name: /Проверка/ }).click()
     const catalogAudit = page.getByRole('region', {
       name: 'Готовность справочников',
     })
     const auditText = await catalogAudit.innerText()
-    assert.match(auditText, /Черты народов · отсутствует/)
-    assert.match(auditText, /Прогрессия классов 1–20 · отсутствует/)
+    assert.match(auditText, /Черты народов · подключено/)
+    assert.match(auditText, /Прогрессия классов 1–20 · подключено/)
+    assert.match(auditText, /Снаряжение · подключено/)
+    assert.match(auditText, /Заклинания · подключено/)
     assert.equal(
       await page.getByRole('button', { name: 'Завершить создание' }).isDisabled(),
       true,
       'An incomplete character must not pass the completion gate.',
     )
-    console.log('✓ missing rule catalogs remain explicit completion blockers')
+    console.log('✓ connected rule catalogs are visible while character decisions still gate completion')
 
     const layout = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
@@ -216,7 +231,7 @@ async function run() {
       `The browser console should stay clean:\n${browserErrors.join('\n')}`,
     )
     console.log('✓ browser console has no errors')
-    console.log('Pathfinder 2 builder E2E: 8 checks passed.')
+    console.log('Pathfinder 2 builder E2E: 9 checks passed.')
   } finally {
     await context.close()
     await browser.close()

@@ -1,5 +1,30 @@
 # Decisions
 
+## 2026-07-29 — Canonical Pathfinder catalogs are runtime authorities
+
+**Area:** Pathfinder 2 rules data / character creation / progression
+**Decision:** Valid schema-v1 documents under
+`src/games/pathfinder2/Rules/catalogs/` are loaded only by the server adapter and
+become the runtime authorities for ancestry/class feats, class progression,
+equipment, weapons, armor, shields, deities, languages and traits. Feat and
+level choices persist stable catalog and slot IDs in schema v4. The shop and
+derived engines consume typed catalog fields; they never parse prose in the
+browser or invent missing mechanics.
+**Reason:** A `connected` audit label is only useful when the same document
+drives actual choices, validation and calculations. Keeping the adapter
+server-only also prevents raw owner documents from entering client bundles.
+**Consequences:** Catalog readiness and counts come from document validation,
+not constants. Classes without a class-progression entry are blocked
+explicitly. Data flagged by normalization as mechanically incomplete can be
+displayed and selected only with the exact values supplied; rules fidelity
+still depends on correcting the owner data rather than client-side guesses.
+**Affected files:** `src/games/pathfinder2/sheet/{rules-data,types}.ts`,
+`src/games/pathfinder2/sheet/{data,rules,components,e2e}/*`,
+`docs/ai/{CURRENT-STATE,subsystems/pathfinder2-sheet}.md`
+**Status:** active
+
+---
+
 ## 2026-07-29 — Pathfinder schema v4 is canonical persistence with a transitional v3 runtime adapter
 
 **Area:** Pathfinder 2 character creation / local persistence / rules engine

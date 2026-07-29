@@ -32,22 +32,21 @@ src/app/pathfinder2/sheet/page.tsx
   creating a second character object.
 - `Rules/*.json` is the owner-provided local data source. Ancestries,
   ancestry/versatile heritages, backgrounds, classes and
-  general/skill/mythic feats are connected. `spells.json` is normalized into
+  general/skill/mythic feats are connected. Canonical schema-v1 documents add
+  ancestry/class feats, class progression, equipment, weapons, armor, shields,
+  deities, languages and traits. `spells.json` is normalized into
   spell/cantrip/focus catalogs and used by the spellcasting engine.
-  `archetypes.json` remains present/not connected.
-- Descriptive item documents (including adventuring gear, armor, weapons,
-  shields, worn/held/alchemical items, consumables, runes, wands, staves and
-  other owner-provided groups) are audited. They are not used for purchases
-  because price, Bulk and combat fields are absent or buried in prose, and
-  several documents have missing/duplicate IDs.
+- The structured shop uses canonical price/Bulk fields, performs integer
+  purchases and refunds, and stores inventory entries by stable item ID.
+  Equipped armor/weapons and a raised shield feed AC/attack calculations.
+  Generated entries flagged as needing owner mechanics are still a
+  data-quality limitation; the client does not invent missing rule values.
 - `rules-data.ts` is a server-only adapter: it normalizes the owner-provided JSON
   documents into the serializable catalog used by the client component. Do not
   import the raw JSON into the client component.
-- `data/catalog-audit.ts` exposes machine-readable connected/partial/
-  present-unconnected/missing states. Missing ancestry/class feats, deities,
-  languages and full class progression, plus mechanically invalid descriptive
-  equipment/weapon/armor/shield documents, are blockers for the corresponding
-  completion gates; do not invent their data.
+- `data/catalog-audit.ts` validates canonical document metadata and reports
+  actual entry counts instead of hardcoded readiness. A selected class without
+  one of the 21 class-progression entries is an explicit completion blocker.
 - `data/catalog-document.ts` is the schema-v1 adapter/validator for future
   owner-provided catalogs. New catalogs need stable IDs, source/version/license
   metadata and entry-specific validation before rules-engine use.
@@ -65,8 +64,10 @@ src/app/pathfinder2/sheet/page.tsx
   boosts, separate class/Intelligence/replacement skill choices and
   level-stamped skill increases.
 - `rules/creation/decision-slots.ts` owns stable source-derived choice-slot IDs
-  and generic/feat slot completion. Arbitrary feat adding is disabled; actual
-  ancestry/class slots still require authorized progression catalogs.
+  and generic/feat slot completion. The global and class progression documents
+  issue ancestry/class/skill/general feat slots; selections are filtered by
+  type, level, ancestry, class and structured requirements, then persisted by
+  slot ID in schema v4.
 - `rules/creation/build-character-state.ts` is the read-only v4 aggregate used
   by the page. Pure modules under `rules/{attributes,skills,feats,
   proficiencies,equipment,combat,spells,languages,religion,progression}` calculate
@@ -80,21 +81,21 @@ src/app/pathfinder2/sheet/page.tsx
   the other; changing ancestry clears only an incompatible normal heritage.
 - The sheet exposes a one-level-at-a-time level-up panel. The engine records
   level choices, optionally subtracts 1,000 XP, applies class features,
-  class-specific skill increases, 5/10/15/20 attribute packages and spell-slot
-  schedules. The high-level scenario keeps level 1 as the base and a target
-  level; it cannot skip history. Real owner data still blocks production
-  progression because ancestry/class feat and full class-progression catalogs
-  are missing.
+  catalog feat slots and proficiency grants, class-specific skill increases,
+  attribute packages and spell-slot schedules. The high-level scenario keeps
+  level 1 as the base and a target level; it cannot skip history. Classes
+  without a canonical progression entry cannot advance silently.
 - The summary calculates HP, armor AC, perception, saves, class DC, inventory,
   Bulk, equipped attacks and spell attack/DC from source decisions. Current HP
   is not reset on every recalculation and is clamped if a changed build lowers
   its maximum.
 - Currency math uses integer copper conversion; purchase/refund and carrying
-  rules work with the typed equipment contract. The UI does not present a fake
-  shop while the mechanical item catalog is unavailable.
-- Languages/deities have typed contracts and validators. Until owner catalogs
-  exist, legacy text remains notes and required language/deity decisions are
-  explicit completion blockers.
+  rules work with the typed equipment contract and the builder exposes the
+  canonical shop. Legacy equipment text remains a non-mechanical migration note.
+- Languages/deities use stable catalog IDs. Known ancestry language names are
+  mapped to automatic and bonus choices; Intelligence changes the choice limit.
+  Required deity and sanctification choices are validated against the deity
+  document. Legacy free text remains a migration note.
 - Draft persistence is local to the browser under
   `pathfinder2-character-draft-v4`. Text changes are debounced and choice
   confirmations save immediately. Restore reads v4 first, then retains

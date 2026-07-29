@@ -1,4 +1,4 @@
-import { getClassById } from '../../data/selectors'
+import { getClassById, getFeatById } from '../../data/selectors'
 import { v4DraftToRuntime } from '../../data/migration-v4'
 import type {
   Pathfinder2CharacterDraftV4,
@@ -11,11 +11,20 @@ import type {
 } from '../../types'
 import { getSpellSlotsAtLevel } from '../spells/calculate-spellcasting'
 import { buildCharacter } from '../creation/build-character'
+import { buildCharacterState } from '../creation/build-character-state'
+import { createFeatSlot } from '../creation/decision-slots'
+import {
+  getFeatAvailability,
+  getFeatsForSlot,
+} from '../feats/requirements'
 import { getNextProficiencyRank } from '../skills/proficiency'
 import { canReachSkillRankAtLevel } from './skill-progression'
+import {
+  getClassProgressionLevel,
+  hasClassProgression,
+} from './class-progression'
 
 const EXPERIENCE_PER_LEVEL = 1_000
-const ATTRIBUTE_BOOST_LEVELS = new Set([5, 10, 15, 20])
 
 function unavailableIssue(
   catalog: Pathfinder2RulesCatalog,
@@ -86,6 +95,22 @@ export function buildLevelUpPlan(
     const issue = unavailableIssue(catalog, id, targetLevel)
     if (issue) issues.push(issue)
   }
+  if (
+    characterClass
+    && !hasClassProgression(catalog, characterClass.id)
+  ) {
+    issues.push({
+      id: `level-up.class-progression.${characterClass.id}.${targetLevel}`,
+      severity: 'error',
+      step: 'features',
+      section: 'progression',
+      level: targetLevel,
+      message: `Для класса «${characterClass.name}» нет подключённой прогрессии 1–20.`,
+    })
+  }
+  const progression = characterClass
+    ? getClassProgressionLevel(catalog, characterClass.id, targetLevel)
+    : null
   const spellSlots = getSpellSlotsAtLevel(
     characterClass?.spellSlots ?? null,
     targetLevel,
@@ -95,13 +120,24 @@ export function buildLevelUpPlan(
     targetLevel,
     experienceCost: EXPERIENCE_PER_LEVEL,
     automaticFeatures: automaticFeatures(draft, targetLevel, catalog),
-    attributeBoostCount: ATTRIBUTE_BOOST_LEVELS.has(targetLevel) ? 4 : 0,
-    skillIncreaseCount: characterClass?.skillRules.skillIncreaseLevels.includes(targetLevel)
-      ? 1
-      : 0,
-    // Feat slots are intentionally empty until owner-provided class/ancestry
-    // progression catalogs describe their exact source and schedule.
-    featSlots: [],
+    attributeBoostCount: progression?.attributeBoostCount ?? 0,
+    skillIncreaseCount: progression?.skillIncreaseCount ?? 0,
+    featSlots: (progression?.featSlots ?? []).map((definition, index) => ({
+      ...createFeatSlot({
+        source: {
+          type: 'level',
+          id: `level-${targetLevel}`,
+          label: `${targetLevel}-й уровень`,
+          level: targetLevel,
+        },
+        type: definition.type,
+        level: targetLevel,
+        required: definition.required,
+        selectedFeatId: draft.feats.selectedBySlot[definition.id] ?? null,
+        index,
+      }),
+      id: definition.id,
+    })),
     spellSlots: spellSlots.spellSlots,
     cantripSlots: spellSlots.cantripSlots,
     issues,
@@ -112,13 +148,102 @@ function duplicateCount(values: string[]) {
   return values.length - new Set(values).size
 }
 
+function validateFeatSelections(
+  choices: Pathfinder2LevelChoices,
+  draft: Pathfinder2CharacterDraftV4,
+  catalog: Pathfinder2RulesCatalog,
+  plan: Pathfinder2LevelUpPlan,
+) {
+  const issues: Pathfinder2ValidationIssue[] = []
+  const previewState = buildCharacterState({
+    ...draft,
+    progression: {
+      ...draft.progression,
+      level: choices.level,
+    },
+  }, catalog)
+  const selectedIds = Object.values(choices.featSelections).filter(Boolean)
+
+  plan.featSlots.forEach(slot => {
+    const selectedId = choices.featSelections[slot.id] ?? ''
+    if (!selectedId) {
+      if (slot.required) {
+        issues.push({
+          id: `level-up.feat.required.${choices.level}.${slot.id}`,
+          severity: 'error',
+          step: 'features',
+          section: 'progression',
+          field: slot.id,
+          level: choices.level,
+          relatedChoiceId: slot.id,
+          message: `Выберите черту для слота «${slot.type}».`,
+        })
+      }
+      return
+    }
+    const feat = getFeatById(catalog, selectedId)
+    if (!feat || !getFeatsForSlot(slot, catalog).some(entry => entry.id === selectedId)) {
+      issues.push({
+        id: `level-up.feat.missing.${choices.level}.${slot.id}`,
+        severity: 'error',
+        step: 'features',
+        section: 'progression',
+        field: slot.id,
+        level: choices.level,
+        relatedChoiceId: slot.id,
+        message: 'Выбранная черта не соответствует типу слота.',
+      })
+      return
+    }
+    const availability = getFeatAvailability(feat, slot, previewState)
+    if (!availability.available) {
+      issues.push({
+        id: `level-up.feat.invalid.${choices.level}.${slot.id}`,
+        severity: 'error',
+        step: 'features',
+        section: 'progression',
+        field: slot.id,
+        level: choices.level,
+        relatedChoiceId: slot.id,
+        message: `${feat.name}: ${availability.reasons.join(' ')}`,
+      })
+    } else if (availability.needsManualReview) {
+      issues.push({
+        id: `level-up.feat.manual.${choices.level}.${slot.id}`,
+        severity: 'warning',
+        step: 'features',
+        section: 'progression',
+        field: slot.id,
+        level: choices.level,
+        relatedChoiceId: slot.id,
+        message: `${feat.name}: ${availability.reasons.join(' ')}`,
+      })
+    }
+  })
+
+  if (duplicateCount(selectedIds) > 0) {
+    issues.push({
+      id: `level-up.feat.duplicates.${choices.level}`,
+      severity: 'error',
+      step: 'features',
+      section: 'progression',
+      level: choices.level,
+      message: 'Одну и ту же черту нельзя выбрать в нескольких слотах уровня.',
+    })
+  }
+  return issues
+}
+
 export function validateLevelUp(
   choices: Pathfinder2LevelChoices,
   draft: Pathfinder2CharacterDraftV4,
   catalog: Pathfinder2RulesCatalog,
 ): Pathfinder2ValidationIssue[] {
   const plan = buildLevelUpPlan(draft, choices.level, catalog)
-  const issues = [...plan.issues]
+  const issues = [
+    ...plan.issues,
+    ...validateFeatSelections(choices, draft, catalog, plan),
+  ]
   if (
     choices.attributeBoosts.length !== plan.attributeBoostCount
     || duplicateCount(choices.attributeBoosts) > 0
@@ -212,6 +337,14 @@ export function applyLevelUp(
     return { ok: false, plan, issues }
   }
   const level = choices.level
+  const ancestryFeatIds = plan.featSlots
+    .filter(slot => slot.type === 'ancestry-feat')
+    .map(slot => choices.featSelections[slot.id])
+    .filter(Boolean)
+  const classFeatIds = plan.featSlots
+    .filter(slot => slot.type === 'class-feat')
+    .map(slot => choices.featSelections[slot.id])
+    .filter(Boolean)
   return {
     ok: true,
     plan,
@@ -248,6 +381,29 @@ export function applyLevelUp(
           ...(choices.skillIncreases.length
             ? { [level]: [...choices.skillIncreases] }
             : {}),
+        },
+      },
+      feats: {
+        ...draft.feats,
+        selectedBySlot: {
+          ...draft.feats.selectedBySlot,
+          ...Object.fromEntries(
+            Object.entries(choices.featSelections).filter(([, featId]) => Boolean(featId)),
+          ),
+        },
+      },
+      ancestry: {
+        ...draft.ancestry,
+        featChoicesByLevel: {
+          ...draft.ancestry.featChoicesByLevel,
+          ...(ancestryFeatIds.length ? { [level]: ancestryFeatIds } : {}),
+        },
+      },
+      class: {
+        ...draft.class,
+        featChoicesByLevel: {
+          ...draft.class.featChoicesByLevel,
+          ...(classFeatIds.length ? { [level]: classFeatIds } : {}),
         },
       },
       spellcasting: {

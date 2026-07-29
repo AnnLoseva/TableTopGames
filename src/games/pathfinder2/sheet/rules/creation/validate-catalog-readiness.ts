@@ -7,6 +7,7 @@ import type {
   Pathfinder2RulesCatalog,
   Pathfinder2ValidationIssue,
 } from '../../types'
+import { hasClassProgression } from '../progression/class-progression'
 
 function unavailable(
   availability: Pathfinder2CatalogAvailability[],
@@ -115,12 +116,24 @@ export function validateCatalogReadiness(
     ))
   }
   const classProgression = unavailable(availability, 'class-progression')
-  if (classProgression && draft.level > 1) {
+  if (classProgression && draft.classId) {
     issues.push(issueFor(
       classProgression,
       'features',
       'Полная структурированная прогрессия выбранного класса 2–20 не подключена.',
     ))
+  } else if (
+    draft.classId
+    && !hasClassProgression(catalog, draft.classId)
+  ) {
+    issues.push({
+      id: `catalog.class-progression.${draft.classId}`,
+      severity: 'error',
+      step: 'features',
+      section: 'catalog',
+      field: 'class-progression',
+      message: `Для выбранного класса «${characterClass?.name ?? draft.classId}» пока нет прогрессии 1–20.`,
+    })
   }
   const spells = unavailable(availability, 'spells')
   if (spells && characterClass?.spellTradition) {

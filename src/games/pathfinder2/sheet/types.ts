@@ -112,6 +112,7 @@ export type Pathfinder2ProficiencyCategory =
   | 'skill'
   | 'weapon'
   | 'armor'
+  | 'shield'
   | 'class-dc'
   | 'spell-attack'
   | 'spell-dc'
@@ -782,21 +783,70 @@ export type Pathfinder2ClassRule = {
 export type Pathfinder2FeatRule = {
   id: string
   name: string
+  nameEn?: string
   level: number
   description: string
   prerequisites: string | null
   requirements: Pathfinder2Requirement[]
-  category: 'general' | 'skill' | 'mythic'
+  category: 'general' | 'skill' | 'mythic' | 'ancestry' | 'class'
   traits: string[]
   skill?: string
+  ancestryIds?: string[]
+  classIds?: string[]
   sourceBook?: string
 }
 
 export type Pathfinder2RuleSource = {
-  id: 'ancestries' | 'backgrounds' | 'classes' | 'feats' | 'equipment' | 'deities' | 'languages' | 'traits'
+  id:
+    | 'ancestries'
+    | 'backgrounds'
+    | 'classes'
+    | 'feats'
+    | 'ancestry-feats'
+    | 'class-feats'
+    | 'class-progression'
+    | 'equipment'
+    | 'weapons'
+    | 'armor'
+    | 'shields'
+    | 'spells'
+    | 'deities'
+    | 'languages'
+    | 'traits'
   title: string
   version: string
   source: string
+}
+
+export type Pathfinder2TraitRule = {
+  id: string
+  name: string
+  description: string
+  category: string
+  sourceBook: string
+}
+
+export type Pathfinder2ProgressionFeatSlotDefinition = {
+  id: string
+  type: Pathfinder2FeatSlotType
+  count: number
+  required: boolean
+}
+
+export type Pathfinder2ClassProgressionLevel = {
+  level: number
+  automaticFeatureIds: string[]
+  proficiencyGrants: Array<Omit<Pathfinder2ProficiencyGrant, 'source'>>
+  featSlots: Pathfinder2ProgressionFeatSlotDefinition[]
+  skillIncreaseCount: number
+  attributeBoostCount: number
+}
+
+export type Pathfinder2ClassProgressionRule = {
+  id: string
+  name: string
+  classId: string | null
+  levels: Pathfinder2ClassProgressionLevel[]
 }
 
 export type Pathfinder2CatalogId =
@@ -844,6 +894,9 @@ export type Pathfinder2RulesCatalog = {
   generalFeats: Pathfinder2FeatRule[]
   skillFeats: Pathfinder2FeatRule[]
   mythicFeats: Pathfinder2FeatRule[]
+  ancestryFeats: Pathfinder2FeatRule[]
+  classFeats: Pathfinder2FeatRule[]
+  classProgression: Pathfinder2ClassProgressionRule[]
   equipment: Pathfinder2EquipmentItem[]
   weapons: Pathfinder2WeaponRule[]
   armor: Pathfinder2ArmorRule[]
@@ -853,6 +906,7 @@ export type Pathfinder2RulesCatalog = {
   focusSpells: Pathfinder2SpellRule[]
   languages: Pathfinder2LanguageRule[]
   deities: Pathfinder2DeityRule[]
+  traits: Pathfinder2TraitRule[]
   sources: Pathfinder2RuleSource[]
   dataAvailability: Pathfinder2CatalogAvailability[]
   validationWarnings: string[]
@@ -968,6 +1022,7 @@ export type Pathfinder2CharacterState = {
   languages: Pathfinder2CalculatedLanguages
   religion: Pathfinder2CalculatedReligion
   classChoiceSlots: Pathfinder2DecisionSlot<'class-choice'>[]
+  featSlots: Pathfinder2FeatSlot[]
   validationIssues: Pathfinder2ValidationIssue[]
   isReady: boolean
 }

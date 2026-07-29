@@ -7,6 +7,7 @@ import { buildCharacterState } from '../rules/creation/build-character-state'
 import { reconcileCharacterDecisions } from '../rules/creation/reconcile-character'
 import {
   getClassById,
+  getFeatById,
 } from '../data/selectors'
 import { usePathfinder2Character } from '../hooks/usePathfinder2Character'
 import type {
@@ -196,9 +197,38 @@ export default function Pathfinder2SheetPage({
       }
       return next
     }, { immediate: true })
+    if (kind === 'ancestry' && draft.ancestryId && draft.ancestryId !== id) {
+      updateV4(current => ({
+        ...current,
+        ancestry: {
+          ...current.ancestry,
+          featChoicesByLevel: {},
+        },
+        feats: {
+          ...current.feats,
+          selectedBySlot: Object.fromEntries(
+            Object.entries(current.feats.selectedBySlot).filter(([, featId]) => (
+              getFeatById(rules, featId)?.category !== 'ancestry'
+            )),
+          ),
+        },
+      }), { immediate: true })
+    }
     if (kind === 'class' && draft.classId && draft.classId !== id) {
       updateV4(current => ({
         ...current,
+        class: {
+          ...current.class,
+          featChoicesByLevel: {},
+        },
+        feats: {
+          ...current.feats,
+          selectedBySlot: Object.fromEntries(
+            Object.entries(current.feats.selectedBySlot).filter(([, featId]) => (
+              getFeatById(rules, featId)?.category !== 'class'
+            )),
+          ),
+        },
         spellcasting: { entries: [] },
       }), { immediate: true })
     }

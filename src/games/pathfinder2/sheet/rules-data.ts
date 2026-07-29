@@ -31,10 +31,12 @@ import wandRules from '../Rules/wands.json'
 import weaponRules from '../Rules/weapons.json'
 import wornItemRules from '../Rules/worn-items.json'
 import armorCatalog from '../Rules/catalogs/armor.json'
+import ancestryFeatsCatalog from '../Rules/catalogs/ancestry-feats.json'
+import classFeatsCatalog from '../Rules/catalogs/class-feats.json'
+import classProgressionCatalog from '../Rules/catalogs/class-progression.json'
 import deitiesCatalog from '../Rules/catalogs/deities.json'
 import equipmentCatalog from '../Rules/catalogs/equipment.json'
 import languagesCatalog from '../Rules/catalogs/languages.json'
-import classProgressionCatalog from '../Rules/catalogs/class-progression.json'
 import shieldsCatalog from '../Rules/catalogs/shields.json'
 import traitsCatalog from '../Rules/catalogs/traits.json'
 import weaponsCatalog from '../Rules/catalogs/weapons.json'
@@ -47,8 +49,10 @@ import {
 } from './rules/creation/structured-rules'
 import type {
   Pathfinder2AncestryRule,
+  Pathfinder2ArmorRule,
   Pathfinder2AttributeKey,
   Pathfinder2BackgroundRule,
+  Pathfinder2ClassProgressionRule,
   Pathfinder2ClassRoleplayingRule,
   Pathfinder2ClassRule,
   Pathfinder2CharacterSource,
@@ -58,13 +62,17 @@ import type {
   Pathfinder2LanguageRule,
   Pathfinder2ProficiencyGrant,
   Pathfinder2ProficiencyRank,
+  Pathfinder2Requirement,
   Pathfinder2RuleFeature,
   Pathfinder2RuleSource,
   Pathfinder2RulesCatalog,
+  Pathfinder2ShieldRule,
   Pathfinder2SpecialAbilityRule,
   Pathfinder2SpellRule,
   Pathfinder2SpellTradition,
+  Pathfinder2TraitRule,
   Pathfinder2VersatileHeritageRule,
+  Pathfinder2WeaponRule,
 } from './types'
 
 type RawRuleFeature = {
@@ -157,11 +165,15 @@ type RawClass = {
 type RawFeat = {
   id?: string
   name?: string
+  nameEn?: string
   level?: number
   description?: string
   prerequisites?: string | null
+  requirements?: Pathfinder2Requirement[]
   traits?: string[]
   skill?: string
+  ancestryIds?: string[]
+  classIds?: string[]
   sourceBook?: string
 }
 
@@ -238,6 +250,28 @@ function toFeat(feat: RawFeat, index: number, group: string): Pathfinder2FeatRul
     category,
     traits: safeArray(feat.traits),
     ...(feat.skill ? { skill: feat.skill } : {}),
+    ...(feat.sourceBook ? { sourceBook: feat.sourceBook } : {}),
+  }
+}
+
+function toCatalogFeat(
+  feat: RawFeat,
+  index: number,
+  category: 'ancestry' | 'class',
+): Pathfinder2FeatRule {
+  return {
+    id: feat.id ?? `${category}-feat-${index + 1}`,
+    name: feat.name ?? 'Без названия',
+    ...(feat.nameEn ? { nameEn: feat.nameEn } : {}),
+    level: typeof feat.level === 'number' ? feat.level : 1,
+    description: feat.description ?? '',
+    prerequisites: feat.prerequisites ?? null,
+    requirements: safeArray(feat.requirements),
+    category,
+    traits: safeArray(feat.traits),
+    ...(category === 'ancestry'
+      ? { ancestryIds: safeArray(feat.ancestryIds) }
+      : { classIds: safeArray(feat.classIds) }),
     ...(feat.sourceBook ? { sourceBook: feat.sourceBook } : {}),
   }
 }
@@ -384,6 +418,96 @@ function catalogEntries(value: unknown): unknown[] {
   return Array.isArray((value as Record<string, unknown>)?.entries) ? (value as Record<string, unknown>).entries as unknown[] : []
 }
 
+const LANGUAGE_ALIASES: Record<string, string> = {
+  всеобщий: 'common',
+  дворфийский: 'dwarven',
+  эльфийский: 'elven',
+  гномий: 'gnomish',
+  гномьего: 'gnomish',
+  гоблинский: 'goblin',
+  гоблинского: 'goblin',
+  'язык полуросликов': 'halfling',
+  полуросличий: 'halfling',
+  орочий: 'orcish',
+  орочьего: 'orcish',
+  драконий: 'draconic',
+  драконьего: 'draconic',
+  фейский: 'sylvan',
+  фейского: 'sylvan',
+  подземный: 'undercommon',
+  небесный: 'celestial',
+  эмпирейский: 'celestial',
+  инфернальный: 'infernal',
+  абиссальный: 'abyssal',
+  акло: 'aklo',
+  акван: 'aquan',
+  талассийский: 'aquan',
+  ауран: 'auran',
+  игнан: 'ignan',
+  терран: 'terran',
+  терранский: 'terran',
+  некрил: 'necril',
+  'язык тени': 'shadowtongue',
+  теневой: 'shadowtongue',
+  йотунский: 'giant',
+  'язык великанов': 'giant',
+  'язык кхоло': 'gnoll',
+  гноллий: 'gnoll',
+  'язык ирукси': 'iruxi',
+  ирукси: 'iruxi',
+}
+
+function normalizedLanguageName(value: string) {
+  return value
+    .trim()
+    .toLocaleLowerCase('ru')
+    .replace(/[.,;:()]/g, '')
+}
+
+function languageIdForName(value: string, languages: Pathfinder2LanguageRule[]) {
+  const normalized = normalizedLanguageName(value)
+  const direct = languages.find(language => (
+    normalizedLanguageName(language.name) === normalized
+    || normalizedLanguageName(language.id) === normalized
+  ))
+  return direct?.id ?? LANGUAGE_ALIASES[normalized] ?? null
+}
+
+function languageIdsInText(value: string, languages: Pathfinder2LanguageRule[]) {
+  const normalized = value.toLocaleLowerCase('ru')
+  return Array.from(new Set(languages.flatMap(language => {
+    const aliases = Object.entries(LANGUAGE_ALIASES)
+      .filter(([, id]) => id === language.id)
+      .map(([name]) => name)
+    const names = [language.name, language.id, ...aliases]
+    return names.some(name => normalized.includes(normalizedLanguageName(name)))
+      ? [language.id]
+      : []
+  })))
+}
+
+function ancestryLanguageRules(
+  ancestry: RawAncestry,
+  languages: Pathfinder2LanguageRule[],
+) {
+  const grantedLanguageIds = safeArray(ancestry.languages)
+    .map(language => languageIdForName(language, languages))
+    .filter((id): id is string => Boolean(id))
+  const bonusText = ancestry.bonusLanguages ?? ''
+  const fixedChoiceMatch = bonusText.match(/^\s*(\d+)\s*\+/)
+  const bonusChoiceCount = fixedChoiceMatch ? Number(fixedChoiceMatch[1]) : 0
+  const listedIds = languageIdsInText(bonusText, languages)
+  const regionalFallback = /регион|доступн/i.test(bonusText)
+    ? languages.filter(language => language.rarity === 'common').map(language => language.id)
+    : []
+  return {
+    grantedLanguageIds: Array.from(new Set(grantedLanguageIds)),
+    bonusChoiceCount,
+    bonusLanguageIds: Array.from(new Set([...listedIds, ...regionalFallback]))
+      .filter(id => !grantedLanguageIds.includes(id)),
+  }
+}
+
 function sourceFrom(
   id: Pathfinder2RuleSource['id'],
   document: RawRuleDocument<object>,
@@ -452,6 +576,16 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
     armor: armorRules,
     weapons: weaponRules,
     shields: shieldRules,
+    ancestryFeats: ancestryFeatsCatalog,
+    classFeats: classFeatsCatalog,
+    classProgression: classProgressionCatalog,
+    normalizedEquipment: equipmentCatalog,
+    normalizedWeapons: weaponsCatalog,
+    normalizedArmor: armorCatalog,
+    normalizedShields: shieldsCatalog,
+    deities: deitiesCatalog,
+    languages: languagesCatalog,
+    traits: traitsCatalog,
     equipment: [
       adventuringGearRules,
       alchemicalItemRules,
@@ -483,6 +617,14 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
   const generalFeats = rawGeneralFeats.map((feat, index) => toFeat(feat, index, 'general'))
   const skillFeats = rawSkillFeats.map((feat, index) => toFeat(feat, index, 'skill'))
   const mythicFeats = rawMythicFeats.map((feat, index) => toFeat(feat, index, 'mythic'))
+  const ancestryFeats = (catalogEntries(ancestryFeatsCatalog) as RawFeat[])
+    .map((feat, index) => toCatalogFeat(feat, index, 'ancestry'))
+  const classFeats = (catalogEntries(classFeatsCatalog) as RawFeat[])
+    .map((feat, index) => toCatalogFeat(feat, index, 'class'))
+  const classProgression = catalogEntries(classProgressionCatalog) as Pathfinder2ClassProgressionRule[]
+  const languages = catalogEntries(languagesCatalog) as Pathfinder2LanguageRule[]
+  const deities = catalogEntries(deitiesCatalog) as Pathfinder2DeityRule[]
+  const traits = catalogEntries(traitsCatalog) as Pathfinder2TraitRule[]
   const normalizedSpells = safeArray(spellDocument.spells)
     .map((spell, index) => toSpell(spell, index, 'spell'))
   const normalizedCantrips = safeArray(spellDocument.cantrips)
@@ -517,11 +659,7 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
         abilityFlaw: ancestry.abilityFlaw ?? null,
         languages: safeArray(ancestry.languages),
         bonusLanguages: ancestry.bonusLanguages ?? '',
-        languageRules: {
-          grantedLanguageIds: [],
-          bonusChoiceCount: null,
-          bonusLanguageIds: [],
-        },
+        languageRules: ancestryLanguageRules(ancestry, languages),
         senses: safeArray(ancestry.senses),
         specialAbilities: safeArray(ancestry.specialAbilities).map(ability => ({
           name: ability.name ?? 'Особая способность',
@@ -711,26 +849,67 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
     generalFeats,
     skillFeats,
     mythicFeats,
+    ancestryFeats,
+    classFeats,
+    classProgression,
     equipment: catalogEntries(equipmentCatalog) as Pathfinder2EquipmentItem[],
-    weapons: catalogEntries(weaponsCatalog) as any[],
-    armor: catalogEntries(armorCatalog) as any[],
-    shields: catalogEntries(shieldsCatalog) as any[],
+    weapons: catalogEntries(weaponsCatalog) as Pathfinder2WeaponRule[],
+    armor: catalogEntries(armorCatalog) as Pathfinder2ArmorRule[],
+    shields: catalogEntries(shieldsCatalog) as Pathfinder2ShieldRule[],
     spells,
     cantrips,
     focusSpells,
-    languages: catalogEntries(languagesCatalog) as Pathfinder2LanguageRule[],
-    deities: catalogEntries(deitiesCatalog) as Pathfinder2DeityRule[],
+    languages,
+    deities,
+    traits,
     sources: [
       sourceFrom('ancestries', ancestryDocument),
       sourceFrom('backgrounds', backgroundDocument),
       sourceFrom('classes', classDocument),
       sourceFrom('feats', featDocument),
       {
+        id: 'ancestry-feats' as const,
+        title: ancestryFeatsCatalog.title as string,
+        version: ancestryFeatsCatalog.version as string,
+        source: ancestryFeatsCatalog.source as string,
+      },
+      {
+        id: 'class-feats' as const,
+        title: classFeatsCatalog.title as string,
+        version: classFeatsCatalog.version as string,
+        source: classFeatsCatalog.source as string,
+      },
+      {
+        id: 'class-progression' as const,
+        title: classProgressionCatalog.title as string,
+        version: classProgressionCatalog.version as string,
+        source: classProgressionCatalog.source as string,
+      },
+      {
         id: 'equipment' as const,
         title: equipmentCatalog.title as string,
         version: equipmentCatalog.version as string,
         source: equipmentCatalog.source as string,
       },
+      {
+        id: 'weapons' as const,
+        title: weaponsCatalog.title as string,
+        version: weaponsCatalog.version as string,
+        source: weaponsCatalog.source as string,
+      },
+      {
+        id: 'armor' as const,
+        title: armorCatalog.title as string,
+        version: armorCatalog.version as string,
+        source: armorCatalog.source as string,
+      },
+      {
+        id: 'shields' as const,
+        title: shieldsCatalog.title as string,
+        version: shieldsCatalog.version as string,
+        source: shieldsCatalog.source as string,
+      },
+      sourceFrom('spells', spellDocument),
       {
         id: 'deities' as const,
         title: deitiesCatalog.title as string,
