@@ -104,6 +104,13 @@ From `package.json`. Run the relevant checks after edits (see
 - **Local browser:** set `PATHFINDER2_E2E_CHROME_EXECUTABLE` if neither the
   Chrome channel nor Playwright's bundled Chromium is available.
 
+## `npx tsx src/games/pathfinder2/scripts/normalize-rules.ts`
+- **What:** deterministic normalizer: reads raw `Rules/*.json` and produces
+  canonical `Rules/catalogs/*.json` documents with schemaVersion 1.
+- **When:** after owner-provided raw JSON files are updated.
+- **Failure means:** structural issue in raw JSON, unexpected parsing failure,
+  or unresolvable duplicate IDs.
+
 ## Recommended order after a change
 1. `npm run lint` (fast type check)
 2. area audit/validate/test scripts (all relevant `test:pathfinder2-*` scripts)

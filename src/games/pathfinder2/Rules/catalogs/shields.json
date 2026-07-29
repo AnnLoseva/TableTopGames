@@ -1,92 +1,94 @@
 {
-  "title": "PF2 Shields",
-  "source": "https://pf2.ru/shields",
+  "schemaVersion": 1,
+  "id": "shields",
+  "title": "Pathfinder 2 Shields",
   "version": "2026-07",
-  "items": [
+  "source": "https://pf2.ru/shields",
+  "license": null,
+  "entries": [
     {
       "id": "buckler",
       "name": "Баклер",
-      "nameEn": "Buckler",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока"
+      "sourceBook": "Основная книга игрока",
+      "description": null
     },
     {
       "id": "tower-shield",
       "name": "Башенный щит",
-      "nameEn": "Tower Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 4,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 10,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока"
+      "sourceBook": "Основная книга игрока",
+      "description": null
     },
     {
       "id": "wooden-shield",
       "name": "Деревянный щит",
-      "nameEn": "Wooden Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока"
+      "sourceBook": "Основная книга игрока",
+      "description": null
     },
     {
       "id": "razor-disc",
       "name": "Диск с лезвиями",
-      "nameEn": "Razor Disc",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 1,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -99,46 +101,46 @@
         "20",
         "футов"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "salvo-shield",
       "name": "Залповый щит",
-      "nameEn": "Salvo Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 6,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "отклоняющий"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "klar",
       "name": "Клар",
-      "nameEn": "Klar",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 1,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 3,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -149,161 +151,161 @@
         "(Универсальное",
         "Ко)"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "gauntlet-buckler",
       "name": "Рукавица-баклер",
-      "nameEn": "Gauntlet Buckler",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 1,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "складной"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "steel-shield",
       "name": "Стальной щит",
-      "nameEn": "Steel Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 2,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока"
+      "sourceBook": "Основная книга игрока",
+      "description": null
     },
     {
       "id": "caster-s-targe",
       "name": "Тарч заклинателя",
-      "nameEn": "Caster's Targe",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 1,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 2,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "начертанное"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "heavy-rondache",
       "name": "Тяжелый рондаш",
-      "nameEn": "Heavy Rondache",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 1,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 4,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "dart-shield",
       "name": "Щит-дротикомёт",
-      "nameEn": "Dart Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 1,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "запускающее"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "hide-shield",
       "name": "Щит из шкуры",
-      "nameEn": "Hide Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 2,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "отклоняющий"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "meteor-shield",
       "name": "Щит-метеор",
-      "nameEn": "Meteor Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 4,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -313,69 +315,69 @@
         "30",
         "футов"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "swordstealer-shield",
       "name": "Щит-похититель мечей",
-      "nameEn": "Swordstealer Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 2,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 6,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "отклоняющий"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "harnessed-shield",
       "name": "Щит с креплением",
-      "nameEn": "Harnessed Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
       "armorClassBonus": 2,
-      "hardness": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "закрепляемое"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "fortress-shield",
       "name": "Щит-крепость",
-      "nameEn": "Fortress Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 5,
-      "hardness": 3,
+      "armorClassBonus": 2,
+      "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 20,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -383,12 +385,12 @@
         "Массивный",
         "+2"
       ],
-      "sourceBook": "Хранилище сокровищ"
+      "sourceBook": "Хранилище сокровищ",
+      "description": null
     },
     {
       "id": "silver-shield",
       "name": "Серебряный щит",
-      "nameEn": "Silver Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -399,19 +401,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 30,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "silver-buckler-low-grade-",
       "name": "Серебряный баклер (Низкокачественный)",
-      "nameEn": "Silver Buckler (Low-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -422,65 +424,65 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 30,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "silver-shield-low-grade-",
       "name": "Серебряный Щит (Низкокачественный)",
-      "nameEn": "Silver Shield (Low-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 34,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "silver-shield-standard-grade-",
       "name": "Серебряный Щит (Стандартный)",
-      "nameEn": "Silver Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 340,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "silver-buckler-standard-grade-",
       "name": "Серебряный баклер (Стандартный)",
-      "nameEn": "Silver Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -491,42 +493,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 300,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "silver-shield-high-grade-",
       "name": "Серебряный Щит (Высококачественный)",
-      "nameEn": "Silver Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5500,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "silver-buckler-high-grade-",
       "name": "Серебряный баклер (Высококачественный)",
-      "nameEn": "Silver Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -537,19 +539,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-shield",
       "name": "Щит из холодного железа",
-      "nameEn": "Cold Iron Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -560,42 +562,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 30,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-shield-low-grade-",
       "name": "Щит из холодного железа (Низкокачественный)",
-      "nameEn": "Cold Iron Shield (Low-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 34,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-buckler-low-grade-",
       "name": "Баклер из холодного железа (Низкокачественный)",
-      "nameEn": "Cold Iron Buckler (Low-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -606,19 +608,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 30,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-buckler-standard-grade-",
       "name": "Баклер из холодного железа (Стандартный)",
-      "nameEn": "Cold Iron Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -629,65 +631,65 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 300,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-shield-standard-grade-",
       "name": "Щит из холодного железа (Стандартный)",
-      "nameEn": "Cold Iron Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 340,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-shield-high-grade-",
       "name": "Щит из холодного железа (Высококачественный)",
-      "nameEn": "Cold Iron Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5500,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "cold-iron-buckler-high-grade-",
       "name": "Баклер из холодного железа (Высококачественный)",
-      "nameEn": "Cold Iron Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -698,21 +700,21 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "adamantine-shield",
       "name": "Адамантиновый щит",
-      "nameEn": "Adamantine Shield",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
       "armorClassBonus": 2,
       "hardness": 0,
@@ -721,17 +723,17 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "adamantine-buckler-standard-grade-",
       "name": "Адамантиновый баклер (Стандартный)",
-      "nameEn": "Adamantine Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -742,42 +744,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "adamantine-shield-standard-grade-",
       "name": "Адамантиновый Щит (Стандартный)",
-      "nameEn": "Adamantine Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 440,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "adamantine-buckler-high-grade-",
       "name": "Адамантиновый баклер (Высококачественный)",
-      "nameEn": "Adamantine Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -788,44 +790,44 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "adamantine-shield-high-grade-",
       "name": "Адамантиновый Щит (Высококачественный)",
-      "nameEn": "Adamantine Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "dragonhide-buckler",
       "name": "Щит из драконьей шкуры",
-      "nameEn": "Dragonhide Buckler",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
       "armorClassBonus": 2,
       "hardness": 0,
@@ -834,40 +836,40 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Основная книга игрока 2"
+      "sourceBook": "Основная книга игрока 2",
+      "description": null
     },
     {
       "id": "dragonhide-shield-standard-grade-",
       "name": "Щит из драконьей шкуры (Стандартного качества)",
-      "nameEn": "Dragonhide Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 440,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока 2"
+      "sourceBook": "Основная книга игрока 2",
+      "description": null
     },
     {
       "id": "dragonhide-buckler-standard-grade-",
       "name": "Щит из драконьей шкуры (Стандартного качества)",
-      "nameEn": "Dragonhide Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -878,42 +880,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока 2"
+      "sourceBook": "Основная книга игрока 2",
+      "description": null
     },
     {
       "id": "dragonhide-shield-high-grade-",
       "name": "Щит из драконьей шкуры (Высококачественный)",
-      "nameEn": "Dragonhide Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока 2"
+      "sourceBook": "Основная книга игрока 2",
+      "description": null
     },
     {
       "id": "dragonhide-buckler-high-grade-",
       "name": "Щит из драконьей шкуры (Высококачественный)",
-      "nameEn": "Dragonhide Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -924,21 +926,21 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга игрока 2"
+      "sourceBook": "Основная книга игрока 2",
+      "description": null
     },
     {
       "id": "dawnsilver-shield",
       "name": "Щит из рассветного серебра",
-      "nameEn": "Dawnsilver Shield",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
       "armorClassBonus": 2,
       "hardness": 0,
@@ -947,17 +949,17 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "dawnsilver-buckler-standard-grade-",
       "name": "Баклер из рассветного серебра (Стандартный)",
-      "nameEn": "Dawnsilver Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -968,19 +970,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "dawnsilver-shield-standard-grade-",
       "name": "Щит из рассветного серебра (Стандартный)",
-      "nameEn": "Dawnsilver Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -991,19 +993,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 440,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "dawnsilver-buckler-high-grade-",
       "name": "Баклер из рассветного серебра (Высококачественный)",
-      "nameEn": "Dawnsilver Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1014,19 +1016,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "dawnsilver-shield-high-grade-",
       "name": "Щит из рассветного серебра (Высококачественный)",
-      "nameEn": "Dawnsilver Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1037,21 +1039,21 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-shield",
       "name": "Щит из сумеречного дерева",
-      "nameEn": "Duskwood Shield",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
       "armorClassBonus": 2,
       "hardness": 0,
@@ -1060,17 +1062,17 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-buckler-standard-grade-",
       "name": "Баклер из сумеречного дерева (Стандартный)",
-      "nameEn": "Duskwood Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1081,19 +1083,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 400,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-shield-standard-grade-",
       "name": "Щит из сумеречного дерева (Стандартный)",
-      "nameEn": "Duskwood Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1104,42 +1106,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 440,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-tower-shield-standard-grade-",
       "name": "Башенный щит из сумеречного дерева (Стандартный)",
-      "nameEn": "Duskwood Tower Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 3,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 560,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-buckler-high-grade-",
       "name": "Баклер из сумеречного дерева (Высококачественная)",
-      "nameEn": "Duskwood Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1150,19 +1152,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-shield-high-grade-",
       "name": "Щит из сумеречного дерева (Высококачественный)",
-      "nameEn": "Duskwood Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1173,44 +1175,44 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "duskwood-tower-shield-high-grade-",
       "name": "Башенный щит из сумеречного дерева (Высококачественный)",
-      "nameEn": "Duskwood Tower Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 3,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 11200,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "orichalcum-shield",
       "name": "Орихалковый щит",
-      "nameEn": "Orichalcum Shield",
       "level": 0,
-      "rarity": "rare",
+      "rarity": "common",
       "category": "shield",
       "armorClassBonus": 2,
       "hardness": 0,
@@ -1219,40 +1221,40 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 12000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "orichalcum-shield-high-grade-",
       "name": "Орихалковый Щит (Высококачественный)",
-      "nameEn": "Orichalcum Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 13200,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "orichalcum-buckler-high-grade-",
       "name": "Орихалковый баклер (Высококачественный)",
-      "nameEn": "Orichalcum Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1263,63 +1265,63 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 12000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "inubrix-shield",
       "name": "Щит из инубрикса",
-      "nameEn": "Inubrix Shield",
       "level": 0,
-      "rarity": "rare",
+      "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5500,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "inubrix-shield-standard-grade-",
       "name": "Инубриксовый щит (Стандартный)",
-      "nameEn": "Inubrix Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 352,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "inubrix-buckler-standard-grade-",
       "name": "Инубриксовый баклер (Стандартный)",
-      "nameEn": "Inubrix Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1330,42 +1332,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 320,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "inubrix-shield-high-grade-",
       "name": "Инубриксовый щит (Высококачественный)",
-      "nameEn": "Inubrix Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5500,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "inubrix-buckler-high-grade-",
       "name": "Инубриксовый баклер (Высококачественный)",
-      "nameEn": "Inubrix Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1376,40 +1378,40 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 5000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "djezet-shield",
       "name": "Щит из джезета",
-      "nameEn": "Djezet Shield",
       "level": 0,
-      "rarity": "rare",
+      "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "djezet-buckler-standard-grade-",
       "name": "Джезетовый баклер (Стандартный)",
-      "nameEn": "Djezet Buckler (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1420,65 +1422,65 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 600,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "djezet-shield-standard-grade-",
       "name": "Джезетовый щит (Стандартный)",
-      "nameEn": "Djezet Shield (Standard-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 660,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "djezet-shield-high-grade-",
       "name": "Джезетовый щит (Высококачественный)",
-      "nameEn": "Djezet Shield (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "djezet-buckler-high-grade-",
       "name": "Джезетовый баклер (Высококачественный)",
-      "nameEn": "Djezet Buckler (High-Grade)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1489,251 +1491,21 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 8000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Grand Bazaar"
+      "sourceBook": "Grand Bazaar",
+      "description": null
     },
     {
       "id": "sturdy-shield",
       "name": "Прочный щит",
-      "nameEn": "Sturdy Shield",
       "level": 0,
       "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 100,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "Магический"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "sturdy-shield-minor-",
-      "name": "Прочный щит (низший)",
-      "nameEn": "Sturdy Shield (Minor)",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 100,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "sturdy-shield-lesser-",
-      "name": "Прочный щит (малый)",
-      "nameEn": "Sturdy Shield (Lesser)",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 360,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "sturdy-shield-moderate-",
-      "name": "Прочный щит (средний)",
-      "nameEn": "Sturdy Shield (Moderate)",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 1000,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "sturdy-shield-greater-",
-      "name": "Прочный щит (улучшенный)",
-      "nameEn": "Sturdy Shield (Greater)",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 3000,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "sturdy-shield-major-",
-      "name": "Прочный щит (высший)",
-      "nameEn": "Sturdy Shield (Major)",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 10000,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "sturdy-shield-supreme-",
-      "name": "Прочный щит (превосходный)",
-      "nameEn": "Sturdy Shield (Supreme)",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 40000,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "lion-s-shield",
-      "name": "Щит льва",
-      "nameEn": "Lion's Shield",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 245,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "Магический"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "spellguard-shield",
-      "name": "Щит обороны от магии",
-      "nameEn": "Spellguard Shield",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 250,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "spined-shield",
-      "name": "Шипастый щит",
-      "nameEn": "Spined Shield",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 360,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "force-shield",
-      "name": "Силовой щит",
-      "nameEn": "Force Shield",
-      "level": 0,
-      "rarity": "uncommon",
       "category": "shield",
       "armorClassBonus": 2,
       "hardness": 0,
@@ -1742,7 +1514,237 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 650,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "sturdy-shield-minor-",
+      "name": "Прочный щит (низший)",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "sturdy-shield-lesser-",
+      "name": "Прочный щит (малый)",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "sturdy-shield-moderate-",
+      "name": "Прочный щит (средний)",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "sturdy-shield-greater-",
+      "name": "Прочный щит (улучшенный)",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "sturdy-shield-major-",
+      "name": "Прочный щит (высший)",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "sturdy-shield-supreme-",
+      "name": "Прочный щит (превосходный)",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "lion-s-shield",
+      "name": "Щит льва",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "spellguard-shield",
+      "name": "Щит обороны от магии",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "spined-shield",
+      "name": "Шипастый щит",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "-"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "force-shield",
+      "name": "Силовой щит",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -1750,46 +1752,46 @@
         "Сила",
         "Магический"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "dragonslayer-s-shield",
       "name": "Щит драконоборца",
-      "nameEn": "Dragonslayer's Shield",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 670,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "Магический"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "hippopotamus-klar",
       "name": "Клар из черепа гиппопотама",
-      "nameEn": "Hippopotamus Klar",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -1797,81 +1799,35 @@
         "Настроенность",
         "Магический"
       ],
-      "sourceBook": "Рёв дикой природы"
+      "sourceBook": "Рёв дикой природы",
+      "description": null
     },
     {
       "id": "forge-warden",
       "name": "Страж кузни",
-      "nameEn": "Forge Warden",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 975,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "Магический"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "lodestone-shield",
       "name": "Магнитный щит",
-      "nameEn": "Lodestone Shield",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 1350,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "Магический"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "floating-shield",
-      "name": "Парящий щит",
-      "nameEn": "Floating Shield",
-      "level": 0,
-      "rarity": "uncommon",
-      "category": "shield",
-      "armorClassBonus": 2,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 1250,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "Магический"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "floating-shield",
-      "name": "Парящий щит",
-      "nameEn": "Floating Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1882,19 +1838,42 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1250,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
-        "-"
+        "Магический"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "floating-shield",
+      "name": "Парящий щит",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "floating-shield-greater-",
       "name": "Парящий щит (улучшенный)",
-      "nameEn": "Floating Shield (Greater)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1905,30 +1884,30 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 9000,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Основная книга ведущего"
+      "sourceBook": "Основная книга ведущего",
+      "description": null
     },
     {
       "id": "arctic-worm-chitin-shield",
       "name": "Щит из хитина полярного червя",
-      "nameEn": "Arctic Worm Chitin Shield",
       "level": 0,
-      "rarity": "uncommon",
+      "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 4,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1800,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -1936,58 +1915,12 @@
         "Настроенность",
         "Магический"
       ],
-      "sourceBook": "Рёв дикой природы"
+      "sourceBook": "Рёв дикой природы",
+      "description": null
     },
     {
       "id": "indestructible-shield",
       "name": "Неразрушимый щит",
-      "nameEn": "Indestructible Shield",
-      "level": 0,
-      "rarity": "rare",
-      "category": "shield",
-      "armorClassBonus": 1,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 24000,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "Магический"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "reflecting-shield",
-      "name": "Отражающий щит",
-      "nameEn": "Reflecting Shield",
-      "level": 0,
-      "rarity": "uncommon",
-      "category": "shield",
-      "armorClassBonus": 2,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 18000,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "Магический"
-      ],
-      "sourceBook": "Основная книга ведущего"
-    },
-    {
-      "id": "broadleaf-shield",
-      "name": "Широколистный щит",
-      "nameEn": "Broadleaf Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -1998,7 +1931,53 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 13750,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "reflecting-shield",
+      "name": "Отражающий щит",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
+        "pp": 0
+      },
+      "bulk": 0,
+      "traits": [
+        "Магический"
+      ],
+      "sourceBook": "Основная книга ведущего",
+      "description": null
+    },
+    {
+      "id": "broadleaf-shield",
+      "name": "Широколистный щит",
+      "level": 0,
+      "rarity": "common",
+      "category": "shield",
+      "armorClassBonus": 2,
+      "hardness": 0,
+      "hitPoints": 0,
+      "brokenThreshold": 0,
+      "price": {
+        "cp": 0,
+        "sp": 0,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -2007,35 +1986,12 @@
         "Растение",
         "Дерево"
       ],
-      "sourceBook": "Ярость стихий"
-    },
-    {
-      "id": "broadleaf-shield",
-      "name": "Широколистный щит",
-      "nameEn": "Broadleaf Shield",
-      "level": 0,
-      "rarity": "common",
-      "category": "shield",
-      "armorClassBonus": 2,
-      "hardness": 0,
-      "hitPoints": 0,
-      "brokenThreshold": 0,
-      "price": {
-        "cp": 0,
-        "sp": 0,
-        "gp": 225,
-        "pp": 0
-      },
-      "bulk": 0,
-      "traits": [
-        "-"
-      ],
-      "sourceBook": "Ярость стихий"
+      "sourceBook": "Ярость стихий",
+      "description": null
     },
     {
       "id": "broadleaf-shield-greater-",
       "name": "Широколистный щит (улучшенный)",
-      "nameEn": "Broadleaf Shield (Greater)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -2046,19 +2002,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 675,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Ярость стихий"
+      "sourceBook": "Ярость стихий",
+      "description": null
     },
     {
       "id": "broadleaf-shield-major-",
       "name": "Широколистный щит (высший)",
-      "nameEn": "Broadleaf Shield (Major)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -2069,19 +2025,19 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 2750,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Ярость стихий"
+      "sourceBook": "Ярость стихий",
+      "description": null
     },
     {
       "id": "broadleaf-shield-true-",
       "name": "Широколистный щит (истинный)",
-      "nameEn": "Broadleaf Shield (True)",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -2092,30 +2048,30 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 13750,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
       "traits": [
         "-"
       ],
-      "sourceBook": "Ярость стихий"
+      "sourceBook": "Ярость стихий",
+      "description": null
     },
     {
       "id": "limestone-shield",
       "name": "Известковый щит",
-      "nameEn": "Limestone Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 4,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 350,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -2123,12 +2079,12 @@
         "Земля",
         "Магический"
       ],
-      "sourceBook": "Ярость стихий"
+      "sourceBook": "Ярость стихий",
+      "description": null
     },
     {
       "id": "kizidhar-s-shield",
       "name": "Щит кизидхаров",
-      "nameEn": "Kizidhar's Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
@@ -2139,7 +2095,7 @@
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1250,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -2147,23 +2103,23 @@
         "Магический",
         "Дерево"
       ],
-      "sourceBook": "Ярость стихий"
+      "sourceBook": "Ярость стихий",
+      "description": null
     },
     {
       "id": "arrow-catching-shield",
       "name": "Щит Ловли Стрел",
-      "nameEn": "Arrow-Catching Shield",
       "level": 0,
       "rarity": "common",
       "category": "shield",
-      "armorClassBonus": 1,
+      "armorClassBonus": 2,
       "hardness": 0,
       "hitPoints": 0,
       "brokenThreshold": 0,
       "price": {
         "cp": 0,
         "sp": 0,
-        "gp": 1350,
+        "gp": 0,
         "pp": 0
       },
       "bulk": 0,
@@ -2171,7 +2127,8 @@
         "Преграждение",
         "Магический"
       ],
-      "sourceBook": "Основная книга правил"
+      "sourceBook": "Основная книга правил",
+      "description": null
     }
   ]
 }

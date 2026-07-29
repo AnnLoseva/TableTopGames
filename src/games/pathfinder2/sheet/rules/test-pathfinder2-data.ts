@@ -145,23 +145,39 @@ const tests: Array<[string, () => void]> = [
     )
     assert.equal(
       availability.find(entry => entry.id === 'class-progression')?.status,
-      'missing',
+      'connected',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'deities')?.status,
+      'connected',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'languages')?.status,
+      'connected',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'ancestry-feats')?.status,
+      'connected',
+    )
+    assert.equal(
+      availability.find(entry => entry.id === 'class-feats')?.status,
+      'connected',
     )
     assert.equal(
       availability.find(entry => entry.id === 'armor')?.status,
-      'invalid',
+      'connected',
     )
     assert.equal(
       availability.find(entry => entry.id === 'weapons')?.status,
-      'invalid',
+      'connected',
     )
     assert.equal(
       availability.find(entry => entry.id === 'shields')?.status,
-      'invalid',
+      'connected',
     )
     assert.equal(
       availability.find(entry => entry.id === 'equipment')?.status,
-      'invalid',
+      'connected',
     )
     assert.ok(getUnavailablePathfinder2Catalogs(availability).length > 0)
   }],

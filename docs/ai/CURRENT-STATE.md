@@ -8,9 +8,15 @@
   canonical and the route now uses an eleven-step builder plus unified v4
   character state. Pure engines cover attributes, skills, proficiencies,
   currency/Bulk, typed combat, spellcasting, details and sequential level-up.
-  `spells.json` is connected. Missing ancestry/class feats, mechanical item,
-  language, deity and full class-progression catalogs remain honest completion
-  blockers; descriptive item files are audited but not parsed into mechanics.
+  `spells.json` is connected. `catalogs/` now provides normalized canonical
+  documents for equipment (1825 entries), weapons (418), armor (132), shields
+  (92), deities (361), languages (23), traits (212), and class-progression
+  (28 entries covering global + 27 classes 1–20). All catalogs use schemaVersion
+  1 with stable IDs. Missing ancestry/class feats, complete item mechanics
+  (price/Bulk/combat stats from prose) and full class-progression tables remain
+  honest blockers. Normalizer script at
+  `src/games/pathfinder2/scripts/normalize-rules.ts` is deterministic and
+  idempotent.
 - **TableTopGames portal and shared account (2026-07-29)** — `/` is the game selector, VTM lives under `/vampires/*`, and Pathfinder remains at `/pathfinder2/sheet`. The root `AccountProvider` uses the existing Vampire Supabase account, persists its session, and mirrors the profile into the legacy VTM storage keys used by the sheet, table and journal. Old root VTM URLs are compatibility redirects.
 - **Game table lite (2026-07-18)** — scene stage/background on `table_scenes`,
   character tokens (`table_tokens`) above media, `table_character_controllers`

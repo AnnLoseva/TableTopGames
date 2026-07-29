@@ -793,7 +793,7 @@ export type Pathfinder2FeatRule = {
 }
 
 export type Pathfinder2RuleSource = {
-  id: 'ancestries' | 'backgrounds' | 'classes' | 'feats'
+  id: 'ancestries' | 'backgrounds' | 'classes' | 'feats' | 'equipment' | 'deities' | 'languages' | 'traits'
   title: string
   version: string
   source: string

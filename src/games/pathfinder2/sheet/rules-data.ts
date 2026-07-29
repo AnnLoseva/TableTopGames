@@ -30,6 +30,14 @@ import vehicleRules from '../Rules/vehicles.json'
 import wandRules from '../Rules/wands.json'
 import weaponRules from '../Rules/weapons.json'
 import wornItemRules from '../Rules/worn-items.json'
+import armorCatalog from '../Rules/catalogs/armor.json'
+import deitiesCatalog from '../Rules/catalogs/deities.json'
+import equipmentCatalog from '../Rules/catalogs/equipment.json'
+import languagesCatalog from '../Rules/catalogs/languages.json'
+import classProgressionCatalog from '../Rules/catalogs/class-progression.json'
+import shieldsCatalog from '../Rules/catalogs/shields.json'
+import traitsCatalog from '../Rules/catalogs/traits.json'
+import weaponsCatalog from '../Rules/catalogs/weapons.json'
 import { auditPathfinder2RuleDocuments } from './data/catalog-audit'
 import {
   getSpecializationGrantedSkills,
@@ -44,7 +52,10 @@ import type {
   Pathfinder2ClassRoleplayingRule,
   Pathfinder2ClassRule,
   Pathfinder2CharacterSource,
+  Pathfinder2DeityRule,
+  Pathfinder2EquipmentItem,
   Pathfinder2FeatRule,
+  Pathfinder2LanguageRule,
   Pathfinder2ProficiencyGrant,
   Pathfinder2ProficiencyRank,
   Pathfinder2RuleFeature,
@@ -367,6 +378,10 @@ function canonicalFeatName(value: string, feats: Pathfinder2FeatRule[]) {
   const withoutEnglishName = value.replace(/\s*\([^)]*\)\s*$/, '').trim()
   return feats.find(feat => feat.name === value || feat.name === withoutEnglishName)?.name
     ?? withoutEnglishName
+}
+
+function catalogEntries(value: unknown): unknown[] {
+  return Array.isArray((value as Record<string, unknown>)?.entries) ? (value as Record<string, unknown>).entries as unknown[] : []
 }
 
 function sourceFrom(
@@ -696,20 +711,44 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
     generalFeats,
     skillFeats,
     mythicFeats,
-    equipment: [],
-    weapons: [],
-    armor: [],
-    shields: [],
+    equipment: catalogEntries(equipmentCatalog) as Pathfinder2EquipmentItem[],
+    weapons: catalogEntries(weaponsCatalog) as any[],
+    armor: catalogEntries(armorCatalog) as any[],
+    shields: catalogEntries(shieldsCatalog) as any[],
     spells,
     cantrips,
     focusSpells,
-    languages: [],
-    deities: [],
+    languages: catalogEntries(languagesCatalog) as Pathfinder2LanguageRule[],
+    deities: catalogEntries(deitiesCatalog) as Pathfinder2DeityRule[],
     sources: [
       sourceFrom('ancestries', ancestryDocument),
       sourceFrom('backgrounds', backgroundDocument),
       sourceFrom('classes', classDocument),
       sourceFrom('feats', featDocument),
+      {
+        id: 'equipment' as const,
+        title: equipmentCatalog.title as string,
+        version: equipmentCatalog.version as string,
+        source: equipmentCatalog.source as string,
+      },
+      {
+        id: 'deities' as const,
+        title: deitiesCatalog.title as string,
+        version: deitiesCatalog.version as string,
+        source: deitiesCatalog.source as string,
+      },
+      {
+        id: 'languages' as const,
+        title: languagesCatalog.title as string,
+        version: languagesCatalog.version as string,
+        source: languagesCatalog.source as string,
+      },
+      {
+        id: 'traits' as const,
+        title: traitsCatalog.title as string,
+        version: traitsCatalog.version as string,
+        source: traitsCatalog.source as string,
+      },
     ],
     dataAvailability,
     validationWarnings: validateDocuments({

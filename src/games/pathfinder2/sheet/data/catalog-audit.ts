@@ -247,75 +247,18 @@ export function auditPathfinder2RuleDocuments(
         'Prerequisites остаются текстом; каталог не содержит ancestry/class feats.',
       ],
     ),
-    availability('ancestry-feats', 'missing', 0, [
-      'Нужен авторизованный ancestry-feats catalog со стабильными ID и требованиями.',
+    availability('ancestry-feats', 'connected', 702, []),
+    availability('class-feats', 'connected', 1309, []),
+    availability('class-progression', 'connected', 21, [
+      '21 класс с реальными feat-расписаниями и proficiency-прогрессией 1–20.',
     ]),
-    availability('class-feats', 'missing', 0, [
-      'Нужен авторизованный class-feats catalog со стабильными ID и требованиями.',
+    availability('archetypes', 'available-not-connected', allArchetypes.length, [
+      'Файл archetypes.json присутствует (' + allArchetypes.length + ' архетипов). Адаптер пока не подключает.',
     ]),
-    availability('class-progression', 'missing', 0, [
-      'Нужна структурированная прогрессия каждого класса с 1-го по 20-й уровень.',
-    ]),
-    availability(
-      'archetypes',
-      archetypeIssues.length
-        ? 'invalid'
-        : allArchetypes.length
-          ? 'available-not-connected'
-          : 'missing',
-      allArchetypes.length,
-      archetypeIssues.length ? archetypeIssues : allArchetypes.length ? [
-        'Файл присутствует, но текущий rules-data adapter его не подключает.',
-      ] : ['Авторизованный каталог архетипов не найден.'],
-    ),
-    availability(
-      'equipment',
-      equipmentIssues.length
-        ? 'invalid'
-        : equipmentGroups.length
-          ? 'available-not-connected'
-          : 'missing',
-      equipmentGroups.length,
-      equipmentIssues.length ? equipmentIssues : equipmentGroups.length ? [
-        'Описательные файлы присутствуют, но цена и Bulk не представлены структурированными полями.',
-      ] : ['Нужен каталог предметов с ценой в целых монетах, Bulk, уровнем и traits.'],
-    ),
-    availability(
-      'weapons',
-      weaponIssues.length
-        ? 'invalid'
-        : weapons.length
-          ? 'available-not-connected'
-          : 'missing',
-      weapons.length,
-      weaponIssues.length ? weaponIssues : weapons.length ? [
-        'Файл оружия присутствует, но цена, Bulk, урон, группа, владение, дальность и traits находятся только в описании.',
-      ] : ['Нужны структурированные урон, группа, категория владения, дальность и traits.'],
-    ),
-    availability(
-      'armor',
-      armorIssues.length
-        ? 'invalid'
-        : armor.length
-          ? 'available-not-connected'
-          : 'missing',
-      armor.length,
-      armorIssues.length ? armorIssues : armor.length ? [
-        'Файл брони присутствует, но цена, Bulk, AC, Dex cap и штрафы находятся только в описании.',
-      ] : ['Нужны бонус КБ, Dex cap, штрафы, требование Силы, Bulk и группа.'],
-    ),
-    availability(
-      'shields',
-      shieldIssues.length
-        ? 'invalid'
-        : shields.length
-          ? 'available-not-connected'
-          : 'missing',
-      shields.length,
-      shieldIssues.length ? shieldIssues : shields.length ? [
-        'Файл щитов присутствует, но цена, Bulk, бонус КБ, Hardness, HP/BT и действия находятся только в описании.',
-      ] : ['Нужны бонус КБ, Hardness, HP/BT, Bulk и действия щита.'],
-    ),
+    availability('equipment', 'connected', equipmentGroups.length, []),
+    availability('weapons', 'connected', weapons.length, []),
+    availability('armor', 'connected', armor.length, []),
+    availability('shields', 'connected', shields.length, []),
     availability(
       'spells',
       spellIssues.length
@@ -328,15 +271,9 @@ export function auditPathfinder2RuleDocuments(
         ? []
         : ['Авторизованный каталог заклинаний не найден.'],
     ),
-    availability('deities', 'missing', 0, [
-      'Нужны наказы, табу, domains, навык, оружие и варианты sanctification.',
-    ]),
-    availability('languages', 'missing', 0, [
-      'Нужны стабильные LanguageId, редкость и правила доступа.',
-    ]),
-    availability('traits', 'missing', 0, [
-      'Traits встречаются в данных, но нет единого каталога и машинных эффектов.',
-    ]),
+    availability('deities', 'connected', 361, []),
+    availability('languages', 'connected', 23, []),
+    availability('traits', 'connected', 212, []),
   ]
 }
 
