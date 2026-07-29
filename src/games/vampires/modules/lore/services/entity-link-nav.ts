@@ -5,12 +5,12 @@ export function moduleForEntityType(entityType: string): { moduleId: string; par
   return resolveEntityNavigation(entityType)
 }
 
-/** Unified deep link: /master?room&module&entity (+ allow-listed extras). */
+/** Unified deep link: /vampires/master?room&module&entity (+ allow-listed extras). */
 export function navigateToEntity(entityType: string, entityId: string, label?: string) {
   const target = moduleForEntityType(entityType)
   if (!target) {
     if (entityType === 'system_ref') {
-      window.open(`/reference?doc=${encodeURIComponent(entityId)}`, '_blank', 'noopener,noreferrer')
+      window.open(`/vampires/reference?doc=${encodeURIComponent(entityId)}`, '_blank', 'noopener,noreferrer')
     }
     return
   }

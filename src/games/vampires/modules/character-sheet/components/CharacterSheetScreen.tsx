@@ -86,7 +86,7 @@ export default function CharacterSheetPage() {
 
       <main className="sheet-page-shell">
         <nav className="sheet-nav-links" aria-label={t('Навигация листа персонажа')}>
-          <a href="/" title={t('На главную')}>{t('На главную')}</a>
+          <a href="/vampires" title={t('На главную')}>{t('На главную')}</a>
           <button type="button" onClick={startNewCharacter}>
             {t('Создать нового персонажа')}
           </button>

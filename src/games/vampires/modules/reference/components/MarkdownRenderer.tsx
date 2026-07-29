@@ -49,7 +49,7 @@ function highlightChildren(children: ReactNode, terms: string[], activeMatchInde
 }
 
 function isInternalReferenceHref(href?: string) {
-  return Boolean(href && (href.startsWith('/reference?') || href.startsWith('?doc=')))
+  return Boolean(href && (href.startsWith('/vampires/reference?') || href.startsWith('?doc=')))
 }
 
 export default function MarkdownRenderer({

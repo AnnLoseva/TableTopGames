@@ -8,7 +8,7 @@ login работают напрямую с `public.users`: браузер код
 username}` в `vtm-chat-user`/`vtm-sheet-user`. Это не Supabase Auth session,
 поэтому запросы не несут trustworthy `auth.uid()`.
 
-Мастер в `/table` определяется `role` из URL/localStorage и паролем из
+Мастер в `/vampires/table` определяется `role` из URL/localStorage и паролем из
 `vtm-table-master-password`; значение по умолчанию `1234`, а проверка полностью
 клиентская. Любой пользователь может изменить эти значения. Это UI gate, не
 authorization boundary.
@@ -80,5 +80,5 @@ cross-room ids, storage paths, RPC и realtime subscribe. Только посл�
 `auth.uid()` и membership role; anon privileges отозваны. Первичная chronicle и
 первый master назначаются service role/администратором — self-claim комнаты не
 разрешён. Это безопасный schema-контракт, но он не означает, что legacy login уже
-мигрирован: текущий `/master` localStorage gate не получает persistence-доступ,
+мигрирован: текущий `/vampires/master` localStorage gate не получает persistence-доступ,
 пока браузер не имеет настоящей Supabase Auth session.

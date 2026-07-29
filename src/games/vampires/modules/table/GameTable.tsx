@@ -1883,7 +1883,7 @@ export default function VampireTable() {
             />
           ) : null}
           <div className="table-actions">
-          <a href="/" title={t('Вернуться на главную страницу')}>{t('Главная')}</a>
+          <a href="/vampires" title={t('Вернуться на главную страницу')}>{t('Главная')}</a>
           <MasterRoleTopbar
             tableRole={tableRole}
             isMaster={isMaster}
@@ -2290,7 +2290,7 @@ export default function VampireTable() {
               {!chatUser ? (
                 <div className="master-roll-empty">
                   <p>{t('Войди на главной, чтобы увидеть своих персонажей.')}</p>
-                  <a href="/">{t('На главную')}</a>
+                  <a href="/vampires">{t('На главную')}</a>
                 </div>
               ) : chatCharacters.length === 0 ? (
                 <div className="master-roll-empty">

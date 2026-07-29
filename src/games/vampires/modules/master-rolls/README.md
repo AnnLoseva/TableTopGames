@@ -2,7 +2,7 @@
 
 Permanent master-console right-rail roller. Reuses canonical `RollMessage`
 shape, `src/games/vampires/modules/rolls` builders (quick/rouse/opposed/willpower), and
-`src/games/vampires/modules/table/api/roll-api` for **public** history compatible with `/table`.
+`src/games/vampires/modules/table/api/roll-api` for **public** history compatible with `/vampires/table`.
 
 ## Privacy
 

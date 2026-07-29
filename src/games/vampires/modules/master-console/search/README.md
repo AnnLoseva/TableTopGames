@@ -18,7 +18,7 @@ shell-providers (rolls/log/layouts) ──┼── collectSearchProviders()
 Canonical:
 
 ```
-/master?room=<room>&module=<module-id>&entity=<entity-id>
+/vampires/master?room=<room>&module=<module-id>&entity=<entity-id>
 ```
 
 Optional allow-listed extras (parser drops unknown keys):

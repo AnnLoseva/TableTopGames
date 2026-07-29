@@ -229,10 +229,10 @@ export default function MainScreen() {
   }, [chatUser])
 
   const room = useMemo(() => sanitizeRoom(roomDraft) || DEFAULT_ROOM, [roomDraft])
-  const tableHref = `/table?room=${encodeURIComponent(room)}&role=${role}`
-  const masterHref = `/master?room=${encodeURIComponent(room)}`
-  const sheetHref = `/character-sheet?room=${encodeURIComponent(room)}&role=${role}${selectedCharacterId ? `&characterId=${encodeURIComponent(selectedCharacterId)}` : ''}`
-  const newSheetHref = `/character-sheet?room=${encodeURIComponent(room)}&role=${role}&new=1`
+  const tableHref = `/vampires/table?room=${encodeURIComponent(room)}&role=${role}`
+  const masterHref = `/vampires/master?room=${encodeURIComponent(room)}`
+  const sheetHref = `/vampires/character-sheet?room=${encodeURIComponent(room)}&role=${role}${selectedCharacterId ? `&characterId=${encodeURIComponent(selectedCharacterId)}` : ''}`
+  const newSheetHref = `/vampires/character-sheet?room=${encodeURIComponent(room)}&role=${role}&new=1`
 
   const rememberTableChoice = (nextRole = role) => {
     window.localStorage.setItem('vtm-table-room', room)
@@ -241,7 +241,7 @@ export default function MainScreen() {
 
   const enterTable = (nextRole = role) => {
     rememberTableChoice(nextRole)
-    window.location.href = `/table?room=${encodeURIComponent(room)}&role=${nextRole}`
+    window.location.href = `/vampires/table?room=${encodeURIComponent(room)}&role=${nextRole}`
   }
 
   const handleRoomSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -544,16 +544,16 @@ export default function MainScreen() {
             description={t('Знания мира: чат-библиотекарь, справочник, закрытые хроники и дневники.')}
             button={
               <div className="library-actions">
-                <Link href="/library/chat" className="card-action">
+                <Link href="/vampires/library/chat" className="card-action">
                   {t('Чат')}
                 </Link>
-                <Link href="/reference" className="ghost-action">
+                <Link href="/vampires/reference" className="ghost-action">
                   {t('Справочник')}
                 </Link>
-                <Link href="/library/chronicles" className="ghost-action">
+                <Link href="/vampires/library/chronicles" className="ghost-action">
                   {t('Хроника')}
                 </Link>
-                <Link href="/journal" className="ghost-action">
+                <Link href="/vampires/journal" className="ghost-action">
                   {t('Дневник')}
                 </Link>
               </div>

@@ -24,7 +24,7 @@ export function openDetachedMasterWindow(options: OpenDetachedOptions): OpenDeta
     return { ok: false, reason: 'invalid', message: 'room required' }
   }
 
-  const url = new URL('/master', window.location.origin)
+  const url = new URL('/vampires/master', window.location.origin)
   url.searchParams.set('room', room)
   url.searchParams.set('display', 'detached')
 

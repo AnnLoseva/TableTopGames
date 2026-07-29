@@ -16,22 +16,22 @@ domain and does not access the VTM Supabase or iframe contracts.
 | Route | Component | Layer |
 |---|---|---|
 | `/` | `src/games/vampires/modules/home/HomeRoute` → `MainScreen.tsx` | React |
-| `/character-sheet` | `src/games/vampires/modules/character-sheet/*` | React shell → legacy iframe |
-| `/table` | `src/games/vampires/modules/table/TableRoute` → `GameTable.tsx` | React |
-| `/journal` | `src/games/vampires/modules/journal/JournalRoute` | React |
-| `/reference` | `src/games/vampires/modules/reference/ReferenceRoute` | React |
-| `/library/chronicles` | `src/games/vampires/modules/chronicle-library/ChronicleLibraryRoute` | React + Supabase Auth/RLS |
-| `/master` | `src/games/vampires/modules/master-console/MasterConsoleRoute` → `MasterConsoleShell` | React master console (6 modules, search, detached windows) |
+| `/vampires/character-sheet` | `src/games/vampires/modules/character-sheet/*` | React shell → legacy iframe |
+| `/vampires/table` | `src/games/vampires/modules/table/TableRoute` → `GameTable.tsx` | React |
+| `/vampires/journal` | `src/games/vampires/modules/journal/JournalRoute` | React |
+| `/vampires/reference` | `src/games/vampires/modules/reference/ReferenceRoute` | React |
+| `/vampires/library/chronicles` | `src/games/vampires/modules/chronicle-library/ChronicleLibraryRoute` | React + Supabase Auth/RLS |
+| `/vampires/master` | `src/games/vampires/modules/master-console/MasterConsoleRoute` → `MasterConsoleShell` | React master console (6 modules, search, detached windows) |
 | `/pathfinder2/sheet` | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute` | React local character-creation draft |
-| `/old` | `src/app/(vampires)/old/page.tsx` | redirect → `/character-sheet` |
+| `/vampires/old` | `src/app/(vampires)/vampires/old/page.tsx` | redirect → `/vampires/character-sheet` |
 
-VTM route files live in `src/app/(vampires)/` and import their entries directly from
+VTM route files live in `src/app/(vampires)/vampires/` and import their entries directly from
 `src/games/vampires/modules/*`. Parentheses create an App Router route group, so the
 physical boundary does not add a URL segment.
 
 ## Flow: master console
 ```text
-/master?room=
+/vampires/master?room=
  → MasterConsoleRoute (room validate + master password gate — not security)
  → MasterConsoleShell (topbar, sidebar|detached, host, right rail roller)
  → contributions.ts allow-list → lazy module loaders
@@ -42,7 +42,7 @@ physical boundary does not add a URL segment.
 
 ## Flow: character sheet
 ```text
-/character-sheet
+/vampires/character-sheet
  → CharacterSheetRoute → CharacterSheetScreen   (React shell + legacy/bridge.ts)
  → <iframe src="/vampires/old-sheet.html?room=&role=&characterId=&new=">
  → public/vampires/main.js                    (legacy sheet logic)
@@ -54,7 +54,7 @@ physical boundary does not add a URL segment.
 
 ## Flow: game table
 ```text
-/table
+/vampires/table
  → GameTable                         (orchestrator: room state + Supabase I/O)
  → src/games/vampires/modules/table/components/*        (Canvas, panels, dice, scenes, media, journal)
  → src/games/vampires/modules/chat/*                    (chat UI, auth, history, realtime)
@@ -70,7 +70,7 @@ physical boundary does not add a URL segment.
  → HomeRoute
  → src/games/vampires/modules/home/components/MainScreen.tsx
  → Supabase `users` + light `characters` list
- → links to /character-sheet, /table, /journal, /reference, /library/chronicles
+ → links to /vampires/character-sheet, /vampires/table, /vampires/journal, /vampires/reference, /vampires/library/chronicles
 ```
 
 ## Flow: Pathfinder 2 character creator
@@ -87,7 +87,7 @@ physical boundary does not add a URL segment.
 ## Flow: private chronicle library
 
 ```text
-/library/chronicles
+/vampires/library/chronicles
  → ChronicleLibraryRoute → ChronicleLibraryPage
  → list/open authorized library chronicle memberships
  → RLS-scoped `library_chronicle_chunks` reader + client-side document search
@@ -101,7 +101,7 @@ physical boundary does not add a URL segment.
 ## Flow: master console
 
 ```text
-/master?room=<room-id>
+/vampires/master?room=<room-id>
  → MasterConsoleRoute (requires explicit valid room + compatibility master gate)
  → bootstrapMasterConsoleForRoom
  → createVtm5ChronicleHub / bootstrapChronicleRuntime
@@ -122,7 +122,7 @@ shell only through URL params, localStorage, and `postMessage`.
 
 ## React / Next layer (`src/app/`, `src/games/`, `components/`)
 App Router route files are thin wrappers over `src/games/vampires/modules/*Route` entries.
-VTM wrappers live under `src/app/(vampires)/`; Pathfinder 2 is implemented directly
+VTM wrappers live under `src/app/(vampires)/vampires/`; Pathfinder 2 is implemented directly
 under `src/app/pathfinder2/` and `src/games/pathfinder2/`.
 `src/games/vampires/modules/home/*` owns the entry screen. Canonical table/chat/music/journal/reference/chronicle-library
 code lives in `src/games/vampires/modules/*`; deprecated component and `lib/table/*` re-export shims
@@ -161,7 +161,7 @@ maps display names ↔ stable identifiers.
 - Library game history is selected by exact title once, then restored from the
   caller's last-opened membership. DeepSeek searches it only through the
   membership-scoped RPC using the caller's JWT; this membership never grants a
-  master-console or room role. `/library/chronicles` renders the same private
+  master-console or room role. `/vampires/library/chronicles` renders the same private
   chunks as readable Markdown. Uploads replace one named document atomically
   and require both an authoritative Storyteller role and an existing library
   membership for the target chronicle.
@@ -173,7 +173,7 @@ maps display names ↔ stable identifiers.
 Images, video, files and layers on the table canvas (tldraw). Utilities in
 `src/games/vampires/modules/table/utils/*`; UI in `src/games/vampires/modules/table/components/*`.
 Music lives in `src/games/vampires/modules/music/*` with local-audio and YouTube
-adapters. `src/app/(vampires)/layout.tsx` mounts `GlobalMusicEngineMount` so playback
+adapters. `src/app/(vampires)/vampires/layout.tsx` mounts `GlobalMusicEngineMount` so playback
 survives VTM route navigation without leaking into Pathfinder.
 
 ## Actor domain

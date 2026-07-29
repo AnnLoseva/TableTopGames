@@ -21,7 +21,7 @@ function startNewCharacter() {
         role: currentParams.get('role') || localStorage.getItem('vtm-table-role') || 'player',
         new: '1'
     });
-    window.top.location.assign(`/character-sheet?${targetParams.toString()}`);
+    window.top.location.assign(`/vampires/character-sheet?${targetParams.toString()}`);
 }
 
 function setAutoSaveStatus(text, kind = '') {

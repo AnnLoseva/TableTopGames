@@ -1,6 +1,6 @@
 # Master Overview — «Обзор ночи»
 
-Command center for `/master`. Aggregates existing domain data; does not copy
+Command center for `/vampires/master`. Aggregates existing domain data; does not copy
 character sheets, rolls, or scenes into a parallel store.
 
 ## Sections

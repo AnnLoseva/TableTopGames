@@ -1,6 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  async redirects() {
+    return [
+      { source: '/character-sheet', destination: '/vampires/character-sheet', permanent: false },
+      { source: '/table', destination: '/vampires/table', permanent: false },
+      { source: '/journal', destination: '/vampires/journal', permanent: false },
+      { source: '/reference', destination: '/vampires/reference', permanent: false },
+      { source: '/library/:path*', destination: '/vampires/library/:path*', permanent: false },
+      { source: '/master/:path*', destination: '/vampires/master/:path*', permanent: false },
+      { source: '/old', destination: '/vampires/character-sheet', permanent: false },
+    ]
+  },
   async rewrites() {
     return [
       { source: '/old-sheet.html', destination: '/vampires/old-sheet.html' },

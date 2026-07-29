@@ -1,7 +1,7 @@
 # План внедрения по небольшим PR
 
 Каждый пункт — отдельный reviewable PR. Следующий не начинается в предыдущем;
-`/table` master/player smoke и type/build gates сохраняются на каждом шаге.
+`/vampires/table` master/player smoke и type/build gates сохраняются на каждом шаге.
 
 1. **Reference follow-up.** Приложить шесть MHTML, провести визуальный/DOM-аудит
    и закрыть пометки в `REFERENCE-MAP.md`. Только docs/assets.
@@ -18,13 +18,13 @@
    APIs для layouts/actions/notes и private/public projection pattern; обновить
    DECISIONS и persistence docs.
 6. **Console contract + route shell.** Зарегистрировать `master-console` в Hub,
-   добавить `/master`, contribution registry, permission boundary, desktop shell
+   добавить `/vampires/master`, contribution registry, permission boundary, desktop shell
    и loading/error/empty states без feature implementations.
 7. **Layout engine.** CRUD/presets/windows/deep links/detach, persistence version
    и multi-window sync. Не хранить domain data в layout JSON.
 8. **Shared room runtime extraction.** Извлечь только недостающие route-neutral
    hooks/services из table orchestrator. Добавить contract tests; не менять UI
-   `/table`.
+   `/vampires/table`.
 9. **Master rolls/right rail.** Переиспользовать rolls API/components, добавить
    безопасный hidden-roll contract, history, warnings/action log и явный publish.
 10. **Overview module.** Session/night domain, coterie summary, scenes and
@@ -54,7 +54,7 @@
 - private data отсутствуют в player REST/realtime/storage tests;
 - loading/empty/error/offline/permission states реализованы;
 - изменения используют constants/types/mappers/API, не hardcoded schema;
-- `npm run lint`, `npm run build`, релевантные tests и master/player `/table`
+- `npm run lint`, `npm run build`, релевантные tests и master/player `/vampires/table`
   smoke реально выполнены или честно отмечены как недоступные;
 - schema/route/architecture docs обновлены по `docs/ai/UPDATE-RULES.md`.
 

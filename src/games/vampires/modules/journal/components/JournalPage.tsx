@@ -342,10 +342,10 @@ export default function JournalPage() {
           <h1>{t('Дневник')}</h1>
         </div>
         <nav aria-label={t('Навигация дневника')}>
-          <Link href="/">{t('Главная')}</Link>
-          <Link href="/table">{t('Игровой стол')}</Link>
-          <Link href="/character-sheet">{t('Лист')}</Link>
-          <Link href="/reference">{t('Справочник')}</Link>
+          <Link href="/vampires">{t('Главная')}</Link>
+          <Link href="/vampires/table">{t('Игровой стол')}</Link>
+          <Link href="/vampires/character-sheet">{t('Лист')}</Link>
+          <Link href="/vampires/reference">{t('Справочник')}</Link>
         </nav>
       </section>
 

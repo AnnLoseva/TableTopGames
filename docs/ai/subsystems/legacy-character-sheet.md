@@ -57,7 +57,7 @@ import-tracked.
 3. Make the smallest localized change; do not restructure the file.
 4. Do not change URL params, save/load shape, creation flow, or i18n keys as a
    side effect.
-5. Verify the full iframe flow: open `/character-sheet`, create/load, edit, save,
+5. Verify the full iframe flow: open `/vampires/character-sheet`, create/load, edit, save,
    confirm `characterId` appears in the URL (postMessage worked), reload.
 
 ## What should eventually move to TypeScript

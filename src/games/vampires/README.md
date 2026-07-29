@@ -11,7 +11,7 @@ The production VTM implementation is consolidated here:
 - `supabase/` — VTM schema and Edge Functions;
 - `styles/` — VTM-only global theme.
 
-VTM App Router entries live in `src/app/(vampires)/`; the route group does not
+VTM App Router entries live in `src/app/(vampires)/vampires/`; the route group does not
 change public URLs. Legacy browser assets live in `public/vampires/`. The app
 uses their namespaced URLs, while `next.config.mjs` keeps old root asset URLs as
 compatibility rewrites for saved links and legacy iframe entry points.

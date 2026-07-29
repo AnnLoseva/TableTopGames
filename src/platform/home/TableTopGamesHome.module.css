@@ -1,0 +1,550 @@
+.page {
+  --ink: #f4efe5;
+  --muted: rgba(244, 239, 229, 0.62);
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(147, 24, 34, 0.22), transparent 32%),
+    radial-gradient(circle at 84% 28%, rgba(33, 90, 118, 0.25), transparent 34%),
+    linear-gradient(145deg, #08090b 0%, #101114 44%, #07080a 100%);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  isolation: isolate;
+}
+
+.page::before {
+  content: "";
+  position: fixed;
+  inset: 16px;
+  z-index: 6;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  pointer-events: none;
+}
+
+.ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at center, black, transparent 82%);
+}
+
+.header {
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brandMark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(236, 219, 185, 0.52);
+  border-radius: 50%;
+  color: #ecd9b7;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  box-shadow: inset 0 0 20px rgba(236, 219, 185, 0.08);
+}
+
+.brand > span:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+.brand strong {
+  font-family: Georgia, serif;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.brand small {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.accountButton {
+  min-height: 42px;
+  max-width: 280px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 0 18px;
+  background: rgba(12, 13, 15, 0.72);
+  color: var(--ink);
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.accountButton:hover {
+  border-color: rgba(236, 219, 185, 0.52);
+  background: rgba(236, 219, 185, 0.08);
+}
+
+.accountDot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #8d8f94;
+  box-shadow: 0 0 0 4px rgba(141, 143, 148, 0.08);
+}
+
+.accountDot[data-active="true"] {
+  background: #86d39a;
+  box-shadow: 0 0 0 4px rgba(134, 211, 154, 0.1), 0 0 14px rgba(134, 211, 154, 0.5);
+}
+
+.hero {
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: clamp(48px, 8vh, 110px) 0 56px;
+  display: grid;
+  align-content: center;
+  gap: clamp(44px, 7vh, 86px);
+}
+
+.heroCopy {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: #d6c29d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0;
+  display: grid;
+  font-family: Georgia, serif;
+  font-size: clamp(48px, 7vw, 112px);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+}
+
+.hero h1 span {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 239, 229, 0.58);
+}
+
+.heroLead {
+  width: min(680px, 100%);
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: clamp(14px, 1.3vw, 17px);
+  line-height: 1.7;
+}
+
+.gameGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.gameCard {
+  --accent: #d9c49b;
+  position: relative;
+  min-width: 0;
+  min-height: 360px;
+  overflow: hidden;
+  display: grid;
+  align-content: space-between;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  background: rgba(10, 11, 13, 0.72);
+  color: var(--ink);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+  transition: transform 240ms ease, border-color 240ms ease;
+  isolation: isolate;
+}
+
+.gameCard::before,
+.gameCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transition: transform 500ms ease, opacity 300ms ease;
+}
+
+.gameCard::before {
+  background:
+    radial-gradient(circle at 72% 28%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 36%),
+    linear-gradient(145deg, color-mix(in srgb, var(--accent) 13%, #08090b), #08090b 68%);
+}
+
+.gameCard::after {
+  inset: auto -12% -30% 32%;
+  height: 76%;
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.gameCard:hover {
+  transform: translateY(-8px);
+  border-color: color-mix(in srgb, var(--accent) 62%, transparent);
+}
+
+.gameCard:hover::before {
+  transform: scale(1.05);
+}
+
+.gameCard:hover::after {
+  opacity: 0.85;
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.vampiresCard {
+  --accent: #b72c38;
+}
+
+.pathfinderCard {
+  --accent: #4e9fc6;
+}
+
+.accountCard {
+  --accent: #d5bd89;
+  width: 100%;
+  font: inherit;
+}
+
+.cardNumber {
+  color: color-mix(in srgb, var(--accent) 88%, white);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+
+.cardCopy {
+  align-self: end;
+  margin-bottom: 26px;
+}
+
+.cardCopy p,
+.cardCopy span {
+  margin: 0;
+  color: rgba(244, 239, 229, 0.56);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.cardCopy h2 {
+  margin: 8px 0 7px;
+  overflow-wrap: anywhere;
+  font-family: Georgia, serif;
+  font-size: clamp(32px, 3vw, 52px);
+  font-weight: 400;
+  line-height: 0.98;
+}
+
+.cardAction {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: 18px;
+  color: rgba(244, 239, 229, 0.84);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cardAction span {
+  color: color-mix(in srgb, var(--accent) 80%, white);
+  font-size: 21px;
+}
+
+.footer {
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 22px 0 32px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  color: rgba(244, 239, 229, 0.36);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dialogBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(3, 4, 6, 0.78);
+  backdrop-filter: blur(16px);
+}
+
+.dialog {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: min(760px, calc(100dvh - 48px));
+  overflow-y: auto;
+  padding: clamp(28px, 5vw, 52px);
+  border: 1px solid rgba(213, 189, 137, 0.34);
+  background:
+    radial-gradient(circle at 90% 0, rgba(213, 189, 137, 0.14), transparent 34%),
+    #111216;
+  box-shadow: 0 36px 120px rgba(0, 0, 0, 0.68);
+}
+
+.dialogClose {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.dialog h2 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(30px, 6vw, 44px);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.dialogLead {
+  margin: 18px 0 30px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.authForm {
+  display: grid;
+  gap: 15px;
+}
+
+.authTabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.authTabs button,
+.submitButton,
+.accountSummary button {
+  min-height: 42px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.authTabs .activeTab {
+  border-color: rgba(213, 189, 137, 0.32);
+  background: rgba(213, 189, 137, 0.1);
+  color: #f5dfb3;
+}
+
+.authForm label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.authForm input {
+  min-width: 0;
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--ink);
+  padding: 0 13px;
+  outline: none;
+}
+
+.authForm input:focus {
+  border-color: rgba(213, 189, 137, 0.62);
+}
+
+.submitButton,
+.accountSummary button {
+  border-color: rgba(213, 189, 137, 0.42);
+  background: #d5bd89;
+  color: #15120c;
+  font-weight: 700;
+}
+
+.submitButton:disabled,
+.accountSummary button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.authMessage {
+  min-height: 20px;
+  margin: 18px 0 0;
+  color: #d5bd89;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.accountSummary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.accountAvatar {
+  grid-row: 1 / span 2;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(213, 189, 137, 0.42);
+  border-radius: 50%;
+  color: #edd5a5;
+  font-family: Georgia, serif;
+  font-size: 22px;
+}
+
+.accountSummary div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.accountSummary strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accountSummary small {
+  color: var(--muted);
+}
+
+.accountSummary button {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 940px) {
+  .gameGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .gameCard {
+    min-height: 290px;
+  }
+}
+
+@media (max-width: 620px) {
+  .page::before {
+    inset: 8px;
+  }
+
+  .header,
+  .hero,
+  .footer {
+    width: min(100% - 32px, 1440px);
+  }
+
+  .header {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .brand small {
+    display: none;
+  }
+
+  .accountButton {
+    max-width: 155px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .hero {
+    padding-top: 44px;
+  }
+
+  .hero h1 {
+    font-size: clamp(46px, 17vw, 78px);
+  }
+
+  .gameCard {
+    min-height: 270px;
+    padding: 21px;
+  }
+
+  .footer {
+    display: grid;
+  }
+
+  .dialogBackdrop {
+    padding: 12px;
+  }
+
+  .dialog {
+    max-height: calc(100dvh - 24px);
+    padding: 34px 22px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gameCard,
+  .gameCard::before,
+  .gameCard::after {
+    transition: none;
+  }
+}

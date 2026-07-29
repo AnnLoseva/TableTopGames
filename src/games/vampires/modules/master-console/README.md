@@ -1,6 +1,6 @@
 # Master Console
 
-Desktop-first shell for `/master?room=<room-id>`. Bootstraps the same VTM5 Hub
+Desktop-first shell for `/vampires/master?room=<room-id>`. Bootstraps the same VTM5 Hub
 runtime as the table, but never imports `GameTable`.
 
 ## Live modules (lazy-loaded)
@@ -12,8 +12,8 @@ Register in `contributions.ts` only (allow-listed ids).
 ## Deep links & display
 
 ```text
-/master?room=<room>&module=<id>&entity=<id>
-/master?room=<room>&layout=second-screen&display=detached
+/vampires/master?room=<room>&module=<id>&entity=<id>
+/vampires/master?room=<room>&layout=second-screen&display=detached
 ```
 
 Parser: `search/deep-link.ts`. Detached windows: `multi-window/open-detached.ts`.

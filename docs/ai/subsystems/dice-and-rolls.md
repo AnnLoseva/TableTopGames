@@ -10,7 +10,7 @@ character sheet or the table.
 - `src/games/vampires/modules/rolls/components/DiceRollOverlay.tsx` — the roll UI / results overlay.
 - `src/games/vampires/modules/rolls/utils/*` — quick/rouse/opposed/willpower builders (canonical).
 - Roll state persistence: `table_rolls` (see `supabase-persistence.md`).
-- `src/games/vampires/modules/master-rolls/*` — permanent `/master` right-rail roller; public rolls
+- `src/games/vampires/modules/master-rolls/*` — permanent `/vampires/master` right-rail roller; public rolls
   reuse `table_rolls`/`RollMessage`; hidden rolls use `master_hidden_rolls`.
 - `GameTable.tsx` — wires rolls into room state and realtime.
 - Mechanics live in `src/games/vampires/core/vtm5/rules/*` (successes, hunger, margins); disciplines can
@@ -55,7 +55,7 @@ inline in the overlay or `GameTable.tsx`.
 1. Read `../workflows/vtm-mechanics-edit-protocol.md` (logic) and
    `../workflows/react-table-edit-protocol.md` (UI/table wiring).
 2. Put resolution logic in `src/games/vampires/core/vtm5/rules/*`; keep the overlay presentational.
-3. Verify with a roll in `/table` for both master and player, and check the
+3. Verify with a roll in `/vampires/table` for both master and player, and check the
    result matches VTM V5 rules.
 
 ## Related docs

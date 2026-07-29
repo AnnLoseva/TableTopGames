@@ -22,7 +22,7 @@
 
 Дополнительные зоны (не слои Hub, но важны):
 
-- **`src/app/(vampires)/`** — URL-neutral VTM route group and providers.
+- **`src/app/(vampires)/vampires/`** — URL-neutral VTM route group and providers.
 - **`src/app/pathfinder2/`** — isolated Pathfinder route shells.
 - **`src/games/vampires/lib/`** — VTM Supabase client and i18n.
 - **`public/vampires/`** — legacy VTM character sheet and assets (vanilla JS, iframe).
@@ -74,7 +74,7 @@ bootstrapChronicleRuntime(hub, chronicle)
   → ChronicleRuntime { chronicle, resolved, adapters }
 ```
 
-**Runtime:** `src/app/(vampires)/table/page.tsx` → `TableRoute` → `bootstrapTableForRoom(room)` →
+**Runtime:** `src/app/(vampires)/vampires/table/page.tsx` → `TableRoute` → `bootstrapTableForRoom(room)` →
 `GameTable`. Адаптеры VTM5 активны до монтирования оркестратора.
 
 ---
@@ -235,13 +235,13 @@ src/games/vampires/modules/my-feature/
 ## Legacy-зона (не трогать широкими PR)
 
 ```text
-/character-sheet → CharacterSheetScreen → iframe /vampires/old-sheet.html
+/vampires/character-sheet → CharacterSheetScreen → iframe /vampires/old-sheet.html
   → public/vampires/main.js, public/vampires/supabase.js, public/vtm-*.js
   ← postMessage { type: 'vtm-character-saved', characterId }
 ```
 
-Маршруты `/`, `/character-sheet`, `/table`, `/journal`, `/reference` — стабильны.
-`src/app/(vampires)/table/page.tsx` по-прежнему рендерит `GameTable` без изменений контракта.
+Маршруты `/`, `/vampires/character-sheet`, `/vampires/table`, `/vampires/journal`, `/vampires/reference` — стабильны.
+`src/app/(vampires)/vampires/table/page.tsx` по-прежнему рендерит `GameTable` без изменений контракта.
 
 ---
 
@@ -262,9 +262,9 @@ npm run test:disciplines
 
 Ручная smoke-проверка UI:
 
-- `/table?room=campaign-666&role=master` и `role=player`
-- `/character-sheet`, `/character-sheet?new=1`
-- `/journal`, `/reference`
+- `/vampires/table?room=campaign-666&role=master` и `role=player`
+- `/vampires/character-sheet`, `/vampires/character-sheet?new=1`
+- `/vampires/journal`, `/vampires/reference`
 
 ---
 

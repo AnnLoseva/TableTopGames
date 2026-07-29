@@ -203,7 +203,7 @@ export default function MasterScenesModule({ room, role, deepLinkParams }: Maste
             {scenes.loading ? <div className="ms-empty">Загрузка сцен…</div> : null}
             {!scenes.loading && scenes.listItems.length === 0 ? (
               <div className="ms-empty">
-                Сцен нет. Создайте первую — строки `table_scenes` те же, что у `/table`.
+                Сцен нет. Создайте первую — строки `table_scenes` те же, что у `/vampires/table`.
               </div>
             ) : null}
 
@@ -326,7 +326,7 @@ export default function MasterScenesModule({ room, role, deepLinkParams }: Maste
                   <div className="ms-preview-empty">
                     Нет on-table слоёв в preview.
                     <br />
-                    Слои сцены те же, что в `table_images` — управляйте справа или на `/table`.
+                    Слои сцены те же, что в `table_images` — управляйте справа или на `/vampires/table`.
                   </div>
                 ) : (
                   previewLayers.map(layer => (

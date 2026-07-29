@@ -13,13 +13,13 @@ opening code**. Risk levels drive how careful you must be.
 ## Routes & screens
 | Path | Role | Risk | Edit protocol | Notes |
 |---|---|---|---|---|
-| `src/app/(vampires)/page.tsx` | `/` route → `src/games/vampires/modules/home/HomeRoute` | low | before-any-change | Thin wrapper |
-| `src/app/(vampires)/character-sheet/page.tsx` | `/character-sheet` route | low | before-any-change | Thin wrapper |
-| `src/app/(vampires)/table/page.tsx` | `/table` route | low | before-any-change | Thin wrapper |
-| `src/app/(vampires)/master/page.tsx` | `/master` route | low | before-any-change | Thin wrapper; explicit `room` required |
-| `src/app/(vampires)/layout.tsx` | VTM-only providers, metadata, theme and persistent music mount | medium | before-any-change | Route group does not change URLs |
+| `src/app/(vampires)/vampires/page.tsx` | `/` route → `src/games/vampires/modules/home/HomeRoute` | low | before-any-change | Thin wrapper |
+| `src/app/(vampires)/vampires/character-sheet/page.tsx` | `/vampires/character-sheet` route | low | before-any-change | Thin wrapper |
+| `src/app/(vampires)/vampires/table/page.tsx` | `/vampires/table` route | low | before-any-change | Thin wrapper |
+| `src/app/(vampires)/vampires/master/page.tsx` | `/vampires/master` route | low | before-any-change | Thin wrapper; explicit `room` required |
+| `src/app/(vampires)/vampires/layout.tsx` | VTM-only providers, metadata, theme and persistent music mount | medium | before-any-change | Route group does not change URLs |
 | `src/app/pathfinder2/sheet/page.tsx` | `/pathfinder2/sheet` route | low | before-any-change | Thin wrapper; intentionally unlinked from `/` |
-| `src/app/(vampires)/old/page.tsx` | legacy redirect | low | before-any-change | Redirects to `/character-sheet` |
+| `src/app/(vampires)/vampires/old/page.tsx` | legacy redirect | low | before-any-change | Redirects to `/vampires/character-sheet` |
 
 ## Game domain boundaries (`src/games/*`)
 
@@ -45,7 +45,7 @@ opening code**. Risk levels drive how careful you must be.
 | Path | Role | Risk | Edit protocol | Notes |
 |---|---|---|---|---|
 | `src/games/vampires/modules/table/GameTable.tsx` | room orchestrator (~2.6k lines) | **critical** | react-table-edit-protocol | Do not grow it; extract to child components/hooks |
-| `src/games/vampires/modules/table/TableRoute.tsx` | `/table` entry + bootstrap | low | before-any-change | Thin wrapper |
+| `src/games/vampires/modules/table/TableRoute.tsx` | `/vampires/table` entry + bootstrap | low | before-any-change | Thin wrapper |
 | `src/games/vampires/modules/table/components/{RollHistoryPanel,LayerContextMenuPanel,MediaPreviewModal}.tsx` | extracted UI slices | medium | react-table-edit-protocol | Roll rail, context menu, media preview |
 | `src/games/vampires/modules/table/components/{canvas,panels,scenes,layers,media,master}/*` | table UI panels | medium–high | react-table-edit-protocol | Canonical table UI |
 | `src/games/vampires/modules/table/types.ts` | table data model (canonical) | high | react-table-edit-protocol | Chat types re-exported from `src/games/vampires/modules/chat/types` |
@@ -68,7 +68,7 @@ opening code**. Risk levels drive how careful you must be.
 | `src/games/vampires/modules/master-console/search/*` | deep-link parser, search fan-out, commands | medium | before-any-change | Providers live in modules |
 | `src/games/vampires/modules/master-console/multi-window/*` | BroadcastChannel bus, openDetached | medium | before-any-change | No state snapshots on bus |
 | `src/games/vampires/modules/master-console/layouts/*` | layout schema migration + version conflict | high | supabase-edit-protocol | Geometry not in layout_json |
-| `src/games/vampires/modules/master-rolls/*` | permanent master roller, hidden roll API, undo | high | supabase-edit-protocol | Same RollMessage as `/table` |
+| `src/games/vampires/modules/master-rolls/*` | permanent master roller, hidden roll API, undo | high | supabase-edit-protocol | Same RollMessage as `/vampires/table` |
 | `src/games/vampires/modules/master-overview/*` | Night overview command center | medium | before-any-change | Aggregates actors/scenes/logs |
 | `src/games/vampires/modules/master-scenes/*` | Master scenes/layers shell | high | supabase-edit-protocol | Reuses table scene APIs; no GameTable |
 | `src/games/vampires/modules/lore/*` | Chronicle lore + random tables | high | supabase-edit-protocol | System ref via src/games/vampires/modules/reference |
@@ -84,7 +84,7 @@ opening code**. Risk levels drive how careful you must be.
 ## Character sheet module (`src/games/vampires/modules/character-sheet/*`)
 | Path | Role | Risk | Edit protocol | Notes |
 |---|---|---|---|---|
-| `src/games/vampires/modules/character-sheet/CharacterSheetRoute.tsx` | `/character-sheet` entry | low | before-any-change | Thin wrapper |
+| `src/games/vampires/modules/character-sheet/CharacterSheetRoute.tsx` | `/vampires/character-sheet` entry | low | before-any-change | Thin wrapper |
 | `src/games/vampires/modules/character-sheet/components/CharacterSheetScreen.tsx` | iframe shell + nav | **high** | legacy-edit-protocol | Bridge contract owner |
 | `src/games/vampires/modules/character-sheet/legacy/{params,events,bridge}.ts` | bridge contract (canonical) | **high** | legacy-edit-protocol | Params, postMessage, localStorage |
 
@@ -115,7 +115,7 @@ opening code**. Risk levels drive how careful you must be.
 | `src/games/vampires/modules/chat/api/chat-api.ts` | chat Supabase API/mappers | high | supabase-edit-protocol | Do not rename `table_chat_messages` |
 | `src/games/vampires/modules/music/module-definition.ts` | music Hub module contract | low | before-any-change | `table_music`, `table_music_library`, `table_scene_music`, `table-music` |
 | `src/games/vampires/modules/music/components/MusicPlayer.tsx` | music UI | medium | react-table-edit-protocol | |
-| `src/games/vampires/modules/music/components/GlobalMusicEngineMount.tsx` | persistent hidden music mount | medium | react-table-edit-protocol | Mounted by `src/app/(vampires)/layout.tsx`; keep stable across VTM navigation |
+| `src/games/vampires/modules/music/components/GlobalMusicEngineMount.tsx` | persistent hidden music mount | medium | react-table-edit-protocol | Mounted by `src/app/(vampires)/vampires/layout.tsx`; keep stable across VTM navigation |
 | `src/games/vampires/modules/music/MusicSyncEngine.ts` | music sync | high | react-table-edit-protocol | Realtime sync + autoplay limits |
 | `src/games/vampires/modules/music/adapters/{localAudioAdapter,youtubeAdapter}.ts` | playback adapters | medium | react-table-edit-protocol | Browser/YouTube limits |
 | `src/games/vampires/modules/journal/*` | TipTap journal (canonical) | medium | before-any-change | |

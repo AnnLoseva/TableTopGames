@@ -27,7 +27,7 @@ export default function MasterConsoleRoute() {
     if (!roomParam || !VALID_ROOM.test(roomParam)) {
       setState({
         status: 'invalid-room',
-        message: 'Укажите корректную комнату: /master?room=campaign-666',
+        message: 'Укажите корректную комнату: /vampires/master?room=campaign-666',
       })
       return
     }
@@ -129,7 +129,7 @@ export default function MasterConsoleRoute() {
         title="Нужен вход в архив"
         message={`Для пульта комнаты ${state.room} требуется действующая Supabase Auth-сессия.`}
         tone="error"
-        action={<Link href="/">Войти на главной</Link>}
+        action={<Link href="/vampires">Войти на главной</Link>}
       />
     )
   }
@@ -140,7 +140,7 @@ export default function MasterConsoleRoute() {
         title="Нет доступа мастера"
         message={`Текущий аккаунт не назначен мастером хроники ${state.room}.`}
         tone="error"
-        action={<Link href="/">Сменить аккаунт</Link>}
+        action={<Link href="/vampires">Сменить аккаунт</Link>}
       />
     )
   }

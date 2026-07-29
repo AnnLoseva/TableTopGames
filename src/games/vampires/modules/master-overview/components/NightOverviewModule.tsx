@@ -312,7 +312,7 @@ export default function NightOverviewModule({
               <button
                 type="button"
                 onClick={() => {
-                  window.open('/reference', '_blank', 'noopener,noreferrer')
+                  window.open('/vampires/reference', '_blank', 'noopener,noreferrer')
                 }}
                 title="Справочник / лор (модуль Lore — следующая фаза)"
               >

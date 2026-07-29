@@ -3,8 +3,8 @@
 ## Route и runtime flow
 
 ```text
-/master?room=...&layout=...&module=...
-  -> src/app/(vampires)/master/page.tsx (thin wrapper)
+/vampires/master?room=...&layout=...&module=...
+  -> src/app/(vampires)/vampires/master/page.tsx (thin wrapper)
   -> src/games/vampires/modules/master-console/MasterConsoleRoute
   -> server-verified session + chronicle membership
   -> bootstrapChronicleRuntime(createVtm5ChronicleHub(), chronicle)
@@ -59,7 +59,7 @@ URL не превращается в import path.
 применяет min/default sizes, singleton и desktop bounds; domain data в layout не
 кладётся. Local draft допустим для плавного drag, Supabase — источник истины.
 
-Detached window использует `/master?...&module=<id>&instance=<id>&detached=1`.
+Detached window использует `/vampires/master?...&module=<id>&instance=<id>&detached=1`.
 Состояние данных идёт через Supabase; BroadcastChannel передаёт только ephemeral
 focus/geometry hints. Закрытие окна не удаляет модуль из layout автоматически.
 
@@ -90,7 +90,7 @@ hooks только там, где текущие hooks нельзя безопа
 scene/roll/music. Мастерские таблицы получают отдельные subscriptions после RLS;
 каждый select и postgres_changes filter включает chronicle/room scope. Publish
 command транзакционно создаёт/обновляет player-safe projection и action-log,
-после чего существующий `/table` получает обычное shared событие.
+после чего существующий `/vampires/table` получает обычное shared событие.
 
 ## Матрица требования и владельца
 

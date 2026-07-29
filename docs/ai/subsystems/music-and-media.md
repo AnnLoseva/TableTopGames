@@ -32,7 +32,7 @@ local-audio and YouTube sources, synced across the room.
 - Adapters abstract the source: local uploaded audio vs YouTube. Each has its own
   loading, seeking, and error behavior.
 - `GlobalMusicEngineMount` keeps the hidden engine mounted from
-  `src/app/(vampires)/layout.tsx`, so playback survives VTM navigation without
+  `src/app/(vampires)/vampires/layout.tsx`, so playback survives VTM navigation without
   mounting on Pathfinder routes.
 - Persistence: current music via `table_music`, per-scene via `table_scene_music`,
   a reusable library via `table_music_library`; audio files in the music bucket.
@@ -56,7 +56,7 @@ local-audio and YouTube sources, synced across the room.
 2. Keep source-specific logic inside the adapters; keep placement logic in
    `src/games/vampires/modules/table/utils/*`.
 3. Preserve gesture-gated playback.
-4. Verify: open the music panel in `/table`, load local + YouTube, confirm
+4. Verify: open the music panel in `/vampires/table`, load local + YouTube, confirm
    play/seek and that scene switching shows the right media/layers.
 
 ## Related docs

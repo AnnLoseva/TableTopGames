@@ -133,7 +133,7 @@ the chunk RLS policy and search RPC require the caller's own
 `library_chronicle_members` row. Chronicle source text is private data: ingest
 it directly into Supabase, never into the repository.
 
-`/library/chronicles` reads those same chunks directly under RLS and groups them
+`/vampires/library/chronicles` reads those same chunks directly under RLS and groups them
 back into Markdown documents. An authenticated user with an authoritative
 `chronicle_members.role = 'master'` may upload Markdown/TXT only into a library
 chronicle they have already joined. `replace_library_chronicle_document(...)`

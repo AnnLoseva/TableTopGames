@@ -23,7 +23,7 @@ const MAX_UPLOAD_BYTES = 1_000_000
 function makeChronicleUrl(chronicleId: string, sourceName = '', hash = '') {
   const params = new URLSearchParams({ chronicle: chronicleId })
   if (sourceName) params.set('document', sourceName)
-  return `/library/chronicles?${params.toString()}${hash ? `#${hash}` : ''}`
+  return `/vampires/library/chronicles?${params.toString()}${hash ? `#${hash}` : ''}`
 }
 
 export default function ChronicleLibraryPage() {
@@ -289,9 +289,9 @@ export default function ChronicleLibraryPage() {
           <h1>{t('Хроника')}</h1>
         </div>
         <nav aria-label={t('Навигация хроники')}>
-          <Link href="/">{t('Главная')}</Link>
-          <Link href="/reference">{t('Справочник')}</Link>
-          <Link href="/library/chat">{t('Чат')}</Link>
+          <Link href="/vampires">{t('Главная')}</Link>
+          <Link href="/vampires/reference">{t('Справочник')}</Link>
+          <Link href="/vampires/library/chat">{t('Чат')}</Link>
         </nav>
       </section>
 
@@ -299,7 +299,7 @@ export default function ChronicleLibraryPage() {
         <section className="chronicle-locked">
           <h2>{t('Закрытый архив')}</h2>
           <p>{t('Войдите в аккаунт, чтобы увидеть доступные вам хроники.')}</p>
-          <Link href="/">{t('В салон')}</Link>
+          <Link href="/vampires">{t('В салон')}</Link>
         </section>
       ) : null}
 

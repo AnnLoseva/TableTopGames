@@ -26,7 +26,7 @@ Read `../subsystems/game-table.md` first (and `music-and-media.md` /
 
 ## After the change — verify
 1. `npm run lint` (type check) and, for non-trivial changes, `npm run build`.
-2. `/table?room=campaign-666&role=master` and `...&role=player`:
+2. `/vampires/table?room=campaign-666&role=master` and `...&role=player`:
    - room/role persistence,
    - a dice roll appears for both,
    - scene switching shows the right media/layers,

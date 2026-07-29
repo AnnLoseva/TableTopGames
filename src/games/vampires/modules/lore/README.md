@@ -1,6 +1,6 @@
 # Lore & Random Tables
 
-Chronicle compendium for `/master`. **System VTM rules** come from
+Chronicle compendium for `/vampires/master`. **System VTM rules** come from
 `src/games/vampires/modules/reference` (markdown + `public/vampires/rules.json` path) and are never copied
 into Supabase. **Chronicle lore** lives in `chronicle_lore_*` tables.
 

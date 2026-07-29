@@ -17,14 +17,14 @@ export function subscribeCharacterSaved(
   return () => window.removeEventListener('message', onMessage)
 }
 
-export function replaceUrlAfterCharacterSaved(characterId: string, basePath = '/character-sheet') {
+export function replaceUrlAfterCharacterSaved(characterId: string, basePath = '/vampires/character-sheet') {
   const params = new URLSearchParams(window.location.search)
   params.delete('new')
   params.set('characterId', characterId)
   window.history.replaceState(null, '', `${basePath}?${params.toString()}`)
 }
 
-export function pushNewCharacterUrl(room: string, role: CharacterSheetRole, basePath = '/character-sheet') {
+export function pushNewCharacterUrl(room: string, role: CharacterSheetRole, basePath = '/vampires/character-sheet') {
   const params = new URLSearchParams({ room, role, new: '1' })
   window.history.pushState(null, '', `${basePath}?${params.toString()}`)
 }

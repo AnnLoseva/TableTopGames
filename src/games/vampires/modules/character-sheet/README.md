@@ -1,6 +1,6 @@
 # Character Sheet Module
 
-React shell for `/character-sheet` and the legacy iframe bridge.
+React shell for `/vampires/character-sheet` and the legacy iframe bridge.
 
 ## Layout
 - `CharacterSheetRoute.tsx` — route entry

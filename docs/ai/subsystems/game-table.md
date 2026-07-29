@@ -6,7 +6,7 @@ canvas, layers, dice rolls, chat, an in-table journal, and music — all synced 
 real time through Supabase and keyed by `room`.
 
 ## Main entry
-- Route: `/table` (`src/app/(vampires)/table/page.tsx`) → `src/games/vampires/modules/table/TableRoute` →
+- Route: `/vampires/table` (`src/app/(vampires)/vampires/table/page.tsx`) → `src/games/vampires/modules/table/TableRoute` →
   `src/games/vampires/modules/table/GameTable.tsx`.
 - `GameTable.tsx` (~2.6k lines) is the **orchestrator**: it holds room state, does
   Supabase reads/writes and realtime subscriptions, and coordinates the child
@@ -91,7 +91,7 @@ signals). See `dice-and-rolls.md`.
    rules in `src/games/vampires/core/vtm5/rules/*`.
 3. Keep Supabase table/bucket names in `src/games/vampires/modules/table/constants.ts` — never
    hardcode new ones.
-4. Verify: `/table?room=campaign-666&role=master` and `&role=player` — room/role
+4. Verify: `/vampires/table?room=campaign-666&role=master` and `&role=player` — room/role
    persistence, a dice roll, scene/layer visibility, chat, and the music panel.
 
 ## Related docs

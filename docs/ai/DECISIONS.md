@@ -1,5 +1,16 @@
 # Decisions
 
+## 2026-07-29 — Root portal, shared account and `/vampires/*` routes
+
+**Area:** Product navigation / authentication / VTM routing
+**Decision:** `/` is the TableTopGames portal with explicit entries for Vampire, Pathfinder 2 and the shared account. Canonical VTM pages live under `/vampires/*`; old root VTM page URLs are temporary redirects that preserve query parameters. The shared `AccountProvider` reuses the existing Vampire Supabase Auth and profile tables, persists the session, and mirrors the profile to `tabletop-account`, `vtm-chat-user` and `vtm-sheet-user`.
+**Reason:** Make the multi-game boundary visible while keeping one established account and all legacy Vampire data.
+**Consequences:** Login from `/` is immediately available to VTM pages and future game features on the same origin. Pathfinder currently displays the shared account state but still stores its character draft locally. `/api/turn-credentials` remains unchanged.
+**Affected files:** `src/app/*`, `src/platform/account/*`, `src/platform/home/*`, `src/games/vampires/*`, `src/games/pathfinder2/*`, `next.config.mjs`
+**Status:** active
+
+---
+
 ## 2026-07-29 — Application source is consolidated under `src/`
 
 **Area:** Repository layout / Next.js routing / developer tooling
@@ -16,22 +27,18 @@
 **Area:** Repository structure / routing / legacy assets / Supabase tooling
 **Decision:** All VTM-only TypeScript, rules runtime, feature modules, i18n,
 Supabase client/schema/Edge Functions, validation scripts and styles live under
-`src/games/vampires/`. VTM App Router files live in the URL-neutral
-`src/app/(vampires)/` route group. Legacy VTM assets live in `public/vampires/` and
+`src/games/vampires/`. VTM App Router files live under the URL-neutral `src/app/(vampires)/` group and the explicit `vampires/` route segment. Legacy VTM assets live in `public/vampires/` and
 are referenced canonically through `/vampires/*`. `next.config.mjs` keeps
 rewrites for the former root asset URLs, including `/old-sheet.html`,
 `/rules.json`, `/static/*` and the legacy scripts. Shared `src/platform/hub/*` remains
 game-neutral.
-**Reason:** Make the two game domains physically legible without changing
-production VTM routes, iframe messages, saved query parameters, Supabase
-contracts or VTM mechanics.
-**Consequences:** Public page URLs remain `/`, `/character-sheet`, `/table`,
-`/journal`, `/reference`, `/library/*`, `/master`, `/old` and
+**Reason:** Make the two game domains physically legible while compatibility redirects preserve old links, iframe messages, saved query parameters, Supabase contracts and VTM mechanics.
+**Consequences:** Canonical VTM page URLs are `/vampires`, `/vampires/character-sheet`, `/vampires/table`, `/vampires/journal`, `/vampires/reference`, `/vampires/library/*`, `/vampires/master`, `/vampires/old`; the shared API remains
 `/api/turn-credentials`. New VTM code must go under `src/games/vampires/`; new
 Pathfinder code must not import that domain. Supabase deployment commands must
 point to `src/games/vampires/supabase/`. Old VTM asset URLs are compatibility
 aliases, not canonical paths.
-**Affected files:** `src/app/(vampires)/*`, `src/games/vampires/{core,lib,modules,scripts,styles,supabase}/*`,
+**Affected files:** `src/app/(vampires)/vampires/*`, `src/games/vampires/{core,lib,modules,scripts,styles,supabase}/*`,
 `public/vampires/*`, `next.config.mjs`, `vercel.json`, `package.json`,
 `tsconfig.json`, `tooling/audit-project-structure.ts`, `docs/ai/*`
 **Status:** active
@@ -88,7 +95,7 @@ locked z⁻¹⁰⁰⁰ layer).
 space off-stage, several characters per player, compact character card from the
 token — without turning the table into a full VTT.
 **Consequences:** New tables follow the existing permissive `table_*` RLS
-pattern ("Anyone can …") because `/table` runs on the custom `users` identity +
+pattern ("Anyone can …") because `/vampires/table` runs on the custom `users` identity +
 local master password, not Supabase Auth — real server-side permission checks
 remain impossible until the table route migrates to Auth (documented
 limitation; client-side gating mirrors `canEditLayer`). Existing rooms: old
@@ -177,7 +184,7 @@ and `personal_chronicle_fk_indexes`, plus Edge Function
 ## 2026-07-13 — Private Chronicle reader and upload use the library membership boundary
 
 **Area:** Library UI / Supabase persistence / private game history
-**Decision:** `/library/chronicles` is a Reference-style reader over the private
+**Decision:** `/vampires/library/chronicles` is a Reference-style reader over the private
 `library_chronicle_chunks` corpus. Authenticated users see every library
 chronicle they have joined and may join another by its exact active title.
 Storytellers may upload Markdown/TXT only to a target already present in their
@@ -193,7 +200,7 @@ general write or query tool.
 `library_chronicle_members` row for the target. Players remain read-only. A
 same-name upload replaces one document in a transaction; a failed upload leaves
 the earlier version intact. Raw chronicle files remain outside Git.
-**Affected files:** `src/app/(vampires)/library/chronicles/page.tsx`,
+**Affected files:** `src/app/(vampires)/vampires/library/chronicles/page.tsx`,
 `src/games/vampires/modules/chronicle-library/*`, `src/games/vampires/supabase/library_chronicles.sql`,
 `src/games/vampires/modules/home/components/MainScreen.tsx`, `src/games/vampires/scripts/test-chronicle-library.ts`
 **Status:** active
@@ -325,7 +332,7 @@ column ordering. The ingest UI normalizes soft hyphens, wrapped words and line
 wraps; the RPC returns one coherent fragment instead of disconnected excerpts.
 Page numbers are PDF pages of the exact files the group owns, so citations can
 be checked against the real book. Book text is NOT committed to the repo
-(copyright); it is ingested by a master via `/master/ingest-books` from locally
+(copyright); it is ingested by a master via `/vampires/master/ingest-books` from locally
 generated JSONL files. RLS: read — authenticated only; write — masters only
 (`is_any_chronicle_master`). The site must show only short snippets publicly.
 **Reason:** Foundation for grounded VTM rules answers: Postgres FTS answers
@@ -334,8 +341,8 @@ generated JSONL files. RLS: read — authenticated only; write — masters only
 books = new `source` slug. The pre-cleanup rows are retained for rollback in
 `private.book_pages_backup_20260713` with no app-role grants. Do not add anon
 read policies.
-**Affected files:** `src/games/vampires/supabase/book_pages.sql`, `src/app/(vampires)/master/ingest-books/page.tsx`,
-`src/app/(vampires)/master/ingest-books/book-text.ts`
+**Affected files:** `src/games/vampires/supabase/book_pages.sql`, `src/app/(vampires)/vampires/master/ingest-books/page.tsx`,
+`src/app/(vampires)/vampires/master/ingest-books/book-text.ts`
 **Status:** active
 
 ---
@@ -356,7 +363,7 @@ plaintext). `migrate_legacy_auth` RPC self-heals any stragglers at login.
 Chronicle `campaign-666` provisioned with user Anna as master.
 **Reason:** Master console tables are RLS-locked to `authenticated` +
 `chronicle_members`; the old localStorage/`public.users` login had no
-`auth.uid()`, so nothing on `/master` could persist.
+`auth.uid()`, so nothing on `/vampires/master` could persist.
 **Consequences:** Users keep the same username+password UX; characters/chat keep
 referencing `public.users.id`. Already-logged-in browsers must log in once more
 to obtain an auth session. New master memberships are still provisioned by
@@ -370,7 +377,7 @@ admin SQL — no client self-claim. Do not reintroduce direct inserts into
 
 ## 2026-07-11 — Master multi-window and session log
 
-- **Detached display**: `?display=detached` uses the same `/master` route with a
+- **Detached display**: `?display=detached` uses the same `/vampires/master` route with a
   minimal shell (no sidebar chrome). Opened via `window.open`; popup-blocked is
   a first-class error message. Closing a detached window does not remove the
   module from the primary shell.
@@ -478,9 +485,9 @@ is a stub until the lore module exists. Deploy `src/games/vampires/supabase/mast
 ## 2026-07-11 — Master roller reuses RollMessage; hidden rolls are not table_rolls
 
 **Area:** Master console / rolls / privacy
-**Decision:** The permanent `/master` right rail mounts `src/games/vampires/modules/master-rolls`
+**Decision:** The permanent `/vampires/master` right rail mounts `src/games/vampires/modules/master-rolls`
 and does not unmount on central module change. Public rolls use the same
-`RollMessage` + `insertRollRecord` / `table_rolls` path as `/table`. Hidden rolls
+`RollMessage` + `insertRollRecord` / `table_rolls` path as `/vampires/table`. Hidden rolls
 never broadcast and never insert into `table_rolls` until explicit reveal; they
 persist in `master_hidden_rolls` (master RLS only) or a master-local fallback if
 Auth/schema is undeployed. Actor pools/hunger come from `src/games/vampires/modules/actors`
@@ -554,7 +561,7 @@ against `chronicle_id` by triggers.
 **Reason:** The existing localStorage identity and master password cannot enforce
 RLS. Client self-claim would let the first authenticated user take over an
 existing legacy room.
-**Consequences:** The current `/master` shell remains persistence-disabled until
+**Consequences:** The current `/vampires/master` shell remains persistence-disabled until
 the login flow supplies a Supabase Auth session and an administrator provisions
 membership. Master Realtime uses separate room-filtered postgres subscriptions;
 players cannot select the rows under RLS. `master_action_log` exposes only
@@ -568,7 +575,7 @@ SELECT/INSERT and is append-only to clients.
 ## 2026-07-11 — Master console is a separate Hub module, not a second GameTable
 
 **Area:** Master console / routing / Hub
-**Decision:** `/master?room=...` mounts `src/games/vampires/modules/master-console` as a VTM5 Hub
+**Decision:** `/vampires/master?room=...` mounts `src/games/vampires/modules/master-console` as a VTM5 Hub
 module. It bootstraps the same chronicle runtime and canonical room resolver as
 the table, composes its own desktop shell, and does not import `GameTable`.
 The current local master-password contract is shared through
@@ -578,7 +585,7 @@ table orchestration, persistence, scenes, rolls or music.
 **Consequences:** Business contributions and Supabase data are deferred. The
 compatibility gate blocks URL-only access but does not provide real privacy;
 Auth/RLS remains a prerequisite for master secrets.
-**Affected files:** `src/app/(vampires)/master/page.tsx`, `src/games/vampires/modules/master-console/*`,
+**Affected files:** `src/app/(vampires)/vampires/master/page.tsx`, `src/games/vampires/modules/master-console/*`,
 `src/platform/hub/{types,presets}.ts`, `src/games/vampires/modules/table/hooks/useRoomSession.ts`,
 `src/games/vampires/modules/table/utils/room-session.ts`
 **Status:** active

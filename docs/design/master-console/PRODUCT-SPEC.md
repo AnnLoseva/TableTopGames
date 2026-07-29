@@ -2,7 +2,7 @@
 
 ## Назначение и границы
 
-`/master?room=<room-id>` — desktop-first рабочее пространство рассказчика для
+`/vampires/master?room=<room-id>` — desktop-first рабочее пространство рассказчика для
 ведения одной хроники. Это композиция независимых модулей поверх общего room
 runtime, а не второй `GameTable` и не набор вкладок внутри монолита. Пульт
 использует канонические API сцен, слоёв, бросков, музыки, журнала и персонажей.
@@ -87,7 +87,7 @@ synced, reconnecting, offline и conflict. Optimistic update допускает�
 rollback/error feedback.
 
 Realtime разделяется на shared/player-safe и master-only подписки. Событие
-публикации обновляет общий `/table`; мастерские черновики не публикуются в
+публикации обновляет общий `/vampires/table`; мастерские черновики не публикуются в
 общий channel. При восстановлении соединения выполняется scoped refetch.
 
 ## Приватность и destructive actions

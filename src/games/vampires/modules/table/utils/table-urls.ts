@@ -8,5 +8,5 @@ export function getCharacterSheetHref(
   const params = new URLSearchParams({ room })
   if (tableRole) params.set('role', tableRole)
   if (characterId) params.set('characterId', characterId)
-  return `/character-sheet?${params.toString()}`
+  return `/vampires/character-sheet?${params.toString()}`
 }

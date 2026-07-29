@@ -1,6 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import AccountBadge from '@/platform/account/AccountBadge'
 import {
   DEFAULT_PATHFINDER2_DRAFT,
   PATHFINDER2_ANCESTRIES,
@@ -191,6 +193,8 @@ export default function Pathfinder2SheetPage() {
         </div>
 
         <div className={styles.topbarActions}>
+          <Link href="/" className={styles.homeLink}>Все игры</Link>
+          <AccountBadge className={styles.accountBadge} />
           <span className={styles.saveStatus}>
             <i aria-hidden="true" />
             {saveStatus}

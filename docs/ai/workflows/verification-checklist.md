@@ -19,11 +19,11 @@ what each command does.
 
 ## Routes to smoke test
 - `/`
-- `/character-sheet`
-- `/character-sheet?new=1`
-- `/character-sheet?room=campaign-666&role=player`
-- `/table?room=campaign-666&role=master`
-- `/table?room=campaign-666&role=player`
+- `/vampires/character-sheet`
+- `/vampires/character-sheet?new=1`
+- `/vampires/character-sheet?room=campaign-666&role=player`
+- `/vampires/table?room=campaign-666&role=master`
+- `/vampires/table?room=campaign-666&role=player`
 
 ## Feature smoke tests
 - create / load a character

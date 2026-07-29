@@ -15,7 +15,7 @@ export const masterConsoleModuleDefinition: MasterConsoleModule = {
   lifecycle: 'active',
   supportedSystems: ['vtm5'],
   capabilities: ['master-console'],
-  routes: [{ path: '/master', label: 'Пульт рассказчика' }],
+  routes: [{ path: '/vampires/master', label: 'Пульт рассказчика' }],
   persistence: {
     tables: [
       CHRONICLES,

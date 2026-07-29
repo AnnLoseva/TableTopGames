@@ -6,7 +6,7 @@ export const tableModuleDefinition: TableModule = {
   lifecycle: 'active',
   supportedSystems: ['vtm5'],
   capabilities: ['table', 'media', 'rolls'],
-  routes: [{ path: '/table', label: 'Стол' }],
+  routes: [{ path: '/vampires/table', label: 'Стол' }],
   persistence: {
     tables: ['table_scenes', 'table_images', 'table_rolls', 'table_scene_music', 'characters'],
     buckets: ['table-images', 'table-music'],

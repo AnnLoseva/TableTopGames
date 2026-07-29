@@ -1,0 +1,1381 @@
+{
+  "title": "Черты Pathfinder 2e (Remastered) — Полный справочник",
+  "source": "https://pf2.ru/feats",
+  "baseSource": "Archives of Nethys (2e.aonprd.com), Player Core, Player Core 2, War of Immortals",
+  "version": "2026-07",
+  "note": "Все черты в одном файле. Тип черты указан в traits. Навыковые черты содержат поле skill. Мифические — traits: [Mythic].",
+  "tabs": {
+    "general": "Общие черты — доступны любому персонажу по уровню",
+    "skill": "Навыковые черты — сгруппированы по навыкам",
+    "mythic": "Мифические черты — требуют мифического статуса (War of Immortals)"
+  },
+  "feats": {
+    "general": [
+      {
+        "id": "adopted-ancestry",
+        "name": "Приёмный народ",
+        "level": 1,
+        "description": "Выберите один обычный народ. Помимо вашего собственного, вы можете выбирать черты этого народа, если соответствуете требованиям.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "armor-proficiency",
+        "name": "Владение бронёй",
+        "level": 1,
+        "description": "Вы становитесь обучены лёгкой броне. Если уже обучены — средней. Если уже обучены средней — тяжёлой. При достижении 13-го уровня экспертное владение повышается соответственно.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "breath-control",
+        "name": "Контроль дыхания",
+        "level": 1,
+        "description": "Вы можете задерживать дыхание в 25 раз дольше обычного (вместо 5). Вы получаете +1 ситуативный бонус к спасброскам против вдыхаемых угроз.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "canny-acumen",
+        "name": "Острый ум",
+        "level": 1,
+        "description": "Выберите один спасбросок (Стойкость, Рефлекс или Воля), в котором вы обучены или лучше. Ваше владение этим спасброском повышается до эксперта.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "diehard",
+        "name": "Трудноубиваемый",
+        "level": 1,
+        "description": "Вы умираете при состоянии dying 5 (вместо dying 4).",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "fast-recovery",
+        "name": "Быстрое восстановление",
+        "level": 1,
+        "description": "Вы получаете в два раза больше ПЗ за каждый уровень при ночном отдыхе. +1 ситуативный бонус к спасброскам против длительных болезней и ядов.",
+        "prerequisites": "Телосложение 14",
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "feather-step",
+        "name": "Лёгкий шаг",
+        "level": 1,
+        "description": "При использовании действия Step вы можете шагнуть на 10 футов вместо 5.",
+        "prerequisites": "Ловкость 14",
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "fleet",
+        "name": "Быстроногий",
+        "level": 1,
+        "description": "Ваша Скорость увеличивается на 5 футов.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "incredible-initiative",
+        "name": "Невероятная инициатива",
+        "level": 1,
+        "description": "Вы получаете +2 ситуативный бонус к проверкам инициативы.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "pet",
+        "name": "Питомец",
+        "level": 1,
+        "description": "У вас есть ручной питомец (маленькое животное вроде кошки, собаки, ястреба или змеи). Он не участвует в бою, но может выполнять простые трюки.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "ride",
+        "name": "Верховая езда",
+        "level": 1,
+        "description": "Вы можете использовать действие Command an Animal на верховом животном, не обученном для бою, без необходимости обучать его трюку Ride.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "shield-block",
+        "name": "Блок щитом",
+        "level": 1,
+        "description": "[Реакция] Когда вы поднимаете щит и получаете урон от физической атаки, вы можете блокировать часть урона щитом. Вы и щит получаете оставшийся урон. Щит уменьшает урон на свою Твёрдость (Hardness).",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "toughness",
+        "name": "Живучесть",
+        "level": 1,
+        "description": "Вы получаете +1 ПЗ за уровень. При восстановлении из состояния dying ваш КС плоской проверки равен 9 (вместо 11).",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "weapon-proficiency",
+        "name": "Владение оружием",
+        "level": 1,
+        "description": "Вы становитесь обучены всем простым и воинским оружием. Если вы уже обучены всему, выберите одно продвинутое оружие — вы становитесь в нём обучены.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "ancestral-paragon",
+        "name": "Наследный образец",
+        "level": 3,
+        "description": "Вы получаете дополнительную черту народа 1-го уровня. Вы должны соответствовать всем требованиям.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "prescient-planner",
+        "name": "Предусмотрительный планировщик",
+        "level": 3,
+        "description": "При необходимости вы можете 'вспомнить', что заранее купили нужный обычный предмет. Доступный бюджет зависит от вашего уровня. Вы можете использовать эту способность раз в день.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "untrained-improvisation",
+        "name": "Нетренированная импровизация",
+        "level": 3,
+        "description": "Вы добавляете уровень (вместо половины уровня) к проверкам навыков, в которых вы не обучены. На 7-м уровне — добавляете полный уровень.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "expeditious-search",
+        "name": "Быстрый поиск",
+        "level": 7,
+        "description": "При использовании действия Search в режиме исследования вы можете обыскивать области в 10 раз быстрее обычного.",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      },
+      {
+        "id": "incredible-investiture",
+        "name": "Невероятное облачение",
+        "level": 11,
+        "description": "Вы можете носить на один Invested предмет больше (до 11 вместо 10).",
+        "prerequisites": null,
+        "traits": [
+          "General"
+        ],
+        "sourceBook": "Player Core"
+      }
+    ],
+    "skill": [
+      {
+        "id": "acrobatics/steady-balance",
+        "name": "Устойчивое равновесие",
+        "level": 1,
+        "description": "Вы можете Балансировать (Balance) на нестабильной поверхности, используя Акробатику. Критический успех не приводит к падению.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "acrobatics/cat-fall",
+        "name": "Кошачье падение",
+        "level": 1,
+        "description": "При падении вы приземляетесь на ноги. Урон от падения уменьшается на ваше расстояние реакции (минимум 10 футов).",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "acrobatics/quick-squeeze",
+        "name": "Быстрое протискивание",
+        "level": 1,
+        "description": "Вы можете Протискиваться (Squeeze) с полной Скоростью (вместо 5 футов в минуту).",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "acrobatics/graceful-leaper",
+        "name": "Грациозный прыгун",
+        "level": 2,
+        "description": "При использовании High Jump или Long Jump вы можете использовать Акробатику вместо Атлетики.",
+        "prerequisites": "Акробатика: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "acrobatics/nimble-crawl",
+        "name": "Проворное ползание",
+        "level": 2,
+        "description": "Вы можете Ползти (Crawl) с половинной Скоростью.",
+        "prerequisites": "Акробатика: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "acrobatics/knowing-stop",
+        "name": "Осознанная остановка",
+        "level": 2,
+        "description": "При использовании Grab an Edge вы получаете +2 ситуативный бонус к проверке.",
+        "prerequisites": "Акробатика: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "acrobatics/sky-master",
+        "name": "Небесный мастер",
+        "level": 15,
+        "description": "При Полёте вы игнорируете труднопроходимую местность и получаете +2 ситуативный к проверкам манёвров в воздухе.",
+        "prerequisites": "Акробатика: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Акробатика"
+      },
+      {
+        "id": "arcana/arcane-sense",
+        "name": "Арканное чутьё",
+        "level": 1,
+        "description": "Вы можете использовать Аркану для Распознавания магии (Identify Magic) и Дешифровки письмён (Decipher Writing) по умолчанию.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Аркана"
+      },
+      {
+        "id": "arcana/quick-identification",
+        "name": "Быстрое опознание",
+        "level": 1,
+        "description": "Вы можете Опознавать магию (Identify Magic) за 1 минуту вместо 10.",
+        "prerequisites": "Аркана: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Аркана"
+      },
+      {
+        "id": "arcana/recognize-spell",
+        "name": "Распознать заклинание",
+        "level": 1,
+        "description": "[Реакция] Когда существо произносит заклинание, проверка Арканы для распознавания.",
+        "prerequisites": "Аркана: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Аркана"
+      },
+      {
+        "id": "arcana/trick-magic-item",
+        "name": "Обмануть магический предмет",
+        "level": 1,
+        "description": "Вы можете использовать магический предмет, даже если не соответствуете требованиям. Проверка Арканы (или другого навыка) для 'обмана' предмета.",
+        "prerequisites": "Аркана: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Аркана"
+      },
+      {
+        "id": "arcana/unified-theory",
+        "name": "Единая теория",
+        "level": 15,
+        "description": "Вы можете использовать Аркану для всех проверок Распознавания магии, независимо от традиции заклинания.",
+        "prerequisites": "Аркана: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Аркана"
+      },
+      {
+        "id": "athletics/combat-climber",
+        "name": "Боевой скалолаз",
+        "level": 1,
+        "description": "Вы не становитесь flat-footed при Лазании. +1 ситуативный к атакам ближнего боя при Лазании.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Атлетика"
+      },
+      {
+        "id": "athletics/quick-jump",
+        "name": "Быстрый прыжок",
+        "level": 1,
+        "description": "Вы можете использовать High Jump и Long Jump как одно действие (вместо двух).",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Атлетика"
+      },
+      {
+        "id": "athletics/titan-wrestler",
+        "name": "Борец с титанами",
+        "level": 1,
+        "description": "Вы можете Совершать Захват (Grapple), Толкание (Shove) или Опрокидывание (Trip) существ до Huge размера.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Атлетика"
+      },
+      {
+        "id": "athletics/underwater-marauder",
+        "name": "Подводный мародёр",
+        "level": 1,
+        "description": "Вы не получаете штрафы за подводные атаки ближнего боя.",
+        "prerequisites": "Скорость плавания",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Атлетика"
+      },
+      {
+        "id": "athletics/powerful-leap",
+        "name": "Мощный прыжок",
+        "level": 2,
+        "description": "Вы прыгаете на 5 футов дальше по горизонтали и выше по вертикали.",
+        "prerequisites": "Атлетика: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Атлетика"
+      },
+      {
+        "id": "athletics/cloud-jump",
+        "name": "Облачный прыжок",
+        "level": 15,
+        "description": "При прыжке в длину вы можете прыгнуть на расстояние, равное вашей Скорости × вашу проверку Атлетики / 10.",
+        "prerequisites": "Атлетика: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Атлетика"
+      },
+      {
+        "id": "crafting/specialty-crafting",
+        "name": "Специализированное ремесло",
+        "level": 1,
+        "description": "Выберите специальность (кузнец, алхимик, ювелир и т.д.). Вы получаете +1 ситуативный к проверкам Ремесла в этой области.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Ремесло"
+      },
+      {
+        "id": "crafting/alchemical-crafting",
+        "name": "Алхимическое ремесло",
+        "level": 1,
+        "description": "Вы можете создавать алхимические предметы и формулы. Вы получаете 4 формулы алхимических предметов 1-го уровня.",
+        "prerequisites": "Ремесло: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Ремесло"
+      },
+      {
+        "id": "crafting/magical-crafting",
+        "name": "Магическое ремесло",
+        "level": 2,
+        "description": "Вы можете создавать магические предметы и руны. Вы получаете 4 формулы магических предметов 2-го уровня.",
+        "prerequisites": "Ремесло: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Ремесло"
+      },
+      {
+        "id": "crafting/inventor",
+        "name": "Изобретатель",
+        "level": 2,
+        "description": "Вы можете изобретать новые формулы. Проверка Ремесла против КС предмета — при успехе вы добавляете формулу в книгу.",
+        "prerequisites": "Ремесло: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Ремесло"
+      },
+      {
+        "id": "crafting/craft-anything",
+        "name": "Создать что угодно",
+        "level": 15,
+        "description": "Вы игнорируете требования к уровню заклинаний и чертам при создании предметов (но не к уровню персонажа).",
+        "prerequisites": "Ремесло: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Ремесло"
+      },
+      {
+        "id": "deception/charming-liar",
+        "name": "Очаровательный лжец",
+        "level": 1,
+        "description": "При успешной Лжи (Lie) цель становится очарована вами на 1 раунд.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Обман"
+      },
+      {
+        "id": "deception/lie-to-me",
+        "name": "Соври мне",
+        "level": 1,
+        "description": "Вы можете использовать Обман вместо Восприятия для Sense Motive.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Обман"
+      },
+      {
+        "id": "deception/quick-disguise",
+        "name": "Быстрая маскировка",
+        "level": 2,
+        "description": "Вы можете создать маскировку (Impersonate) за 1 минуту вместо 10.",
+        "prerequisites": "Обман: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Обман"
+      },
+      {
+        "id": "deception/slippery-secrets",
+        "name": "Скользкие секреты",
+        "level": 7,
+        "description": "При попытке прочитать ваши мысли или определить ложь вы получаете +2 ситуативный к спасброскам.",
+        "prerequisites": "Обман: мастер",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Обман"
+      },
+      {
+        "id": "deception/tricking-tongue",
+        "name": "Обманывающий язык",
+        "level": 1,
+        "description": "Вы можете пытаться Обманывать существ, даже если не разделяете с ними язык. Штраф -4 вместо автоматического провала.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Обман"
+      },
+      {
+        "id": "diplomacy/group-impression",
+        "name": "Групповое впечатление",
+        "level": 1,
+        "description": "При использовании Make an Impression вы можете влиять на двух целей одновременно.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Дипломатия"
+      },
+      {
+        "id": "diplomacy/hobnobber",
+        "name": "Завсегдатай",
+        "level": 1,
+        "description": "При сборе информации (Gather Information) вы можете собирать слухи вдвое быстрее.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Дипломатия"
+      },
+      {
+        "id": "diplomacy/courtly-graces",
+        "name": "Придворные манеры",
+        "level": 1,
+        "description": "Вы можете использовать Общество для Впечатления (Impersonate) в благородной среде. Автоуспех при представлении как аристократ.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Дипломатия"
+      },
+      {
+        "id": "diplomacy/glad-hand",
+        "name": "Радушный приём",
+        "level": 2,
+        "description": "При первой встрече Make an Impression не имеет -5 штрафа (в Remastered).",
+        "prerequisites": "Дипломатия: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Дипломатия"
+      },
+      {
+        "id": "diplomacy/legendary-negotiator",
+        "name": "Легендарный переговорщик",
+        "level": 15,
+        "description": "Вы можете использовать Дипломатию для Request без ограничений по времени. Можете повлиять на целую толпу.",
+        "prerequisites": "Дипломатия: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Дипломатия"
+      },
+      {
+        "id": "intimidation/intimidating-glare",
+        "name": "Устрашающий взгляд",
+        "level": 1,
+        "description": "Вы можете Demoralize без речи — одним взглядом. Отсутствует штраф -4 за отсутствие общего языка.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Запугивание"
+      },
+      {
+        "id": "intimidation/quick-coercion",
+        "name": "Быстрое принуждение",
+        "level": 1,
+        "description": "Вы можете Coerce за 1 минуту вместо 10.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Запугивание"
+      },
+      {
+        "id": "intimidation/group-coercion",
+        "name": "Групповое принуждение",
+        "level": 2,
+        "description": "При Coerce вы можете влиять на число целей = Мод. Харизмы × 2.",
+        "prerequisites": "Запугивание: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Запугивание"
+      },
+      {
+        "id": "intimidation/last-chance",
+        "name": "Последний шанс",
+        "level": 2,
+        "description": "Когда существо в 30 фт. становится dying, вы можете реакцией попытаться Demoralize атакующего.",
+        "prerequisites": "Запугивание: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Запугивание"
+      },
+      {
+        "id": "intimidation/scare-to-death",
+        "name": "Напугать до смерти",
+        "level": 15,
+        "description": "Вы можете попытаться убить цель страхом одним действием Demoralize. Цель должна совершить спасбросок Воли или умереть.",
+        "prerequisites": "Запугивание: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Запугивание"
+      },
+      {
+        "id": "lore/skill-training",
+        "name": "Тренировка навыка",
+        "level": 1,
+        "description": "Вы становитесь обучены одному навыку по вашему выбору.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Знание"
+      },
+      {
+        "id": "lore/additional-lore",
+        "name": "Дополнительное знание",
+        "level": 1,
+        "description": "Вы получаете обучение в одном Знании (Lore) по вашему выбору. Автоматически повышается до эксперта на 3-м, мастера на 7-м, легенды на 15-м.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Знание"
+      },
+      {
+        "id": "lore/dubious-knowledge",
+        "name": "Сомнительное знание",
+        "level": 1,
+        "description": "При критическом провале Recall Knowledge вы получаете одну истинную и одну ложную информацию.",
+        "prerequisites": "Обучен в навыке с Recall Knowledge",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Знание"
+      },
+      {
+        "id": "lore/automatic-knowledge",
+        "name": "Автоматическое знание",
+        "level": 2,
+        "description": "Раз в раунд вы можете использовать Recall Knowledge как свободное действие.",
+        "prerequisites": "Эксперт в навыке",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Знание"
+      },
+      {
+        "id": "lore/legendary-lore",
+        "name": "Легендарное знание",
+        "level": 15,
+        "description": "При успехе Recall Knowledge вы получаете дополнительную информацию. Крит. провал → провал.",
+        "prerequisites": "Знание: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Знание"
+      },
+      {
+        "id": "medicine/battle-medicine",
+        "name": "Боевая медицина",
+        "level": 1,
+        "description": "[1 д.] Вы можете Лечить раны в бою. Иммунитет цели на 1 день (вместо 1 часа).",
+        "prerequisites": "Медицина: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Медицина"
+      },
+      {
+        "id": "medicine/continual-recovery",
+        "name": "Непрерывное восстановление",
+        "level": 2,
+        "description": "При Лечении ран целью является 10-минутный интервал (вместо 1 часа). Цель получает иммунитет на 10 минут.",
+        "prerequisites": "Медицина: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Медицина"
+      },
+      {
+        "id": "medicine/ward-medic",
+        "name": "Медик отделения",
+        "level": 2,
+        "description": "При Лечении ран вы можете лечить до двух пациентов одновременно (четырёх на мастере, восьмерых на легенде).",
+        "prerequisites": "Медицина: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Медицина"
+      },
+      {
+        "id": "medicine/risky-surgery",
+        "name": "Рискованная хирургия",
+        "level": 2,
+        "description": "При Лечении ран вы можете нанести 1d8 урона для получения +2 ситуативного бонуса. Крит. успех → +4d8 исцеления.",
+        "prerequisites": "Медицина: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Медицина"
+      },
+      {
+        "id": "medicine/legendary-medic",
+        "name": "Легендарный медик",
+        "level": 15,
+        "description": "При Лечении ран, болезней и ядов вы можете лечить болезни и яды, для которых требуется магическое лечение.",
+        "prerequisites": "Медицина: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Медицина"
+      },
+      {
+        "id": "nature/train-animal",
+        "name": "Дрессировка",
+        "level": 1,
+        "description": "Вы можете использовать Природу для Command an Animal. Животные получают +1 ситуативный к спасброскам.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Природа"
+      },
+      {
+        "id": "nature/natural-medicine",
+        "name": "Природная медицина",
+        "level": 1,
+        "description": "Вы можете использовать Природу вместо Медицины для Лечения ран и болезней в природной среде.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Природа"
+      },
+      {
+        "id": "nature/bonded-animal",
+        "name": "Связанный зверь",
+        "level": 2,
+        "description": "Вы получаете верное животное-компаньона (собака, ястреб, лошадь).",
+        "prerequisites": "Природа: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Природа"
+      },
+      {
+        "id": "nature/plant-empathy",
+        "name": "Эмпатия растений",
+        "level": 2,
+        "description": "Вы можете использовать Дипломатию на растениях.",
+        "prerequisites": "Природа: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Природа"
+      },
+      {
+        "id": "occultism/oddity-identification",
+        "name": "Распознавание странностей",
+        "level": 1,
+        "description": "Вы получаете +2 ситуативный к Оккультизму для Identify Magic на предметах с occult-традицией.",
+        "prerequisites": "Оккультизм: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Оккультизм"
+      },
+      {
+        "id": "occultism/bizarre-magic",
+        "name": "Причудливая магия",
+        "level": 2,
+        "description": "При успешном Identify Magic оккультного предмета или эффекта вы получаете +1 к следующему спасброску против него.",
+        "prerequisites": "Оккультизм: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Оккультизм"
+      },
+      {
+        "id": "occultism/psychic-defense",
+        "name": "Психическая защита",
+        "level": 2,
+        "description": "+1 ситуативный к спасброскам Воли против ментальных эффектов.",
+        "prerequisites": "Оккультизм: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Оккультизм"
+      },
+      {
+        "id": "performance/impressive-performance",
+        "name": "Впечатляющее выступление",
+        "level": 1,
+        "description": "Вы можете использовать Выступление для Make an Impression на аудиторию до 10 человек.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Исполнительство"
+      },
+      {
+        "id": "performance/fascinating-performance",
+        "name": "Завораживающее выступление",
+        "level": 1,
+        "description": "При Выступлении существа должны совершить спасбросок Воли или стать fascinated на 1 раунд.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Исполнительство"
+      },
+      {
+        "id": "performance/virtuosic-performer",
+        "name": "Виртуозный исполнитель",
+        "level": 1,
+        "description": "Выберите тип выступления (пение, танец, актёрство). +1 ситуативный к Выступлению этого типа.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Исполнительство"
+      },
+      {
+        "id": "performance/dance-of-the-dead",
+        "name": "Танец мёртвых",
+        "level": 15,
+        "description": "Ваше выступление может наносить ментальный урон и накладывать состояния на врагов.",
+        "prerequisites": "Выступление: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Исполнительство"
+      },
+      {
+        "id": "religion/student-of-the-canon",
+        "name": "Студент канона",
+        "level": 1,
+        "description": "+2 ситуативный к Религии для Recall Knowledge о вашем божестве и его учении.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Религия"
+      },
+      {
+        "id": "religion/divine-healing",
+        "name": "Божественное исцеление",
+        "level": 2,
+        "description": "При Лечении ран вы можете использовать Религию вместо Медицины, если пациент разделяет вашу веру.",
+        "prerequisites": "Религия: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Религия"
+      },
+      {
+        "id": "religion/sacred-defense",
+        "name": "Священная защита",
+        "level": 2,
+        "description": "+1 ситуативный к спасброскам против заклинаний и эффектов существ, противоположных вашему божеству.",
+        "prerequisites": "Религия: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Религия"
+      },
+      {
+        "id": "religion/battle-prayer",
+        "name": "Боевая молитва",
+        "level": 1,
+        "description": "[1 д.] Произнесите короткую молитву. До начала вашего следующего хода вы получаете +1 ситуативный к определённому спасброску.",
+        "prerequisites": "Религия: обучен",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Религия"
+      },
+      {
+        "id": "society/streetwise",
+        "name": "Уличный осведомитель",
+        "level": 1,
+        "description": "Вы можете использовать Общество для Gather Information и Recall Knowledge о городской среде.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общество"
+      },
+      {
+        "id": "society/multilingual",
+        "name": "Многоязычность",
+        "level": 1,
+        "description": "Вы изучаете два дополнительных языка.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общество"
+      },
+      {
+        "id": "society/connections",
+        "name": "Связи",
+        "level": 2,
+        "description": "Вы можете использовать Общество для Request, когда у вас есть общие знакомые.",
+        "prerequisites": "Общество: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общество"
+      },
+      {
+        "id": "society/legendary-guide",
+        "name": "Легендарный гид",
+        "level": 15,
+        "description": "Вы можете вести группу через любую местность без снижения скорости.",
+        "prerequisites": "Общество: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общество"
+      },
+      {
+        "id": "stealth/experienced-smuggler",
+        "name": "Опытный контрабандист",
+        "level": 1,
+        "description": "При Conceal an Object вы получаете +2 ситуативный к Скрытности. Предметы на вас не обнаруживаются активным поиском.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Скрытность"
+      },
+      {
+        "id": "stealth/furtive-strike",
+        "name": "Скрытный удар",
+        "level": 2,
+        "description": "При атаке из скрытности (hidden), цель становится flat-footed против этой атаки.",
+        "prerequisites": "Скрытность: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Скрытность"
+      },
+      {
+        "id": "stealth/shadow-mark",
+        "name": "Метка тени",
+        "level": 2,
+        "description": "Вы можете пометить цель для отслеживания. +2 ситуативный к Выживанию для отслеживания помеченной цели.",
+        "prerequisites": "Скрытность: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Скрытность"
+      },
+      {
+        "id": "stealth/legendary-sneak",
+        "name": "Легендарная скрытность",
+        "level": 15,
+        "description": "Вы можете Hide и Sneak без укрытия или concealment, если находитесь в пределах 30 фт. от тени или укрытия.",
+        "prerequisites": "Скрытность: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Скрытность"
+      },
+      {
+        "id": "survival/experienced-tracker",
+        "name": "Опытный следопыт",
+        "level": 1,
+        "description": "При Track вы можете двигаться с полной Скоростью (вместо половины).",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Выживание"
+      },
+      {
+        "id": "survival/forager",
+        "name": "Собиратель",
+        "level": 2,
+        "description": "При Subsist вы обеспечиваете пропитание для себя + число существ = Мод. Мудрости.",
+        "prerequisites": "Выживание: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Выживание"
+      },
+      {
+        "id": "survival/terrain-expertise",
+        "name": "Эксперт местности",
+        "level": 1,
+        "description": "Выберите тип местности (лес, горы, болота и т.д.). +1 ситуативный к Выживанию в этой местности.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Выживание"
+      },
+      {
+        "id": "survival/legendary-survivalist",
+        "name": "Легендарный выживальщик",
+        "level": 15,
+        "description": "Вы можете выживать в любой среде без штрафов. Игнорируете экстремальную жару/холод.",
+        "prerequisites": "Выживание: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Выживание"
+      },
+      {
+        "id": "thievery/pickpocket",
+        "name": "Карманник",
+        "level": 1,
+        "description": "Вы можете украсть небольшой предмет у существа проверкой Воровства. +2 ситуативный если цель отвлечена.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Воровство"
+      },
+      {
+        "id": "thievery/quick-unlock",
+        "name": "Быстрый взлом",
+        "level": 2,
+        "description": "Вы можете Pick a Lock двумя действиями (вместо двух действий за попытку + отдельные).",
+        "prerequisites": "Воровство: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Воровство"
+      },
+      {
+        "id": "thievery/wary-disarmament",
+        "name": "Осторожное обезвреживание",
+        "level": 2,
+        "description": "При Disable Device вы получаете +2 ситуативный к спасброскам против ловушек. Крит. провал → провал.",
+        "prerequisites": "Воровство: эксперт",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Воровство"
+      },
+      {
+        "id": "thievery/legendary-thief",
+        "name": "Легендарный вор",
+        "level": 15,
+        "description": "Вы можете украсть предметы, которые активно носят или держат, даже в бою.",
+        "prerequisites": "Воровство: легенда",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Воровство"
+      },
+      {
+        "id": "varying/assurance",
+        "name": "Надёжность (Assurance)",
+        "level": 1,
+        "description": "Выберите навык. Вы можете использовать 10 + бонус владения вместо броска d20 для этого навыка.",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общие (подходят разным навыкам)"
+      },
+      {
+        "id": "varying/seasoned",
+        "name": "Бывалый",
+        "level": 1,
+        "description": "Вы получаете +1 ситуативный к проверкам навыка, который вы используете для заработка (Earn Income).",
+        "prerequisites": null,
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общие (подходят разным навыкам)"
+      },
+      {
+        "id": "varying/magical-shorthand",
+        "name": "Магическая скоропись",
+        "level": 2,
+        "description": "При изучении заклинаний время сокращается до 10 минут за круг заклинания.",
+        "prerequisites": "Эксперт в Аркане, Природе, Оккультизме или Религии",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общие (подходят разным навыкам)"
+      },
+      {
+        "id": "varying/cognitive-crossover",
+        "name": "Когнитивный перенос",
+        "level": 2,
+        "description": "При провале Recall Knowledge вы можете реакцией перебросить, используя другой навык.",
+        "prerequisites": "Эксперт в двух навыках, дающих Recall Knowledge",
+        "traits": [
+          "General",
+          "Skill"
+        ],
+        "skill": "Общие (подходят разным навыкам)"
+      }
+    ],
+    "mythic": [
+      {
+        "id": "mythic-counterspell",
+        "name": "Мифический контрзаклинатель",
+        "level": 6,
+        "description": "[Реакция] Когда существо произносит заклинание, которое вы подготовили или знаете, вы можете потратить мифическое очко для автоматического контрзаклинания.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "General"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "steal-magic",
+        "name": "Украсть магию",
+        "level": 8,
+        "description": "После успешного контрзаклинания через Mythic Counterspell вы можете изучить или записать контрзаклятое заклинание в свою книгу заклинаний.",
+        "prerequisites": "Mythic Counterspell",
+        "traits": [
+          "Mythic",
+          "General"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "creature-of-myth",
+        "name": "Мифическое существо",
+        "level": 18,
+        "description": "Ваш спутник или фамильяр получает мифическую силу. Выберите одну из способностей: Baleful Body (аура проклятия), Chimeric Heads (дополнительные головы/атаки), Energy Aegis (сопротивление энергии), Magnificent Flight (совершенный полёт), Protective Skin (неуязвимость к некритическому урону).",
+        "prerequisites": "Мифический персонаж, Animal Companion или Familiar",
+        "traits": [
+          "Mythic",
+          "General"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "divine-source",
+        "name": "Божественный источник",
+        "level": 12,
+        "description": "Мифическое посвящение. Вы получаете доступ к мифическим способностям: Mythic Surge (+1d6 к проверке за мифическое очко), Mythic Resilience (сопротивление всему урону = мифический ранг), Immortality (не можете умереть, кроме как от специфических условий).",
+        "prerequisites": null,
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "apocalypse-rider",
+        "name": "Всадник апокалипсиса",
+        "level": 12,
+        "description": "Мифическая судьба. Вы — предвестник конца. Ваше присутствие вызывает страх и разрушение. Вы получаете мифические способности, связанные с разрушением и страхом.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "archfiend",
+        "name": "Архидьявол",
+        "level": 12,
+        "description": "Мифическая судьба. Ваша душа предназначена стать одним из величайших дьяволов. Вы получаете способности призыва, контрактов и адского огня.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "ascended-celestial",
+        "name": "Вознёсшийся небожитель",
+        "level": 12,
+        "description": "Мифическая судьба. Вы destined стать ангелом высшего чина. Исцеление, свет и божественная защита — ваши инструменты.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "beast-lord",
+        "name": "Владыка зверей",
+        "level": 12,
+        "description": "Мифическая судьба. Вы destined стать повелителем всех зверей. Вы получаете способности призыва, превращения и контроля над животными.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "broken-chain",
+        "name": "Разорванная цепь",
+        "level": 12,
+        "description": "Мифическая судьба. Вы destined освободить мир от оков. Вы получаете способности, связанные со свободой, освобождением и разрушением оков (буквальных и метафорических).",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "eternal-legend",
+        "name": "Вечная легенда",
+        "level": 12,
+        "description": "Мифическая судьба. Ваше имя будет жить вечно. Вы получаете способности, усиливающие ваши и без того легендарные навыки и боевые приёмы.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "godling",
+        "name": "Полубог",
+        "level": 12,
+        "description": "Мифическая судьба. В ваших жилах течёт кровь божества, и вы destined занять место среди богов. Вы получаете способности, связанные с вашим божественным родителем.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "prophesied-monarch",
+        "name": "Предсказанный монарх",
+        "level": 12,
+        "description": "Мифическая судьба. Пророчество гласит, что вы станете величайшим правителем. Вы получаете способности лидерства, вдохновения и контроля над судьбой.",
+        "prerequisites": "Мифический персонаж",
+        "traits": [
+          "Mythic",
+          "Dedication"
+        ],
+        "sourceBook": "War of Immortals"
+      },
+      {
+        "id": "death-from-above",
+        "name": "Смерть с небес",
+        "level": 16,
+        "description": "Оттолкнувшись от стены, вы обрушиваетесь на врага с небес, нанося дополнительный урон и потенциально оглушая цель.",
+        "prerequisites": "Eternal Legend",
+        "traits": [
+          "Mythic",
+          "Eternal Legend"
+        ],
+        "sourceBook": "War of Immortals"
+      }
+    ]
+  }
+}

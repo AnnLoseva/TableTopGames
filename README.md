@@ -7,19 +7,22 @@ games. The current game domains are Vampire: The Masquerade V5 and Pathfinder 2.
 
 | Route | Description |
 |-------|-------------|
-| `/` | Main screen |
-| `/character-sheet` | Character sheet (React shell → legacy iframe) |
-| `/table` | Campaign table (scenes, layers, rolls, chat, music) |
-| `/master` | Master console (desktop; requires `?room=` + master gate) |
-| `/journal` | Player personal journal (localStorage) |
-| `/reference` | Rules reference |
-| `/pathfinder2/sheet` | Pathfinder 2 character creation draft (not linked from `/`) |
+| `/` | TableTopGames portal: game selection and shared account |
+| `/vampires` | Vampire: The Masquerade home |
+| `/vampires/character-sheet` | Character sheet (React shell → legacy iframe) |
+| `/vampires/table` | Campaign table (scenes, layers, rolls, chat, music) |
+| `/vampires/master` | Master console (desktop; requires `?room=` + master gate) |
+| `/vampires/journal` | Player personal journal (localStorage) |
+| `/vampires/reference` | VTM rules reference |
+| `/pathfinder2/sheet` | Pathfinder 2 character creation draft |
+
+The former root VTM URLs remain temporary redirects to their `/vampires/*` equivalents and preserve query parameters.
 
 Master console deep links:
 
 ```text
-/master?room=<room>&module=<id>&entity=<id>
-/master?room=<room>&layout=second-screen&display=detached
+/vampires/master?room=<room>&module=<id>&entity=<id>
+/vampires/master?room=<room>&layout=second-screen&display=detached
 ```
 
 ## Development
@@ -97,7 +100,7 @@ const runtime = bootstrapChronicleRuntime(hub, {
 ### Key folders
 
 - `src/app/` — Next.js route shells
-- `src/app/(vampires)/` — URL-neutral App Router group for VTM routes and providers
+- `src/app/(vampires)/vampires/` — VTM route tree and providers under `/vampires/*`
 - `src/games/vampires/` — VTM modules, mechanics, client helpers, scripts and Supabase files
 - `src/games/pathfinder2/` — isolated Pathfinder 2 sheet and local rules guide
 - `src/games/vampires/modules/table/` — table data layer, API, hooks, components

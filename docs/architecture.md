@@ -179,7 +179,7 @@ Legacy-лист остаётся load-bearing частью проекта:
 Текущий мост:
 
 ```txt
-/character-sheet
+/vampires/character-sheet
   -> components/screens/CharacterSheetScreen.tsx
   -> iframe /vampires/old-sheet.html?room=&role=&characterId=&new=
   -> public/vampires/main.js + public/vampires/supabase.js
@@ -553,9 +553,9 @@ public/
 - Каждый значимый code-step проходит `npm run lint` и `npm run build`.
 - Для дисциплин дополнительно запускать `npm run audit:disciplines`,
   `npm run validate:disciplines`, `npm run test:disciplines`.
-- Для table-изменений проверять `/table?room=campaign-666&role=master` и
-  `/table?room=campaign-666&role=player`.
-- Для legacy bridge проверять `/character-sheet`, `/character-sheet?new=1` и
+- Для table-изменений проверять `/vampires/table?room=campaign-666&role=master` и
+  `/vampires/table?room=campaign-666&role=player`.
+- Для legacy bridge проверять `/vampires/character-sheet`, `/vampires/character-sheet?new=1` и
   сохранение персонажа с обновлением `characterId` в URL.
 
 ## Definition of Done для архитектурного шага

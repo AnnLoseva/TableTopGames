@@ -8,5 +8,5 @@ export default async function OldCharacterSheetRedirect({ searchParams }: OldCha
   const params = (await searchParams) || {}
   const roomParam = params.room
   const room = Array.isArray(roomParam) ? roomParam[0] : roomParam
-  redirect(room ? `/character-sheet?room=${encodeURIComponent(room)}` : '/character-sheet')
+  redirect(room ? `/vampires/character-sheet?room=${encodeURIComponent(room)}` : '/vampires/character-sheet')
 }

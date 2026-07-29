@@ -76,8 +76,8 @@ npm run validate:disciplines # discipline mechanics validation
 npm run test:disciplines     # discipline engine tests
 ```
 
-Smoke routes: `/`, `/character-sheet`, `/character-sheet?new=1`,
-`/table?room=campaign-666&role=master`, `/table?room=campaign-666&role=player`.
+Smoke routes: `/`, `/vampires/character-sheet`, `/vampires/character-sheet?new=1`,
+`/vampires/table?room=campaign-666&role=master`, `/vampires/table?room=campaign-666&role=player`.
 
 > Note: this repo may run in an environment without a local Node toolchain. If a
 > command can't run, say so plainly and describe what you would have verified —

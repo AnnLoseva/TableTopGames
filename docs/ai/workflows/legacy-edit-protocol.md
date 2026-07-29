@@ -27,13 +27,13 @@ Read `../subsystems/legacy-character-sheet.md` and
    that the plain `<script>` loading won't support.
 
 ## After the change — verify the iframe flow
-1. `/character-sheet?new=1` → create a character → save → confirm the URL gains
+1. `/vampires/character-sheet?new=1` → create a character → save → confirm the URL gains
    `characterId` (postMessage worked).
-2. `/character-sheet?room=campaign-666&role=player` → loads with the right
+2. `/vampires/character-sheet?room=campaign-666&role=player` → loads with the right
    room/role and character.
 3. Edit health/willpower/humanity → mechanics still correct.
 4. Switch language → labels and rules still resolve.
-5. Navigate sheet → `/table` → room/role preserved.
+5. Navigate sheet → `/vampires/table` → room/role preserved.
 
 If you edited `vtm-health.js` / `vtm-humanity.js`, also check whether
 `src/games/vampires/core/vtm5/rules/health/index.ts` /

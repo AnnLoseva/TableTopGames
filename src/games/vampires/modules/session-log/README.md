@@ -8,7 +8,7 @@ Master chronicle journal for the console. **Separate** from the player personal 
 |---|---|
 | Extend player journal entity? | **No** — player diary is local-only TipTap notes per user/room |
 | Persistence | **`session_log_entries`** (master draft) + **`session_log_published`** (player projection) |
-| Old journal entries | Unchanged — still open via `/journal` and table journal panel |
+| Old journal entries | Unchanged — still open via `/vampires/journal` and table journal panel |
 | Editor | Reuses **`JournalEditor`** (single TipTap implementation) |
 
 ## Security

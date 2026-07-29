@@ -4,7 +4,7 @@ import type { MasterDisplayMode } from '../multi-window/types'
 
 /**
  * Centralized deep-link allowlist.
- * Format: /master?room=<room>&module=<module-id>&entity=<entity-id>
+ * Format: /vampires/master?room=<room>&module=<module-id>&entity=<entity-id>
  * Display: &display=detached|primary
  * Layout: &layout=<layout-id|name>
  * Additional params ONLY via this parser (unknown keys dropped on normalize).

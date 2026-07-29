@@ -426,7 +426,7 @@ export default function RulesChatPage() {
           <h1>{t('Библиотекарь')}</h1>
           <p>{t('Спроси о правилах или своих персонажах — найду данные в книгах и архиве.')}</p>
         </div>
-        <Link href="/" className="rules-chat-home">
+        <Link href="/vampires" className="rules-chat-home">
           {t('В салон')}
         </Link>
       </header>
@@ -434,7 +434,7 @@ export default function RulesChatPage() {
       {hasSession === false ? (
         <section className="rules-chat-locked">
           <p>{t('Тексты книг доступны только своим. Войди в аккаунт на главной странице и возвращайся.')}</p>
-          <Link href="/" className="rules-chat-cta">{t('Войти')}</Link>
+          <Link href="/vampires" className="rules-chat-cta">{t('Войти')}</Link>
         </section>
       ) : (
         <>

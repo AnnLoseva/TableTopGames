@@ -36,7 +36,7 @@ export function buildLegacySheetUrl(params: CharacterSheetParams) {
 }
 
 export function buildTableHref(room: string, role: CharacterSheetRole) {
-  return `/table?room=${encodeURIComponent(room)}&role=${role}`
+  return `/vampires/table?room=${encodeURIComponent(room)}&role=${role}`
 }
 
 export function rememberSheetNavigation(room: string, role: CharacterSheetRole, storage: Storage) {

@@ -24,10 +24,10 @@ Read `../subsystems/supabase-persistence.md` first.
 
 ## After the change — verify
 1. `npm run lint` / `npm run build`.
-2. **Master/player room flow:** `/table?room=campaign-666&role=master` and
+2. **Master/player room flow:** `/vampires/table?room=campaign-666&role=master` and
    `...&role=player` — data loads, realtime updates propagate, master gating
    holds.
-3. **Character save/load:** `/character-sheet` — create → save → reload → data
+3. **Character save/load:** `/vampires/character-sheet` — create → save → reload → data
    persists (this exercises the `characters` table via the legacy client).
 
 ## Update docs?

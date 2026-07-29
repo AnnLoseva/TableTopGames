@@ -179,7 +179,7 @@ export function getReferenceDocument(slug: string | null | undefined) {
 
 export function getReferenceDocumentUrl(slug: string, hash = '') {
   const params = new URLSearchParams({ doc: slug })
-  return `/reference?${params.toString()}${hash ? `#${hash}` : ''}`
+  return `/vampires/reference?${params.toString()}${hash ? `#${hash}` : ''}`
 }
 
 export function getReferenceFileUrl(file: string) {

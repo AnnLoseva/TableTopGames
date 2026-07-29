@@ -40,7 +40,7 @@ This is the catalog of the project's AI context. Every agent starts here after
 ## Subsystems at a glance
 
 - `subsystems/legacy-character-sheet.md` — the iframe sheet: `old-sheet.html`, `main.js`, `supabase.js`, wizard, health/humanity JS, i18n JS
-- `subsystems/character-sheet-bridge.md` — Next ↔ iframe bridge (`/character-sheet`)
+- `subsystems/character-sheet-bridge.md` — Next ↔ iframe bridge (`/vampires/character-sheet`)
 - `subsystems/game-table.md` — `src/games/vampires/modules/table/GameTable.tsx` and table components/hooks
 - `subsystems/vtm-mechanics.md` — `src/games/vampires/core/vtm5/rules/*` (pure rules)
 - `subsystems/rules-data.md` — `rules.json` / `rules_eng.json`

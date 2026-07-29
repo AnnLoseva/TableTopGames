@@ -34,7 +34,7 @@ const STATUS_TEXT: Record<'loading' | 'ready' | 'error', string> = {
 }
 
 function parseInternalHref(href: string) {
-  const url = href.startsWith('/reference')
+  const url = href.startsWith('/vampires/reference')
     ? new URL(href, 'http://local')
     : new URL(href, 'http://local/reference')
   const slug = url.searchParams.get('doc') || DEFAULT_REFERENCE_DOC_SLUG
@@ -180,9 +180,9 @@ export default function ReferencePage() {
           <h1>{t('Справочник')}</h1>
         </div>
         <nav aria-label={t('Навигация справочника')}>
-          <Link href="/">{t('Главная')}</Link>
-          <Link href="/table">{t('Игровой стол')}</Link>
-          <Link href="/character-sheet">{t('Лист')}</Link>
+          <Link href="/vampires">{t('Главная')}</Link>
+          <Link href="/vampires/table">{t('Игровой стол')}</Link>
+          <Link href="/vampires/character-sheet">{t('Лист')}</Link>
         </nav>
       </section>
 

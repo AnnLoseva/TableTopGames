@@ -27,12 +27,12 @@ Single app, two roles, driven by a `role` (`master` | `player`) parameter.
    iframe) with creation, saving, health/humanity, disciplines.
 2. **Game table** — the shared campaign room (`GameTable`): scenes, media,
    layers, dice, chat, journal, music.
-3. **Journal** — `/journal`, a TipTap-based rich journal.
-4. **Reference** — `/reference`, a markdown rules reference.
-5. **Chronicle library** — `/library/chronicles`, a private Markdown archive
+3. **Journal** — `/vampires/journal`, a TipTap-based rich journal.
+4. **Reference** — `/vampires/reference`, a markdown rules reference.
+5. **Chronicle library** — `/vampires/library/chronicles`, a private Markdown archive
    with membership-scoped official history and owner-only processed player
    transcripts/personal recaps.
-6. **Master console** — `/master?room=...`, a desktop shell for future
+6. **Master console** — `/vampires/master?room=...`, a desktop shell for future
    Storyteller modules; currently protected by the compatibility master-password gate.
 7. **Pathfinder 2 character creator** — `/pathfinder2/sheet`, an unlisted,
    browser-local creation draft.
@@ -51,14 +51,14 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 | Route | Renders | Notes |
 |---|---|---|
 | `/` | `HomeRoute` → `MainScreen` | Landing / entry (character & room selection) |
-| `/character-sheet` | `CharacterSheetScreen` → iframe `/vampires/old-sheet.html` | The full legacy sheet |
-| `/table` | `GameTable` | The shared campaign room |
-| `/journal` | Journal editor | Rich-text journal |
-| `/reference` | Reference pages | Markdown rules reference |
-| `/library/chronicles` | `ChronicleLibraryRoute` | Official Chronicle reader, Storyteller upload and owner-only player transcript processing |
-| `/master?room=<room-id>` | `MasterConsoleRoute` → `MasterConsoleShell` | Desktop Storyteller workspace shell; room is required |
+| `/vampires/character-sheet` | `CharacterSheetScreen` → iframe `/vampires/old-sheet.html` | The full legacy sheet |
+| `/vampires/table` | `GameTable` | The shared campaign room |
+| `/vampires/journal` | Journal editor | Rich-text journal |
+| `/vampires/reference` | Reference pages | Markdown rules reference |
+| `/vampires/library/chronicles` | `ChronicleLibraryRoute` | Official Chronicle reader, Storyteller upload and owner-only player transcript processing |
+| `/vampires/master?room=<room-id>` | `MasterConsoleRoute` → `MasterConsoleShell` | Desktop Storyteller workspace shell; room is required |
 | `/pathfinder2/sheet` | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute` | Unlisted local Pathfinder 2 character creator |
-| `/old` | redirect | Legacy redirect → `/character-sheet` |
+| `/vampires/old` | redirect | Legacy redirect → `/vampires/character-sheet` |
 
 ## Main data sources
 - **`public/vampires/rules.json` / `public/vampires/rules_eng.json`** — clans, skills, disciplines,
