@@ -1,5 +1,32 @@
 # Decisions
 
+## 2026-07-29 — Pathfinder creation stores rule-source choices
+
+**Area:** Pathfinder 2 character creation / local persistence / rules engine
+**Decision:** Pathfinder draft schema v3 stores the player's rule-source
+decisions (`attributeChoices`, separated skill choice blocks and level-stamped
+skill increases) and treats attributes, ranks and skill modifiers as derived
+output. Pure modules under
+`src/games/pathfinder2/sheet/rules/{attributes,skills,creation,progression}`
+calculate and validate the build. The localStorage key is
+`pathfinder2-character-draft-v3`; the old v1 key remains a read-only migration
+source. Legacy final attributes and trained-skill names are retained only as a
+snapshot/suggestions with `needsRulesRebuild`.
+**Reason:** Final numbers cannot prove that PF2E stage limits, automatic grants,
+duplicate replacements or rank progression were followed. Source decisions can
+be safely recalculated after ancestry, background, class or Intelligence
+changes.
+**Consequences:** React renders options and issues returned by the engine and no
+longer edits final attributes/ranks. Only level 1 can currently become ready;
+level 2–20 rank constraints and partial boosts exist in pure rules, while their
+choice UI remains intentionally unavailable. Normal and versatile heritage IDs
+remain nullable but are mutually exclusive.
+**Affected files:** `src/games/pathfinder2/sheet/{types,data,hooks,rules,components}/*`,
+`package.json`, `docs/ai/{FILE-MAP,DEV-COMMANDS,subsystems/pathfinder2-sheet}.md`
+**Status:** active
+
+---
+
 ## 2026-07-29 — Root portal, shared account and `/vampires/*` routes
 
 **Area:** Product navigation / authentication / VTM routing

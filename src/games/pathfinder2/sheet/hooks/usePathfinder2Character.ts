@@ -7,8 +7,9 @@ import {
   useState,
 } from 'react'
 import {
-  DEFAULT_PATHFINDER2_DRAFT,
+  createDefaultPathfinder2Draft,
   PATHFINDER2_DRAFT_STORAGE_KEY,
+  PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS,
 } from '../data'
 import {
   parseAndMigratePathfinder2Draft,
@@ -17,6 +18,7 @@ import type {
   Pathfinder2CharacterDraft,
   Pathfinder2RulesCatalog,
 } from '../types'
+import { clearRulesRebuildWhenConfirmed } from '../rules/creation/reconcile-character'
 
 type CharacterUpdater = (
   current: Pathfinder2CharacterDraft,
@@ -24,7 +26,7 @@ type CharacterUpdater = (
 
 export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
   const [draft, setDraft] = useState<Pathfinder2CharacterDraft>(
-    DEFAULT_PATHFINDER2_DRAFT,
+    createDefaultPathfinder2Draft,
   )
   const [hydrated, setHydrated] = useState(false)
   const [saveStatus, setSaveStatus] = useState('Подготовка черновика')
@@ -55,9 +57,13 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
   }, [persist])
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(PATHFINDER2_DRAFT_STORAGE_KEY)
+    const currentStored = window.localStorage.getItem(PATHFINDER2_DRAFT_STORAGE_KEY)
+    const legacyStored = PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS
+      .map(key => window.localStorage.getItem(key))
+      .find((value): value is string => Boolean(value))
+    const stored = currentStored ?? legacyStored
     const parsed = stored ? parseAndMigratePathfinder2Draft(stored, catalog) : null
-    const nextDraft = parsed?.draft ?? DEFAULT_PATHFINDER2_DRAFT
+    const nextDraft = parsed?.draft ?? createDefaultPathfinder2Draft()
     draftRef.current = nextDraft
     setDraft(nextDraft)
     setMigrationWarnings([
@@ -67,7 +73,7 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     ])
     setHydrated(true)
 
-    if (parsed?.migrated) {
+    if (parsed?.migrated || (legacyStored && !currentStored)) {
       window.localStorage.setItem(
         PATHFINDER2_DRAFT_STORAGE_KEY,
         JSON.stringify(nextDraft),
@@ -92,11 +98,14 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
     updater: CharacterUpdater,
     options: { immediate?: boolean } = {},
   ) => {
-    const nextDraft = updater(draftRef.current)
+    const nextDraft = clearRulesRebuildWhenConfirmed(
+      updater(draftRef.current),
+      catalog,
+    )
     draftRef.current = nextDraft
     setDraft(nextDraft)
     if (hydrated) schedulePersist(nextDraft, Boolean(options.immediate))
-  }, [hydrated, schedulePersist])
+  }, [catalog, hydrated, schedulePersist])
 
   const updateField = useCallback(<Key extends keyof Pathfinder2CharacterDraft>(
     key: Key,
@@ -110,16 +119,7 @@ export function usePathfinder2Character(catalog: Pathfinder2RulesCatalog) {
   }, [updateCharacter])
 
   const resetCharacter = useCallback(() => {
-    const nextDraft: Pathfinder2CharacterDraft = {
-      ...DEFAULT_PATHFINDER2_DRAFT,
-      attributes: { ...DEFAULT_PATHFINDER2_DRAFT.attributes },
-      trainedSkills: [],
-      ancestryFeatIds: [],
-      classFeatIds: [],
-      skillFeatIds: [],
-      generalFeatIds: [],
-      unresolvedSelections: {},
-    }
+    const nextDraft = createDefaultPathfinder2Draft()
     draftRef.current = nextDraft
     setDraft(nextDraft)
     setMigrationWarnings([])

@@ -20,6 +20,7 @@ import {
   signedModifier,
 } from '../../rules/derived-character-values'
 import type {
+  Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
   Pathfinder2DerivedValues,
   Pathfinder2RulesCatalog,
@@ -27,7 +28,6 @@ import type {
 } from '../../types'
 import type {
   OpenPathfinder2Choice,
-  UpdatePathfinder2Character,
   UpdatePathfinder2Field,
 } from '../component-types'
 import styles from '../Pathfinder2SheetPage.module.css'
@@ -35,8 +35,8 @@ import styles from '../Pathfinder2SheetPage.module.css'
 type CharacterSheetViewProps = {
   draft: Pathfinder2CharacterDraft
   catalog: Pathfinder2RulesCatalog
+  build: Pathfinder2CharacterBuild
   derived: Pathfinder2DerivedValues
-  updateCharacter: UpdatePathfinder2Character
   updateField: UpdatePathfinder2Field
   openChoice: OpenPathfinder2Choice
   onOpenBuilder: () => void
@@ -115,8 +115,8 @@ function NumberField({
 export default function CharacterSheetView({
   draft,
   catalog,
+  build,
   derived,
-  updateCharacter,
   updateField,
   openChoice,
   onOpenBuilder,
@@ -134,15 +134,6 @@ export default function CharacterSheetView({
     ...draft.classFeatIds,
     ...draft.ancestryFeatIds,
   ].map(id => getFeatById(catalog, id)).filter(Boolean)
-
-  const toggleSkill = (skill: string) => {
-    updateCharacter(current => ({
-      ...current,
-      trainedSkills: current.trainedSkills.includes(skill)
-        ? current.trainedSkills.filter(value => value !== skill)
-        : [...current.trainedSkills, skill],
-    }), { immediate: true })
-  }
 
   return (
     <main className={styles.characterSheet}>
@@ -204,6 +195,19 @@ export default function CharacterSheetView({
         <div><span>КС класса</span><strong>{derived.classDc ?? '—'}</strong><small>сложность</small></div>
       </section>
 
+      {!build.isReady ? (
+        <div className={styles.sheetInlineNotice} role="status">
+          <div>
+            <span className={styles.choiceKicker}>Лист ещё не готов</span>
+            <strong>Есть незавершённые или конфликтующие решения</strong>
+            <p>Откройте режим создания: ручное изменение итоговых характеристик и рангов отключено.</p>
+          </div>
+          <button type="button" className={styles.textButton} onClick={onOpenBuilder}>
+            Проверить билд
+          </button>
+        </div>
+      ) : null}
+
       <nav className={styles.sheetTabs} aria-label="Разделы листа">
         {TABS.map(tab => (
           <button
@@ -231,10 +235,18 @@ export default function CharacterSheetView({
               />
               <FactCard
                 label="Наследие"
-                title={heritage?.name || 'Не выбрано'}
-                copy={heritage?.description || 'Выберите наследие после народа.'}
-                onDetails={heritage ? trigger => openChoice('heritage', { readOnly: true }, trigger) : undefined}
-                onEdit={trigger => openChoice('heritage', {}, trigger)}
+                title={heritage?.name || versatileHeritage?.name || 'Не выбрано'}
+                copy={heritage?.description || versatileHeritage?.description || 'Выберите одно наследие после народа.'}
+                onDetails={heritage
+                  ? trigger => openChoice('heritage', { readOnly: true }, trigger)
+                  : versatileHeritage
+                    ? trigger => openChoice('versatileHeritage', { readOnly: true }, trigger)
+                    : undefined}
+                onEdit={trigger => openChoice(
+                  versatileHeritage ? 'versatileHeritage' : 'heritage',
+                  {},
+                  trigger,
+                )}
               />
               <FactCard
                 label="Предыстория"
@@ -251,22 +263,6 @@ export default function CharacterSheetView({
                 onEdit={trigger => openChoice('class', {}, trigger)}
               />
             </div>
-            {versatileHeritage ? (
-              <div className={styles.sheetInlineNotice}>
-                <div>
-                  <span className={styles.choiceKicker}>Универсальное наследие</span>
-                  <strong>{versatileHeritage.name}</strong>
-                  <p>{versatileHeritage.description}</p>
-                </div>
-                <button
-                  type="button"
-                  className={styles.textButton}
-                  onClick={event => openChoice('versatileHeritage', { readOnly: true }, event.currentTarget)}
-                >
-                  Подробнее
-                </button>
-              </div>
-            ) : null}
             <div className={styles.sheetSplit}>
               <section>
                 <span className={styles.choiceKicker}>Характеристики</span>
@@ -274,7 +270,7 @@ export default function CharacterSheetView({
                   {PATHFINDER2_ATTRIBUTES.map(attribute => (
                     <div key={attribute.key}>
                       <span>{attribute.shortLabel}</span>
-                      <strong>{signedModifier(draft.attributes[attribute.key])}</strong>
+                      <strong>{signedModifier(build.attributes.modifiers[attribute.key])}</strong>
                       <small>{attribute.label}</small>
                     </div>
                   ))}
@@ -315,28 +311,19 @@ export default function CharacterSheetView({
           <div className={styles.sheetSkills}>
             <header className={styles.sheetSectionHeading}>
               <div><span className={styles.choiceKicker}>Навыки</span><h2>Проверки и обучение</h2></div>
-              <span>{draft.trainedSkills.length} обучено</span>
+              <span>{build.skills.trainedCount} обучено</span>
             </header>
             <div className={styles.skillTable}>
               {PATHFINDER2_SKILLS.map(skill => {
-                const trained = draft.trainedSkills.includes(skill)
+                const calculated = build.skills.skills[skill.id]
+                const trained = calculated.rank !== 'untrained'
                 return (
-                  <button key={skill} type="button" aria-pressed={trained} onClick={() => toggleSkill(skill)}>
+                  <div key={skill.id} className={styles.skillReadOnly} data-trained={trained}>
                     <span className={styles.checkMark}>{trained ? '✓' : ''}</span>
-                    <strong>{skill}</strong>
-                    <small>{ATTRIBUTE_LABELS[
-                      ['Атлетика'].includes(skill)
-                        ? 'strength'
-                        : ['Акробатика', 'Воровство', 'Скрытность'].includes(skill)
-                          ? 'dexterity'
-                          : ['Аркана', 'Общество', 'Ремесло'].includes(skill)
-                            ? 'intelligence'
-                            : ['Дипломатия', 'Запугивание', 'Обман', 'Исполнительство'].includes(skill)
-                              ? 'charisma'
-                              : 'wisdom'
-                    ]}</small>
-                    <b>{signedModifier(getSkillModifier(draft, skill))}</b>
-                  </button>
+                    <strong>{skill.label}</strong>
+                    <small>{ATTRIBUTE_LABELS[skill.attribute]} · {calculated.rank}</small>
+                    <b>{signedModifier(getSkillModifier(build, skill.id))}</b>
+                  </div>
                 )
               })}
             </div>

@@ -1,9 +1,7 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import {
-  PATHFINDER2_ATTRIBUTES,
-  PATHFINDER2_SKILLS,
   PATHFINDER2_STEPS,
 } from '../../data'
 import {
@@ -20,9 +18,9 @@ import {
   getBuilderCompletion,
   getBuilderStepState,
 } from '../../rules/builder-progress'
-import { signedModifier } from '../../rules/derived-character-values'
 import type {
   Pathfinder2AttributeKey,
+  Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
   Pathfinder2DerivedValues,
   Pathfinder2RulesCatalog,
@@ -34,11 +32,15 @@ import type {
   UpdatePathfinder2Field,
 } from '../component-types'
 import CharacterSummary from '../shared/CharacterSummary'
+import AttributeRulesEditor from './AttributeRulesEditor'
+import ReviewAudit from './ReviewAudit'
+import SkillRulesEditor from './SkillRulesEditor'
 import styles from '../Pathfinder2SheetPage.module.css'
 
 type CharacterBuilderViewProps = {
   draft: Pathfinder2CharacterDraft
   catalog: Pathfinder2RulesCatalog
+  build: Pathfinder2CharacterBuild
   derived: Pathfinder2DerivedValues
   activeStep: Pathfinder2StepId
   onStepChange: (step: Pathfinder2StepId) => void
@@ -150,6 +152,7 @@ function EditorHeading({
 export default function CharacterBuilderView({
   draft,
   catalog,
+  build,
   derived,
   activeStep,
   onStepChange,
@@ -160,9 +163,12 @@ export default function CharacterBuilderView({
 }: CharacterBuilderViewProps) {
   const [leftCollapsed, setLeftCollapsed] = useState(false)
   const [rightCollapsed, setRightCollapsed] = useState(false)
+  const [heritageCategory, setHeritageCategory] = useState<'ancestry' | 'versatile'>(
+    draft.versatileHeritageId ? 'versatile' : 'ancestry',
+  )
   const stepIndex = PATHFINDER2_STEPS.findIndex(step => step.id === activeStep)
   const step = PATHFINDER2_STEPS[stepIndex]
-  const completion = getBuilderCompletion(draft)
+  const completion = getBuilderCompletion(draft, build.validationIssues)
   const ancestry = getAncestryById(catalog, draft.ancestryId)
   const heritage = getHeritageById(catalog, draft.ancestryId, draft.heritageId)
   const versatileHeritage = getVersatileHeritageById(catalog, draft.versatileHeritageId)
@@ -175,30 +181,6 @@ export default function CharacterBuilderView({
   const selectedSkillFeats = draft.skillFeatIds
     .map(id => getFeatById(catalog, id))
     .filter(Boolean)
-
-  const attributesTotal = useMemo(
-    () => Object.values(draft.attributes).reduce((sum, value) => sum + value, 0),
-    [draft.attributes],
-  )
-
-  const adjustAttribute = (key: Pathfinder2AttributeKey, delta: number) => {
-    updateCharacter(current => ({
-      ...current,
-      attributes: {
-        ...current.attributes,
-        [key]: Math.min(6, Math.max(-2, current.attributes[key] + delta)),
-      },
-    }), { immediate: true })
-  }
-
-  const toggleSkill = (skill: string) => {
-    updateCharacter(current => ({
-      ...current,
-      trainedSkills: current.trainedSkills.includes(skill)
-        ? current.trainedSkills.filter(value => value !== skill)
-        : [...current.trainedSkills, skill],
-    }), { immediate: true })
-  }
 
   const removeFeat = (field: 'generalFeatIds' | 'skillFeatIds', id: string) => {
     updateCharacter(current => ({
@@ -254,7 +236,7 @@ export default function CharacterBuilderView({
           <div className={styles.levelCard}>
             <div>
               <strong>Уровень героя</strong>
-              <p>Интерфейс хранит уровень от 1 до 20 и пересчитывает сводку.</p>
+              <p>Строгое завершение сейчас доступно для 1-го уровня. Уровни 2–20 сохраняются для будущей прогрессии, но не открывают ручное повышение рангов.</p>
             </div>
             <div className={styles.levelControl}>
               <button
@@ -285,6 +267,11 @@ export default function CharacterBuilderView({
               </button>
             </div>
           </div>
+          {draft.level > 1 ? (
+            <p className={styles.ruleChangeNotice}>
+              Прогрессия 2–20 ещё не подключена к редактору. Такой черновик можно хранить, но завершить создание пока нельзя.
+            </p>
+          ) : null}
         </div>
       )
     }
@@ -312,14 +299,30 @@ export default function CharacterBuilderView({
     if (activeStep === 'heritage') {
       return (
         <div className={styles.formStack}>
+          <div className={styles.modeSwitch} aria-label="Категория наследия">
+            <button
+              type="button"
+              aria-pressed={heritageCategory === 'ancestry'}
+              onClick={() => setHeritageCategory('ancestry')}
+            >
+              Наследия народа
+            </button>
+            <button
+              type="button"
+              aria-pressed={heritageCategory === 'versatile'}
+              onClick={() => setHeritageCategory('versatile')}
+            >
+              Универсальные наследия
+            </button>
+          </div>
           {!ancestry ? (
             <EmptyChoice
               title="Сначала выберите народ"
-              copy="Обычные наследия зависят от народа. Универсальное наследие можно добавить после этого."
+              copy="Сначала нужен народ, затем выберите ровно одно обычное или универсальное наследие."
               action="Перейти к выбору народа"
               onAction={() => onStepChange('ancestry')}
             />
-          ) : heritage ? (
+          ) : heritageCategory === 'ancestry' && heritage ? (
             <SelectedChoice
               eyebrow={`Наследие · ${ancestry.name}`}
               title={heritage.name}
@@ -327,49 +330,32 @@ export default function CharacterBuilderView({
               onDetails={trigger => openChoice('heritage', { readOnly: true }, trigger)}
               onAction={trigger => openChoice('heritage', {}, trigger)}
             />
-          ) : (
+          ) : heritageCategory === 'ancestry' ? (
             <EmptyChoice
               title={`Наследие для народа «${ancestry.name}»`}
-              copy={`Доступно вариантов: ${ancestry.heritages.length}.`}
+              copy={`Доступно вариантов: ${ancestry.heritages.length}. Выбор заменит универсальное наследие.`}
               action="Выбрать наследие"
               onAction={trigger => openChoice('heritage', {}, trigger)}
             />
+          ) : versatileHeritage ? (
+            <SelectedChoice
+              eyebrow="Универсальное наследие · заменяет обычное"
+              title={versatileHeritage.name}
+              description={versatileHeritage.description}
+              onDetails={trigger => openChoice('versatileHeritage', { readOnly: true }, trigger)}
+              onAction={trigger => openChoice('versatileHeritage', {}, trigger)}
+            />
+          ) : (
+            <EmptyChoice
+              title="Универсальное наследие"
+              copy={`Доступно вариантов: ${catalog.versatileHeritages.length}. Выбор очистит обычное наследие народа.`}
+              action="Выбрать универсальное наследие"
+              onAction={trigger => openChoice('versatileHeritage', {}, trigger)}
+            />
           )}
-
-          <section className={styles.optionalChoice}>
-            <div>
-              <span className={styles.choiceKicker}>Необязательный слой</span>
-              <h3>Универсальное наследие</h3>
-              <p>Хранится отдельно и не заменяет обычное наследие народа.</p>
-            </div>
-            {versatileHeritage ? (
-              <SelectedChoice
-                eyebrow="Универсальное наследие"
-                title={versatileHeritage.name}
-                description={versatileHeritage.description}
-                action="Изменить"
-                onDetails={trigger => openChoice('versatileHeritage', { readOnly: true }, trigger)}
-                onAction={trigger => openChoice('versatileHeritage', {}, trigger)}
-              />
-            ) : (
-              <button
-                type="button"
-                className={styles.previousButton}
-                onClick={event => openChoice('versatileHeritage', {}, event.currentTarget)}
-              >
-                Добавить универсальное наследие
-              </button>
-            )}
-            {versatileHeritage ? (
-              <button
-                type="button"
-                className={styles.textButton}
-                onClick={() => updateField('versatileHeritageId', '', { immediate: true })}
-              >
-                Удалить универсальное наследие
-              </button>
-            ) : null}
-          </section>
+          <p className={styles.ruleChangeNotice}>
+            Активно только одно наследие: обычное или универсальное.
+          </p>
         </div>
       )
     }
@@ -419,13 +405,18 @@ export default function CharacterBuilderView({
               <label className={styles.field}>
                 <span className={styles.fieldLabel}>Ключевая характеристика</span>
                 <select
-                  value={draft.keyAbility}
-                  onChange={event => updateField(
-                    'keyAbility',
-                    event.target.value as Pathfinder2AttributeKey,
-                    { immediate: true },
-                  )}
+                  value={draft.attributeChoices.classKeyBoost ?? ''}
+                  onChange={event => updateCharacter(current => ({
+                    ...current,
+                    attributeChoices: {
+                      ...current.attributeChoices,
+                      classKeyBoost: (event.target.value || null) as Pathfinder2AttributeKey | null,
+                    },
+                  }), { immediate: true })}
                 >
+                  {characterClass.keyAbilities.length > 1 ? (
+                    <option value="">Выберите ключевую характеристику</option>
+                  ) : null}
                   {characterClass.keyAbilities.map(key => (
                     <option key={key} value={key}>{displayAttribute(key)}</option>
                   ))}
@@ -460,65 +451,24 @@ export default function CharacterBuilderView({
 
     if (activeStep === 'attributes') {
       return (
-        <div className={styles.formStack}>
-          <div className={styles.attributeLegend}>
-            <span><i /> Сумма модификаторов: {signedModifier(attributesTotal)}</span>
-            <span>Рабочий редактор, без автоматизации полного цикла повышений PF2</span>
-          </div>
-          <div className={styles.attributeGrid}>
-            {PATHFINDER2_ATTRIBUTES.map(attribute => (
-              <article
-                key={attribute.key}
-                className={[
-                  styles.attributeCard,
-                  derived.keyAbility === attribute.key ? styles.attributeCardKey : '',
-                ].filter(Boolean).join(' ')}
-              >
-                <div className={styles.attributeCardTop}>
-                  <span className={styles.attributeShort}>{attribute.shortLabel}</span>
-                  {derived.keyAbility === attribute.key ? <small>Ключ</small> : null}
-                </div>
-                <strong>{attribute.label}</strong>
-                <small>{attribute.description}</small>
-                <div className={styles.attributeControl}>
-                  <button type="button" aria-label={`Уменьшить ${attribute.label}`} onClick={() => adjustAttribute(attribute.key, -1)}>−</button>
-                  <span>{signedModifier(draft.attributes[attribute.key])}</span>
-                  <button type="button" aria-label={`Увеличить ${attribute.label}`} onClick={() => adjustAttribute(attribute.key, 1)}>+</button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+        <AttributeRulesEditor
+          draft={draft}
+          catalog={catalog}
+          build={build}
+          updateCharacter={updateCharacter}
+        />
       )
     }
 
     if (activeStep === 'skills') {
       return (
-        <div className={styles.formStack}>
-          <div className={styles.skillsHeading}>
-            <div><h3>Обученные навыки</h3><p>Нажмите, чтобы изменить состояние.</p></div>
-            <span className={styles.skillsCount}><strong>{draft.trainedSkills.length}</strong><small>выбрано</small></span>
-          </div>
-          <div className={styles.skillsGrid}>
-            {PATHFINDER2_SKILLS.map(skill => {
-              const selected = draft.trainedSkills.includes(skill)
-              return (
-                <button
-                  key={skill}
-                  type="button"
-                  className={[
-                    styles.skillButton,
-                    selected ? styles.skillButtonSelected : '',
-                  ].filter(Boolean).join(' ')}
-                  aria-pressed={selected}
-                  onClick={() => toggleSkill(skill)}
-                >
-                  <span className={styles.checkMark}>{selected ? '✓' : ''}</span>
-                  <span><strong>{skill}</strong><small>{selected ? 'Обучен' : 'Не обучен'}</small></span>
-                </button>
-              )
-            })}
-          </div>
+        <>
+          <SkillRulesEditor
+            draft={draft}
+            catalog={catalog}
+            build={build}
+            updateCharacter={updateCharacter}
+          />
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Знания (Lore)</span>
             <input
@@ -527,7 +477,7 @@ export default function CharacterBuilderView({
               onChange={event => updateField('lore', event.target.value)}
             />
           </label>
-        </div>
+        </>
       )
     }
 
@@ -597,33 +547,7 @@ export default function CharacterBuilderView({
       )
     }
 
-    return (
-      <div className={styles.reviewGrid}>
-        <section>
-          <span className={styles.choiceKicker}>Личность</span>
-          <h3>{draft.name || 'Имя не заполнено'}</h3>
-          <p>{draft.concept || 'Концепция не заполнена.'}</p>
-        </section>
-        <section>
-          <span className={styles.choiceKicker}>Происхождение</span>
-          <h3>{ancestry?.name || 'Народ не выбран'}</h3>
-          <p>{heritage?.name || 'Наследие не выбрано'}{versatileHeritage ? ` · ${versatileHeritage.name}` : ''}</p>
-        </section>
-        <section>
-          <span className={styles.choiceKicker}>Путь</span>
-          <h3>{characterClass?.name || 'Класс не выбран'}</h3>
-          <p>{background?.name || 'Предыстория не выбрана'}{subclass ? ` · ${subclass.name}` : ''}</p>
-        </section>
-        <section>
-          <span className={styles.choiceKicker}>Готовность</span>
-          <h3>{completion}%</h3>
-          <p>Можно вернуться к любому шагу или открыть рабочий лист.</p>
-          <button type="button" className={styles.nextButton} onClick={onFinish}>
-            Перейти к листу персонажа
-          </button>
-        </section>
-      </div>
-    )
+    return <ReviewAudit draft={draft} catalog={catalog} build={build} onFinish={onFinish} />
   }
 
   return (
@@ -650,7 +574,7 @@ export default function CharacterBuilderView({
           <p className={styles.panelIntro}>Десять независимых шагов, один общий черновик.</p>
           <nav className={styles.stepsNav} aria-label="Шаги создания персонажа">
             {PATHFINDER2_STEPS.map((item, index) => {
-              const state = getBuilderStepState(draft, item.id)
+              const state = getBuilderStepState(draft, item.id, build.validationIssues)
               return (
                 <button
                   key={item.id}
@@ -698,6 +622,13 @@ export default function CharacterBuilderView({
           <button
             type="button"
             className={styles.nextButton}
+            disabled={
+              (['attributes', 'skills'].includes(activeStep)
+                && build.validationIssues.some(issue => (
+                  issue.step === activeStep && issue.severity === 'error'
+                )))
+              || (activeStep === 'review' && !build.isReady)
+            }
             onClick={() => {
               if (stepIndex === PATHFINDER2_STEPS.length - 1) onFinish()
               else onStepChange(PATHFINDER2_STEPS[stepIndex + 1].id)
@@ -719,7 +650,12 @@ export default function CharacterBuilderView({
           {rightCollapsed ? '‹' : '›'}
         </button>
         <div className={styles.collapsiblePanelContent}>
-          <CharacterSummary draft={draft} catalog={catalog} derived={derived} />
+          <CharacterSummary
+            draft={draft}
+            catalog={catalog}
+            build={build}
+            derived={derived}
+          />
         </div>
       </aside>
     </main>

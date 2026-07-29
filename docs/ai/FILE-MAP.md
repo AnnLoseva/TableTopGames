@@ -32,7 +32,7 @@ opening code**. Risk levels drive how careful you must be.
 | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx` | Pathfinder 2 route entry | low | before-any-change | Thin wrapper |
 | `src/games/pathfinder2/sheet/components/*` | Two-mode Pathfinder 2 sheet, ten-step builder and reusable choice galleries | medium | before-any-change | Local-only, no Supabase |
 | `src/games/pathfinder2/sheet/{data,types}.ts` | Character draft model, static UI steps and shared catalog types | medium | before-any-change | Independent from VTM rules data |
-| `src/games/pathfinder2/sheet/{data,hooks,rules}/*` | Catalog selectors, schema-v2 migration, local persistence and pure derived values | medium | before-any-change | Keep localStorage and calculations framework-isolated |
+| `src/games/pathfinder2/sheet/{data,hooks,rules}/*` | Schema-v3 migration/persistence plus pure attribute, skill, validation and progression engine | medium | before-any-change | Store source choices, keep localStorage/calculations framework-isolated, run `test:pathfinder2-builder` |
 | `src/games/pathfinder2/sheet/rules-data.ts` | Server-only adapter from raw Pathfinder JSON to the sheet catalog | medium | before-any-change | Keep raw JSON out of the client component |
 | `src/games/pathfinder2/sheet/rules-source.ts` | Short rule guides + pf2.ru search links | medium | before-any-change | Do not scrape or vendor full site content |
 | `src/games/pathfinder2/Rules/*.json` | Owner-provided Pathfinder ancestries, backgrounds, classes and feats | high | before-any-change | Preserve source/version/license metadata; keep schema changes behind `rules-data.ts` |

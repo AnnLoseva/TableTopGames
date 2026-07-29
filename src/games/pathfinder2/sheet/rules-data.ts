@@ -4,6 +4,12 @@ import ancestriesRules from '../Rules/ancestries.json'
 import backgroundsRules from '../Rules/backgrounds.json'
 import classesRules from '../Rules/classes.json'
 import featsRules from '../Rules/feats.json'
+import {
+  getSpecializationGrantedSkills,
+  getStructuredBackgroundAbilityOptions,
+  getStructuredBackgroundSkillRules,
+  getStructuredClassSkillRules,
+} from './rules/creation/structured-rules'
 import type {
   Pathfinder2AncestryRule,
   Pathfinder2AttributeKey,
@@ -300,19 +306,26 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
 
   const backgrounds: Pathfinder2BackgroundRule[] = safeArray(
     backgroundDocument.backgrounds,
-  ).map((background, index) => ({
-    id: background.id ?? `background-${index + 1}`,
-    name: background.name ?? 'Неизвестная предыстория',
-    description: background.description ?? '',
-    rarity: background.rarity ?? 'common',
-    abilityBoosts: background.abilityBoosts ?? '',
-    trainedSkills: background.trainedSkills ?? '',
-    trainedLore: background.trainedLore ?? '',
-    skillFeat: canonicalFeatName(background.skillFeat ?? '', skillFeats),
-    sourceBook: background.sourceBook ?? '',
-    tab: background.tab ?? 'general',
-    region: background.region ?? null,
-  }))
+  ).map((background, index) => {
+    const backgroundId = background.id ?? `background-${index + 1}`
+    const abilityBoosts = background.abilityBoosts ?? ''
+    const trainedSkills = background.trainedSkills ?? ''
+    return {
+      id: backgroundId,
+      name: background.name ?? 'Неизвестная предыстория',
+      description: background.description ?? '',
+      rarity: background.rarity ?? 'common',
+      abilityBoosts,
+      abilityBoostOptions: getStructuredBackgroundAbilityOptions(abilityBoosts),
+      trainedSkills,
+      skillRules: getStructuredBackgroundSkillRules(backgroundId, trainedSkills),
+      trainedLore: background.trainedLore ?? '',
+      skillFeat: canonicalFeatName(background.skillFeat ?? '', skillFeats),
+      sourceBook: background.sourceBook ?? '',
+      tab: background.tab ?? 'general',
+      region: background.region ?? null,
+    }
+  })
 
   const classes: Pathfinder2ClassRule[] = safeArray(classDocument.classes)
     .map((characterClass, index) => {
@@ -330,6 +343,7 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
         reflex: characterClass.reflex ?? '',
         will: characterClass.will ?? '',
         skills: characterClass.skills ?? '',
+        skillRules: getStructuredClassSkillRules(classId),
         attacks: characterClass.attacks ?? '',
         defenses: characterClass.defenses ?? '',
         classDc: characterClass.classDC ?? '',
@@ -343,11 +357,17 @@ export function getPathfinder2RulesCatalog(): Pathfinder2RulesCatalog {
           toFeature(`${classId}-feature`, feature, featureIndex)
         )),
         specializations: safeArray(characterClass.subclasses).map(
-          (feature, featureIndex) => toFeature(
-            `${classId}-subclass`,
-            feature,
-            featureIndex,
-          ),
+          (feature, featureIndex) => {
+            const normalized = toFeature(
+              `${classId}-subclass`,
+              feature,
+              featureIndex,
+            )
+            return {
+              ...normalized,
+              grantedSkills: getSpecializationGrantedSkills(classId, normalized.id),
+            }
+          },
         ),
         sourceBook: characterClass.sourceBook ?? '',
       }

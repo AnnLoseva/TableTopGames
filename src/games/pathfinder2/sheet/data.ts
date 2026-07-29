@@ -1,10 +1,14 @@
 import type {
   Pathfinder2AttributeKey,
   Pathfinder2CharacterDraft,
+  Pathfinder2SkillId,
   Pathfinder2StepId,
 } from './types'
 
-export const PATHFINDER2_DRAFT_STORAGE_KEY = 'pathfinder2-character-draft-v1'
+export const PATHFINDER2_DRAFT_STORAGE_KEY = 'pathfinder2-character-draft-v3'
+export const PATHFINDER2_LEGACY_DRAFT_STORAGE_KEYS = [
+  'pathfinder2-character-draft-v1',
+] as const
 
 export const PATHFINDER2_STEPS: {
   id: Pathfinder2StepId
@@ -46,13 +50,13 @@ export const PATHFINDER2_STEPS: {
     id: 'attributes',
     label: 'Характеристики',
     shortLabel: 'Основа',
-    description: 'Шесть модификаторов персонажа',
+    description: 'Законные повышения из четырёх источников',
   },
   {
     id: 'skills',
     label: 'Навыки',
     shortLabel: 'Умения',
-    description: 'Обученные навыки и знания',
+    description: 'Автоматические владения и ограниченные выборы',
   },
   {
     id: 'feats',
@@ -88,58 +92,80 @@ export const PATHFINDER2_ATTRIBUTES: {
   { key: 'charisma', shortLabel: 'ХАР', label: 'Харизма', description: 'Влияние и самовыражение' },
 ]
 
-export const PATHFINDER2_SKILLS = [
-  'Акробатика',
-  'Аркана',
-  'Атлетика',
-  'Воровство',
-  'Выживание',
-  'Дипломатия',
-  'Запугивание',
-  'Медицина',
-  'Обман',
-  'Оккультизм',
-  'Общество',
-  'Природа',
-  'Религия',
-  'Ремесло',
-  'Скрытность',
-  'Исполнительство',
-] as const
+export const PATHFINDER2_SKILLS: Array<{
+  id: Pathfinder2SkillId
+  label: string
+  attribute: Pathfinder2AttributeKey
+}> = [
+  { id: 'acrobatics', label: 'Акробатика', attribute: 'dexterity' },
+  { id: 'arcana', label: 'Аркана', attribute: 'intelligence' },
+  { id: 'athletics', label: 'Атлетика', attribute: 'strength' },
+  { id: 'crafting', label: 'Ремесло', attribute: 'intelligence' },
+  { id: 'deception', label: 'Обман', attribute: 'charisma' },
+  { id: 'diplomacy', label: 'Дипломатия', attribute: 'charisma' },
+  { id: 'intimidation', label: 'Запугивание', attribute: 'charisma' },
+  { id: 'medicine', label: 'Медицина', attribute: 'wisdom' },
+  { id: 'nature', label: 'Природа', attribute: 'wisdom' },
+  { id: 'occultism', label: 'Оккультизм', attribute: 'intelligence' },
+  { id: 'performance', label: 'Исполнительство', attribute: 'charisma' },
+  { id: 'religion', label: 'Религия', attribute: 'wisdom' },
+  { id: 'society', label: 'Общество', attribute: 'intelligence' },
+  { id: 'stealth', label: 'Скрытность', attribute: 'dexterity' },
+  { id: 'survival', label: 'Выживание', attribute: 'wisdom' },
+  { id: 'thievery', label: 'Воровство', attribute: 'dexterity' },
+]
 
-export const DEFAULT_PATHFINDER2_DRAFT: Pathfinder2CharacterDraft = {
-  schemaVersion: 2,
-  name: '',
-  player: '',
-  pronouns: '',
-  concept: '',
-  level: 1,
-  portrait: '',
-  ancestryId: '',
-  heritageId: '',
-  versatileHeritageId: '',
-  backgroundId: '',
-  classId: '',
-  subclassId: '',
-  keyAbility: '',
-  attributes: {
-    strength: 0,
-    dexterity: 0,
-    constitution: 0,
-    intelligence: 0,
-    wisdom: 0,
-    charisma: 0,
-  },
-  trainedSkills: [],
-  lore: '',
-  ancestryFeatIds: [],
-  classFeatIds: [],
-  skillFeatIds: [],
-  generalFeatIds: [],
-  languages: '',
-  equipment: '',
-  notes: '',
-  currentHp: 0,
-  tempHp: 0,
-  unresolvedSelections: {},
+export function createDefaultPathfinder2Draft(): Pathfinder2CharacterDraft {
+  return {
+    schemaVersion: 3,
+    name: '',
+    player: '',
+    pronouns: '',
+    concept: '',
+    level: 1,
+    portrait: '',
+    ancestryId: '',
+    heritageId: '',
+    versatileHeritageId: '',
+    backgroundId: '',
+    classId: '',
+    subclassId: '',
+    attributeChoices: {
+      ancestryMode: 'standard',
+      ancestryFreeBoosts: [],
+      backgroundLimitedBoost: null,
+      backgroundFreeBoost: null,
+      classKeyBoost: null,
+      finalFreeBoosts: [],
+      levelBoosts: {
+        5: [],
+        10: [],
+        15: [],
+        20: [],
+      },
+    },
+    skillChoices: {
+      grantedChoiceSelections: {},
+      classFreeSkills: [],
+      intelligenceSkills: [],
+      replacementSkills: {},
+      skillIncreases: [],
+      suggestedSkills: [],
+    },
+    lore: '',
+    ancestryFeatIds: [],
+    classFeatIds: [],
+    skillFeatIds: [],
+    generalFeatIds: [],
+    languages: '',
+    equipment: '',
+    notes: '',
+    currentHp: 0,
+    tempHp: 0,
+    needsRulesRebuild: false,
+    legacySnapshot: null,
+    unresolvedSelections: {},
+  }
 }
+
+export const DEFAULT_PATHFINDER2_DRAFT = createDefaultPathfinder2Draft()

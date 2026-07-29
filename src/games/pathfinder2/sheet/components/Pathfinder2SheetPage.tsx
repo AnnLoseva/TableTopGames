@@ -2,9 +2,10 @@
 
 import dynamic from 'next/dynamic'
 import { useMemo, useRef, useState } from 'react'
-import { getBackgroundSkills } from '../rules/derived-character-values'
 import { calculateDerivedCharacterValues } from '../rules/derived-character-values'
 import { getBuilderCompletion } from '../rules/builder-progress'
+import { buildCharacter } from '../rules/creation/build-character'
+import { reconcileCharacterDecisions } from '../rules/creation/reconcile-character'
 import {
   getAncestryById,
   getBackgroundById,
@@ -57,11 +58,15 @@ export default function Pathfinder2SheetPage({
     resetCharacter,
     clearMigrationWarnings,
   } = usePathfinder2Character(rules)
+  const build = useMemo(() => buildCharacter(draft, rules), [draft, rules])
   const derived = useMemo(
-    () => calculateDerivedCharacterValues(draft, rules),
-    [draft, rules],
+    () => calculateDerivedCharacterValues(draft, rules, build),
+    [build, draft, rules],
   )
-  const completion = useMemo(() => getBuilderCompletion(draft), [draft])
+  const completion = useMemo(
+    () => getBuilderCompletion(draft, build.validationIssues),
+    [build.validationIssues, draft],
+  )
 
   const openChoice = (
     kind: Pathfinder2ChoiceKind,
@@ -82,61 +87,70 @@ export default function Pathfinder2SheetPage({
       let next = current
 
       if (kind === 'ancestry') {
-        const ancestry = getAncestryById(rules, id)
-        const heritageRemainsValid = ancestry?.heritages.some(
-          heritage => heritage.id === current.heritageId,
-        )
-        next = {
+        const reconciled = reconcileCharacterDecisions(current, {
           ...current,
           ancestryId: id,
-          heritageId: heritageRemainsValid ? current.heritageId : '',
-        }
-        if (current.heritageId && !heritageRemainsValid) {
-          setNotice('Наследие очищено: оно не относится к новому народу.')
-        }
+        }, rules)
+        next = reconciled.draft
+        if (reconciled.changes.length) setNotice(reconciled.changes.join(' '))
       } else if (kind === 'heritage') {
-        next = { ...current, heritageId: id }
+        next = { ...current, heritageId: id, versatileHeritageId: '' }
+        if (current.versatileHeritageId) {
+          setNotice('Универсальное наследие заменено обычным наследием народа.')
+        }
       } else if (kind === 'versatileHeritage') {
-        next = { ...current, versatileHeritageId: id }
+        next = { ...current, versatileHeritageId: id, heritageId: '' }
+        if (current.heritageId) {
+          setNotice('Обычное наследие заменено универсальным.')
+        }
       } else if (kind === 'background') {
         const background = getBackgroundById(rules, id)
-        const backgroundSkills = background
-          ? getBackgroundSkills(background.trainedSkills)
-          : []
+        const previousBackground = getBackgroundById(rules, current.backgroundId)
+        const previousBackgroundFeat = rules.skillFeats.find(
+          feat => feat.name === previousBackground?.skillFeat,
+        )
         const backgroundFeatName = background?.skillFeat
           .replace(/\s*\([^)]*\)\s*$/, '')
           .trim()
         const backgroundFeat = rules.skillFeats.find(
           feat => feat.name === backgroundFeatName,
         )
-        next = {
+        const skillFeatIds = current.skillFeatIds
+          .filter(featId => featId !== previousBackgroundFeat?.id)
+        const reconciled = reconcileCharacterDecisions(current, {
           ...current,
           backgroundId: id,
           lore: background?.trainedLore || current.lore,
-          trainedSkills: Array.from(new Set([
-            ...current.trainedSkills,
-            ...backgroundSkills,
-          ])),
           skillFeatIds: backgroundFeat
-            ? Array.from(new Set([...current.skillFeatIds, backgroundFeat.id]))
-            : current.skillFeatIds,
-        }
+            ? Array.from(new Set([...skillFeatIds, backgroundFeat.id]))
+            : skillFeatIds,
+        }, rules)
+        next = reconciled.draft
+        if (reconciled.changes.length) setNotice(reconciled.changes.join(' '))
       } else if (kind === 'class') {
         const characterClass = getClassById(rules, id)
-        const keyAbility = current.keyAbility
-          && characterClass?.keyAbilities.includes(current.keyAbility)
-          ? current.keyAbility
-          : characterClass?.keyAbilities[0] ?? ''
-        next = {
+        const currentKeyAbility = current.attributeChoices.classKeyBoost
+        const classKeyBoost = currentKeyAbility
+          && characterClass?.keyAbilities.includes(currentKeyAbility)
+          ? currentKeyAbility
+          : characterClass?.keyAbilities.length === 1
+            ? characterClass.keyAbilities[0]
+            : null
+        const reconciled = reconcileCharacterDecisions(current, {
           ...current,
           classId: id,
           subclassId: '',
           classFeatIds: [],
-          keyAbility,
-        }
-        if (current.classId && current.classId !== id) {
-          setNotice('Путь и способности прежнего класса очищены.')
-        }
+          attributeChoices: {
+            ...current.attributeChoices,
+            classKeyBoost,
+          },
+        }, rules)
+        next = reconciled.draft
+        const changes = current.classId && current.classId !== id
+          ? ['Способности прежнего класса очищены.', ...reconciled.changes]
+          : reconciled.changes
+        if (changes.length) setNotice(changes.join(' '))
       } else if (kind === 'generalFeat') {
         next = {
           ...current,
@@ -168,6 +182,15 @@ export default function Pathfinder2SheetPage({
     setActiveStep('concept')
     setMode('sheet')
     setNotice('Создан новый пустой локальный лист.')
+  }
+
+  const handleFinish = () => {
+    if (build.isReady) {
+      setMode('sheet')
+      return
+    }
+    setActiveStep('review')
+    setNotice('Создание нельзя завершить: исправьте ошибки, перечисленные в аудите.')
   }
 
   return (
@@ -209,8 +232,8 @@ export default function Pathfinder2SheetPage({
           <CharacterSheetView
             draft={draft}
             catalog={rules}
+            build={build}
             derived={derived}
-            updateCharacter={updateCharacter}
             updateField={updateField}
             openChoice={openChoice}
             onOpenBuilder={() => setMode('builder')}
@@ -219,13 +242,14 @@ export default function Pathfinder2SheetPage({
           <CharacterBuilderView
             draft={draft}
             catalog={rules}
+            build={build}
             derived={derived}
             activeStep={activeStep}
             onStepChange={setActiveStep}
             updateCharacter={updateCharacter}
             updateField={updateField}
             openChoice={openChoice}
-            onFinish={() => setMode('sheet')}
+            onFinish={handleFinish}
           />
         )
       ) : (

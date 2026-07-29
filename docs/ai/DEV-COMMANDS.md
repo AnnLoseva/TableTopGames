@@ -60,8 +60,18 @@ From `package.json`. Run the relevant checks after edits (see
 - **Failure means:** engine behavior regressed.
 - **Usual culprits:** `src/games/vampires/core/vtm5/rules/disciplines/engine/index.ts` and its inputs.
 
+## `npm run test:pathfinder2-builder`
+- **What:** pure Pathfinder 2 builder scenarios for attributes, skills,
+  replacement choices, rank progression, validation and legacy draft migration.
+- **When:** after changing `src/games/pathfinder2/sheet/{types,data,rules}*` or
+  the creation-step contracts.
+- **Failure means:** a level-1 legality rule, stable-ID skill contract,
+  migration guarantee or completion gate regressed.
+- **Usual culprits:** `src/games/pathfinder2/sheet/rules/{attributes,skills,creation,progression}/*`
+  and `src/games/pathfinder2/sheet/data/migration.ts`.
+
 ## Recommended order after a change
 1. `npm run lint` (fast type check)
-2. area audit/validate/test scripts (if VTM/disciplines touched)
+2. area audit/validate/test scripts (`test:pathfinder2-builder` for the PF2 sheet)
 3. `npm run build` (final gate)
 4. manual smoke of affected routes (`workflows/verification-checklist.md`)

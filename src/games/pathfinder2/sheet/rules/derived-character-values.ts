@@ -1,11 +1,14 @@
 import { PATHFINDER2_SKILLS } from '../data'
 import type {
   Pathfinder2AttributeKey,
+  Pathfinder2CharacterBuild,
   Pathfinder2CharacterDraft,
   Pathfinder2DerivedValues,
   Pathfinder2RulesCatalog,
+  Pathfinder2SkillId,
 } from '../types'
 import { getAncestryById, getClassById } from '../data/selectors'
+import { buildCharacter } from './creation/build-character'
 
 export function signedModifier(value: number) {
   return value >= 0 ? `+${value}` : String(value)
@@ -33,43 +36,33 @@ export function proficiencyLabel(value: string) {
   return 'не обучен'
 }
 
-export function getSkillAttribute(skill: string): Pathfinder2AttributeKey {
-  if (skill === 'Атлетика') return 'strength'
-  if (['Акробатика', 'Воровство', 'Скрытность'].includes(skill)) return 'dexterity'
-  if (['Аркана', 'Общество', 'Ремесло'].includes(skill)) return 'intelligence'
-  if (
-    ['Дипломатия', 'Запугивание', 'Обман', 'Исполнительство'].includes(skill)
-  ) {
-    return 'charisma'
-  }
-  return 'wisdom'
+export function getSkillAttribute(skillId: Pathfinder2SkillId): Pathfinder2AttributeKey {
+  return PATHFINDER2_SKILLS.find(skill => skill.id === skillId)?.attribute ?? 'wisdom'
 }
 
 export function getSkillModifier(
-  draft: Pathfinder2CharacterDraft,
-  skill: string,
+  build: Pathfinder2CharacterBuild,
+  skillId: Pathfinder2SkillId,
 ) {
-  const ability = getSkillAttribute(skill)
-  const trained = draft.trainedSkills.includes(skill)
-  return draft.attributes[ability] + (trained ? draft.level + 2 : 0)
-}
-
-export function getBackgroundSkills(value: string): string[] {
-  const primarySkill = value.split(' (')[0].split(' или ')[0].trim()
-  return PATHFINDER2_SKILLS
-    .map(skill => String(skill))
-    .filter(skill => skill === primarySkill)
+  return build.skills.skills[skillId].modifier
 }
 
 export function calculateDerivedCharacterValues(
   draft: Pathfinder2CharacterDraft,
   catalog: Pathfinder2RulesCatalog,
+  existingBuild?: Pathfinder2CharacterBuild,
 ): Pathfinder2DerivedValues {
+  const characterBuild = existingBuild ?? buildCharacter(draft, catalog)
+  const attributes = characterBuild.attributes.modifiers
   const ancestry = getAncestryById(catalog, draft.ancestryId)
   const characterClass = getClassById(catalog, draft.classId)
   const proficiency = draft.level + 2
-  const keyAbility = draft.keyAbility || characterClass?.keyAbilities[0] || ''
-  const keyModifier = keyAbility ? draft.attributes[keyAbility] : 0
+  const selectedKeyAbility = draft.attributeChoices.classKeyBoost
+  const keyAbility = selectedKeyAbility
+    && characterClass?.keyAbilities.includes(selectedKeyAbility)
+    ? selectedKeyAbility
+    : ''
+  const keyModifier = keyAbility ? attributes[keyAbility] : 0
   const perceptionProficiency = characterClass
     ? getRuleProficiency(characterClass.perception, draft.level)
     : proficiency
@@ -91,15 +84,15 @@ export function calculateDerivedCharacterValues(
       ? Math.max(
         1,
         ancestry.hp
-          + draft.level * (characterClass.hp + draft.attributes.constitution),
+          + draft.level * (characterClass.hp + attributes.constitution),
       )
       : null,
-    armorClass: 10 + proficiency + draft.attributes.dexterity,
-    perception: perceptionProficiency + draft.attributes.wisdom,
+    armorClass: 10 + proficiency + attributes.dexterity,
+    perception: perceptionProficiency + attributes.wisdom,
     classDc: characterClass ? 10 + classProficiency + keyModifier : null,
-    fortitude: fortitudeProficiency + draft.attributes.constitution,
-    reflex: reflexProficiency + draft.attributes.dexterity,
-    will: willProficiency + draft.attributes.wisdom,
+    fortitude: fortitudeProficiency + attributes.constitution,
+    reflex: reflexProficiency + attributes.dexterity,
+    will: willProficiency + attributes.wisdom,
     speed: ancestry?.speed ?? null,
     proficiency,
     keyAbility,

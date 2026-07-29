@@ -43,6 +43,88 @@ export type Pathfinder2AttributeKey =
 
 export type Pathfinder2Attributes = Record<Pathfinder2AttributeKey, number>
 
+export type Pathfinder2AttributeMode = 'standard' | 'alternate'
+
+export type Pathfinder2AttributeLevel = 5 | 10 | 15 | 20
+
+export type Pathfinder2AttributeChoices = {
+  ancestryMode: Pathfinder2AttributeMode
+  ancestryFreeBoosts: Pathfinder2AttributeKey[]
+  backgroundLimitedBoost: Pathfinder2AttributeKey | null
+  backgroundFreeBoost: Pathfinder2AttributeKey | null
+  classKeyBoost: Pathfinder2AttributeKey | null
+  finalFreeBoosts: Pathfinder2AttributeKey[]
+  levelBoosts: Record<Pathfinder2AttributeLevel, Pathfinder2AttributeKey[]>
+}
+
+export type Pathfinder2SkillId =
+  | 'acrobatics'
+  | 'arcana'
+  | 'athletics'
+  | 'crafting'
+  | 'deception'
+  | 'diplomacy'
+  | 'intimidation'
+  | 'medicine'
+  | 'nature'
+  | 'occultism'
+  | 'performance'
+  | 'religion'
+  | 'society'
+  | 'stealth'
+  | 'survival'
+  | 'thievery'
+
+export type Pathfinder2ProficiencyRank =
+  | 'untrained'
+  | 'trained'
+  | 'expert'
+  | 'master'
+  | 'legendary'
+
+export type Pathfinder2SkillIncrease = {
+  level: number
+  skillId: Pathfinder2SkillId
+  fromRank: Pathfinder2ProficiencyRank
+  toRank: Pathfinder2ProficiencyRank
+}
+
+export type Pathfinder2SkillChoices = {
+  grantedChoiceSelections: Record<string, Pathfinder2SkillId[]>
+  classFreeSkills: Pathfinder2SkillId[]
+  intelligenceSkills: Pathfinder2SkillId[]
+  replacementSkills: Record<string, Pathfinder2SkillId>
+  skillIncreases: Pathfinder2SkillIncrease[]
+  suggestedSkills: Pathfinder2SkillId[]
+}
+
+export type Pathfinder2SkillChoiceRule = {
+  id: string
+  label: string
+  count: number
+  allowedSkills?: Pathfinder2SkillId[]
+  excludedSkills?: Pathfinder2SkillId[]
+  sourceLabel: string
+}
+
+export type Pathfinder2GrantedSkillRule = {
+  skillId: Pathfinder2SkillId
+  sourceLabel: string
+}
+
+export type Pathfinder2ClassSkillRules = {
+  grantedSkills: Pathfinder2GrantedSkillRule[]
+  grantedSkillChoices: Pathfinder2SkillChoiceRule[]
+  baseFreeTrainedSkills: number
+  addIntelligenceModifier: boolean
+  skillIncreaseLevels: number[]
+}
+
+export type Pathfinder2BackgroundSkillRules = {
+  grantedSkills: Pathfinder2GrantedSkillRule[]
+  grantedSkillChoices: Pathfinder2SkillChoiceRule[]
+}
+
 export type Pathfinder2UnresolvedSelections = {
   heritageName?: string
   subclassName?: string
@@ -52,7 +134,7 @@ export type Pathfinder2UnresolvedSelections = {
 }
 
 export type Pathfinder2CharacterDraft = {
-  schemaVersion: 2
+  schemaVersion: 3
   name: string
   player: string
   pronouns: string
@@ -65,9 +147,8 @@ export type Pathfinder2CharacterDraft = {
   backgroundId: string
   classId: string
   subclassId: string
-  keyAbility: Pathfinder2AttributeKey | ''
-  attributes: Pathfinder2Attributes
-  trainedSkills: string[]
+  attributeChoices: Pathfinder2AttributeChoices
+  skillChoices: Pathfinder2SkillChoices
   lore: string
   ancestryFeatIds: string[]
   classFeatIds: string[]
@@ -78,6 +159,11 @@ export type Pathfinder2CharacterDraft = {
   notes: string
   currentHp: number
   tempHp: number
+  needsRulesRebuild: boolean
+  legacySnapshot: {
+    attributes?: Pathfinder2Attributes
+    trainedSkills?: string[]
+  } | null
   unresolvedSelections: Pathfinder2UnresolvedSelections
 }
 
@@ -86,6 +172,7 @@ export type Pathfinder2RuleFeature = {
   name: string
   description: string
   level?: number
+  grantedSkills?: Pathfinder2GrantedSkillRule[]
 }
 
 export type Pathfinder2SpecialAbilityRule = {
@@ -146,7 +233,9 @@ export type Pathfinder2BackgroundRule = {
   description: string
   rarity: string
   abilityBoosts: string
+  abilityBoostOptions: Pathfinder2AttributeKey[]
   trainedSkills: string
+  skillRules: Pathfinder2BackgroundSkillRules
   trainedLore: string
   skillFeat: string
   sourceBook: string
@@ -176,6 +265,7 @@ export type Pathfinder2ClassRule = {
   reflex: string
   will: string
   skills: string
+  skillRules: Pathfinder2ClassSkillRules
   attacks: string
   defenses: string
   classDc: string
@@ -229,4 +319,62 @@ export type Pathfinder2DerivedValues = {
   speed: number | null
   proficiency: number
   keyAbility: Pathfinder2AttributeKey | ''
+}
+
+export type Pathfinder2AttributeBreakdownEntry = {
+  source: 'ancestry' | 'background' | 'class' | 'free' | 'level'
+  sourceLabel: string
+  delta: number
+  automatic: boolean
+  partial: boolean
+}
+
+export type Pathfinder2CalculatedAttributes = {
+  modifiers: Pathfinder2Attributes
+  breakdown: Record<Pathfinder2AttributeKey, Pathfinder2AttributeBreakdownEntry[]>
+  partialBoosts: Record<Pathfinder2AttributeKey, number>
+}
+
+export type Pathfinder2SkillSource = {
+  id: string
+  label: string
+  kind: 'granted' | 'choice' | 'replacement' | 'increase'
+}
+
+export type Pathfinder2ReplacementChoice = {
+  id: string
+  duplicateSkillId: Pathfinder2SkillId
+  sourceLabel: string
+  reason: string
+}
+
+export type Pathfinder2CalculatedSkill = {
+  skillId: Pathfinder2SkillId
+  rank: Pathfinder2ProficiencyRank
+  modifier: number
+  sources: Pathfinder2SkillSource[]
+}
+
+export type Pathfinder2CalculatedSkills = {
+  skills: Record<Pathfinder2SkillId, Pathfinder2CalculatedSkill>
+  grantedSkills: Pathfinder2SkillId[]
+  replacementChoices: Pathfinder2ReplacementChoice[]
+  classFreeLimit: number
+  intelligenceLimit: number
+  trainedCount: number
+}
+
+export type Pathfinder2ValidationIssue = {
+  id: string
+  severity: 'error' | 'warning' | 'info'
+  step: Pathfinder2BuilderStepId
+  field?: string
+  message: string
+}
+
+export type Pathfinder2CharacterBuild = {
+  attributes: Pathfinder2CalculatedAttributes
+  skills: Pathfinder2CalculatedSkills
+  validationIssues: Pathfinder2ValidationIssue[]
+  isReady: boolean
 }

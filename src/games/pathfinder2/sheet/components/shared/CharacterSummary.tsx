@@ -9,6 +9,7 @@ import {
 import { signedModifier } from '../../rules/derived-character-values'
 import type {
   Pathfinder2CharacterDraft,
+  Pathfinder2CharacterBuild,
   Pathfinder2DerivedValues,
   Pathfinder2RulesCatalog,
 } from '../../types'
@@ -17,6 +18,7 @@ import styles from '../Pathfinder2SheetPage.module.css'
 type CharacterSummaryProps = {
   draft: Pathfinder2CharacterDraft
   catalog: Pathfinder2RulesCatalog
+  build: Pathfinder2CharacterBuild
   derived: Pathfinder2DerivedValues
   compact?: boolean
 }
@@ -24,6 +26,7 @@ type CharacterSummaryProps = {
 export default function CharacterSummary({
   draft,
   catalog,
+  build,
   derived,
   compact = false,
 }: CharacterSummaryProps) {
@@ -54,8 +57,7 @@ export default function CharacterSummary({
       </div>
       <dl className={styles.summaryFacts}>
         <div><dt>Народ</dt><dd>{ancestry?.name || 'Не выбран'}</dd></div>
-        <div><dt>Наследие</dt><dd>{heritage?.name || 'Не выбрано'}</dd></div>
-        <div><dt>Универсальное</dt><dd>{versatileHeritage?.name || 'Нет'}</dd></div>
+        <div><dt>Наследие</dt><dd>{heritage?.name || versatileHeritage?.name || 'Не выбрано'}</dd></div>
         <div><dt>Предыстория</dt><dd>{background?.name || 'Не выбрана'}</dd></div>
         <div><dt>Класс</dt><dd>{characterClass?.name || 'Не выбран'}</dd></div>
         <div><dt>Игрок</dt><dd>{draft.player || 'Не указан'}</dd></div>
@@ -69,14 +71,14 @@ export default function CharacterSummary({
         {PATHFINDER2_ATTRIBUTES.map(attribute => (
           <div key={attribute.key}>
             <span>{attribute.shortLabel}</span>
-            <strong>{signedModifier(draft.attributes[attribute.key])}</strong>
+            <strong>{signedModifier(build.attributes.modifiers[attribute.key])}</strong>
           </div>
         ))}
       </div>
       <div className={styles.summaryRules}>
         <div><span>Восприятие</span><strong>{signedModifier(derived.perception)}</strong></div>
         <div><span>Скорость</span><strong>{derived.speed ? `${derived.speed} фт.` : '—'}</strong></div>
-        <div><span>Навыки</span><strong>{draft.trainedSkills.length}</strong></div>
+        <div><span>Навыки</span><strong>{build.skills.trainedCount}</strong></div>
         <div><span>Способности</span><strong>{draft.generalFeatIds.length + draft.skillFeatIds.length}</strong></div>
       </div>
       <div className={styles.localNotice}>

@@ -1463,6 +1463,12 @@
   font-size: 14px;
 }
 
+.skillButton > span:last-child {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
 .skillButton small {
   color: rgba(94, 73, 52, 0.72);
   font-size: 9px;
@@ -3998,5 +4004,479 @@
 
   .galleryFooter {
     bottom: -40px;
+  }
+}
+
+/* Strict PF2E builder: source decisions and read-only calculated results. */
+.rulesSection {
+  padding: clamp(16px, 2vw, 24px);
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(114, 83, 46, 0.44);
+  border-radius: var(--radius-control);
+  background:
+    linear-gradient(180deg, rgba(244, 226, 190, 0.28), transparent 130px),
+    rgba(234, 217, 183, 0.48);
+  box-shadow: var(--shadow-inset);
+}
+
+.rulesSection > header,
+.skillRuleBlock > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.rulesSection h3,
+.skillRuleBlock h4 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+}
+
+.rulesSection h3 {
+  font-size: clamp(22px, 3vw, 31px);
+}
+
+.rulesSection > p,
+.skillRuleBlock p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.rulesStatusOk,
+.rulesStatusAuto,
+.rulesStatusRequired,
+.rulesStatusError {
+  padding: 5px 8px;
+  flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.rulesStatusOk {
+  color: var(--success-green);
+  background: rgba(80, 107, 69, 0.1);
+}
+
+.rulesStatusAuto {
+  color: var(--bronze);
+  background: rgba(167, 122, 57, 0.1);
+}
+
+.rulesStatusRequired {
+  color: var(--crimson);
+  background: rgba(112, 34, 38, 0.08);
+}
+
+.rulesStatusError {
+  color: var(--danger-red);
+  background: rgba(140, 50, 50, 0.1);
+}
+
+.modeSwitch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--bronze);
+  border-radius: var(--radius-control);
+  background: rgba(36, 30, 25, 0.1);
+}
+
+.modeSwitch button {
+  min-height: 43px;
+  padding: 8px 12px;
+  color: var(--ink-muted);
+  border: 0;
+  border-right: 1px solid var(--bronze);
+  background: rgba(234, 217, 183, 0.3);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.modeSwitch button:last-child {
+  border-right: 0;
+}
+
+.modeSwitch button[aria-pressed="true"] {
+  color: var(--parchment-pale);
+  background: var(--crimson);
+  box-shadow: inset 0 0 0 2px rgba(59, 12, 14, 0.24);
+}
+
+.ruleChoiceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.ruleChoiceGrid button {
+  min-height: 62px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 8px;
+  color: var(--ink-dark);
+  border: 1px solid rgba(114, 83, 46, 0.42);
+  border-radius: var(--radius-control);
+  background: rgba(234, 217, 183, 0.55);
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+.ruleChoiceGrid button > strong {
+  grid-row: 1 / 3;
+  color: var(--crimson);
+  font-family: var(--font-display);
+  font-size: 15px;
+}
+
+.ruleChoiceGrid button > span {
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.ruleChoiceGrid button > small {
+  color: var(--ink-muted);
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+.ruleChoiceGrid button:disabled,
+.skillButton:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.55);
+  opacity: 0.48;
+}
+
+.ruleChoiceGrid .ruleChoiceSelected {
+  color: var(--parchment-pale);
+  border-color: var(--crimson-dark);
+  background: var(--crimson);
+}
+
+.ruleChoiceGrid .ruleChoiceSelected > strong,
+.ruleChoiceGrid .ruleChoiceSelected > small {
+  color: var(--candle-light);
+}
+
+.automaticRules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.automaticRules span,
+.selectedChips > span {
+  padding: 6px 9px;
+  color: var(--ink-dark);
+  border: 1px solid rgba(114, 83, 46, 0.42);
+  border-radius: 99px;
+  background: rgba(208, 173, 104, 0.18);
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.rulesCounter {
+  color: var(--crimson) !important;
+  font-weight: 900;
+}
+
+.ruleChangeNotice,
+.rulesWarning {
+  padding: 12px 14px;
+  color: var(--ink-dark);
+  border-left: 4px solid var(--brass);
+  background: rgba(208, 173, 104, 0.16);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.rulesWarning {
+  display: grid;
+  gap: 5px;
+  border-left-color: var(--crimson);
+}
+
+.rulesWarning p {
+  margin: 0;
+}
+
+.attributeBreakdown {
+  margin: auto 0 0;
+  padding: 10px 0 0;
+  display: grid;
+  gap: 4px;
+  list-style: none;
+  border-top: 1px solid var(--line-paper);
+}
+
+.attributeBreakdown li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--ink-muted);
+  font-size: 8px;
+  line-height: 1.25;
+}
+
+.attributeBreakdown b {
+  color: var(--crimson);
+}
+
+.skillRuleBlock {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  border: 1px solid rgba(114, 83, 46, 0.44);
+  background: rgba(234, 217, 183, 0.36);
+}
+
+.skillRuleBlock h4 {
+  font-size: 20px;
+}
+
+.skillRuleBlock header > span {
+  color: var(--crimson);
+  font-family: var(--font-display);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.skillRuleConflict {
+  border-color: var(--danger-red);
+  box-shadow: inset 4px 0 0 var(--danger-red);
+}
+
+.grantedSkillList {
+  display: grid;
+  gap: 7px;
+}
+
+.grantedSkillList article {
+  min-height: 52px;
+  padding: 8px 11px;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line-paper);
+  background: rgba(234, 217, 183, 0.45);
+}
+
+.grantedSkillList article > span {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  color: var(--parchment-pale);
+  background: var(--success-green);
+}
+
+.grantedSkillList article div {
+  display: grid;
+  gap: 3px;
+}
+
+.grantedSkillList article small {
+  color: var(--ink-muted);
+  font-size: 8px;
+}
+
+.grantedSkillList article > b {
+  color: var(--success-green);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.skillAuditGrid,
+.auditAttributeList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.skillAuditGrid article {
+  min-height: 50px;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 9px;
+  border-bottom: 1px solid var(--line-paper);
+}
+
+.skillAuditGrid article > div {
+  display: grid;
+}
+
+.skillAuditGrid small {
+  color: var(--ink-muted);
+  font-size: 7px;
+}
+
+.skillAuditGrid article > span {
+  color: var(--crimson);
+  font-size: 8px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.skillAuditGrid article > b {
+  font-family: var(--font-display);
+  font-size: 17px;
+}
+
+.validationList {
+  padding: 16px 18px;
+  color: var(--ink-dark);
+  border: 1px solid rgba(140, 50, 50, 0.55);
+  border-left: 5px solid var(--danger-red);
+  background: rgba(140, 50, 50, 0.08);
+}
+
+.validationList ul {
+  margin: 9px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.validationList li {
+  color: var(--ink-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.validationList li[data-severity="warning"] {
+  color: var(--bronze);
+}
+
+.auditPage {
+  display: grid;
+  gap: 14px;
+}
+
+.auditStatus {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  color: var(--parchment-pale);
+  border: 1px solid var(--danger-red);
+  background: var(--leather);
+}
+
+.auditStatus[data-ready="true"] {
+  border-color: var(--success-green);
+}
+
+.auditStatus > span {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: var(--parchment-pale);
+  border-radius: 50%;
+  background: var(--danger-red);
+  font-size: 22px;
+}
+
+.auditStatus[data-ready="true"] > span {
+  background: var(--success-green);
+}
+
+.auditStatus h3 {
+  margin: 4px 0;
+  font-family: var(--font-display);
+  font-size: 26px;
+}
+
+.auditStatus p {
+  margin: 0;
+  color: rgba(234, 217, 183, 0.7);
+  font-size: 10px;
+}
+
+.auditAttributeList article {
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line-paper);
+}
+
+.auditAttributeList p {
+  margin: 4px 0 0;
+  color: var(--ink-muted);
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.skillReadOnly {
+  min-height: 62px;
+  padding: 9px 12px;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(114, 83, 46, 0.4);
+  background: rgba(234, 217, 183, 0.44);
+}
+
+.skillReadOnly[data-trained="true"] {
+  border-color: var(--brass);
+  background: rgba(239, 222, 186, 0.84);
+  box-shadow: inset 4px 0 0 var(--crimson);
+}
+
+.skillReadOnly small {
+  color: var(--ink-muted);
+  font-size: 9px;
+}
+
+.skillReadOnly b {
+  min-width: 38px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .ruleChoiceGrid,
+  .attributeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .ruleChoiceGrid,
+  .skillAuditGrid,
+  .auditAttributeList,
+  .modeSwitch,
+  .attributeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modeSwitch button {
+    border-right: 0;
+    border-bottom: 1px solid var(--bronze);
+  }
+
+  .modeSwitch button:last-child {
+    border-bottom: 0;
+  }
+
+  .rulesSection > header,
+  .skillRuleBlock > header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
