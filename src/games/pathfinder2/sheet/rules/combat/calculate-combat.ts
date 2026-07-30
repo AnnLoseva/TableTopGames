@@ -51,11 +51,12 @@ export function calculateArmorClass({
   const armor = catalog.armor.find(item => item.id === armorEntry?.itemId)
   const armorCategory = armor?.armorCategory ?? 'unarmored'
   const proficiency = matchingProficiency(proficiencies, 'armor', armorCategory)
-  // Ноль в справочнике означает «предел Ловкости не указан» (например, «Без брони»).
-  const dexterityCap = armor && armor.dexterityCap > 0 ? armor.dexterityCap : null
-  const dexterity = dexterityCap === null
-    ? dexterityModifier
-    : Math.min(dexterityModifier, dexterityCap)
+  // Без надетой брони предел Ловкости не действует. У самой тяжёлой брони
+  // dexterityCap реально равен 0 (Ловкость не добавляется вовсе) — это не
+  // то же самое, что отсутствие ограничения.
+  const dexterity = armor
+    ? Math.min(dexterityModifier, armor.dexterityCap)
+    : dexterityModifier
   const equippedShield = catalog.shields.find(shield => (
     inventory.entries.some(entry => entry.equipped && entry.itemId === shield.id)
   )) ?? null

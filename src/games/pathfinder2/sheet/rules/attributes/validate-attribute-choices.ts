@@ -62,6 +62,15 @@ export function validateAttributeChoices(
       message: 'К одной характеристике можно применить только одно добровольное понижение.',
     })
   }
+  if (ancestryRules.flaw && choices.voluntaryFlaws.includes(ancestryRules.flaw)) {
+    issues.push({
+      id: 'attributes.voluntary-flaw-stacks-ancestry',
+      severity: 'error',
+      step: 'final-attributes',
+      field: 'voluntaryFlaws',
+      message: 'Характеристика уже понижена народом — к ней нельзя применить второе понижение.',
+    })
+  }
 
   if (!background) {
     issues.push({

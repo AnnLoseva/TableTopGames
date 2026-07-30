@@ -1,10 +1,12 @@
 # Supabase Persistence
 
 ## Purpose
-Supabase is the shared backend for both layers: it stores characters and all
-game-table state (rolls, chat, scenes, media, layers, music) and provides
-realtime room sync. Its schema is a **contract** shared by the React table and
-the legacy sheet — undocumented drift breaks save/load and sync everywhere.
+Supabase is the shared backend for both VTM layers: it stores characters and
+game-table state (rolls, chat, scenes, media, layers, music), provides realtime
+room sync, and delivers public versioned rule catalogs for VTM and Pathfinder.
+Pathfinder character data remains browser-local. The schema is a **contract**
+shared by the React table and the legacy sheet — undocumented drift breaks
+save/load and sync everywhere.
 
 ## Main files
 - `src/games/vampires/lib/supabase.ts` — the React/Next Supabase client.
@@ -64,8 +66,13 @@ Tables (from `src/games/vampires/modules/table/constants.ts` and `src/games/vamp
 
 Storage buckets: `table-images` (constant `TABLE_IMAGE_BUCKET`), a music bucket,
 and `character-portraits` (portraits + touchstone images; see
-`src/games/vampires/supabase/character_portraits_storage.sql`). RLS/permissions in
-`src/games/vampires/supabase/{users_characters_rls,media_storage_permissions,character_portraits_storage}.sql`.
+`src/games/vampires/supabase/character_portraits_storage.sql`). Public-read,
+browser-read-only rule delivery uses separate `rules-vampires` and
+`rules-pathfinder2` buckets; see
+`src/games/vampires/supabase/rules_catalog_storage.sql`. Rules are generated
+from Git-tracked sources, published under immutable content-addressed paths and
+referenced by a short-lived manifest. RLS/permissions live in the relevant
+`src/games/vampires/supabase/*.sql` files.
 
 **Images are never embedded as base64 in rows.** Portraits/touchstone images go
 through `uploadPortraitDataUrl` (`public/vampires/supabase.js`) into `character-portraits`;

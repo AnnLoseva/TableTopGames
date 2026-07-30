@@ -147,6 +147,10 @@ async function run() {
       50,
       'Every ancestry should render its local artwork.',
     )
+    await dialog.getByLabel('Характеристика').selectOption('intelligence')
+    assert.equal(await dialog.locator('[data-choice-id="elf"]').count(), 1)
+    assert.equal(await dialog.locator('[data-choice-id="gnome"]').count(), 0)
+    await dialog.getByLabel('Характеристика').selectOption('')
     assert.equal(
       await dialog
         .locator('img[alt="Карточка народа «Кентавр»"]')
@@ -183,6 +187,10 @@ async function run() {
       21,
       'Every supplied class artwork should be connected.',
     )
+    await classDialog.getByLabel('Характеристика').selectOption('intelligence')
+    assert.equal(await classDialog.locator('[data-choice-id="wizard"]').count(), 1)
+    assert.equal(await classDialog.locator('[data-choice-id="bard"]').count(), 0)
+    await classDialog.getByLabel('Характеристика').selectOption('')
     await page.keyboard.press('Escape')
     await classDialog.waitFor({ state: 'hidden' })
     console.log('✓ all supplied ancestry and class artworks are connected')
@@ -190,6 +198,9 @@ async function run() {
     await stepNavigation.getByRole('button', { name: /Предыстория/ }).click()
     await page.getByRole('button', { name: 'Открыть галерею предысторий' }).click()
     const backgroundDialog = page.getByRole('dialog', { name: 'Выбор предыстории' })
+    await backgroundDialog.getByLabel('Характеристика').selectOption('intelligence')
+    assert.equal(await backgroundDialog.locator('[data-choice-id="scholar"]').count(), 1)
+    assert.equal(await backgroundDialog.locator('[data-choice-id="sailor"]').count(), 0)
     await backgroundDialog.getByRole('searchbox').fill('Учёный')
     await backgroundDialog.locator('[data-choice-id="scholar"]').click()
     await backgroundDialog.getByRole('button', { name: 'Подтвердить выбор' }).click()
@@ -218,6 +229,7 @@ async function run() {
       await limitedBoostChoices.getByRole('button', { name: /СИЛ Сила/ }).isDisabled(),
       true,
     )
+    console.log('✓ ability filter works for ancestries, backgrounds and classes')
     console.log('✓ Scholar background exposes its two limited ability boosts')
 
     await stepNavigation.getByRole('button', { name: /Снаряжение/ }).click()

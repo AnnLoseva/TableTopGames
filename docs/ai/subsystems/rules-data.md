@@ -9,8 +9,10 @@ belongs here (see the `DECISIONS.md` entry).
 - `public/vampires/rules.json` — Russian rules data (~34k lines). The primary source.
 - `public/vampires/rules_eng.json` — English rules data (~8.8k lines).
 
-Both are static files loaded directly by the legacy sheet and by
-`src/games/vampires/core/vtm5/rules/disciplines/rules-loader/index.ts`.
+Both remain the Git-tracked source of truth and direct fallback. Production
+browsers normally load a generated, content-addressed copy from the public-read
+Supabase bucket `rules-vampires`; every file is size/SHA-256 checked before use.
+Build-time discipline scripts continue to read the checked-in source directly.
 
 ## Language issues
 - RU and EN files must stay **structurally parallel**; an entry present in one
@@ -21,7 +23,10 @@ Both are static files loaded directly by the legacy sheet and by
 - Adding content means adding it to *both* files with matching IDs.
 
 ## Consumers
-- Legacy sheet: `public/vampires/main.js` reads rules for rendering and mechanics.
+- Legacy sheet: `public/vampires/rules-catalog-loader.js` loads the verified
+  Supabase/local catalog for `public/vampires/main.js`.
+- React table and rules chat:
+  `src/games/vampires/lib/rules-catalog-client.ts`.
 - `src/games/vampires/core/vtm5/rules/disciplines/rules-loader/index.ts` →
   `schema/index.ts` / `engine/index.ts` for the
   discipline engine.
@@ -36,6 +41,8 @@ Both are static files loaded directly by the legacy sheet and by
    changed).
 5. If the *shape/contract* of the data changes, update `subsystems/rules-data.md`
    and consider a `DECISIONS.md` entry.
+6. Run `npm run generate:rules-catalogs` before publishing; publish immutable
+   release files before `manifest.json` and keep the checked-in JSON fallback.
 
 ## Validation
 - `npm run audit:disciplines` — checks discipline rules data consistency.

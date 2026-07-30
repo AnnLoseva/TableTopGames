@@ -1,6 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  async headers() {
+    return [
+      {
+        source: '/rules/:game/manifest.json',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=300, must-revalidate' },
+        ],
+      },
+      {
+        source: '/rules/:game/releases/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+    ]
+  },
   async redirects() {
     return [
       { source: '/character-sheet', destination: '/vampires/character-sheet', permanent: false },

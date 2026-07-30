@@ -67,6 +67,25 @@ const armor = {
   group: 'leather',
 }
 
+const heavyArmor = {
+  id: 'full-plate',
+  name: 'Полный латный доспех',
+  level: 0,
+  rarity: 'common' as const,
+  price: { cp: 0, sp: 0, gp: 30, pp: 0 },
+  bulk: 4 as const,
+  traits: [],
+  category: 'armor' as const,
+  sourceBook: 'test',
+  armorCategory: 'heavy' as const,
+  armorBonus: 6,
+  dexterityCap: 0,
+  checkPenalty: -3,
+  speedPenalty: -10,
+  strengthRequirement: 4,
+  group: 'plate',
+}
+
 const lightItem = {
   id: 'torch',
   name: 'Факел',
@@ -108,7 +127,7 @@ const catalog: Pathfinder2RulesCatalog = {
   classProgression: [],
   equipment: [lightItem],
   weapons: [weapon],
-  armor: [armor],
+  armor: [armor, heavyArmor],
   shields: [shield],
   spells: [],
   cantrips: [],
@@ -127,7 +146,7 @@ function entry(
   quantity: number,
   equipped = false,
 ): Pathfinder2InventoryEntry {
-  const item = [weapon, armor, shield, lightItem]
+  const item = [weapon, armor, heavyArmor, shield, lightItem]
     .find(candidate => candidate.id === itemId)
   return {
     id,
@@ -154,6 +173,13 @@ const proficiencies: Pathfinder2CalculatedProficiency[] = [
   {
     category: 'armor',
     targetId: 'light',
+    rank: 'trained',
+    bonus: 3,
+    sources: [source],
+  },
+  {
+    category: 'armor',
+    targetId: 'heavy',
     rank: 'trained',
     bonus: 3,
     sources: [source],
@@ -275,6 +301,61 @@ const tests: Array<[string, () => void]> = [
       shieldRaised: true,
     })
     assert.equal(result.value, 14)
+  }],
+  ['Тяжёлая броня с dexterityCap 0 не даёт бонус Ловкости (это не «без ограничения»)', () => {
+    const inventory = calculateInventory(
+      [entry('armor-1', 'full-plate', 1, true)],
+      { cp: 0, sp: 0, gp: 0, pp: 0 },
+      0,
+      catalog,
+    )
+    const result = calculateArmorClass({
+      dexterityModifier: 4,
+      strengthModifier: 0,
+      inventory,
+      proficiencies,
+      catalog,
+    })
+    // 10 + 0 (Лвк обрезана до 0) + 3 (владение) + 6 (бонус доспеха) = 19
+    assert.equal(result.value, 19)
+  }],
+  ['Без надетой брони предел Ловкости не действует', () => {
+    const inventory = calculateInventory([], { cp: 0, sp: 0, gp: 0, pp: 0 }, 0, catalog)
+    const result = calculateArmorClass({
+      dexterityModifier: 4,
+      strengthModifier: 0,
+      inventory,
+      proficiencies,
+      catalog,
+    })
+    assert.equal(result.value, 14)
+  }],
+  ['Штраф брони снимается, а штраф скорости уменьшается при выполнении требования Силы', () => {
+    const inventory = calculateInventory(
+      [entry('armor-1', 'full-plate', 1, true)],
+      { cp: 0, sp: 0, gp: 0, pp: 0 },
+      0,
+      catalog,
+    )
+    const notStrongEnough = calculateArmorClass({
+      dexterityModifier: 0,
+      strengthModifier: 3,
+      inventory,
+      proficiencies,
+      catalog,
+    })
+    assert.equal(notStrongEnough.checkPenalty, -3)
+    assert.equal(notStrongEnough.speedPenalty, -10)
+
+    const strongEnough = calculateArmorClass({
+      dexterityModifier: 0,
+      strengthModifier: 4,
+      inventory,
+      proficiencies,
+      catalog,
+    })
+    assert.equal(strongEnough.checkPenalty, 0)
+    assert.equal(strongEnough.speedPenalty, -5)
   }],
 ]
 

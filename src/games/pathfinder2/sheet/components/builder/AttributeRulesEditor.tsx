@@ -249,12 +249,22 @@ export default function AttributeRulesEditor({
         </div>
         <AttributeChoiceButtons
           selected={draft.attributeChoices.voluntaryFlaws}
-          options={PATHFINDER2_ATTRIBUTES.map(attribute => ({
-            key: attribute.key,
-            disabled: build.attributes.modifiers[attribute.key] <= -1
-              && !draft.attributeChoices.voluntaryFlaws.includes(attribute.key),
-            reason: 'Итог не может быть ниже −1',
-          }))}
+          options={PATHFINDER2_ATTRIBUTES.map(attribute => {
+            const alreadySelected = draft.attributeChoices.voluntaryFlaws.includes(attribute.key)
+            const stacksOnAncestryFlaw = ancestryRules.flaw === attribute.key
+            if (stacksOnAncestryFlaw && !alreadySelected) {
+              return {
+                key: attribute.key,
+                disabled: true,
+                reason: 'Характеристика уже понижена народом — второе понижение недопустимо.',
+              }
+            }
+            return {
+              key: attribute.key,
+              disabled: build.attributes.modifiers[attribute.key] <= -1 && !alreadySelected,
+              reason: 'Итог не может быть ниже −1',
+            }
+          })}
           onToggle={key => updateCharacter(current => ({
             ...current,
             attributeChoices: {

@@ -11,9 +11,10 @@ does not share the VTM character, room, bridge or Supabase contracts.
 ```text
 src/app/pathfinder2/sheet/page.tsx
  → src/games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx
- → rules-data.ts
- → src/games/pathfinder2/Rules/*.json
  → components/Pathfinder2SheetPage.tsx
+   → usePathfinder2RulesCatalog
+   → Supabase Storage `rules-pathfinder2` manifest + immutable chunks
+   → generated local `/rules/pathfinder2/*` fallback
    → character-sheet/CharacterSheetView.tsx
    → builder/CharacterBuilderView.tsx
      → builder/{InitialAttributes,AttributeRules,Features,Equipment,Calculations,Details,Review}*.tsx
@@ -41,9 +42,11 @@ src/app/pathfinder2/sheet/page.tsx
   Equipped armor/weapons and a raised shield feed AC/attack calculations.
   Generated entries flagged as needing owner mechanics are still a
   data-quality limitation; the client does not invent missing rule values.
-- `rules-data.ts` is a server-only adapter: it normalizes the owner-provided JSON
-  documents into the serializable catalog used by the client component. Do not
-  import the raw JSON into the client component.
+- `rules-data-source.ts` is the build-time adapter: it normalizes the
+  owner-provided JSON documents into the serializable runtime catalog.
+  `scripts/generate-rule-catalogs.ts` splits that catalog into deterministic,
+  content-addressed chunks. The browser loads and verifies those chunks instead
+  of receiving the full catalog through the server-component payload.
 - `data/catalog-audit.ts` validates canonical document metadata and reports
   actual entry counts instead of hardcoded readiness. A selected class without
   one of the 21 class-progression entries is an explicit completion blocker.
@@ -113,12 +116,19 @@ the repository URL plus import version metadata. Therefore:
 
 - import only from a pinned local checkout of `gnuraco/pf2r`;
 - keep the pinned pf2r commit in the migration report or generated metadata;
+- when a Babele translation omits mechanical fields, read them only from the
+  exact PF2e system branch/commit declared by that pinned pf2r manifest and
+  record both commits; `Rules/catalogs/attribute-filters.json` follows this
+  rule for ancestry boosts/flaws and class key abilities;
 - do not mix `pf2.ru` text into pf2r-derived catalogs;
 - keep only concise, original summaries in `rules-source.ts`;
-- load structured catalog data only from the checked-in `Rules/*.json` files;
+- generate structured runtime catalogs only from the checked-in
+  `Rules/*.json` files; Supabase Storage is a delivery cache, not an editable
+  source of truth;
 - use `scripts/migrate-from-pf2r.py` for full imports and
   `scripts/update-rules-from-pf2r.py` for translation-name refreshes;
-- keep raw pf2r schemas behind `rules-data.ts` rather than expanding UI literals;
+- keep raw pf2r schemas behind `rules-data-source.ts` rather than expanding UI
+  literals;
 - preserve source attribution and any license metadata shipped with that export.
 
 ## Safe edit protocol
@@ -128,7 +138,7 @@ the repository URL plus import version metadata. Therefore:
 3. Do not add a home-screen link unless the user explicitly requests discovery.
 4. Version the localStorage key if the saved draft shape becomes incompatible;
    retain a read migration from the previous key.
-5. Keep raw rule schemas behind `rules-data.ts`; update
+5. Keep raw rule schemas behind `rules-data-source.ts`; update
    `data/catalog-audit.ts` whenever a catalog becomes connected.
 6. Run `npm run test:pathfinder2-builder`, `npm run test:pathfinder2-data`,
    `npm run test:pathfinder2-equipment`, `npm run test:pathfinder2-spells`,

@@ -4,6 +4,11 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
+- **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
+  browser consumers load separate, SHA-256-verified Supabase Storage releases
+  with generated local fallbacks. Pathfinder rules no longer enter the RSC
+  payload; character/campaign tables and both character persistence formats are
+  unchanged.
 - **Pathfinder 2 full builder, staged work (2026-07-29)** — schema v4 is
   canonical and the route now uses an eleven-step builder plus unified v4
   character state. Pure engines cover attributes, skills, proficiencies,
@@ -19,7 +24,8 @@
   the source normalizer as needing owner mechanics still require data-quality
   review before rules-accurate production use. Normalizer script at
   `src/games/pathfinder2/scripts/normalize-rules.ts` is deterministic and
-  idempotent.
+  idempotent. Ancestry, background and class galleries support characteristic
+  filtering from pinned pf2r/PF2e dependency data.
 - **TableTopGames portal and shared account (2026-07-29)** — `/` is the game selector, VTM lives under `/vampires/*`, and Pathfinder remains at `/pathfinder2/sheet`. The root `AccountProvider` uses the existing Vampire Supabase account, persists its session, and mirrors the profile into the legacy VTM storage keys used by the sheet, table and journal. Old root VTM URLs are compatibility redirects.
 - **Game table lite (2026-07-18)** — scene stage/background on `table_scenes`,
   character tokens (`table_tokens`) above media, `table_character_controllers`
@@ -87,7 +93,10 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - `public/vampires/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
 
 ## Last updated
-2026-07-29 — Connected the normalized Pathfinder catalogs to feat slots,
+2026-07-30 — Split VTM/Pathfinder rule delivery into separate read-only
+Supabase buckets with immutable chunks, verified manifests and local fallbacks;
+removed the oversized Pathfinder catalog from the server-component response.
+  Earlier: Connected the normalized Pathfinder catalogs to feat slots,
 class progression, proficiencies, shop/inventory/combat, languages, deity
 validation and the catalog-readiness UI.
   Earlier: Added the TableTopGames game selector and persistent shared account; moved canonical VTM pages to `/vampires/*` with compatibility redirects.

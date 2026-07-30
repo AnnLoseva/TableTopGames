@@ -7,6 +7,7 @@ import { buildCharacterState } from '../rules/creation/build-character-state'
 import { reconcileCharacterDecisions } from '../rules/creation/reconcile-character'
 import { getClassById } from '../data/selectors'
 import { usePathfinder2Character } from '../hooks/usePathfinder2Character'
+import { usePathfinder2RulesCatalog } from '../hooks/usePathfinder2RulesCatalog'
 import type {
   Pathfinder2ChoiceKind,
   Pathfinder2Mode,
@@ -29,7 +30,7 @@ type DialogState = {
   readOnly: boolean
 }
 
-export default function Pathfinder2SheetPage({
+function Pathfinder2SheetReady({
   rules,
 }: {
   rules: Pathfinder2RulesCatalog
@@ -336,4 +337,32 @@ export default function Pathfinder2SheetPage({
       />
     </div>
   )
+}
+
+export default function Pathfinder2SheetPage() {
+  const [retryKey, setRetryKey] = useState(0)
+  const { data, error } = usePathfinder2RulesCatalog(retryKey)
+
+  if (!data) {
+    return (
+      <main className={styles.loadingState}>
+        <span aria-hidden="true">✦</span>
+        <strong>
+          {error
+            ? 'Не удалось загрузить справочники Pathfinder 2.'
+            : 'Загружаем справочники Pathfinder 2…'}
+        </strong>
+        {error ? (
+          <>
+            <p>{error}</p>
+            <button type="button" onClick={() => setRetryKey(value => value + 1)}>
+              Повторить
+            </button>
+          </>
+        ) : null}
+      </main>
+    )
+  }
+
+  return <Pathfinder2SheetReady rules={data.catalog} />
 }

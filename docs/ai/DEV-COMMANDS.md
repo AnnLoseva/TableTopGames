@@ -30,6 +30,20 @@ From `package.json`. Run the relevant checks after edits (see
 - **Usual culprits:** changed shapes in `src/games/vampires/modules/table/types.ts`, `src/games/vampires/core/vtm5/rules/*`,
   `src/games/vampires/lib/i18n/ruleNames.ts`, or component props.
 
+## `npm run generate:rules-catalogs`
+- **What:** deterministically generates content-addressed Pathfinder and VTM
+  runtime chunks plus local manifests under ignored `public/rules/`.
+- **When:** automatically before `dev`/`build`, or manually before publishing.
+- **Failure means:** a source catalog is malformed or a runtime key was omitted.
+
+## `npm run publish:rules-catalogs`
+- **What:** uploads generated immutable files to separate Supabase Storage
+  buckets, verifies public SHA-256 checksums, then publishes each manifest.
+- **When:** after an intentional rule-data release. Requires
+  `SUPABASE_RULES_PUBLISH_KEY` or `SUPABASE_SERVICE_ROLE_KEY`.
+- **Failure means:** stop; do not remove the previous release or manually point
+  its manifest at an incomplete upload.
+
 ## `npm run audit:structure`
 - **What:** `tooling/audit-project-structure.ts` — audits project structure /
   duplication.
@@ -75,7 +89,7 @@ From `package.json`. Run the relevant checks after edits (see
   connected/partial/missing catalog states and the generic catalog-document
   adapter.
 - **When:** after changing `src/games/pathfinder2/Rules/*.json`,
-  `sheet/rules-data.ts` or `sheet/data/catalog-*`.
+  `sheet/rules-data-source.ts` or `sheet/data/catalog-*`.
 - **Failure means:** catalog IDs/counts drifted, duplicate IDs appeared, or a
   missing/not-connected catalog was accidentally reported as ready.
 

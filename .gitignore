@@ -7,4 +7,5 @@ out
 *.log
 *.tsbuildinfo
 public/sheet.html
+public/rules/
 tmp/pdfs/

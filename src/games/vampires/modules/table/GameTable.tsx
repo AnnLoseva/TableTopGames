@@ -9,6 +9,7 @@ import type { SetStateAction } from 'react'
 import dynamic from 'next/dynamic'
 import { ATTRIBUTE_NAME_EN, findCrossLanguageName, getAttributeDots, resolveSkillValue, SKILL_NAME_EN } from '@/games/vampires/lib/i18n/ruleNames'
 import { useLang } from '@/games/vampires/lib/i18n/LanguageProvider'
+import { loadVampireRulesDocument } from '@/games/vampires/lib/rules-catalog-client'
 import MusicPlayer from '@/games/vampires/modules/music/components/MusicPlayer'
 import MusicTopbarControl from '@/games/vampires/modules/music/components/MusicTopbarControl'
 import { RoomMusicStateProvider } from '@/games/vampires/modules/music/hooks/useRoomMusicState'
@@ -445,33 +446,31 @@ export default function VampireTable() {
       || selectedMasterRollCharacterId,
     )
     if (!shouldLoadDisciplineRules || disciplineRules) return
-    const controller = new AbortController()
+    let active = true
     setDisciplineRulesStatus('Загружаю описание дисциплины...')
     Promise.all([
-      fetch('/vampires/rules.json', { signal: controller.signal }),
-      fetch('/vampires/rules_eng.json', { signal: controller.signal }),
+      loadVampireRulesDocument('ru') as Promise<{ disciplines?: Record<string, DisciplineRule> }>,
+      loadVampireRulesDocument('en') as Promise<{ disciplines?: Record<string, DisciplineRule> }>,
     ])
-      .then(async ([ruResponse, enResponse]) => {
-        if (!ruResponse.ok) throw new Error('rules.json не найден')
-        const ruRules = await ruResponse.json() as { disciplines?: Record<string, DisciplineRule> }
-        const enRules = enResponse.ok
-          ? await enResponse.json() as { disciplines?: Record<string, DisciplineRule> }
-          : {}
+      .then(([ruRules, enRules]) => {
         return {
           ...(ruRules.disciplines || {}),
           ...(enRules.disciplines || {}),
         }
       })
       .then(disciplines => {
+        if (!active) return
         setDisciplineRules(disciplines)
         setDisciplineRulesStatus('')
       })
       .catch(error => {
-        if (error instanceof DOMException && error.name === 'AbortError') return
+        if (!active) return
         console.error('Не удалось загрузить правила дисциплин:', error)
         setDisciplineRulesStatus('Не удалось загрузить описание дисциплины.')
       })
-    return () => controller.abort()
+    return () => {
+      active = false
+    }
   }, [previewDisciplineName, previewCharacter?.id, selectedMasterRollCharacterId, disciplineRules])
 
   const suppressNextContextMenuRef = useRef(false)

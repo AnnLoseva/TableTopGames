@@ -8,6 +8,7 @@
 
 import { REFERENCE_DOCUMENTS, getReferenceDocumentUrl, getReferenceFileUrl, type ReferenceDocument } from '@/games/vampires/modules/reference/catalog'
 import { preprocessReferenceMarkdown, searchReferenceCorpus, type ReferenceSearchHit } from '@/games/vampires/modules/reference/utils/markdown'
+import { loadVampireRulesDocument } from '@/games/vampires/lib/rules-catalog-client'
 
 export type { ReferenceSearchHit }
 
@@ -157,11 +158,10 @@ let rulesPromise: Promise<RulesData | null> | null = null
 export async function loadRules(): Promise<RulesData | null> {
   if (rulesCache) return rulesCache
   if (!rulesPromise) {
-    rulesPromise = fetch('/vampires/rules.json')
-      .then(res => (res.ok ? (res.json() as Promise<RulesData>) : null))
+    rulesPromise = loadVampireRulesDocument('ru')
       .then(data => {
-        rulesCache = data
-        return data
+        rulesCache = data as RulesData
+        return rulesCache
       })
       .catch(() => null)
   }

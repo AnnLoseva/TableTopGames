@@ -45,6 +45,8 @@ import {
   getUnavailablePathfinder2Catalogs,
 } from '../data/catalog-audit'
 import { adaptPathfinder2CatalogDocument } from '../data/catalog-document'
+import { matchesAttributeFilter } from '../data/selectors'
+import { getPathfinder2RulesCatalog } from '../rules-data-source'
 import {
   getStructuredBackgroundAbilityText,
   getStructuredBackgroundAbilityOptions,
@@ -129,6 +131,21 @@ const tests: Array<[string, () => void]> = [
       )
     }
     assert.ok(structuredBackgroundCount > 0)
+  }],
+  ['Фильтр характеристик работает для народа, предыстории и класса', () => {
+    const catalog = getPathfinder2RulesCatalog()
+    const elf = catalog.ancestries.find(ancestry => ancestry.id === 'elf')
+    const scholar = catalog.backgrounds.find(background => background.id === 'scholar')
+    const wizard = catalog.classes.find(characterClass => characterClass.id === 'wizard')
+    assert.ok(elf)
+    assert.ok(scholar)
+    assert.ok(wizard)
+    assert.equal(matchesAttributeFilter(elf, 'intelligence'), true)
+    assert.equal(matchesAttributeFilter(elf, 'strength'), false)
+    assert.equal(matchesAttributeFilter(scholar, 'intelligence'), true)
+    assert.equal(matchesAttributeFilter(scholar, 'dexterity'), false)
+    assert.equal(matchesAttributeFilter(wizard, 'intelligence'), true)
+    assert.equal(matchesAttributeFilter(wizard, 'charisma'), false)
   }],
   ['Навык предыстории отделяется от Lore и сохраняет альтернативы', () => {
     assert.deepEqual(

@@ -451,15 +451,22 @@ function pruneSelectedPowersForCurrentDisciplines() {
 
 // ==================== ЗАГРУЗКА ДАННЫХ ====================
 async function loadRules() {
-    const rulesFile = (window.VTM_LANG === 'en') ? 'rules_eng.json' : 'rules.json';
+    const language = (window.VTM_LANG === 'en') ? 'en' : 'ru';
+    const rulesFile = language === 'en' ? 'rules_eng.json' : 'rules.json';
     try {
-        const response = await fetch(rulesFile, { cache: 'no-cache' });
-        if (!response.ok) throw new Error(rulesFile + ' не найден');
-
-        RULES = await response.json();
+        const loaded = window.TableTopRulesCatalog
+            ? await window.TableTopRulesCatalog.loadVampireRules(language)
+            : null;
+        if (loaded?.data) {
+            RULES = loaded.data;
+        } else {
+            const response = await fetch(rulesFile, { cache: 'no-cache' });
+            if (!response.ok) throw new Error(rulesFile + ' не найден');
+            RULES = await response.json();
+        }
         window.VTM_RULES = RULES;
 
-        console.log('✅ RULES успешно загружены из ' + rulesFile);
+        console.log('✅ RULES успешно загружены из ' + (loaded?.source || rulesFile));
         console.log('Преимуществ:', Object.keys(RULES.advantages?.merits || {}).length);
         console.log('Недостатков:', Object.keys(RULES.flaws || {}).length);
 

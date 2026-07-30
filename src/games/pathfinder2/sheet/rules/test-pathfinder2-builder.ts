@@ -290,6 +290,17 @@ const tests: Array<[string, () => void]> = [
       issue => issue.id === 'attributes.minimum.charisma',
     ))
   }],
+  ['Добровольное понижение нельзя применить к характеристике, уже понижённой народом', () => {
+    const draft = validDraft()
+    draft.ancestryId = 'dwarf'
+    draft.attributeChoices.voluntaryFlaws = ['charisma']
+    // Харизма получает свободное повышение того же уровня — итоговый модификатор
+    // не опускается ниже −1, но правило запрещает второе понижение независимо от суммы.
+    draft.attributeChoices.finalFreeBoosts = ['charisma', 'strength', 'dexterity', 'intelligence']
+    assert.ok(validateAttributeChoices(draft, catalog).some(
+      issue => issue.id === 'attributes.voluntary-flaw-stacks-ancestry',
+    ))
+  }],
   ['Одну характеристику нельзя повысить дважды на этапе народа', () => {
     const draft = validDraft()
     draft.attributeChoices.ancestryFreeBoosts = ['constitution']

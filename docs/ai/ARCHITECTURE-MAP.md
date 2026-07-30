@@ -9,8 +9,9 @@ The `src/games/vampires/` and `src/games/pathfinder2/` directories define game o
 at the route boundary. The **VTM home screen, game table, journal, reference and private chronicle reader**
 are modern React/TypeScript. The **full character sheet** is a legacy vanilla
 HTML/JS app served from `public/vampires/` and embedded via an `<iframe>`. Both layers
-persist to the same Supabase project. Pathfinder 2 is an isolated React/localStorage
-domain and does not access the VTM Supabase or iframe contracts.
+persist to the same Supabase project. Pathfinder 2 keeps an isolated
+React/localStorage character domain and does not access VTM tables or iframe
+contracts; it uses its own read-only Storage bucket for rule delivery.
 
 ## Routes
 | Route | Component | Layer |
@@ -45,9 +46,11 @@ physical boundary does not add a URL segment.
 /vampires/character-sheet
  → CharacterSheetRoute → CharacterSheetScreen   (React shell + legacy/bridge.ts)
  → <iframe src="/vampires/old-sheet.html?room=&role=&characterId=&new=">
+ → public/vampires/rules-catalog-loader.js
+ → Supabase Storage `rules-vampires` or generated local fallback
  → public/vampires/main.js                    (legacy sheet logic)
  → public/vampires/supabase.js                (legacy Supabase client + character CRUD)
- → public/vampires/rules.json / rules_eng.json (rules data)
+ → public/vampires/rules.json / rules_eng.json (source + direct fallback)
  → public/vampires/vtm-health.js, vtm-humanity.js, creation-wizard.js, i18n-*.js
  ← postMessage { type: 'vtm-character-saved', characterId }  (iframe → shell)
 ```
@@ -78,13 +81,15 @@ physical boundary does not add a URL segment.
 ```text
 /pathfinder2/sheet
  → src/games/pathfinder2/sheet/Pathfinder2SheetRoute
- → rules-data.ts (connected catalogs + explicit availability audit)
- → Pathfinder2SheetPage (sheet + eleven-step client creator + level-up flow)
+ → Pathfinder2SheetPage
+ → verified manifest + immutable chunks from `rules-pathfinder2`
+ → generated local `/rules/pathfinder2/*` fallback
+ → sheet + eleven-step client creator + level-up flow
  → pure attribute/skill/creation/progression rules
  → schema-v3 runtime adapter
  → localStorage `pathfinder2-character-draft-v4`
  → read-only migration from v3/v1 keys
- → contextual external searches on pf2.ru (full source text stays there)
+ → owner-selected `gnuraco/pf2r` catalogs (checked-in source of truth)
 ```
 
 ## Flow: private chronicle library
@@ -120,7 +125,8 @@ it is not a substitute for the Auth/RLS security model.
 Vanilla, no build step. `old-sheet.html` (markup/styles) + `main.js` (logic) +
 `supabase.js` (data) + `creation-wizard.js` (creation) + `vtm-health.js` /
 `vtm-humanity.js` (mechanics duplicates) + `i18n-runtime.js` / `i18n-dictionary.js`
-(translation). Reads `rules.json` / `rules_eng.json`. Communicates with the React
+(translation). Reads a verified versioned rules release with checked-in
+`rules.json` / `rules_eng.json` as fallback. Communicates with the React
 shell only through URL params, localStorage, and `postMessage`.
 
 ## React / Next layer (`src/app/`, `src/games/`, `components/`)
@@ -141,9 +147,11 @@ This is the runtime home for TypeScript rules that may still have legacy JS
 duplicates.
 
 ## Data / rules layer
-`public/vampires/rules.json` (RU, ~34k lines) and `public/vampires/rules_eng.json` (EN) define
+`public/vampires/rules.json` (RU, ~34k lines) and
+`public/vampires/rules_eng.json` (EN) define
 clans, skills, disciplines, merits, flaws, predator types. Consumed by both the
-legacy sheet and `src/games/vampires/core/vtm5/rules/disciplines/rules-loader/index.ts`. `src/games/vampires/lib/i18n/ruleNames.ts`
+legacy sheet and build-time rule loaders. Runtime browser delivery uses
+content-addressed Supabase/local manifests. `src/games/vampires/lib/i18n/ruleNames.ts`
 maps display names ↔ stable identifiers.
 
 ## Supabase layer
@@ -158,7 +166,8 @@ maps display names ↔ stable identifiers.
   `library_chronicle_chunks`; owner-only player history:
   `personal_chronicle_jobs`, `personal_chronicle_job_chunks`,
   `personal_chronicle_documents`, `personal_chronicle_document_chunks`.
-- Buckets: `table-images` and a music bucket.
+- Buckets: `table-images`, a music bucket, `character-portraits`,
+  `rules-vampires` and `rules-pathfinder2`.
 - Table names centralized in `src/games/vampires/modules/table/constants.ts`.
 - Schema/policies live in `src/games/vampires/supabase/*.sql`.
 - Library game history is selected by exact title once, then restored from the
