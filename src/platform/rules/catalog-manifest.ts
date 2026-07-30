@@ -19,6 +19,10 @@ export type LoadedRulesCatalogFiles = {
   source: 'supabase' | 'local'
 }
 
+type LoadVersionedRulesCatalogOptions = {
+  pinRemoteToLocalRelease?: boolean
+}
+
 const DEFAULT_SUPABASE_URL = 'https://klhxbaagarqxaqnrvurr.supabase.co'
 
 function remoteManifestUrl(game: RulesCatalogGame) {
@@ -119,7 +123,17 @@ function preferLocalCatalogs() {
 
 export async function loadVersionedRulesCatalog(
   game: RulesCatalogGame,
+  options: LoadVersionedRulesCatalogOptions = {},
 ): Promise<LoadedRulesCatalogFiles> {
+  let expectedRelease: string | undefined
+  if (options.pinRemoteToLocalRelease && !preferLocalCatalogs()) {
+    try {
+      expectedRelease = (await fetchManifest(localManifestUrl(game), game)).release
+    } catch {
+      // A missing local fallback must not prevent a valid remote release from loading.
+    }
+  }
+
   const candidates: Array<{
     url: string
     source: LoadedRulesCatalogFiles['source']
@@ -134,6 +148,16 @@ export async function loadVersionedRulesCatalog(
   for (const candidate of candidates) {
     try {
       const manifest = await fetchManifest(candidate.url, game)
+      if (
+        candidate.source === 'supabase'
+        && expectedRelease
+        && manifest.release !== expectedRelease
+      ) {
+        throw new Error(
+          `Удалённый каталог ${game} имеет релиз ${manifest.release}, `
+          + `но сборка ожидает ${expectedRelease}.`,
+        )
+      }
       const files = await fetchReleaseFiles(candidate.url, manifest)
       return { manifest, files, source: candidate.source }
     } catch (error) {

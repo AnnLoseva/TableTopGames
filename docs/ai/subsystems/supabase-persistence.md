@@ -72,7 +72,9 @@ browser-read-only rule delivery uses separate `rules-vampires` and
 `src/games/vampires/supabase/rules_catalog_storage.sql`. Rules are generated
 from Git-tracked sources, published under immutable content-addressed paths and
 referenced by a short-lived manifest. RLS/permissions live in the relevant
-`src/games/vampires/supabase/*.sql` files.
+`src/games/vampires/supabase/*.sql` files. Pathfinder accepts a remote manifest
+only when its release matches the generated manifest shipped with the current
+build; otherwise it loads that build's verified local chunks.
 
 **Images are never embedded as base64 in rows.** Portraits/touchstone images go
 through `uploadPortraitDataUrl` (`public/vampires/supabase.js`) into `character-portraits`;

@@ -6,9 +6,11 @@
 ## Current development focus
 - **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
   browser consumers load separate, SHA-256-verified Supabase Storage releases
-  with generated local fallbacks. Pathfinder rules no longer enter the RSC
-  payload; character/campaign tables and both character persistence formats are
-  unchanged.
+  with generated local fallbacks. Pathfinder additionally pins the remote
+  manifest to the build's generated release, so a stale Supabase manifest
+  cannot override newer checked-in rules. Pathfinder rules no longer enter the
+  RSC payload; character/campaign tables and both character persistence formats
+  are unchanged.
 - **Pathfinder 2 full builder, staged work (2026-07-29)** — schema v4 is
   canonical and the route now uses an eleven-step builder plus unified v4
   character state. Pure engines cover attributes, skills, proficiencies,
@@ -18,8 +20,9 @@
   weapons (400), armor (123), shields (92), deities (361), languages (23) and
   traits (212); `spells.json` supplies 1167 spells/cantrips/focus spells.
   Feat slots, progression grants, the shop, inventory/Bulk, attacks/AC,
-  languages and deity validation are connected to schema v4. The six classes
-  without a class-progression entry remain explicitly blocked. Normalized
+  languages and deity validation are connected to schema v4. The class catalog
+  exposes only the 21 classes that have complete progression data and local
+  artwork. Normalized
   weapon/armor/shield values are consumed as provided, but entries marked by
   the source normalizer as needing owner mechanics still require data-quality
   review before rules-accurate production use. Normalizer script at
@@ -93,7 +96,9 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - `public/vampires/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
 
 ## Last updated
-2026-07-30 — Split VTM/Pathfinder rule delivery into separate read-only
+2026-07-30 — Limited the Pathfinder class catalog to the 21 entries with
+connected progression data and local artwork; removed six invalid unsupported
+class entries. Earlier: Split VTM/Pathfinder rule delivery into separate read-only
 Supabase buckets with immutable chunks, verified manifests and local fallbacks;
 removed the oversized Pathfinder catalog from the server-component response.
   Earlier: Connected the normalized Pathfinder catalogs to feat slots,

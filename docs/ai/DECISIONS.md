@@ -9,7 +9,10 @@ content-addressed runtime releases and manifests. Production browsers read
 Pathfinder and VTM rules from separate public-read buckets,
 `rules-pathfinder2` and `rules-vampires`; release files are published before
 the manifest and every download is checked against its byte count and SHA-256.
-Local development reads the generated `/rules/*` fallback first.
+The Pathfinder client pins the remote manifest to the release generated with
+the deployed build and uses its generated `/rules/pathfinder2/*` fallback when
+Supabase is stale. Local development reads the generated `/rules/*` fallback
+first.
 **Reason:** Passing the 15+ MB Pathfinder catalog through a React Server
 Component produced a 22.26 MB prerendered response and exceeded Vercel's ISR
 limit. Separate immutable chunks remove rule payloads from the RSC response,
@@ -17,7 +20,8 @@ improve CDN caching and prevent either game's catalog from coupling to the
 other.
 **Consequences:** `predev` and `prebuild` regenerate local delivery artifacts.
 Publishing requires a server-side key and never deletes older content-addressed
-releases. Browsers have no Storage write policy. The VTM character schema,
+releases. A stale remote Pathfinder manifest cannot override newer Git-tracked
+rules in a deployment. Browsers have no Storage write policy. The VTM character schema,
 Pathfinder schema-v4 localStorage data, iframe URL/localStorage/postMessage
 bridge and all existing character/campaign rows are unchanged.
 **Affected files:** `scripts/{generate,publish}-rule-catalogs.ts`,

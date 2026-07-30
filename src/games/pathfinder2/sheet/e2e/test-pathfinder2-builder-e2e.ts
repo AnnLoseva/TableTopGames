@@ -185,8 +185,42 @@ async function run() {
     assert.equal(
       await classDialog.locator('img[alt^="Карточка класса"]').count(),
       21,
-      'Every supplied class artwork should be connected.',
+      'Every class with local artwork should render it.',
     )
+    for (const classIdWithoutArtwork of [
+      'commander',
+      'guardian',
+      'magus',
+      'psychic',
+      'summoner',
+      'thaumaturge',
+    ]) {
+      const card = classDialog.locator(`[data-choice-id="${classIdWithoutArtwork}"]`)
+      assert.equal(
+        await card.count(),
+        1,
+        `${classIdWithoutArtwork} has real class data and should still appear (as a text-only card).`,
+      )
+      assert.equal(
+        await card.locator('img').count(),
+        0,
+        `${classIdWithoutArtwork} has no local artwork yet and must fall back to a text-only card.`,
+      )
+    }
+    for (const [classId, expectedSource] of Object.entries({
+      champion: '/pathfinder2/classes/champion.png?v=463e9a39',
+      exemplar: '/pathfinder2/classes/exemplar.png?v=497f77a1',
+      fighter: '/pathfinder2/classes/fighter.png?v=dceb8215',
+      oracle: '/pathfinder2/classes/oracle.png?v=3e1f4277',
+    })) {
+      assert.equal(
+        await classDialog
+          .locator(`[data-choice-id="${classId}"] img`)
+          .getAttribute('src'),
+        expectedSource,
+        `${classId} should use the updated cache-busting artwork URL.`,
+      )
+    }
     await classDialog.getByLabel('Характеристика').selectOption('intelligence')
     assert.equal(await classDialog.locator('[data-choice-id="wizard"]').count(), 1)
     assert.equal(await classDialog.locator('[data-choice-id="bard"]').count(), 0)

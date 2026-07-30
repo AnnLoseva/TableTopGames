@@ -91,13 +91,6 @@ const CHOICE = {
     allowedSkills: ['acrobatics', 'athletics'] satisfies Pathfinder2SkillId[],
     sourceLabel: 'Класс · Воин',
   },
-  guardianSkill: {
-    id: 'class:guardian:starting-skill',
-    label: 'Атлетика или Общество',
-    count: 1,
-    allowedSkills: ['athletics', 'society'] satisfies Pathfinder2SkillId[],
-    sourceLabel: 'Класс · Хранитель',
-  },
   monkSkill: {
     id: 'class:monk:starting-skill',
     label: 'Акробатика или Атлетика',
@@ -112,6 +105,13 @@ const CHOICE = {
     allowedSkills: ['stealth', 'thievery'] satisfies Pathfinder2SkillId[],
     sourceLabel: 'Класс · Плут',
   },
+  thaumaturgeSkill: {
+    id: 'class:thaumaturge:esoteric-skill',
+    label: 'Аркана, Природа, Оккультизм или Религия',
+    count: 1,
+    allowedSkills: ['arcana', 'nature', 'occultism', 'religion'] satisfies Pathfinder2SkillId[],
+    sourceLabel: 'Класс · Тауматург',
+  },
 } satisfies Record<string, Pathfinder2ClassSkillRules['grantedSkillChoices'][number]>
 
 const CLASS_SKILL_RULES: Record<string, Pathfinder2ClassSkillRules> = {
@@ -122,26 +122,26 @@ const CLASS_SKILL_RULES: Record<string, Pathfinder2ClassSkillRules> = {
   cleric: classRule(2, ['religion'], [CHOICE.deitySkill]),
   druid: classRule(2, ['nature']),
   fighter: classRule(3, [], [CHOICE.fighterSkill]),
-  guardian: classRule(3, [], [CHOICE.guardianSkill]),
   investigator: classRule(4, ['society'], [], ACCELERATED_SKILL_INCREASE_LEVELS),
   kineticist: classRule(3, ['nature']),
-  magus: classRule(2, ['arcana']),
   monk: classRule(3, [], [CHOICE.monkSkill]),
   oracle: classRule(2, ['religion']),
-  psychic: classRule(3, ['occultism']),
   ranger: classRule(4, ['nature', 'survival']),
   rogue: classRule(7, [], [CHOICE.rogueSkill], ACCELERATED_SKILL_INCREASE_LEVELS),
   sorcerer: classRule(3),
-  summoner: classRule(3),
   swashbuckler: classRule(3, ['acrobatics']),
-  thaumaturge: classRule(3),
   witch: classRule(3),
   wizard: classRule(3, ['arcana']),
   gunslinger: classRule(3),
   inventor: classRule(3, ['crafting']),
   exemplar: classRule(3),
   animist: classRule(3, ['nature', 'religion']),
-  commander: classRule(3, ['diplomacy', 'intimidation']),
+  guardian: classRule(3, ['athletics']),
+  magus: classRule(2, ['arcana']),
+  psychic: classRule(3, ['occultism']),
+  summoner: classRule(3),
+  thaumaturge: classRule(3, [], [CHOICE.thaumaturgeSkill]),
+  commander: classRule(2, ['society']),
 }
 
 const SPECIALIZATION_GRANTED_SKILLS: Record<string, Pathfinder2SkillId[]> = {

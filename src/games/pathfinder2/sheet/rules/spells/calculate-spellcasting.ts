@@ -18,11 +18,8 @@ const CLASS_CASTING_MODES: Record<string, Pathfinder2SpellcastingMode> = {
   champion: 'focus-only',
   cleric: 'prepared',
   druid: 'prepared',
-  magus: 'bounded',
   oracle: 'spontaneous',
-  psychic: 'spontaneous',
   sorcerer: 'spontaneous',
-  summoner: 'bounded',
   witch: 'prepared',
   wizard: 'spellbook-prepared',
 }

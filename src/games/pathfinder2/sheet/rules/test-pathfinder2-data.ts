@@ -82,32 +82,16 @@ const tests: Array<[string, () => void]> = [
         `${ancestry.name}: отсутствует изображение ${ancestry.id}.png`,
       )
     }
-    for (const classId of [
-      'alchemist',
-      'animist',
-      'barbarian',
-      'bard',
-      'champion',
-      'cleric',
-      'druid',
-      'exemplar',
-      'fighter',
-      'gunslinger',
-      'investigator',
-      'inventor',
-      'kineticist',
-      'monk',
-      'oracle',
-      'ranger',
-      'rogue',
-      'sorcerer',
-      'swashbuckler',
-      'witch',
-      'wizard',
-    ]) {
+    // Эти классы подключены механически (данные и прогрессия есть), но для
+    // них ещё не заказан портрет — это единственное, чего им не хватает.
+    const classesWithoutArtwork = new Set([
+      'guardian', 'magus', 'psychic', 'summoner', 'thaumaturge', 'commander',
+    ])
+    for (const characterClass of classes.classes) {
+      if (classesWithoutArtwork.has(characterClass.id)) continue
       assert.ok(
-        existsSync(`public/pathfinder2/classes/${classId}.png`),
-        `${classId}: отсутствует изображение класса`,
+        existsSync(`public/pathfinder2/classes/${characterClass.id}.png`),
+        `${characterClass.id}: отсутствует изображение класса`,
       )
     }
   }],

@@ -10064,6 +10064,2244 @@
           "attributeBoostCount": 4
         }
       ]
+    },
+    {
+      "id": "class:guardian",
+      "name": "Защитник Progression",
+      "classId": "guardian",
+      "levels": [
+        {
+          "level": 1,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-1",
+              "type": "class-feat",
+              "count": 1,
+              "required": true
+            },
+            {
+              "id": "ancestry-feat-1",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 2,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-2",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 3,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-3",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 4,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-4",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 5,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "expert",
+              "level": 5
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-5",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 6,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-6",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 7,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "reflex",
+              "rank": "expert",
+              "level": 7
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-7",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 8,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-8",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 9,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "class-dc",
+              "rank": "expert",
+              "level": 9
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-9",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 10,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-10",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 11,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-11",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 12,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-12",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 13,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "master",
+              "level": 13
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-13",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 14,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-14",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 15,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-15",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 16,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-16",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 17,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-17",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 18,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-18",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 19,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "class-dc",
+              "rank": "master",
+              "level": 19
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-19",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 20,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-guardian-20",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        }
+      ]
+    },
+    {
+      "id": "class:magus",
+      "name": "Магус Progression",
+      "classId": "magus",
+      "levels": [
+        {
+          "level": 1,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-1",
+              "type": "class-feat",
+              "count": 1,
+              "required": true
+            },
+            {
+              "id": "ancestry-feat-1",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 2,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-2",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 3,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-3",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 4,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-4",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 5,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "reflex",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "expert",
+              "level": 5
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-5",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 6,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-6",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 7,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-7",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 8,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-8",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 9,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "perception",
+              "rank": "expert",
+              "level": 9
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-9",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 10,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-10",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 11,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "armor",
+              "targetId": "unarmored",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "light",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "medium",
+              "rank": "expert",
+              "level": 11
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-11",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 12,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-12",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 13,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "master",
+              "level": 13
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-13",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 14,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-14",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 15,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-15",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 16,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-16",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 17,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "armor",
+              "targetId": "unarmored",
+              "rank": "master",
+              "level": 17
+            },
+            {
+              "category": "armor",
+              "targetId": "light",
+              "rank": "master",
+              "level": 17
+            },
+            {
+              "category": "armor",
+              "targetId": "medium",
+              "rank": "master",
+              "level": 17
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-17",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 18,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-18",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 19,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-19",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 20,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-magus-20",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        }
+      ]
+    },
+    {
+      "id": "class:psychic",
+      "name": "Экстрасенс Progression",
+      "classId": "psychic",
+      "levels": [
+        {
+          "level": 1,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-1",
+              "type": "class-feat",
+              "count": 1,
+              "required": true
+            },
+            {
+              "id": "ancestry-feat-1",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 2,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-2",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 3,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-3",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 4,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-4",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 5,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-5",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 6,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-6",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 7,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-7",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 8,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-8",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 9,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "fortitude",
+              "rank": "expert",
+              "level": 9
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-9",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 10,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-10",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 11,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "expert",
+              "level": 11
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-11",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 12,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-12",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 13,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-13",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 14,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-14",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 15,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-15",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 16,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-16",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 17,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-17",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 18,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-18",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 19,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-19",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 20,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-psychic-20",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        }
+      ]
+    },
+    {
+      "id": "class:summoner",
+      "name": "Призыватель Progression",
+      "classId": "summoner",
+      "levels": [
+        {
+          "level": 1,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-1",
+              "type": "class-feat",
+              "count": 1,
+              "required": true
+            },
+            {
+              "id": "ancestry-feat-1",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 2,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-2",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 3,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-3",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 4,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-4",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 5,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-5",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 6,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-6",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 7,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-7",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 8,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-8",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 9,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-9",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 10,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-10",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 11,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "expert",
+              "level": 11
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-11",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 12,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-12",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 13,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-13",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 14,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-14",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 15,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-15",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 16,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-16",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 17,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-17",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 18,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-18",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 19,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-19",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 20,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-summoner-20",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        }
+      ]
+    },
+    {
+      "id": "class:thaumaturge",
+      "name": "Тауматург Progression",
+      "classId": "thaumaturge",
+      "levels": [
+        {
+          "level": 1,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-1",
+              "type": "class-feat",
+              "count": 1,
+              "required": true
+            },
+            {
+              "id": "ancestry-feat-1",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 2,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-2",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 3,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "reflex",
+              "rank": "expert",
+              "level": 3
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-3",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 4,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-4",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 5,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "expert",
+              "level": 5
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "expert",
+              "level": 5
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-5",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 6,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-6",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 7,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-7",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 8,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-8",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 9,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "perception",
+              "rank": "master",
+              "level": 9
+            },
+            {
+              "category": "class-dc",
+              "rank": "expert",
+              "level": 9
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-9",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 10,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-10",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 11,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "armor",
+              "targetId": "unarmored",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "light",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "medium",
+              "rank": "expert",
+              "level": 11
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-11",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 12,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-12",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 13,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "master",
+              "level": 13
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-13",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 14,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-14",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 15,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-15",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 16,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-16",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 17,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "class-dc",
+              "rank": "master",
+              "level": 17
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-17",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 18,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-18",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 19,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "armor",
+              "targetId": "unarmored",
+              "rank": "master",
+              "level": 19
+            },
+            {
+              "category": "armor",
+              "targetId": "light",
+              "rank": "master",
+              "level": 19
+            },
+            {
+              "category": "armor",
+              "targetId": "medium",
+              "rank": "master",
+              "level": 19
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-19",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 20,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-thaumaturge-20",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        }
+      ]
+    },
+    {
+      "id": "class:commander",
+      "name": "Командующий Progression",
+      "classId": "commander",
+      "levels": [
+        {
+          "level": 1,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-1",
+              "type": "class-feat",
+              "count": 1,
+              "required": true
+            },
+            {
+              "id": "ancestry-feat-1",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 2,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-2",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 3,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "class-dc",
+              "rank": "expert",
+              "level": 3
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-3",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 4,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-4",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 5,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-5",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 6,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-6",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 7,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-7",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 8,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-8",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 9,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "fortitude",
+              "rank": "expert",
+              "level": 9
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-9",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 10,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-10",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 11,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "armor",
+              "targetId": "unarmored",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "light",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "medium",
+              "rank": "expert",
+              "level": 11
+            },
+            {
+              "category": "armor",
+              "targetId": "heavy",
+              "rank": "expert",
+              "level": 11
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "general-feat-11",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 12,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-12",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 13,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "perception",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "simple",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "martial",
+              "rank": "master",
+              "level": 13
+            },
+            {
+              "category": "weapon",
+              "targetId": "unarmed",
+              "rank": "master",
+              "level": 13
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-13",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 14,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-14",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 15,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-15",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 4
+        },
+        {
+          "level": 16,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-16",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 17,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [
+            {
+              "category": "armor",
+              "targetId": "unarmored",
+              "rank": "master",
+              "level": 17
+            },
+            {
+              "category": "armor",
+              "targetId": "light",
+              "rank": "master",
+              "level": 17
+            },
+            {
+              "category": "armor",
+              "targetId": "medium",
+              "rank": "master",
+              "level": 17
+            },
+            {
+              "category": "armor",
+              "targetId": "heavy",
+              "rank": "master",
+              "level": 17
+            }
+          ],
+          "featSlots": [
+            {
+              "id": "ancestry-feat-17",
+              "type": "ancestry-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 18,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-18",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 19,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "general-feat-19",
+              "type": "general-feat",
+              "count": 1,
+              "required": true
+            }
+          ],
+          "skillIncreaseCount": 1,
+          "attributeBoostCount": 0
+        },
+        {
+          "level": 20,
+          "automaticFeatureIds": [],
+          "proficiencyGrants": [],
+          "featSlots": [
+            {
+              "id": "class-feat-commander-20",
+              "type": "class-feat",
+              "count": 1,
+              "required": false
+            }
+          ],
+          "skillIncreaseCount": 0,
+          "attributeBoostCount": 4
+        }
+      ]
     }
   ]
 }

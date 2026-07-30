@@ -55,7 +55,9 @@ function assembleCatalog(files: Record<string, unknown>) {
 
 export function loadPathfinder2RulesCatalog() {
   if (!catalogPromise) {
-    catalogPromise = loadVersionedRulesCatalog('pathfinder2').then(result => ({
+    catalogPromise = loadVersionedRulesCatalog('pathfinder2', {
+      pinRemoteToLocalRelease: true,
+    }).then(result => ({
       catalog: assembleCatalog(result.files),
       release: result.manifest.release,
       source: result.source,

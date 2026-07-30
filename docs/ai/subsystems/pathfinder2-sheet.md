@@ -11,9 +11,9 @@ does not share the VTM character, room, bridge or Supabase contracts.
 ```text
 src/app/pathfinder2/sheet/page.tsx
  → src/games/pathfinder2/sheet/Pathfinder2SheetRoute.tsx
- → components/Pathfinder2SheetPage.tsx
+   → components/Pathfinder2SheetPage.tsx
    → usePathfinder2RulesCatalog
-   → Supabase Storage `rules-pathfinder2` manifest + immutable chunks
+   → matching Supabase Storage `rules-pathfinder2` manifest + immutable chunks
    → generated local `/rules/pathfinder2/*` fallback
    → character-sheet/CharacterSheetView.tsx
    → builder/CharacterBuilderView.tsx
@@ -47,9 +47,12 @@ src/app/pathfinder2/sheet/page.tsx
   `scripts/generate-rule-catalogs.ts` splits that catalog into deterministic,
   content-addressed chunks. The browser loads and verifies those chunks instead
   of receiving the full catalog through the server-component payload.
+- The browser compares the remote Pathfinder manifest release with the local
+  manifest generated for the deployed build. A matching release uses Supabase;
+  a stale or unavailable remote manifest uses the verified local chunks.
 - `data/catalog-audit.ts` validates canonical document metadata and reports
-  actual entry counts instead of hardcoded readiness. A selected class without
-  one of the 21 class-progression entries is an explicit completion blocker.
+  actual entry counts instead of hardcoded readiness. A migrated draft that
+  references an absent class is an explicit completion blocker.
 - `data/catalog-document.ts` is the schema-v1 adapter/validator for future
   owner-provided catalogs. New catalogs need stable IDs, source/version/license
   metadata and entry-specific validation before rules-engine use.
@@ -76,7 +79,7 @@ src/app/pathfinder2/sheet/page.tsx
   proficiencies,equipment,combat,spells,languages,religion,progression}` calculate
   breakdowns, automatic grants, inventory/Bulk, attacks, spellcasting, details
   and validation without React.
-- `rules/creation/structured-rules.ts` converts the 27 checked-in classes into
+- `rules/creation/structured-rules.ts` converts the 21 checked-in classes into
   explicit skill grants, restricted choices, base free-skill counts,
   Intelligence behavior and class-specific increase schedules. Display strings
   in `classes.json` are not parsed by the client rules engine.
@@ -86,8 +89,8 @@ src/app/pathfinder2/sheet/page.tsx
   level choices, optionally subtracts 1,000 XP, applies class features,
   catalog feat slots and proficiency grants, class-specific skill increases,
   attribute packages and spell-slot schedules. The high-level scenario keeps
-  level 1 as the base and a target level; it cannot skip history. Classes
-  without a canonical progression entry cannot advance silently.
+  level 1 as the base and a target level; it cannot skip history. Only classes
+  with a canonical progression entry are exposed by the catalog.
 - The summary calculates HP, armor AC, perception, saves, class DC, inventory,
   Bulk, equipped attacks and spell attack/DC from source decisions. Current HP
   is not reset on every recalculation and is clamped if a changed build lowers

@@ -116,6 +116,13 @@ const ANCESTRY_CARD_IMAGE_VERSIONS: Readonly<Record<string, string>> = {
   centaur: 'e281bc58',
 }
 
+const CLASS_CARD_IMAGE_VERSIONS: Readonly<Record<string, string>> = {
+  champion: '463e9a39',
+  exemplar: '497f77a1',
+  fighter: 'dceb8215',
+  oracle: '3e1f4277',
+}
+
 function ChoiceTags({ values }: { values: string[] }) {
   if (values.length === 0) return null
   return (
@@ -646,12 +653,17 @@ export default function Pathfinder2ChoiceGallery({
         const ancestryImageVersion = kind === 'ancestry'
           ? ANCESTRY_CARD_IMAGE_VERSIONS[item.id]
           : undefined
+        const classImageVersion = kind === 'class'
+          ? CLASS_CARD_IMAGE_VERSIONS[item.id]
+          : undefined
         const cardImage = kind === 'ancestry'
           ? `/pathfinder2/ancestries/${item.id}.png${
             ancestryImageVersion ? `?v=${ancestryImageVersion}` : ''
           }`
           : kind === 'class' && CLASS_CARD_IMAGE_IDS.has(item.id)
-            ? `/pathfinder2/classes/${item.id}.png`
+            ? `/pathfinder2/classes/${item.id}.png${
+              classImageVersion ? `?v=${classImageVersion}` : ''
+            }`
             : undefined
         if (cardImage) {
           return (
