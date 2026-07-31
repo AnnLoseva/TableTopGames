@@ -1,5 +1,69 @@
 # Decisions
 
+## 2026-07-31 — Fixed a live RLS bug that silently broke every journal soft-delete and every image upload since the tables were created
+
+**Area:** Supabase RLS (`dnd_journal_pages`, `dnd_journal_images`, `storage.objects` for the `dnd-journal-images` bucket)
+
+**Decision:** The owner reported journal images uploaded on the iPad never showed up on
+the site. Live investigation (Supabase logs + direct REST/SQL reproduction against the
+`klhxbaagarqxaqnrvurr` project) found the real cause was **not** a sync bug at all — it
+was a Postgres RLS design flaw present since these tables were first created:
+
+- Postgres requires that the row *resulting* from an UPDATE (or INSERT) also satisfy an
+  applicable SELECT policy on that table, in addition to the UPDATE/INSERT policy's own
+  `WITH CHECK`. `dnd_journal_pages` and `dnd_journal_images`'s SELECT policies were both
+  plain `using (deleted_at is null)` — so the moment a soft-delete UPDATE set
+  `deleted_at` to a real value, the *new* row stopped matching that same SELECT policy,
+  and Postgres rejected the UPDATE with `42501: new row violates row-level security
+  policy`, regardless of who ran it (owner or device). Confirmed directly: updating any
+  other column succeeded; touching `deleted_at` always failed, even on a row the device
+  account had itself just created. `dnd_journal_folders` already had the fix (`deleted_at
+  is null or auth.uid() in (owner, device)`) from when folders were built; pages and
+  images never got it retrofitted.
+- `storage.objects` had **no SELECT policy at all** for the `dnd-journal-images` bucket
+  (deliberately, since the bucket is public and reads go through `getPublicUrl`, which
+  bypasses RLS — see the "public read, single-editor write" entry below). But the same
+  Postgres rule applies to INSERT: with zero applicable SELECT policies to satisfy,
+  every upload failed RLS too, for the same reason and same error text.
+
+Both were live, 100%-reproducible bugs — not edge cases. Practically: `softDeleteJournalPage`
+(site's delete button), `deleteJournalImage` (site), and this session's new app-side
+`flushPendingPageDeletions`/`flushPendingFolderDeletions` were **all** silently failing;
+27 real pages existed but zero had ever been successfully soft-deleted, and the images
+table/bucket were completely empty despite images having been added on the iPad.
+
+**Fix:** Migration `dnd_journal_fix_soft_delete_select_policies` (applied live):
+pages' and images' SELECT policies gained the same `deleted_at is null or auth.uid() in
+(owner, device)` carve-out folders already had, and `storage.objects` gained a new
+SELECT policy for the bucket scoped to `authenticated` + the two writer identities only
+(not `to public`, so the deliberate no-listing-for-strangers property from the original
+bucket setup is preserved). Verified live via direct REST calls with a real device JWT:
+soft-delete and image upload both now return 200; `get_advisors` (security) reports no
+new findings. `src/games/dnd/journal/supabase/dnd_journal.sql` updated to match (idempotent,
+re-runnable).
+
+**Reason:** Nobody had actually exercised page-delete or image-upload end-to-end against
+the live database before (a known gap — CURRENT-STATE.md already flagged "have the owner
+log in herself once to confirm... folder create/rename/delete" as an unverified next
+task); this is exactly the kind of thing that surfaces only under live use, which is what
+happened here.
+
+**Consequences:** Any *new* soft-deletable table added to this domain needs the same
+owner/device SELECT carve-out from day one, or it will hit this identical failure mode —
+worth remembering as a general pattern for "public read, tombstone-based delete" tables,
+not just this journal. The RenaCompanion iPad app's own delete flows (this session's new
+`flushPendingPageDeletions`/`notePageDeleted`, and the pre-existing folder tombstone
+flush) should now actually succeed once she rebuilds; they were built and tested against
+a database that made them fail unconditionally.
+
+**Affected files:** `src/games/dnd/journal/supabase/dnd_journal.sql` (checked-in copy of
+the live migration).
+
+**Status:** active — applied and verified live via direct REST reproduction; not yet
+verified through the actual apps (site UI / rebuilt iPad app).
+
+---
+
 ## 2026-07-31 — Fixed two journal sync bugs: device-scoped `user_id` filter, and merge running without a real conflict
 
 **Area:** Cross-repo sync contract (`src/games/dnd/journal/`; fix lives entirely in the

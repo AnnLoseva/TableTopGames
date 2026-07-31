@@ -118,14 +118,6 @@ export default function DndJournalRoute() {
     if (window.innerWidth < 720) setListVisible(false)
   }, [])
 
-  const refreshImages = () => {
-    listAllJournalImages(client)
-      .then(setImages)
-      .catch(error => {
-        console.error('Не удалось загрузить изображения журнала:', error)
-      })
-  }
-
   useEffect(() => {
     let cancelled = false
     setLoadError('')
@@ -431,7 +423,6 @@ export default function DndJournalRoute() {
               onSave={handleSave}
               onDelete={handleDelete}
               onOpenWikiLink={handleOpenWikiLink}
-              onImagesChanged={refreshImages}
               isEditor={isEditor}
             />
           ) : (

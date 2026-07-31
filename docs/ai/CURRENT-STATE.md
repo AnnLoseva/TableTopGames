@@ -27,6 +27,14 @@
   conflict, which resurrected text deleted on the site. Both fixed app-side
   (`DnD Interactive Sheet` repo); see `DECISIONS.md`. Needs the owner to
   rebuild/reinstall the app and confirm live.
+  **RLS fix (same day, live migration):** pages'/images' soft-delete
+  (`UPDATE ... deleted_at`) and image uploads to `storage.objects` were
+  *unconditionally* failing RLS since these tables were created — Postgres
+  requires the post-write row to also satisfy an applicable SELECT policy,
+  and neither had one that survived a soft-delete, nor did the images bucket
+  have any SELECT policy at all. Fixed live (migration
+  `dnd_journal_fix_soft_delete_select_policies`) and in the checked-in
+  `dnd_journal.sql`; verified via direct REST calls. See `DECISIONS.md`.
 - **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
   browser consumers load separate, SHA-256-verified Supabase Storage releases
   with generated local fallbacks. Pathfinder additionally pins the remote
@@ -125,9 +133,13 @@ _(none recorded — add temporary bugs here only while being worked, then remove
   constant, or the edit UI and the actual write permission disagree.
 
 ## Last updated
-2026-07-31 — Fixed two D&D journal sync bugs on the iPad app side (device-
-scoped `user_id` filter hid site-created content; merge ran without a real
-conflict, resurrecting deleted text). See `DECISIONS.md`.
+2026-07-31 — Fixed a live RLS bug: pages'/images' soft-delete and image
+uploads were unconditionally failing since these tables were created
+(Postgres requires the post-write row to also satisfy a SELECT policy).
+See `DECISIONS.md`.
+  Earlier same day: Fixed two D&D journal sync bugs on the iPad app side
+(device-scoped `user_id` filter hid site-created content; merge ran without
+a real conflict, resurrecting deleted text). See `DECISIONS.md`.
   Earlier: Added `/dnd/journal`: new `src/games/dnd/` domain, Supabase
 schema applied live (`dnd_journal_pages`, `dnd_journal_images`, public
 `dnd-journal-images` bucket), single hardcoded-owner-write + fully-public-read

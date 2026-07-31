@@ -12,7 +12,6 @@ import type {
   DndPageType,
 } from '../types'
 import styles from './DndJournalRoute.module.css'
-import JournalImageGallery from './JournalImageGallery'
 import JournalWikiBody from './JournalWikiBody'
 
 type JournalEditorProps = {
@@ -24,7 +23,6 @@ type JournalEditorProps = {
   onSave: (id: string, patch: DndJournalPageEditablePatch, baselineBodyMarkdown?: string) => Promise<DndJournalPage>
   onDelete: (id: string) => void
   onOpenWikiLink: (title: string) => void
-  onImagesChanged?: () => void
   isEditor: boolean
 }
 
@@ -39,7 +37,6 @@ export default function JournalEditor({
   onSave,
   onDelete,
   onOpenWikiLink,
-  onImagesChanged,
   isEditor,
 }: JournalEditorProps) {
   const [title, setTitle] = useState(page.title)
@@ -305,20 +302,6 @@ export default function JournalEditor({
           onOpenPage={onOpenWikiLink}
         />
       )}
-
-      <JournalImageGallery
-        client={client}
-        pageId={page.id}
-        isEditor={isEditor}
-        onInsertEmbed={name => {
-          const snippet = bodyMarkdown.trim().length === 0 ? `![[${name}]]` : `\n\n![[${name}]]`
-          const next = `${bodyMarkdown}${snippet}`
-          setBodyMarkdown(next)
-          setMode('edit')
-          commit({ bodyMarkdown: next }, false)
-        }}
-        onChanged={onImagesChanged}
-      />
     </div>
   )
 }

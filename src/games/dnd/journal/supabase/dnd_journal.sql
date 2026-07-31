@@ -124,13 +124,23 @@ alter table public.dnd_journal_folders enable row level security;
 grant select on public.dnd_journal_pages, public.dnd_journal_images, public.dnd_journal_folders to anon;
 grant select, insert, update on public.dnd_journal_pages, public.dnd_journal_images, public.dnd_journal_folders to authenticated;
 
+-- The owner/device carve-out below is required, not cosmetic: Postgres requires an
+-- UPDATE's resulting row to also satisfy an applicable SELECT policy. A plain
+-- "deleted_at is null" here made every soft-delete (UPDATE ... SET deleted_at = now())
+-- fail RLS, since the row stops matching its own read policy the moment it's deleted.
 drop policy if exists "Owners can read their journal pages" on public.dnd_journal_pages;
 drop policy if exists "Any signed-in account can read journal pages" on public.dnd_journal_pages;
 drop policy if exists "Anyone can read journal pages" on public.dnd_journal_pages;
 create policy "Anyone can read journal pages"
   on public.dnd_journal_pages for select
   to public
-  using (deleted_at is null);
+  using (
+    deleted_at is null
+    or (select auth.uid()) in (
+      '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid,
+      '0b0db998-4d46-4957-9221-5663ba7a7b73'::uuid
+    )
+  );
 
 drop policy if exists "Owners can insert their journal pages" on public.dnd_journal_pages;
 drop policy if exists "Only the owner account can insert journal pages" on public.dnd_journal_pages;
@@ -195,13 +205,21 @@ create policy "Only the owner account can update journal folders"
 -- No delete policy: folders use a tombstone so the offline iPad writer can
 -- observe deletions instead of re-creating the folder on its next sync.
 
+-- Same owner/device carve-out as pages above, same reason: an UPDATE that sets
+-- deleted_at must still satisfy the SELECT policy on the resulting row.
 drop policy if exists "Owners can read their journal images" on public.dnd_journal_images;
 drop policy if exists "Any signed-in account can read journal images" on public.dnd_journal_images;
 drop policy if exists "Anyone can read journal images" on public.dnd_journal_images;
 create policy "Anyone can read journal images"
   on public.dnd_journal_images for select
   to public
-  using (deleted_at is null);
+  using (
+    deleted_at is null
+    or (select auth.uid()) in (
+      '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid,
+      '0b0db998-4d46-4957-9221-5663ba7a7b73'::uuid
+    )
+  );
 
 drop policy if exists "Owners can insert their journal images" on public.dnd_journal_images;
 drop policy if exists "Only the owner account can insert journal images" on public.dnd_journal_images;
@@ -231,12 +249,15 @@ create policy "Only the owner account can update journal images"
 -- ("<user_id>/<image id>-<filename>", `user_id` being whichever of the two
 -- identities uploaded it). Anyone can read via the public URL endpoint
 -- (`getPublicUrl`, not a signed URL) — this bypasses RLS entirely and needs
--- no SELECT policy, per Supabase's own linter guidance. No SELECT policy is
--- granted on `storage.objects` for this bucket on purpose: a broad SELECT
--- policy on a public bucket doesn't add read access (the public flag already
--- grants that) but does let API callers LIST every file in the bucket, which
--- is unrelated exposure. Only the owner or device account can upload/delete,
--- which is still RLS-enforced regardless of the bucket's public flag.
+-- no public SELECT policy, per Supabase's own linter guidance (a broad `to
+-- public` SELECT policy on a public bucket doesn't add read access but does
+-- let API callers LIST every file in the bucket, unrelated exposure).
+-- A SELECT policy scoped to just the two writer identities (below) is still
+-- required, though: INSERT's WITH CHECK on `storage.objects` isn't enough on
+-- its own — Postgres also requires the inserted row to satisfy an applicable
+-- SELECT policy, and with none defined at all every upload failed RLS.
+-- Scoping it to `authenticated` + owner/device (not `to public`) keeps the
+-- no-listing-for-strangers property while letting the actual writers upload.
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('dnd-journal-images', 'dnd-journal-images', true, 10485760, array['image/jpeg','image/png','image/webp','image/heic'])
@@ -248,6 +269,16 @@ set public = excluded.public,
 drop policy if exists "Owners can read their journal image files" on storage.objects;
 drop policy if exists "Any signed-in account can read journal image files" on storage.objects;
 drop policy if exists "Anyone can read journal image files" on storage.objects;
+drop policy if exists "Only the owner account can list journal image files" on storage.objects;
+create policy "Only the owner account can list journal image files"
+  on storage.objects for select to authenticated
+  using (
+    bucket_id = 'dnd-journal-images'
+    and (select auth.uid()) in (
+      '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid,
+      '0b0db998-4d46-4957-9221-5663ba7a7b73'::uuid
+    )
+  );
 
 drop policy if exists "Owners can upload their journal image files" on storage.objects;
 drop policy if exists "Only the owner account can upload journal image files" on storage.objects;
