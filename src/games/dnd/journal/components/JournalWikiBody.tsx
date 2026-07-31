@@ -1,7 +1,7 @@
 'use client'
 
 import { type ReactNode, useMemo } from 'react'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { defaultUrlTransform } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { createAccountClient } from '@/platform/account/supabase'
 import { getJournalImageUrl } from '../api/images-api'
@@ -21,6 +21,19 @@ type JournalWikiBodyProps = {
   pages: DndJournalPage[]
   images: DndJournalImage[]
   onOpenPage: (title: string) => void
+}
+
+/**
+ * react-markdown's default `urlTransform` only lets http(s)/irc(s)/mailto/xmpp
+ * URLs through and blanks out anything else (including our `dnd-page:`/
+ * `dnd-image:` scheme) — which made every `[[wiki link]]` render with an
+ * empty href, falling through to a real `<a target="_blank">` that opened a
+ * blank new tab instead of navigating in-app. Let our own schemes through
+ * unchanged; everything else still goes through the default sanitizer.
+ */
+function wikiUrlTransform(url: string): string {
+  if (url.startsWith('dnd-page:') || url.startsWith('dnd-image:')) return url
+  return defaultUrlTransform(url)
 }
 
 /**
@@ -59,6 +72,7 @@ export default function JournalWikiBody({
           <ReactMarkdown
             key={`md-${index}`}
             remarkPlugins={[remarkGfm]}
+            urlTransform={wikiUrlTransform}
             components={{
               a: ({ href, children }) => (
                 <WikiAnchor
