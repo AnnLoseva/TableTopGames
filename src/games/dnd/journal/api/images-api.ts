@@ -17,11 +17,21 @@ function sanitizeFileName(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-120) || 'image'
 }
 
+/**
+ * Images shown on a page's gallery panel.
+ *
+ * Includes:
+ * - images linked to this page (`page_id = pageId`)
+ * - global gallery images from the iPad (`page_id` is null)
+ *
+ * iPad uploads never set `page_id`, so a strict page filter made the site look
+ * empty even after sync. Wiki embeds still use `listAllJournalImages`.
+ */
 export async function listJournalImages(client: JournalClient, pageId: string): Promise<DndJournalImage[]> {
   const { data, error } = await client
     .from(DND_JOURNAL_IMAGES_TABLE)
     .select(IMAGE_COLUMNS)
-    .eq('page_id', pageId)
+    .or(`page_id.eq.${pageId},page_id.is.null`)
     .is('deleted_at', null)
     .order('created_at', { ascending: true })
   if (error) throw error
