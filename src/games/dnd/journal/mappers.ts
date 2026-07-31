@@ -1,5 +1,8 @@
 import { DND_PAGE_TYPES } from './constants'
 import type {
+  DndJournalCategory,
+  DndJournalFolder,
+  DndJournalFolderRow,
   DndJournalImage,
   DndJournalImageRow,
   DndJournalPage,
@@ -21,6 +24,20 @@ export function mapPageRow(row: DndJournalPageRow): DndJournalPage {
     isFavorite: row.is_favorite,
     isPinned: row.is_pinned,
     isArchived: row.is_archived,
+    folderId: row.folder_id,
+    sortOrder: row.sort_order,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }
+}
+
+export function mapFolderRow(row: DndJournalFolderRow): DndJournalFolder {
+  return {
+    id: row.id,
+    sectionId: row.section_id as DndJournalCategory,
+    parentFolderId: row.parent_folder_id,
+    name: row.name,
+    sortOrder: row.sort_order,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }

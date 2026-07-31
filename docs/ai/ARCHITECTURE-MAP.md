@@ -105,24 +105,24 @@ physical boundary does not add a URL segment.
 /dnd/journal  (public — no login required to view)
  → DndJournalRoute (@/platform/account session optional; used only to check editor identity)
  → isEditor = auth.uid() === DND_JOURNAL_OWNER_AUTH_USER_ID  (one fixed account; false for guests)
- → src/games/dnd/journal/api/{journal-api,images-api}.ts
+ → src/games/dnd/journal/api/{journal-api,folders-api,images-api}.ts
  → updateJournalPage: bodyMarkdown reconciles against the current row via
     src/games/dnd/journal/merge.ts when it changed since this edit's baseline
     (paragraph-level merge, not last-write-wins — see DECISIONS)
- → dnd_journal_pages, dnd_journal_images (soft-delete via deleted_at)
-    — SELECT is `to public` (no auth check); only the owner id can INSERT/UPDATE
+ → dnd_journal_pages, dnd_journal_folders, dnd_journal_images
+    — pages point to nested folders with folder_id; both support manual sort_order
+    — SELECT is `to public`; only owner/device identities can INSERT/UPDATE
  → dnd-journal-images storage bucket (public bucket, getPublicUrl; same owner-write rule)
- → realtime postgres_changes on dnd_journal_pages, filtered by the owner's fixed user_id
+ → realtime postgres_changes on pages + folders from either allowed writer
 ```
 
 Read is fully public (no account, no login — anyone with the link); write is
-single-editor, enforced by RLS against one hardcoded Supabase Auth user id
-(not by row ownership). The same rows are meant to be read/written by the
-RenaCompanion iPad app (`DnD Interactive Sheet` repo, currently offline-only —
-sync there does not exist yet); whatever writes from that side must use the
-same paragraph-merge policy as `merge.ts` or conflicts on that path silently
-overwrite. Row ids are client-generated UUIDs so either side can write the
-same page/image without a round trip. Schema is
+single-editor on the site, enforced by RLS against the owner plus the dedicated
+RenaCompanion device identity (not by row ownership). The iPad app actively
+pushes/pulls the same pages, images and three-level folder tree; folder deletes
+use tombstones so an offline device cannot resurrect them. Structured entry
+fields remain app-local. Row ids are client-generated UUIDs so either side can
+write the same page/folder/image without a round trip. Schema is
 **applied** to the live project — see
 `src/games/dnd/journal/supabase/dnd_journal.sql` and `DECISIONS.md`
 (2026-07-31).
@@ -206,12 +206,12 @@ maps display names ↔ stable identifiers.
 - Table names centralized in `src/games/vampires/modules/table/constants.ts`.
 - Schema/policies live in `src/games/vampires/supabase/*.sql`.
 - Separate, unrelated to the above: the D&D journal domain owns
-  `dnd_journal_pages`, `dnd_journal_images` and the public
+  `dnd_journal_pages`, `dnd_journal_folders`, `dnd_journal_images` and the public
   `dnd-journal-images` bucket, defined in
   `src/games/dnd/journal/supabase/dnd_journal.sql` (applied). It reuses the
   same Supabase project/Auth but not any VTM table, and unlike every VTM
   table its RLS is not row-ownership-based — read is open to `public` (no
-  login), write is restricted to one hardcoded owner Auth user id.
+  login), write is restricted to the hardcoded owner and device Auth ids.
 - Library game history is selected by exact title once, then restored from the
   caller's last-opened membership. DeepSeek searches it only through the
   membership-scoped RPC using the caller's JWT; this membership never grants a

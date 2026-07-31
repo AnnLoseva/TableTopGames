@@ -4,14 +4,16 @@ import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { createAccountClient } from '@/platform/account/supabase'
-import { DND_PAGE_TYPE_LABELS, DND_PAGE_TYPES } from '../constants'
-import type { DndJournalPage, DndJournalPageEditablePatch, DndPageType } from '../types'
+import { DND_PAGE_CATEGORY_BY_TYPE, DND_PAGE_TYPE_LABELS, DND_PAGE_TYPES } from '../constants'
+import { folderPath } from '../folder-tree'
+import type { DndJournalFolder, DndJournalPage, DndJournalPageEditablePatch, DndPageType } from '../types'
 import styles from './DndJournalRoute.module.css'
 import JournalImageGallery from './JournalImageGallery'
 
 type JournalEditorProps = {
   client: ReturnType<typeof createAccountClient>
   page: DndJournalPage
+  folders: DndJournalFolder[]
   onSave: (id: string, patch: DndJournalPageEditablePatch, baselineBodyMarkdown?: string) => Promise<DndJournalPage>
   onDelete: (id: string) => void
   isEditor: boolean
@@ -19,7 +21,7 @@ type JournalEditorProps = {
 
 const SAVE_DEBOUNCE_MS = 800
 
-export default function JournalEditor({ client, page, onSave, onDelete, isEditor }: JournalEditorProps) {
+export default function JournalEditor({ client, page, folders, onSave, onDelete, isEditor }: JournalEditorProps) {
   const [title, setTitle] = useState(page.title)
   const [bodyMarkdown, setBodyMarkdown] = useState(page.bodyMarkdown)
   const [type, setType] = useState<DndPageType>(page.type)
@@ -27,8 +29,9 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
   const [isFavorite, setIsFavorite] = useState(page.isFavorite)
   const [isPinned, setIsPinned] = useState(page.isPinned)
   const [isArchived, setIsArchived] = useState(page.isArchived)
+  const [folderId, setFolderId] = useState<string | null>(page.folderId)
   const [aliasDraft, setAliasDraft] = useState('')
-  const [mode, setMode] = useState<'edit' | 'preview'>(isEditor ? 'edit' : 'preview')
+  const [mode, setMode] = useState<'edit' | 'preview'>('preview')
   const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saved' | 'merged'>('idle')
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   // The body text this edit is based on — used to detect whether someone else
@@ -43,14 +46,22 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
     setIsFavorite(page.isFavorite)
     setIsPinned(page.isPinned)
     setIsArchived(page.isArchived)
+    setFolderId(page.folderId)
     setAliasDraft('')
-    setMode(isEditor ? 'edit' : 'preview')
+    setMode('preview')
     setSaveStatus('idle')
     baselineBodyRef.current = page.bodyMarkdown
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current)
     }
-  }, [page.id, isEditor])
+  }, [page.folderId, page.id, isEditor])
+
+  const availableFolders = folders
+    .filter(folder => folder.sectionId === DND_PAGE_CATEGORY_BY_TYPE[type])
+    .sort((a, b) => folderPath(a.id, folders).map(item => item.name).join('/').localeCompare(
+      folderPath(b.id, folders).map(item => item.name).join('/'),
+      'ru',
+    ))
 
   const commit = (patch: DndJournalPageEditablePatch, debounce: boolean) => {
     if (!isEditor) return
@@ -125,7 +136,10 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
               onChange={event => {
                 const nextType = event.target.value as DndPageType
                 setType(nextType)
-                commit({ type: nextType }, false)
+                const currentFolder = folders.find(folder => folder.id === folderId)
+                const shouldClearFolder = currentFolder?.sectionId !== DND_PAGE_CATEGORY_BY_TYPE[nextType]
+                if (shouldClearFolder) setFolderId(null)
+                commit(shouldClearFolder ? { type: nextType, folderId: null } : { type: nextType }, false)
               }}
             >
               {DND_PAGE_TYPES.map(pageType => (
@@ -135,8 +149,29 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
           ) : (
             <span className={styles.typeSelect}>{DND_PAGE_TYPE_LABELS[type]}</span>
           )}
-          {isFavorite && <span className={`${styles.toggleButton} ${styles.toggleButtonActive}`}>★ Избранное</span>}
-          {isPinned && <span className={`${styles.toggleButton} ${styles.toggleButtonActive}`}>📌 Закреплено</span>}
+          {isEditor ? (
+            <select
+              className={styles.typeSelect}
+              value={folderId ?? ''}
+              onChange={event => {
+                const nextFolderId = event.target.value || null
+                setFolderId(nextFolderId)
+                commit({ folderId: nextFolderId }, false)
+              }}
+              aria-label="Папка страницы"
+            >
+              <option value="">Без папки</option>
+              {availableFolders.map(folder => (
+                <option key={folder.id} value={folder.id}>
+                  {folderPath(folder.id, folders).map(item => item.name).join(' / ')}
+                </option>
+              ))}
+            </select>
+          ) : folderId ? (
+            <span className={styles.typeSelect}>{folderPath(folderId, folders).map(folder => folder.name).join(' / ')}</span>
+          ) : null}
+          {!isEditor && isFavorite && <span className={`${styles.toggleButton} ${styles.toggleButtonActive}`}>★ Избранное</span>}
+          {!isEditor && isPinned && <span className={`${styles.toggleButton} ${styles.toggleButtonActive}`}>✦ Закреплено</span>}
           {isEditor && (
             <>
               <button
@@ -170,7 +205,7 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
                   commit({ isArchived: next }, false)
                 }}
               >
-                🗄 В архив
+                {isArchived ? '↺ Восстановить' : '🗄 В архив'}
               </button>
               <button type="button" className={styles.deleteButton} onClick={() => onDelete(page.id)}>
                 Удалить
@@ -214,14 +249,14 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
             className={`${styles.toggleButton} ${mode === 'edit' ? styles.toggleButtonActive : ''}`}
             onClick={() => setMode('edit')}
           >
-            Правка
+            Править
           </button>
           <button
             type="button"
             className={`${styles.toggleButton} ${mode === 'preview' ? styles.toggleButtonActive : ''}`}
             onClick={() => setMode('preview')}
           >
-            Просмотр
+            Читать
           </button>
           <span className={styles.saveStatus}>
             {saveStatus === 'pending' ? 'Сохраняю…'
@@ -231,7 +266,7 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
         </div>
       )}
 
-      {mode === 'edit' ? (
+      {isEditor && mode === 'edit' ? (
         <textarea
           className={styles.bodyTextarea}
           value={bodyMarkdown}

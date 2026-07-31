@@ -6,15 +6,16 @@
 ## Current development focus
 - **D&D journal, new domain (2026-07-31)** — `/dnd/journal` (`src/games/dnd/journal/*`)
   is a new isolated game domain, live against Supabase (`dnd_journal_pages`,
-  `dnd_journal_images`, public `dnd-journal-images` bucket; migrations
-  applied). It's the same journal data model as the RenaCompanion iPad app
-  (separate repo, currently offline-only — sync does not exist there yet).
+  `dnd_journal_folders`, `dnd_journal_images`, public `dnd-journal-images`
+  bucket; migrations applied). It uses the same pages and nested folders as
+  the RenaCompanion iPad app; both directions sync automatically. The route
+  mirrors the app's three-panel journal shell: section/folder tree, page list,
+  and reading/editing pane.
   Access is single-editor, public read: **no login is required to read the
   journal**, only one hardcoded owner Auth user id can write (RLS-enforced;
   UI hides write controls via `isEditor`, which is `false` for guests). See
-  `DECISIONS.md` for the full contract, the offline-rule conflict in the
-  iPad app repo, and known gaps (newer Swift fields — folders, structured
-  entry types — not yet mirrored).
+  `DECISIONS.md` for the full contract. `folderId`/`sortOrder` now round-trip;
+  structured entry fields remain app-local.
 - **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
   browser consumers load separate, SHA-256-verified Supabase Storage releases
   with generated local fallbacks. Pathfinder additionally pins the remote
@@ -100,10 +101,8 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - Humanity / stains / remorse flow.
 - Improve Supabase persistence robustness.
 - D&D journal: have the owner log in herself once to confirm the real edit
-  experience (agents can't — no credentials); wire Supabase sync into the
-  RenaCompanion iPad app and update that repo's offline-only docs;
-  reconcile the newer Swift fields (folders, structured entry types) into
-  the Supabase contract if/when the site needs them.
+  experience plus folder create/rename/delete and an app↔site folder
+  round-trip with production data (agents can't — no owner credentials).
 
 ## Do not touch casually
 - `public/vampires/main.js`, `public/vampires/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.

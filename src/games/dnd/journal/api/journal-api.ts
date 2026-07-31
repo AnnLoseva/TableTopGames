@@ -4,7 +4,7 @@ import { mapPageRow } from '../mappers'
 import { mergeJournalBody } from '../merge'
 import type { DndJournalPage, DndJournalPageEditablePatch, DndJournalPageRow, DndPageType } from '../types'
 
-const PAGE_COLUMNS = 'id, user_id, title, body_markdown, type, aliases, is_favorite, is_pinned, is_archived, created_at, updated_at, deleted_at'
+const PAGE_COLUMNS = 'id, user_id, title, body_markdown, type, aliases, is_favorite, is_pinned, is_archived, folder_id, sort_order, created_at, updated_at, deleted_at'
 
 type JournalClient = ReturnType<typeof createAccountClient>
 
@@ -26,7 +26,7 @@ export async function listJournalPages(client: JournalClient): Promise<DndJourna
 
 export async function createJournalPage(
   client: JournalClient,
-  input: { title: string; type: DndPageType; bodyMarkdown?: string },
+  input: { title: string; type: DndPageType; bodyMarkdown?: string; folderId?: string | null; sortOrder?: number },
 ): Promise<DndJournalPage> {
   const userId = await requireUserId(client)
   const nowIso = new Date().toISOString()
@@ -42,6 +42,8 @@ export async function createJournalPage(
       is_favorite: false,
       is_pinned: false,
       is_archived: false,
+      folder_id: input.folderId ?? null,
+      sort_order: input.sortOrder ?? 0,
       created_at: nowIso,
       updated_at: nowIso,
     })
@@ -94,6 +96,8 @@ export async function updateJournalPage(
   if (patch.isFavorite !== undefined) row.is_favorite = patch.isFavorite
   if (patch.isPinned !== undefined) row.is_pinned = patch.isPinned
   if (patch.isArchived !== undefined) row.is_archived = patch.isArchived
+  if (patch.folderId !== undefined) row.folder_id = patch.folderId
+  if (patch.sortOrder !== undefined) row.sort_order = patch.sortOrder
 
   const { data, error } = await client
     .from(DND_JOURNAL_PAGES_TABLE)

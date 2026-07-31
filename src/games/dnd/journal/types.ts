@@ -26,6 +26,7 @@ export type DndJournalCategory =
   | 'chronology'
   | 'quest'
   | 'item'
+  | 'template'
   | 'images'
   | 'bestiary'
 
@@ -38,14 +39,32 @@ export type DndJournalPage = {
   isFavorite: boolean
   isPinned: boolean
   isArchived: boolean
+  folderId: string | null
+  sortOrder: number
   createdAt: string
   updatedAt: string
 }
 
 export type DndJournalPageEditablePatch = Partial<Pick<
   DndJournalPage,
-  'title' | 'bodyMarkdown' | 'type' | 'aliases' | 'isFavorite' | 'isPinned' | 'isArchived'
+  'title' | 'bodyMarkdown' | 'type' | 'aliases' | 'isFavorite' | 'isPinned' | 'isArchived' | 'folderId' | 'sortOrder'
 >>
+
+export type DndJournalFolder = {
+  id: string
+  sectionId: DndJournalCategory
+  parentFolderId: string | null
+  name: string
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
+export type DndJournalScope =
+  | { kind: 'category'; category: DndJournalCategory }
+  | { kind: 'favorites' }
+  | { kind: 'recent' }
+  | { kind: 'archived' }
 
 export type DndJournalImage = {
   id: string
@@ -66,6 +85,20 @@ export type DndJournalPageRow = {
   is_favorite: boolean
   is_pinned: boolean
   is_archived: boolean
+  folder_id: string | null
+  sort_order: number
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+}
+
+export type DndJournalFolderRow = {
+  id: string
+  user_id: string
+  section_id: string
+  parent_folder_id: string | null
+  name: string
+  sort_order: number
   created_at: string
   updated_at: string
   deleted_at: string | null

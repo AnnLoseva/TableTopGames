@@ -2,6 +2,7 @@ import type { DndJournalCategory, DndPageType } from './types'
 
 export const DND_JOURNAL_PAGES_TABLE = 'dnd_journal_pages'
 export const DND_JOURNAL_IMAGES_TABLE = 'dnd_journal_images'
+export const DND_JOURNAL_FOLDERS_TABLE = 'dnd_journal_folders'
 export const DND_JOURNAL_IMAGES_BUCKET = 'dnd-journal-images'
 
 // The site owner's account (Supabase Auth user id for the "Anna" row in
@@ -57,7 +58,7 @@ export const DND_PAGE_CATEGORY_BY_TYPE: Record<DndPageType, DndJournalCategory> 
 
 // Order/labels mirror JournalCategory.displayName in JournalNote.swift.
 export const DND_JOURNAL_CATEGORY_ORDER: DndJournalCategory[] = [
-  'main', 'session', 'character', 'location', 'organization', 'chronology', 'quest', 'item', 'bestiary', 'images',
+  'main', 'session', 'character', 'location', 'organization', 'chronology', 'quest', 'item', 'template', 'images', 'bestiary',
 ]
 
 export const DND_JOURNAL_CATEGORY_LABELS: Record<DndJournalCategory, string> = {
@@ -69,9 +70,26 @@ export const DND_JOURNAL_CATEGORY_LABELS: Record<DndJournalCategory, string> = {
   chronology: 'События и хронология',
   quest: 'Задания и зацепки',
   item: 'Предметы и документы',
+  template: 'Шаблоны',
   bestiary: 'Бестиарий',
   images: 'Изображения',
 }
+
+export const DND_JOURNAL_CATEGORY_SIGILS: Record<DndJournalCategory, string> = {
+  main: 'Г',
+  session: 'С',
+  character: 'П',
+  location: 'Л',
+  organization: 'О',
+  chronology: 'Х',
+  quest: 'Ц',
+  item: 'Д',
+  template: 'Ш',
+  images: 'И',
+  bestiary: 'Б',
+}
+
+export const DND_JOURNAL_MAX_FOLDER_DEPTH = 3
 
 export const DND_JOURNAL_MAX_IMAGE_BYTES = 10 * 1024 * 1024
 export const DND_JOURNAL_ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic']

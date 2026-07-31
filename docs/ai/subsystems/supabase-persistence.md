@@ -8,6 +8,16 @@ Pathfinder character data remains browser-local. The schema is a **contract**
 shared by the React table and the legacy sheet — undocumented drift breaks
 save/load and sync everywhere.
 
+The isolated D&D journal is a second cross-client contract: `/dnd/journal`
+and RenaCompanion share `dnd_journal_pages`, nested
+`dnd_journal_folders`, `dnd_journal_images` and the public image bucket.
+Pages carry `folder_id`/`sort_order`; folders carry `section_id`,
+`parent_folder_id` and `sort_order` with a three-level application limit.
+Folder deletion is a tombstoned UPDATE after direct pages and children move to
+the section root. Public readers see active rows; only the owner and dedicated
+iPad device identity may write. Its canonical schema is
+`src/games/dnd/journal/supabase/dnd_journal.sql`.
+
 ## Main files
 - `src/games/vampires/lib/supabase.ts` — the React/Next Supabase client.
 - `public/vampires/supabase.js` — the legacy client + `characters` CRUD (create/update/

@@ -6,7 +6,8 @@ Isolated D&D game domain for TableTopGames.
 
 - Route: `/dnd/journal`
 - Entry: `journal/DndJournalRoute.tsx`
-- Persistence: Supabase (`dnd_journal_pages`, `dnd_journal_images` +
+- Persistence: Supabase (`dnd_journal_pages`, `dnd_journal_folders`,
+  `dnd_journal_images` +
   `dnd-journal-images` storage bucket), **applied** to the live project.
   Schema/RLS: `journal/supabase/dnd_journal.sql` (see `docs/ai/DECISIONS.md`,
   2026-07-31 entry).
@@ -31,16 +32,16 @@ Isolated D&D game domain for TableTopGames.
   reading the journal needs no account at all.
 - This is the **same journal data model** as the RenaCompanion iPad app
   (`DnD Interactive Sheet` repo, `Models/GameState/JournalPage.swift` /
-  `JournalImage.swift`); both surfaces read/write the same rows so a page
+  `JournalFolder.swift` / `JournalImage.swift`); both surfaces read/write
+  the same rows so a page
   edited on one appears on the other — **this now actually happens**, not
   just in theory: the app's `Support/JournalSyncService.swift` pushes/pulls
   on launch/foreground and after every local save, verified live against
   this project. Keep `journal/types.ts`, `journal/constants.ts` and the SQL
   contract in sync with the Swift models if either side's shape changes; as
-  of this writing the contract mirrors only the core fields (title/body/type
-  incl. `bestiary`/aliases/favorite/pinned/archived) — the Swift model has
-  since grown `folderId`, `sortOrder`, `entryType` and a `structuredFields`
-  JSON blob that are **not** mirrored or synced.
+  of this writing the contract mirrors the core page fields plus
+  `folderId`/`sortOrder` and the nested folder tree. `entryType` and the
+  `structuredFields` JSON blob remain app-local.
 - **Body text conflicts merge by paragraph, not last-write-wins.**
   `journal/merge.ts` is the canonical conflict policy for `bodyMarkdown`
   (identical paragraphs dedup, a fuller paragraph wins over a partial one, a

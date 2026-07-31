@@ -1,5 +1,39 @@
 # Decisions
 
+## 2026-07-31 — D&D journal folders are synced entities; the website mirrors the iPad journal shell
+
+**Area:** `src/games/dnd/journal/` / Supabase / cross-repo sync contract
+
+**Decision:** Added `dnd_journal_folders` and the nullable
+`dnd_journal_pages.folder_id` plus `sort_order` columns. A folder has a stable
+client-generated UUID, section, optional parent, name, manual order and
+timestamps; both clients enforce at most three levels and reject cycles. The
+website now uses the same three-panel information architecture as the iPad
+app: expandable section/folder tree, searchable/sortable page list, and a
+reading/editing pane. `folderId`/`sortOrder` now round-trip through
+`JournalSyncService`; `entryTypeRaw`/`structuredFields` remain app-local.
+
+Folder removal is a soft-delete contract. Direct pages and child folders move
+to the section root before `deleted_at` is set. The iPad app persists pending
+folder tombstones while offline and consumes remote tombstones before page
+sync, preventing a stale device from re-creating a removed folder. Pages keep
+the existing non-destructive deletion limitation.
+
+The live project received migrations `dnd_journal_synced_folders` and
+`dnd_journal_folder_fk_indexes`. The folders table has RLS, explicit Data API
+grants, public active-row reads, owner-or-device writes, Realtime publication,
+and covering foreign-key indexes. Post-migration verification found no D&D
+security advisor findings.
+
+**Affected files:** `src/games/dnd/journal/{DndJournalRoute,types,constants,mappers,folder-tree}.ts*`,
+`src/games/dnd/journal/components/*`, `src/games/dnd/journal/api/*`,
+`src/games/dnd/journal/supabase/dnd_journal.sql`, and the RenaCompanion
+`JournalSplitView`/`JournalSync*` files.
+
+**Status:** active and applied live.
+
+---
+
 ## 2026-07-31 — RenaCompanion iPad app now syncs the journal (closes the cross-repo loop)
 
 **Area:** Cross-repo sync contract (`DnD Interactive Sheet` repo, not this one — recorded here since this is the shared contract's home)
@@ -8,15 +42,13 @@
 signing in as a dedicated Supabase Auth "RenaCompanionDevice" service account
 (not the owner's real TableTopGames login — she explicitly declined embedding
 her real password in a shipped binary). Its RLS grant is exactly "can write
-`dnd_journal_pages`/`dnd_journal_images`," alongside the owner's own account —
+`dnd_journal_pages`/`dnd_journal_folders`/`dnd_journal_images`," alongside the owner's own account —
 see the "public read, single-editor write" entry below, now widened from one
 allowed writer to two. `Support/JournalMergePolicy.swift` is a verbatim Swift
 port of this repo's `src/games/dnd/journal/merge.ts`, checked against the same
 8 cases. Sync triggers on app launch/foreground (if online) and after every
-local journal save, and only touches the fields this repo's schema already
-has (title/bodyMarkdown/type/aliases/flags/timestamps/images) — the app's
-newer `folderId`/`sortOrder`/`entryTypeRaw`/`structuredFields` fields are not
-in `dnd_journal_pages` and are not synced.
+local journal save. Core page fields, images, `folderId`/`sortOrder` and the
+nested folder tree sync; `entryTypeRaw`/`structuredFields` remain app-local.
 
 **Reason:** This closes the gap the two entries below explicitly called out
 as outstanding ("iPad-app-side sync does not exist yet").
@@ -27,8 +59,8 @@ specifically (verified live: a page pushed from a fresh simulator install
 appeared in Supabase with correct body/type/timestamps, and a page inserted
 directly in Supabase was pulled into the local store on the next sync) — it
 still applies for two-tabs-on-the-site conflicts, which remain untested
-end-to-end. If `dnd_journal_pages` ever grows columns for folders/structured
-fields, extend both this schema and the Swift sync together — see that
+end-to-end. The folder contract has since been added to both schemas; if
+structured fields are ever added, extend both sides together — see that
 repo's `DECISIONS.md` (2026-07-31, "Journal syncs with the TableTopGames
 site") for the full write-up and the device account's rotation procedure.
 
