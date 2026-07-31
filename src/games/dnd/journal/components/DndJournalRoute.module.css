@@ -891,6 +891,15 @@
   border: 1px solid rgba(158, 125, 82, 0.28);
 }
 
+.wikiImageButton {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
 .wikiImageInline img {
   display: block;
   max-width: 100%;
@@ -905,6 +914,11 @@
   border-radius: 12px;
   overflow: hidden;
   background: rgba(10, 11, 14, 0.7);
+}
+
+.wikiImageBlock .wikiImageButton {
+  display: block;
+  width: 100%;
 }
 
 .wikiImageBlock img {
@@ -1129,6 +1143,50 @@
 .dialogActions button:disabled {
   opacity: 0.45;
   cursor: default;
+}
+
+.imageLightbox {
+  position: relative;
+  width: min(1100px, 100%);
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.imageLightbox img {
+  max-width: 100%;
+  max-height: 82vh;
+  border-radius: 10px;
+  border: 1px solid rgba(158, 125, 82, 0.32);
+  object-fit: contain;
+  background: #0a0b0e;
+}
+
+.imageLightboxCaption {
+  color: var(--muted);
+  font: 13px Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.imageLightboxClose {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(158, 125, 82, 0.5);
+  border-radius: 999px;
+  color: var(--text);
+  background: var(--card);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.imageLightboxClose:hover {
+  border-color: var(--bronze-bright);
+  color: var(--bronze-bright);
 }
 
 @media (max-width: 1200px) {

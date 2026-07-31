@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useMemo } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import ReactMarkdown, { defaultUrlTransform } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { createAccountClient } from '@/platform/account/supabase'
@@ -50,6 +50,16 @@ export default function JournalWikiBody({
   onOpenPage,
 }: JournalWikiBodyProps) {
   const blocks = useMemo(() => splitBlocks(source), [source])
+  const [fullscreenImage, setFullscreenImage] = useState<DndJournalImage | null>(null)
+
+  useEffect(() => {
+    if (!fullscreenImage) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setFullscreenImage(null)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [fullscreenImage])
 
   if (!source.trim()) {
     return <p className={styles.wikiEmpty}>Пусто</p>
@@ -65,6 +75,7 @@ export default function JournalWikiBody({
               client={client}
               name={block.name}
               images={images}
+              onOpenImage={setFullscreenImage}
             />
           )
         }
@@ -89,6 +100,7 @@ export default function JournalWikiBody({
                   src={typeof src === 'string' ? src : undefined}
                   alt={alt}
                   images={images}
+                  onOpenImage={setFullscreenImage}
                 />
               ),
             }}
@@ -97,6 +109,34 @@ export default function JournalWikiBody({
           </ReactMarkdown>
         )
       })}
+      {fullscreenImage && (
+        <div
+          className={styles.modalScrim}
+          role="presentation"
+          onMouseDown={() => setFullscreenImage(null)}
+        >
+          <div
+            className={styles.imageLightbox}
+            role="dialog"
+            aria-modal="true"
+            aria-label={fullscreenImage.name || 'Изображение'}
+            onMouseDown={event => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className={styles.imageLightboxClose}
+              onClick={() => setFullscreenImage(null)}
+              aria-label="Закрыть"
+            >
+              ×
+            </button>
+            <img src={getJournalImageUrl(client, fullscreenImage.storagePath)} alt={fullscreenImage.name} />
+            {fullscreenImage.name && (
+              <span className={styles.imageLightboxCaption}>{fullscreenImage.name}</span>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -165,11 +205,13 @@ function WikiImage({
   src,
   alt,
   images,
+  onOpenImage,
 }: {
   client: ReturnType<typeof createAccountClient>
   src?: string
   alt?: string
   images: DndJournalImage[]
+  onOpenImage: (image: DndJournalImage) => void
 }) {
   const imageName = decodeWikiHref(src, 'dnd-image') ?? alt ?? ''
   const image = findImageByName(images, imageName)
@@ -178,7 +220,9 @@ function WikiImage({
   }
   return (
     <span className={styles.wikiImageInline} title={image.name}>
-      <img src={getJournalImageUrl(client, image.storagePath)} alt={image.name} />
+      <button type="button" className={styles.wikiImageButton} onClick={() => onOpenImage(image)}>
+        <img src={getJournalImageUrl(client, image.storagePath)} alt={image.name} />
+      </button>
     </span>
   )
 }
@@ -187,10 +231,12 @@ function StandaloneImage({
   client,
   name,
   images,
+  onOpenImage,
 }: {
   client: ReturnType<typeof createAccountClient>
   name: string
   images: DndJournalImage[]
+  onOpenImage: (image: DndJournalImage) => void
 }) {
   const image = findImageByName(images, name)
   if (!image) {
@@ -202,7 +248,9 @@ function StandaloneImage({
   }
   return (
     <figure className={styles.wikiImageBlock}>
-      <img src={getJournalImageUrl(client, image.storagePath)} alt={image.name} />
+      <button type="button" className={styles.wikiImageButton} onClick={() => onOpenImage(image)}>
+        <img src={getJournalImageUrl(client, image.storagePath)} alt={image.name} />
+      </button>
       <figcaption>{image.name}</figcaption>
     </figure>
   )
