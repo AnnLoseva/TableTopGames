@@ -2,8 +2,8 @@
 
 ## One-line description
 TableTopGames is a multi-game tabletop RPG workspace: a production Vampire:
-The Masquerade V5 character sheet and campaign room plus an isolated Pathfinder
-2 character-creation route.
+The Masquerade V5 character sheet and campaign room, an isolated Pathfinder
+2 character-creation route, and a D&D journal shared with a separate iPad app.
 
 ## Product goal
 Let a VTM V5 group run a chronicle online: each player keeps a full character
@@ -36,6 +36,9 @@ Single app, two roles, driven by a `role` (`master` | `player`) parameter.
    Storyteller modules; currently protected by the compatibility master-password gate.
 7. **Pathfinder 2 character creator** — `/pathfinder2/sheet`, an unlisted,
    browser-local creation draft.
+8. **D&D journal** — `/dnd/journal`, pages + images synced through Supabase
+   with the RenaCompanion iPad app (separate repo); public to read (no login),
+   editable only by the owner account.
 
 Typical flow: **main screen → pick/create character → open room → jump between
 sheet and table**, carrying `room`, `role`, `characterId`.
@@ -71,6 +74,10 @@ sheet and table**, carrying `room`, `role`, `characterId`.
   source chunks and final documents.
 - **Supabase storage buckets** — `table-images` and a music bucket for uploaded
   table/media assets.
+- **D&D journal (separate, non-VTM)** — `dnd_journal_pages`, `dnd_journal_images`
+  and the public `dnd-journal-images` bucket; single hardcoded-owner write,
+  fully public read (no login); shared with the RenaCompanion iPad app (separate
+  repo). See `docs/ai/DECISIONS.md` (2026-07-31).
 - **localStorage** — room/role and character-creation drafts (bridge state).
 - **Pathfinder 2 local data** — starter creation options and short original
   rules notes in `src/games/pathfinder2/sheet/*`; the draft uses its own localStorage

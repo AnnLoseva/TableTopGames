@@ -4,6 +4,17 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
+- **D&D journal, new domain (2026-07-31)** — `/dnd/journal` (`src/games/dnd/journal/*`)
+  is a new isolated game domain, live against Supabase (`dnd_journal_pages`,
+  `dnd_journal_images`, public `dnd-journal-images` bucket; migrations
+  applied). It's the same journal data model as the RenaCompanion iPad app
+  (separate repo, currently offline-only — sync does not exist there yet).
+  Access is single-editor, public read: **no login is required to read the
+  journal**, only one hardcoded owner Auth user id can write (RLS-enforced;
+  UI hides write controls via `isEditor`, which is `false` for guests). See
+  `DECISIONS.md` for the full contract, the offline-rule conflict in the
+  iPad app repo, and known gaps (newer Swift fields — folders, structured
+  entry types — not yet mirrored).
 - **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
   browser consumers load separate, SHA-256-verified Supabase Storage releases
   with generated local fallbacks. Pathfinder additionally pins the remote
@@ -88,15 +99,27 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - Character creation wizard improvements.
 - Humanity / stains / remorse flow.
 - Improve Supabase persistence robustness.
+- D&D journal: have the owner log in herself once to confirm the real edit
+  experience (agents can't — no credentials); wire Supabase sync into the
+  RenaCompanion iPad app and update that repo's offline-only docs;
+  reconcile the newer Swift fields (folders, structured entry types) into
+  the Supabase contract if/when the site needs them.
 
 ## Do not touch casually
 - `public/vampires/main.js`, `public/vampires/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.
 - `src/games/vampires/modules/table/GameTable.tsx` — read `workflows/react-table-edit-protocol.md`.
 - Supabase table/bucket names & saved-data shape — read `workflows/supabase-edit-protocol.md`.
 - `public/vampires/rules.json` / `rules_eng.json` — data layer, mind RU/EN drift.
+- `src/games/dnd/journal/supabase/dnd_journal.sql`, `DND_JOURNAL_OWNER_AUTH_USER_ID` —
+  the hardcoded owner Auth user id must match on both the SQL RLS and the TS
+  constant, or the edit UI and the actual write permission disagree.
 
 ## Last updated
-2026-07-30 — Limited the Pathfinder class catalog to the 21 entries with
+2026-07-31 — Added `/dnd/journal`: new `src/games/dnd/` domain, Supabase
+schema applied live (`dnd_journal_pages`, `dnd_journal_images`, public
+`dnd-journal-images` bucket), single hardcoded-owner-write + fully-public-read
+RLS (no login needed to view). See `DECISIONS.md`.
+  Earlier: Limited the Pathfinder class catalog to the 21 entries with
 connected progression data and local artwork; removed six invalid unsupported
 class entries. Earlier: Split VTM/Pathfinder rule delivery into separate read-only
 Supabase buckets with immutable chunks, verified manifests and local fallbacks;

@@ -1,5 +1,111 @@
 # Decisions
 
+## 2026-07-31 — D&D journal is a new isolated game domain, synced with RenaCompanion (iPad app) via Supabase; public read, single-editor write
+
+**Area:** New game domain (`src/games/dnd/`) / Supabase persistence / cross-repo contract
+
+**Decision:** Added `/dnd/journal`, a new isolated D&D game domain
+(`src/games/dnd/journal/*`), independent of the VTM and Pathfinder domains and
+their Supabase tables. It reuses the site's existing shared account
+(`@/platform/account/*`, same Supabase project/Auth as VTM) for the *edit*
+permission check only — reading the page needs no login at all. The journal's
+data model — pages (title,
+Markdown body, type, aliases, favorite/pinned/archived) and page images — is
+the **same journal used by the RenaCompanion iPad app**
+(`DnD Interactive Sheet` repo, `Models/GameState/JournalPage.swift` /
+`JournalImage.swift`); both surfaces are meant to read and write the same
+Supabase rows, identified by the same client-generated UUID the Swift model
+already produces (`JournalPage.uuid` / `JournalImage.uuid`). Deletes are
+soft (`deleted_at`) only, to avoid a stale offline writer resurrecting a row
+the other side removed.
+
+`dnd_journal_pages`, `dnd_journal_images` and the `dnd-journal-images` storage
+bucket were **applied directly to the live Supabase project**
+(`klhxbaagarqxaqnrvurr`; migrations `dnd_journal_pages_and_images`,
+`dnd_journal_public_read`, `dnd_journal_images_bucket_public`,
+`dnd_journal_images_drop_redundant_select_policy`) at the owner's explicit
+request — this superseded an earlier plan to leave the schema as a proposal
+for Codex to apply separately. `get_advisors` reported no security findings
+for the tables; it did flag (and this was fixed) a `WARN` on the images
+bucket — see below.
+
+**Access model (decided, then widened further, mid-task):** this is not
+owner-only private data — it's a single-editor journal, public to read, the
+same shape as a public campaign blog with one author. **Anyone, logged in or
+not,** can **read** (`to public`, no auth check at all); only one specific
+account can **write**. The allowed writer is hardcoded by Supabase Auth user
+id, looked up directly in `public.users` (`username = 'Anna'`,
+`auth_user_id = 44153f98-aaf2-4935-b7b2-45fe3155edc6`), not passed as a
+parameter — RLS `insert`/`update` policies on both tables and the storage
+bucket check `auth.uid() = '44153f98-…'::uuid` literally; that part was
+unchanged when read access was widened from "any signed-in account" to
+"anyone." The TypeScript client mirrors the same id as
+`DND_JOURNAL_OWNER_AUTH_USER_ID` in `journal/constants.ts` to hide edit
+controls (title input, type/flags, alias editing, delete, image
+upload/delete) from everyone except that account — `DndJournalRoute` computes
+`isEditor` once via `auth.getUser()` (returns `null` for a guest, so
+`isEditor` defaults to `false`) and threads it through
+`JournalSidebar`/`JournalEditor`/`JournalImageGallery`. The realtime
+`postgres_changes` subscription is filtered on the **owner's** fixed id, not
+the viewer's own id (or lack of one), since every viewer watches the same one
+journal. The images bucket is **public** (`storage.buckets.public = true`,
+same as `character-portraits`) with **no SELECT policy** on
+`storage.objects` — a public bucket doesn't need one for `getPublicUrl` reads
+(RLS is bypassed for the public URL endpoint), and Supabase's own advisor
+flagged the redundant policy as a `WARN` (`public_bucket_allows_listing`:
+a broad SELECT policy on a public bucket lets API callers list every file in
+it, not just read what they already have a URL for) — removed rather than
+kept "for safety," since it added listing exposure with no read-access
+benefit.
+
+**Reason:** The user wants one journal system that works identically in the
+iPad app and on the website, synchronized through Supabase, rather than two
+divergent journals — wants to be able to edit from a laptop, and wants the
+journal readable by anyone (no account, no login) while editing stays
+restricted to her account alone.
+
+**Consequences:** This is a genuine conflict with the `DnD Interactive Sheet`
+repo's AGENTS.md rule #1 ("Offline. Never add a network call, analytics, or a
+cloud service" — stated there as not negotiable). That repo's docs have **not**
+been updated to reflect this yet, and no Supabase client exists there yet —
+whoever adds the sync call on the iPad side must also update that repo's
+AGENTS.md/CURRENT-STATE.md so future agents there don't trip over a stale
+offline-only rule, and must write with the same owner auth user id (there is
+only one valid writer identity; the app has no concept of "which account" the
+way the site does). On the TableTopGames side: any future change to
+`journal/types.ts`, `journal/constants.ts` (page/category taxonomy) or the SQL
+contract must stay in sync with the Swift `JournalPage`/`JournalImage` models
+and with each other — this is a shared contract the same way VTM's Supabase
+tables are (see `workflows/supabase-edit-protocol.md`). The hardcoded owner id
+is brittle if that `users` row is ever recreated (new `auth_user_id`); there
+is no admin UI to change it, only editing the constant + re-running the RLS
+policies. The current contract mirrors only the **core** `JournalPage` fields
+observed when this was written (title, bodyMarkdown, type — including the
+`bestiary` case —, aliases, favorite/pinned/archived, timestamps); the Swift
+model was seen gaining `folderId`, `sortOrder`, `entryType` and a
+`structuredFields` JSON blob (character/bestiary templates) around the same
+time, and none of that is mirrored in `dnd_journal_pages` yet — reconcile
+before relying on folders or structured fields surviving a round trip through
+the site. Because read is now fully public, anyone with the URL can read
+every non-deleted page and image, including ones the owner might consider
+half-finished drafts — there is no "unlisted" or "draft" state, only
+`isArchived` (a fetched-but-not-listed page: `JournalSidebar` hides it from
+the list for every viewer including the owner, but it's still readable data,
+still returned by `listJournalPages`, and still linkable/discoverable) and
+`deleted_at` (the only state RLS actually hides). If a genuinely
+private/draft mode is ever wanted, that needs a new column and RLS clause,
+not a UI-only hide.
+
+**Affected files:** `src/app/dnd/journal/page.tsx`, `src/games/dnd/**`,
+`src/games/dnd/journal/supabase/dnd_journal.sql` (applied)
+
+**Status:** active on the TableTopGames side (schema live, RLS verified via
+`get_advisors`, UI gated by owner id). iPad-app-side sync does not exist yet —
+that is separate follow-up work, likely Codex's, in the `DnD Interactive
+Sheet` repo.
+
+---
+
 ## 2026-07-30 — Versioned rule catalogs are delivered from separate Supabase buckets
 
 **Area:** Rules data / Pathfinder 2 / VTM / Supabase Storage / deployment

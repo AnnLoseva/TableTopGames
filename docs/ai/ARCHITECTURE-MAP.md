@@ -5,13 +5,19 @@ For a prose RU overview see `../architecture.md`.
 
 ## Runtime overview
 Next.js App Router serves React routes under the TableTopGames product shell.
-The `src/games/vampires/` and `src/games/pathfinder2/` directories define game ownership
-at the route boundary. The **VTM home screen, game table, journal, reference and private chronicle reader**
+The `src/games/vampires/`, `src/games/pathfinder2/` and `src/games/dnd/` directories define game
+ownership at the route boundary. The **VTM home screen, game table, journal, reference and private chronicle reader**
 are modern React/TypeScript. The **full character sheet** is a legacy vanilla
 HTML/JS app served from `public/vampires/` and embedded via an `<iframe>`. Both layers
 persist to the same Supabase project. Pathfinder 2 keeps an isolated
 React/localStorage character domain and does not access VTM tables or iframe
-contracts; it uses its own read-only Storage bucket for rule delivery.
+contracts; it uses its own read-only Storage bucket for rule delivery. D&D
+(`src/games/dnd/`) is a third isolated domain: its journal (`/dnd/journal`) is
+**public to read, no login required** — it only uses the site's account/Auth
+(same Supabase project) to identify the one account allowed to edit. It owns
+separate `dnd_journal_*` tables and a public storage bucket, and is the
+**same journal data** the RenaCompanion iPad app (separate repo)
+reads/writes — see "Flow: D&D journal" below.
 
 ## Routes
 | Route | Component | Layer |
@@ -25,6 +31,7 @@ contracts; it uses its own read-only Storage bucket for rule delivery.
 | `/vampires/master` | `src/games/vampires/modules/master-console/MasterConsoleRoute` → `MasterConsoleShell` | React master console (6 modules, search, detached windows) |
 | `/pathfinder2/sheet` | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute` | React local character-creation draft |
 | `/vampires/old` | `src/app/(vampires)/vampires/old/page.tsx` | redirect → `/vampires/character-sheet` |
+| `/dnd/journal` | `src/games/dnd/journal/DndJournalRoute` | React + Supabase, shared with the RenaCompanion iPad app |
 
 VTM route files live in `src/app/(vampires)/vampires/` and import their entries directly from
 `src/games/vampires/modules/*`. Parentheses create an App Router route group, so the
@@ -91,6 +98,29 @@ physical boundary does not add a URL segment.
  → read-only migration from v3/v1 keys
  → owner-selected `gnuraco/pf2r` catalogs (checked-in source of truth)
 ```
+
+## Flow: D&D journal
+
+```text
+/dnd/journal  (public — no login required to view)
+ → DndJournalRoute (@/platform/account session optional; used only to check editor identity)
+ → isEditor = auth.uid() === DND_JOURNAL_OWNER_AUTH_USER_ID  (one fixed account; false for guests)
+ → src/games/dnd/journal/api/{journal-api,images-api}.ts
+ → dnd_journal_pages, dnd_journal_images (soft-delete via deleted_at)
+    — SELECT is `to public` (no auth check); only the owner id can INSERT/UPDATE
+ → dnd-journal-images storage bucket (public bucket, getPublicUrl; same owner-write rule)
+ → realtime postgres_changes on dnd_journal_pages, filtered by the owner's fixed user_id
+```
+
+Read is fully public (no account, no login — anyone with the link); write is
+single-editor, enforced by RLS against one hardcoded Supabase Auth user id
+(not by row ownership). The same rows are meant to be read/written by the
+RenaCompanion iPad app (`DnD Interactive Sheet` repo, currently offline-only —
+sync there does not exist yet). Row ids are client-generated UUIDs so either
+side can write the same page/image without a round trip. Schema is
+**applied** to the live project — see
+`src/games/dnd/journal/supabase/dnd_journal.sql` and `DECISIONS.md`
+(2026-07-31).
 
 ## Flow: private chronicle library
 
@@ -170,6 +200,13 @@ maps display names ↔ stable identifiers.
   `rules-vampires` and `rules-pathfinder2`.
 - Table names centralized in `src/games/vampires/modules/table/constants.ts`.
 - Schema/policies live in `src/games/vampires/supabase/*.sql`.
+- Separate, unrelated to the above: the D&D journal domain owns
+  `dnd_journal_pages`, `dnd_journal_images` and the public
+  `dnd-journal-images` bucket, defined in
+  `src/games/dnd/journal/supabase/dnd_journal.sql` (applied). It reuses the
+  same Supabase project/Auth but not any VTM table, and unlike every VTM
+  table its RLS is not row-ownership-based — read is open to `public` (no
+  login), write is restricted to one hardcoded owner Auth user id.
 - Library game history is selected by exact title once, then restored from the
   caller's last-opened membership. DeepSeek searches it only through the
   membership-scoped RPC using the caller's JWT; this membership never grants a

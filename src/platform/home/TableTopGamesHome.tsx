@@ -221,6 +221,19 @@ export default function TableTopGamesHome() {
             </div>
           </Link>
 
+          <Link href="/dnd/journal" className={`${styles.gameCard} ${styles.dndCard}`}>
+            <div className={styles.cardNumber}>03</div>
+            <div className={styles.cardCopy}>
+              <p>RenaCompanion</p>
+              <h2>D&D журнал</h2>
+              <span>Синхронизировано с iPad</span>
+            </div>
+            <div className={styles.cardAction}>
+              Открыть журнал похода
+              <ArrowIcon />
+            </div>
+          </Link>
+
           <button
             type="button"
             className={`${styles.gameCard} ${styles.accountCard}`}
