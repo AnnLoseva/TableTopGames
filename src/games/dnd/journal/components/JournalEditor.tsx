@@ -12,7 +12,7 @@ import JournalImageGallery from './JournalImageGallery'
 type JournalEditorProps = {
   client: ReturnType<typeof createAccountClient>
   page: DndJournalPage
-  onSave: (id: string, patch: DndJournalPageEditablePatch) => Promise<void>
+  onSave: (id: string, patch: DndJournalPageEditablePatch, baselineBodyMarkdown?: string) => Promise<DndJournalPage>
   onDelete: (id: string) => void
   isEditor: boolean
 }
@@ -29,8 +29,11 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
   const [isArchived, setIsArchived] = useState(page.isArchived)
   const [aliasDraft, setAliasDraft] = useState('')
   const [mode, setMode] = useState<'edit' | 'preview'>(isEditor ? 'edit' : 'preview')
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saved'>('idle')
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saved' | 'merged'>('idle')
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // The body text this edit is based on — used to detect whether someone else
+  // (another tab, or eventually the iPad app) changed the page underneath us.
+  const baselineBodyRef = useRef(page.bodyMarkdown)
 
   useEffect(() => {
     setTitle(page.title)
@@ -43,6 +46,7 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
     setAliasDraft('')
     setMode(isEditor ? 'edit' : 'preview')
     setSaveStatus('idle')
+    baselineBodyRef.current = page.bodyMarkdown
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current)
     }
@@ -53,8 +57,23 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
     setSaveStatus('pending')
     if (saveTimer.current) clearTimeout(saveTimer.current)
     const run = () => {
-      void onSave(page.id, patch)
-        .then(() => setSaveStatus('saved'))
+      const baseline = patch.bodyMarkdown !== undefined ? baselineBodyRef.current : undefined
+      void onSave(page.id, patch, baseline)
+        .then(updated => {
+          if (patch.bodyMarkdown === undefined) {
+            setSaveStatus('saved')
+            return
+          }
+          if (updated.bodyMarkdown !== patch.bodyMarkdown) {
+            // The server merged in paragraphs from elsewhere — show the
+            // combined text so it's obvious there's manual cleanup to do.
+            setBodyMarkdown(updated.bodyMarkdown)
+            setSaveStatus('merged')
+          } else {
+            setSaveStatus('saved')
+          }
+          baselineBodyRef.current = updated.bodyMarkdown
+        })
         .catch(error => {
           console.error('Не удалось сохранить страницу журнала:', error)
           setSaveStatus('idle')
@@ -205,7 +224,9 @@ export default function JournalEditor({ client, page, onSave, onDelete, isEditor
             Просмотр
           </button>
           <span className={styles.saveStatus}>
-            {saveStatus === 'pending' ? 'Сохраняю…' : saveStatus === 'saved' ? 'Сохранено' : ''}
+            {saveStatus === 'pending' ? 'Сохраняю…'
+              : saveStatus === 'merged' ? 'Объединено с изменениями из другого места — проверьте абзацы'
+              : saveStatus === 'saved' ? 'Сохранено' : ''}
           </span>
         </div>
       )}

@@ -1,5 +1,120 @@
 # Decisions
 
+## 2026-07-31 — RenaCompanion iPad app now syncs the journal (closes the cross-repo loop)
+
+**Area:** Cross-repo sync contract (`DnD Interactive Sheet` repo, not this one — recorded here since this is the shared contract's home)
+
+**Decision:** The RenaCompanion iPad app added `Support/JournalSyncService.swift`,
+signing in as a dedicated Supabase Auth "RenaCompanionDevice" service account
+(not the owner's real TableTopGames login — she explicitly declined embedding
+her real password in a shipped binary). Its RLS grant is exactly "can write
+`dnd_journal_pages`/`dnd_journal_images`," alongside the owner's own account —
+see the "public read, single-editor write" entry below, now widened from one
+allowed writer to two. `Support/JournalMergePolicy.swift` is a verbatim Swift
+port of this repo's `src/games/dnd/journal/merge.ts`, checked against the same
+8 cases. Sync triggers on app launch/foreground (if online) and after every
+local journal save, and only touches the fields this repo's schema already
+has (title/bodyMarkdown/type/aliases/flags/timestamps/images) — the app's
+newer `folderId`/`sortOrder`/`entryTypeRaw`/`structuredFields` fields are not
+in `dnd_journal_pages` and are not synced.
+
+**Reason:** This closes the gap the two entries below explicitly called out
+as outstanding ("iPad-app-side sync does not exist yet").
+
+**Consequences:** The "unverified against a real concurrent write" caveat in
+the paragraph-merge entry below no longer fully applies for app↔DB conflicts
+specifically (verified live: a page pushed from a fresh simulator install
+appeared in Supabase with correct body/type/timestamps, and a page inserted
+directly in Supabase was pulled into the local store on the next sync) — it
+still applies for two-tabs-on-the-site conflicts, which remain untested
+end-to-end. If `dnd_journal_pages` ever grows columns for folders/structured
+fields, extend both this schema and the Swift sync together — see that
+repo's `DECISIONS.md` (2026-07-31, "Journal syncs with the TableTopGames
+site") for the full write-up and the device account's rotation procedure.
+
+**Affected files (other repo):** `DnD Interactive Sheet/Support/JournalSync*.swift`
+
+**Status:** active — both sides of the sync now exist and have been verified
+against the live Supabase project.
+
+---
+
+## 2026-07-31 — D&D journal body edits reconcile by paragraph instead of last-write-wins
+
+**Area:** `src/games/dnd/journal/` (new) / cross-repo sync contract
+
+**Decision:** `src/games/dnd/journal/merge.ts` adds a paragraph-level merge
+policy for `dnd_journal_pages.body_markdown`, applied by
+`journal/api/journal-api.ts`'s `updateJournalPage` whenever the caller
+supplies the body it started editing from (`baselineBodyMarkdown`). Before
+writing, it re-reads the row's current `body_markdown`; if that no longer
+matches the baseline (someone else — another tab today, the iPad app once its
+sync exists — changed it since this edit started), it merges the two texts
+instead of overwriting, and returns the merged text so the editor can show
+it. `DndJournalRoute`/`JournalEditor` track the baseline per edit and update
+it after every save (merged or not), so the next debounced autosave diffs
+against the right value.
+
+The merge, split into paragraphs (blank-line-separated blocks; comparisons
+never look inside a paragraph at the word level except for one internal
+heuristic, see below), for each pair of paragraphs at the same relative
+position:
+1. Identical (whitespace-normalized) → kept once.
+2. One paragraph's text fully contains the other's → the fuller one is kept.
+3. The existing paragraph reappears verbatim later in the incoming text (or
+   vice versa) → not a conflict, just something inserted/reordered around
+   it; kept in place, the far-away copy is consumed when the walk reaches it
+   (no duplicate).
+4. Otherwise, if most of their words still match (Dice word-overlap ≥ 0.6 —
+   the owner's example was "differs by one word") → both are kept, side by
+   side; this function never guesses which wording is right.
+5. Otherwise the paragraphs are genuinely unrelated: the existing one stays
+   where it is, the incoming (site) one is deferred to the very end of the
+   document — there's no better position to infer for unrelated new
+   material.
+Nothing is silently dropped except a paragraph that's a strict subset of one
+that's kept (rule 2). A full A/B position swap between two paragraphs can
+still produce one duplicate — accepted as a safe, non-lossy failure mode
+rather than something worth a more complex algorithm to avoid, per the
+owner's own framing: this is a rough merge, she reviews and cleans it up by
+hand afterward, not an invisible/perfect one.
+
+**Reason:** The owner explicitly asked for "adds everything unique" sync
+instead of one side's edit clobbering the other's on conflict, with exactly
+the rule set above (paragraph-granularity, containment-wins, one-word-diff
+keeps both, no-match-at-all goes to the bottom).
+
+**Consequences:** This is the **canonical merge contract** — verified against
+8 cases covering every rule (identical body, insertion-shifts-a-paragraph,
+fully-unique-append, one-word-diff, both containment directions,
+existing-only-preserved, two-unrelated-paragraphs-same-slot, and
+empty-incoming-during-a-conflict-doesn't-wipe-the-page) via a throwaway
+`tsx` script, not committed. Whoever adds Supabase writes on the iPad app side
+**must** implement the identical algorithm (or call into this one, e.g.
+through a shared Edge Function) — if only one side merges and the other does
+plain overwrite, conflicts still lose data on whichever path is dumber. The
+reconciliation does a SELECT-then-merge-then-UPDATE from the browser (two
+round trips, not atomic); given today the only writer is the owner via the
+site itself (the iPad app has no sync yet), the race window between the
+SELECT and the UPDATE is not a practical concern yet, but once a second real
+writer exists this should move into a single atomic RPC (`SELECT ... FOR
+UPDATE` + merge + `UPDATE` in one Postgres function) to close that window.
+Only `bodyMarkdown` is merged this way; `title`/`type`/`aliases`/the boolean
+flags are scalar fields where "merge" doesn't apply the same way and still
+follow plain last-write-wins.
+
+**Affected files:** `src/games/dnd/journal/merge.ts`,
+`src/games/dnd/journal/api/journal-api.ts`, `src/games/dnd/journal/DndJournalRoute.tsx`,
+`src/games/dnd/journal/components/JournalEditor.tsx`
+
+**Status:** active on both sides now — see the entry above (2026-07-31,
+"RenaCompanion iPad app now syncs the journal") for the Swift port and its
+live verification. Still unverified specifically for two-tabs-on-the-site
+concurrent edits (that requires the owner's own login, which no agent has);
+the app↔DB path has been exercised end-to-end.
+
+---
+
 ## 2026-07-31 — D&D journal is a new isolated game domain, synced with RenaCompanion (iPad app) via Supabase; public read, single-editor write
 
 **Area:** New game domain (`src/games/dnd/`) / Supabase persistence / cross-repo contract
@@ -99,10 +214,10 @@ not a UI-only hide.
 **Affected files:** `src/app/dnd/journal/page.tsx`, `src/games/dnd/**`,
 `src/games/dnd/journal/supabase/dnd_journal.sql` (applied)
 
-**Status:** active on the TableTopGames side (schema live, RLS verified via
-`get_advisors`, UI gated by owner id). iPad-app-side sync does not exist yet —
-that is separate follow-up work, likely Codex's, in the `DnD Interactive
-Sheet` repo.
+**Status:** active on both sides (schema live, RLS verified via
+`get_advisors`, UI gated by owner id; iPad-app sync now exists too — see the
+2026-07-31 "RenaCompanion iPad app now syncs the journal" entry above, which
+also widened the owner-only write policy to owner-or-device-account).
 
 ---
 

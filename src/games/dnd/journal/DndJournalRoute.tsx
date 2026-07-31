@@ -97,9 +97,14 @@ export default function DndJournalRoute() {
     }
   }
 
-  const handleSave = async (id: string, patch: DndJournalPageEditablePatch) => {
-    const updated = await updateJournalPage(client, id, patch)
+  const handleSave = async (
+    id: string,
+    patch: DndJournalPageEditablePatch,
+    baselineBodyMarkdown?: string,
+  ): Promise<DndJournalPage> => {
+    const updated = await updateJournalPage(client, id, patch, { baselineBodyMarkdown })
     setPages(prev => prev.map(page => (page.id === id ? updated : page)))
+    return updated
   }
 
   const handleDelete = async (id: string) => {

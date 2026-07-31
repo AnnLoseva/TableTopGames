@@ -4,11 +4,14 @@ export const DND_JOURNAL_PAGES_TABLE = 'dnd_journal_pages'
 export const DND_JOURNAL_IMAGES_TABLE = 'dnd_journal_images'
 export const DND_JOURNAL_IMAGES_BUCKET = 'dnd-journal-images'
 
-// The only account allowed to write the journal (Supabase Auth user id for
-// the "Anna" row in public.users). Any other signed-in TableTopGames account
-// can read but never write — mirrored exactly by the RLS policies in
-// supabase/dnd_journal.sql, so this is a UI convenience, not the real
-// security boundary.
+// The site owner's account (Supabase Auth user id for the "Anna" row in
+// public.users) — used here only to decide whether *this UI* shows edit
+// controls. Any other signed-in TableTopGames account can read but never
+// write. The RLS policies in supabase/dnd_journal.sql are the real security
+// boundary and also allow a second identity, a "RenaCompanionDevice" service
+// account the iPad app's background sync signs in as (see that repo's
+// Support/JournalSyncConfig.swift) — that account has no reason to ever load
+// this site, so it's intentionally not part of this UI-only constant.
 export const DND_JOURNAL_OWNER_AUTH_USER_ID = '44153f98-aaf2-4935-b7b2-45fe3155edc6'
 
 export const DND_PAGE_TYPES: DndPageType[] = [

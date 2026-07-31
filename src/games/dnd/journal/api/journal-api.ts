@@ -1,6 +1,7 @@
 import { createAccountClient } from '@/platform/account/supabase'
 import { DND_JOURNAL_PAGES_TABLE } from '../constants'
 import { mapPageRow } from '../mappers'
+import { mergeJournalBody } from '../merge'
 import type { DndJournalPage, DndJournalPageEditablePatch, DndJournalPageRow, DndPageType } from '../types'
 
 const PAGE_COLUMNS = 'id, user_id, title, body_markdown, type, aliases, is_favorite, is_pinned, is_archived, created_at, updated_at, deleted_at'
@@ -50,14 +51,44 @@ export async function createJournalPage(
   return mapPageRow(data as DndJournalPageRow)
 }
 
+/**
+ * Reconciles `incomingBody` against whatever is currently persisted before
+ * writing it, so a concurrent writer (another tab, or eventually the iPad
+ * app) can't have its unique paragraphs silently overwritten. `baseline` is
+ * the body this edit started from; if the row still matches it, nothing
+ * changed underneath and the incoming text is written as-is (the common,
+ * fast path). See `../merge.ts` for the paragraph-level policy.
+ */
+async function reconcileBodyMarkdown(
+  client: JournalClient,
+  id: string,
+  incomingBody: string,
+  baseline: string,
+): Promise<string> {
+  const { data, error } = await client
+    .from(DND_JOURNAL_PAGES_TABLE)
+    .select('body_markdown')
+    .eq('id', id)
+    .maybeSingle()
+  if (error || !data) return incomingBody
+  const currentBody = (data as { body_markdown: string }).body_markdown
+  if (currentBody === baseline) return incomingBody
+  return mergeJournalBody(currentBody, incomingBody)
+}
+
 export async function updateJournalPage(
   client: JournalClient,
   id: string,
   patch: DndJournalPageEditablePatch,
+  options?: { baselineBodyMarkdown?: string },
 ): Promise<DndJournalPage> {
   const row: Record<string, unknown> = { updated_at: new Date().toISOString() }
   if (patch.title !== undefined) row.title = patch.title
-  if (patch.bodyMarkdown !== undefined) row.body_markdown = patch.bodyMarkdown
+  if (patch.bodyMarkdown !== undefined) {
+    row.body_markdown = options?.baselineBodyMarkdown !== undefined
+      ? await reconcileBodyMarkdown(client, id, patch.bodyMarkdown, options.baselineBodyMarkdown)
+      : patch.bodyMarkdown
+  }
   if (patch.type !== undefined) row.type = patch.type
   if (patch.aliases !== undefined) row.aliases = patch.aliases
   if (patch.isFavorite !== undefined) row.is_favorite = patch.isFavorite

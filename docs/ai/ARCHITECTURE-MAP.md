@@ -106,6 +106,9 @@ physical boundary does not add a URL segment.
  → DndJournalRoute (@/platform/account session optional; used only to check editor identity)
  → isEditor = auth.uid() === DND_JOURNAL_OWNER_AUTH_USER_ID  (one fixed account; false for guests)
  → src/games/dnd/journal/api/{journal-api,images-api}.ts
+ → updateJournalPage: bodyMarkdown reconciles against the current row via
+    src/games/dnd/journal/merge.ts when it changed since this edit's baseline
+    (paragraph-level merge, not last-write-wins — see DECISIONS)
  → dnd_journal_pages, dnd_journal_images (soft-delete via deleted_at)
     — SELECT is `to public` (no auth check); only the owner id can INSERT/UPDATE
  → dnd-journal-images storage bucket (public bucket, getPublicUrl; same owner-write rule)
@@ -116,8 +119,10 @@ Read is fully public (no account, no login — anyone with the link); write is
 single-editor, enforced by RLS against one hardcoded Supabase Auth user id
 (not by row ownership). The same rows are meant to be read/written by the
 RenaCompanion iPad app (`DnD Interactive Sheet` repo, currently offline-only —
-sync there does not exist yet). Row ids are client-generated UUIDs so either
-side can write the same page/image without a round trip. Schema is
+sync there does not exist yet); whatever writes from that side must use the
+same paragraph-merge policy as `merge.ts` or conflicts on that path silently
+overwrite. Row ids are client-generated UUIDs so either side can write the
+same page/image without a round trip. Schema is
 **applied** to the live project — see
 `src/games/dnd/journal/supabase/dnd_journal.sql` and `DECISIONS.md`
 (2026-07-31).
