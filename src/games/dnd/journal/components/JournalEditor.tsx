@@ -54,6 +54,21 @@ export default function JournalEditor({
   // The body text this edit is based on — used to detect whether someone else
   // (another tab, or eventually the iPad app) changed the page underneath us.
   const baselineBodyRef = useRef(page.bodyMarkdown)
+  const bodyTextareaRef = useRef<HTMLTextAreaElement | null>(null)
+
+  const autoResizeBodyTextarea = () => {
+    const el = bodyTextareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }
+
+  // Grows the textarea to fit its content instead of scrolling inside a
+  // fixed box — covers mode switches and body changes that don't come from
+  // typing directly (page load, a merged save result).
+  useEffect(() => {
+    if (mode === 'edit') autoResizeBodyTextarea()
+  }, [mode, bodyMarkdown])
 
   useEffect(() => {
     setTitle(page.title)
@@ -285,12 +300,14 @@ export default function JournalEditor({
 
       {isEditor && mode === 'edit' ? (
         <textarea
+          ref={bodyTextareaRef}
           className={styles.bodyTextarea}
           value={bodyMarkdown}
           placeholder={'Markdown + [[ссылки]] и ![[изображения]]…'}
           onChange={event => {
             setBodyMarkdown(event.target.value)
             commit({ bodyMarkdown: event.target.value }, true)
+            autoResizeBodyTextarea()
           }}
         />
       ) : (

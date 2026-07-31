@@ -803,7 +803,8 @@
 }
 
 .bodyTextarea {
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
   padding: 18px;
   border: 1px solid rgba(158, 125, 82, 0.24);
   border-radius: 10px;
