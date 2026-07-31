@@ -16,6 +16,11 @@
   UI hides write controls via `isEditor`, which is `false` for guests). See
   `DECISIONS.md` for the full contract. `folderId`/`sortOrder` now round-trip;
   structured entry fields remain app-local.
+  **Wiki + images (same day):** reading view understands app markup
+  `[[Page]]` (navigable / broken-link create) and `![[Image name]]`
+  (full-width on its own line, inline otherwise) via
+  `wiki-markup.ts` + `JournalWikiBody.tsx`. All journal images are loaded
+  for global name resolution; gallery can insert/copy embeds.
 - **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
   browser consumers load separate, SHA-256-verified Supabase Storage releases
   with generated local fallbacks. Pathfinder additionally pins the remote

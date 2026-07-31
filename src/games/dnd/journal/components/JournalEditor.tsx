@@ -1,27 +1,47 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import type { createAccountClient } from '@/platform/account/supabase'
 import { DND_PAGE_CATEGORY_BY_TYPE, DND_PAGE_TYPE_LABELS, DND_PAGE_TYPES } from '../constants'
 import { folderPath } from '../folder-tree'
-import type { DndJournalFolder, DndJournalPage, DndJournalPageEditablePatch, DndPageType } from '../types'
+import type {
+  DndJournalFolder,
+  DndJournalImage,
+  DndJournalPage,
+  DndJournalPageEditablePatch,
+  DndPageType,
+} from '../types'
 import styles from './DndJournalRoute.module.css'
 import JournalImageGallery from './JournalImageGallery'
+import JournalWikiBody from './JournalWikiBody'
 
 type JournalEditorProps = {
   client: ReturnType<typeof createAccountClient>
   page: DndJournalPage
+  pages: DndJournalPage[]
+  images: DndJournalImage[]
   folders: DndJournalFolder[]
   onSave: (id: string, patch: DndJournalPageEditablePatch, baselineBodyMarkdown?: string) => Promise<DndJournalPage>
   onDelete: (id: string) => void
+  onOpenWikiLink: (title: string) => void
+  onImagesChanged?: () => void
   isEditor: boolean
 }
 
 const SAVE_DEBOUNCE_MS = 800
 
-export default function JournalEditor({ client, page, folders, onSave, onDelete, isEditor }: JournalEditorProps) {
+export default function JournalEditor({
+  client,
+  page,
+  pages,
+  images,
+  folders,
+  onSave,
+  onDelete,
+  onOpenWikiLink,
+  onImagesChanged,
+  isEditor,
+}: JournalEditorProps) {
   const [title, setTitle] = useState(page.title)
   const [bodyMarkdown, setBodyMarkdown] = useState(page.bodyMarkdown)
   const [type, setType] = useState<DndPageType>(page.type)
@@ -270,19 +290,35 @@ export default function JournalEditor({ client, page, folders, onSave, onDelete,
         <textarea
           className={styles.bodyTextarea}
           value={bodyMarkdown}
-          placeholder="Текст страницы в Markdown…"
+          placeholder={'Markdown + [[ссылки]] и ![[изображения]]…'}
           onChange={event => {
             setBodyMarkdown(event.target.value)
             commit({ bodyMarkdown: event.target.value }, true)
           }}
         />
       ) : (
-        <div className={styles.bodyPreview}>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{bodyMarkdown || '*Пусто*'}</ReactMarkdown>
-        </div>
+        <JournalWikiBody
+          client={client}
+          source={bodyMarkdown}
+          pages={pages}
+          images={images}
+          onOpenPage={onOpenWikiLink}
+        />
       )}
 
-      <JournalImageGallery client={client} pageId={page.id} isEditor={isEditor} />
+      <JournalImageGallery
+        client={client}
+        pageId={page.id}
+        isEditor={isEditor}
+        onInsertEmbed={name => {
+          const snippet = bodyMarkdown.trim().length === 0 ? `![[${name}]]` : `\n\n![[${name}]]`
+          const next = `${bodyMarkdown}${snippet}`
+          setBodyMarkdown(next)
+          setMode('edit')
+          commit({ bodyMarkdown: next }, false)
+        }}
+        onChanged={onImagesChanged}
+      />
     </div>
   )
 }

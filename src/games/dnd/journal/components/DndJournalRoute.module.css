@@ -849,11 +849,115 @@
   color: rgba(207, 203, 196, 0.74);
 }
 
+.wikiEmpty {
+  margin: 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.wikiLink,
+.wikiLinkBroken {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.wikiLink {
+  color: var(--bronze-bright);
+}
+
+.wikiLink:hover {
+  color: var(--title);
+}
+
+.wikiLinkBroken {
+  color: #c99b6a;
+  text-decoration-style: dashed;
+}
+
+.wikiImageInline {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 180px;
+  margin: 0 4px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(158, 125, 82, 0.28);
+}
+
+.wikiImageInline img {
+  display: block;
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: cover;
+}
+
+.wikiImageBlock {
+  margin: 18px 0 22px;
+  padding: 0;
+  border: 1px solid rgba(158, 125, 82, 0.28);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(10, 11, 14, 0.7);
+}
+
+.wikiImageBlock img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  background: #0a0b0e;
+}
+
+.wikiImageBlock figcaption {
+  padding: 8px 12px;
+  color: var(--muted);
+  font: 12px Inter, ui-sans-serif, system-ui, sans-serif;
+  border-top: 1px solid rgba(158, 125, 82, 0.18);
+}
+
+.wikiImageMissing {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+  font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.wikiImageMissingBlock {
+  margin: 16px 0;
+  padding: 48px 16px;
+  border: 1px dashed rgba(158, 125, 82, 0.35);
+  border-radius: 12px;
+  color: var(--muted);
+  text-align: center;
+  font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: rgba(10, 11, 14, 0.55);
+}
+
 .images {
   display: grid;
   gap: 10px;
   padding-top: 18px;
   border-top: 1px solid rgba(158, 125, 82, 0.18);
+}
+
+.imagesHint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.imagesHint code {
+  color: var(--bronze-bright);
+  font-size: 11.5px;
 }
 
 .imagesHeadRow {
@@ -876,23 +980,64 @@
 .uploadLabel {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1;
   border: 1px solid rgba(158, 125, 82, 0.24);
   border-radius: 9px;
   background: var(--field);
 }
 
+.imageTile {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 140px;
+}
+
 .imageTile img {
   width: 100%;
-  height: 100%;
+  height: 110px;
   display: block;
   object-fit: cover;
+  background: #0a0b0e;
+}
+
+.imageTileMeta {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border-top: 1px solid rgba(158, 125, 82, 0.16);
+}
+
+.imageTileName {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.imageTileActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.imageActionButton {
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid rgba(158, 125, 82, 0.28);
+  border-radius: 6px;
+  color: var(--bronze-bright);
+  background: transparent;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.imageActionButton:hover {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .imageRemove {
-  position: absolute;
-  top: 5px;
-  right: 5px;
+  margin-left: auto;
   width: 24px;
   height: 24px;
   border: 0;
@@ -905,6 +1050,7 @@
 .uploadLabel {
   display: grid;
   place-items: center;
+  min-height: 140px;
   border-style: dashed;
   color: var(--muted);
   font-size: 12px;

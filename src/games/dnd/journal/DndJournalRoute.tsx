@@ -10,11 +10,13 @@ import {
   renameJournalFolder,
   softDeleteJournalFolder,
 } from './api/folders-api'
+import { listAllJournalImages } from './api/images-api'
 import { createJournalPage, listJournalPages, softDeleteJournalPage, updateJournalPage } from './api/journal-api'
 import styles from './components/DndJournalRoute.module.css'
 import JournalEditor from './components/JournalEditor'
 import JournalPageList from './components/JournalPageList'
 import JournalSidebar from './components/JournalSidebar'
+import { findPageByWikiTitle } from './wiki-markup'
 import {
   DND_JOURNAL_FOLDERS_TABLE,
   DND_JOURNAL_MAX_FOLDER_DEPTH,
@@ -30,6 +32,7 @@ import type {
   DndJournalCategory,
   DndJournalFolder,
   DndJournalFolderRow,
+  DndJournalImage,
   DndJournalPage,
   DndJournalPageEditablePatch,
   DndJournalPageRow,
@@ -82,6 +85,7 @@ export default function DndJournalRoute() {
   const [authUserId, setAuthUserId] = useState<string | null>(null)
   const [pages, setPages] = useState<DndJournalPage[]>([])
   const [folders, setFolders] = useState<DndJournalFolder[]>([])
+  const [images, setImages] = useState<DndJournalImage[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [scope, setScope] = useState<DndJournalScope>({ kind: 'category', category: 'main' })
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null)
@@ -114,14 +118,30 @@ export default function DndJournalRoute() {
     if (window.innerWidth < 720) setListVisible(false)
   }, [])
 
+  const refreshImages = () => {
+    listAllJournalImages(client)
+      .then(setImages)
+      .catch(error => {
+        console.error('Не удалось загрузить изображения журнала:', error)
+      })
+  }
+
   useEffect(() => {
     let cancelled = false
     setLoadError('')
-    Promise.all([listJournalPages(client), listJournalFolders(client)])
-      .then(([loadedPages, loadedFolders]) => {
+    Promise.all([
+      listJournalPages(client),
+      listJournalFolders(client),
+      listAllJournalImages(client).catch(error => {
+        console.error('Не удалось загрузить изображения журнала:', error)
+        return [] as DndJournalImage[]
+      }),
+    ])
+      .then(([loadedPages, loadedFolders, loadedImages]) => {
         if (cancelled) return
         setPages(loadedPages)
         setFolders(loadedFolders)
+        setImages(loadedImages)
         const first = loadedPages.find(page => !page.isArchived) ?? loadedPages[0]
         if (first) {
           setSelectedId(first.id)
@@ -194,6 +214,22 @@ export default function DndJournalRoute() {
       setHistoryIndex(next.length - 1)
       return next
     })
+  }
+
+  /** Wiki `[[Title]]` from the reading view — open or offer to create. */
+  const handleOpenWikiLink = (title: string) => {
+    const existing = findPageByWikiTitle(pages, title)
+    if (existing) {
+      handleSelectPage(existing.id)
+      return
+    }
+    if (!isEditor) {
+      setLoadError(`Страница «${title}» ещё не создана.`)
+      return
+    }
+    setNewPageTitle(title)
+    setNewPageType(scope.kind === 'category' ? defaultTypeForCategory(scope.category) : 'note')
+    setNewPageOpen(true)
   }
 
   const goHistory = (nextIndex: number) => {
@@ -389,9 +425,13 @@ export default function DndJournalRoute() {
               key={selectedPage.id}
               client={client}
               page={selectedPage}
+              pages={pages}
+              images={images}
               folders={folders}
               onSave={handleSave}
               onDelete={handleDelete}
+              onOpenWikiLink={handleOpenWikiLink}
+              onImagesChanged={refreshImages}
               isEditor={isEditor}
             />
           ) : (

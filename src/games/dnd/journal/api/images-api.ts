@@ -28,6 +28,20 @@ export async function listJournalImages(client: JournalClient, pageId: string): 
   return (data as DndJournalImageRow[] ?? []).map(mapImageRow)
 }
 
+/**
+ * Every non-deleted journal image, regardless of page. Needed so `![[name]]`
+ * embeds resolve the same way as on the iPad (global name lookup).
+ */
+export async function listAllJournalImages(client: JournalClient): Promise<DndJournalImage[]> {
+  const { data, error } = await client
+    .from(DND_JOURNAL_IMAGES_TABLE)
+    .select(IMAGE_COLUMNS)
+    .is('deleted_at', null)
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return (data as DndJournalImageRow[] ?? []).map(mapImageRow)
+}
+
 export async function uploadJournalImage(
   client: JournalClient,
   input: { pageId: string | null; name: string; file: File },
