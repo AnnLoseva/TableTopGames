@@ -1,5 +1,71 @@
 # Decisions
 
+## 2026-07-31 — Fixed two journal sync bugs: device-scoped `user_id` filter, and merge running without a real conflict
+
+**Area:** Cross-repo sync contract (`src/games/dnd/journal/`; fix lives entirely in the
+`DnD Interactive Sheet` repo's `Support/JournalSyncService.swift` + `Models/GameState/JournalPage.swift`)
+
+**Decision:** The owner reported the journal sync "won't let me erase or delete
+anything." Investigation found two real bugs in the iPad app's sync (not in
+this repo's TS code, which was already correct), both now fixed:
+
+1. **`syncPages`/`syncFolders` filtered their SELECT by `.eq("user_id",
+   value: deviceUserId)`.** Site-authored rows carry the site owner's auth id
+   (`44153f98-...`), not the "RenaCompanionDevice" account's id — and
+   `dnd_journal.sql`'s read RLS is public regardless of `user_id`, so this
+   filter served no access-control purpose. Net effect: the app could not see
+   any page/folder the site created until the app itself happened to write
+   to that row once (which also silently reassigned its `user_id` to the
+   device account). Removed the filter entirely from both queries.
+2. **The paragraph merge ran on every sync where bodies merely differed, not
+   only on a real conflict.** The app had no memory of what it last agreed on
+   with the server, so a page nobody edited on the device — just stale since
+   the last sync — still got merged against a newer remote body instead of
+   replaced by it. Since the merge policy ([merge.ts](../../src/games/dnd/journal/merge.ts))
+   never removes a paragraph on its own, any deletion made on the site kept
+   reappearing the next time the app happened to sync (app foreground counts,
+   not just active journal use). Fixed by adding `JournalPage.lastSyncedBodyMarkdown`
+   (a per-page baseline snapshot) so `reconcile()` can tell "only remote
+   changed" (adopt remote outright, deletions included) from "both sides
+   changed" (run the real merge) from "only local changed" (push local
+   as-is).
+
+Also brought page deletion to parity with folder deletion: pages now
+propagate through remote tombstones the same way
+(`JournalSyncService.notePageDeleted`/`flushPendingPageDeletions`,
+`syncPages` now fetches deleted rows too and consumes tombstones to remove
+its own local copy). Previously a page deleted **in the app** was only
+removed locally and got silently re-created from the still-alive remote row
+on the very next sync; deletion from the site was already safe in the other
+direction since soft-delete never resurrects via a partial-column upsert, but
+the device's zombie local copy kept re-pushing content into a row that stays
+hidden either way.
+
+**Reason:** Both were implementation bugs, not the additive-merge design
+itself (the owner's original "add everything unique, don't clobber" request
+for genuine conflicts — see the "paragraph merge" entry below — stays
+unchanged; it just no longer fires when there was never a real conflict to
+resolve).
+
+**Consequences:** Whoever touches `JournalSyncService.swift` again must keep
+updating `lastSyncedBodyMarkdown` on every code path that settles on a final
+body value (remote adopt, merge, or local push before its upsert) — if a path
+forgets, that page's *next* sync degrades back to "always merge," silently
+resurrecting deletions again. Requires the owner to rebuild and reinstall the
+iPad app for the fix to take effect; no schema or RLS change was needed.
+Still unverified against the owner's own real edit session end-to-end (same
+caveat as the entries below — no agent has her login).
+
+**Affected files (other repo):** `DnD Interactive Sheet/Support/JournalSyncService.swift`,
+`DnD Interactive Sheet/Models/GameState/JournalPage.swift`,
+`DnD Interactive Sheet/Features/Journal/JournalSplitView.swift`. See that
+repo's `DECISIONS.md` (2026-07-31, same title) for the full write-up.
+
+**Status:** active — code fixed and reviewed; not yet verified against a live
+device rebuild.
+
+---
+
 ## 2026-07-31 — D&D journal folders are synced entities; the website mirrors the iPad journal shell
 
 **Area:** `src/games/dnd/journal/` / Supabase / cross-repo sync contract

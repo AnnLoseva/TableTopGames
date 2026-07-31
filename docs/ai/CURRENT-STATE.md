@@ -21,6 +21,12 @@
   (full-width on its own line, inline otherwise) via
   `wiki-markup.ts` + `JournalWikiBody.tsx`. All journal images are loaded
   for global name resolution; gallery can insert/copy embeds.
+  **Sync fix (same day):** the iPad app's sync had two bugs — a `user_id`
+  filter that hid every site-created page/folder from the app, and the
+  paragraph merge running unconditionally instead of only on a real
+  conflict, which resurrected text deleted on the site. Both fixed app-side
+  (`DnD Interactive Sheet` repo); see `DECISIONS.md`. Needs the owner to
+  rebuild/reinstall the app and confirm live.
 - **Versioned rule delivery (2026-07-30)** — production VTM and Pathfinder
   browser consumers load separate, SHA-256-verified Supabase Storage releases
   with generated local fallbacks. Pathfinder additionally pins the remote
@@ -119,7 +125,10 @@ _(none recorded — add temporary bugs here only while being worked, then remove
   constant, or the edit UI and the actual write permission disagree.
 
 ## Last updated
-2026-07-31 — Added `/dnd/journal`: new `src/games/dnd/` domain, Supabase
+2026-07-31 — Fixed two D&D journal sync bugs on the iPad app side (device-
+scoped `user_id` filter hid site-created content; merge ran without a real
+conflict, resurrecting deleted text). See `DECISIONS.md`.
+  Earlier: Added `/dnd/journal`: new `src/games/dnd/` domain, Supabase
 schema applied live (`dnd_journal_pages`, `dnd_journal_images`, public
 `dnd-journal-images` bucket), single hardcoded-owner-write + fully-public-read
 RLS (no login needed to view). See `DECISIONS.md`.
