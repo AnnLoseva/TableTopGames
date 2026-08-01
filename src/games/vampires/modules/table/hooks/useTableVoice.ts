@@ -31,6 +31,8 @@ import {
 
 const RECONNECT_BASE_MS = 1200
 const RECONNECT_MAX_ATTEMPTS = 5
+// ICE 'disconnected' часто временное состояние — ждём столько, прежде чем считать связь оборванной
+const DISCONNECT_GRACE_MS = 4000
 
 export type UseTableVoiceOptions = {
   roomRef: MutableRefObject<string>
@@ -79,6 +81,7 @@ export function useTableVoice({
   const voiceAudioRefs = useRef<Map<string, HTMLAudioElement>>(new Map())
   const reconnectAttemptsRef = useRef<Map<string, number>>(new Map())
   const reconnectTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
+  const disconnectGraceTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
   // ICE-кандидаты, пришедшие до setRemoteDescription, копим и применяем позже
   const pendingIceCandidatesRef = useRef<Map<string, RTCIceCandidateInit[]>>(new Map())
   // TURN-креды с сервера (/api/turn-credentials); null — ещё не запрашивали
@@ -202,6 +205,14 @@ export function useTableVoice({
     }
   }
 
+  const clearDisconnectGraceTimer = (participantId: string) => {
+    const timer = disconnectGraceTimersRef.current.get(participantId)
+    if (timer) {
+      clearTimeout(timer)
+      disconnectGraceTimersRef.current.delete(participantId)
+    }
+  }
+
   const flushPendingIceCandidates = async (participantId: string, connection: RTCPeerConnection) => {
     const queue = pendingIceCandidatesRef.current.get(participantId)
     if (!queue?.length) return
@@ -241,6 +252,7 @@ export function useTableVoice({
 
   const removeVoiceParticipant = (participantId: string) => {
     clearReconnectTimer(participantId)
+    clearDisconnectGraceTimer(participantId)
     reconnectAttemptsRef.current.delete(participantId)
     pendingIceCandidatesRef.current.delete(participantId)
     voiceDuckingRef.current?.detachRemoteStream(participantId)
@@ -374,24 +386,39 @@ export function useTableVoice({
     }
 
     connection.onconnectionstatechange = () => {
-      const connected = connection.connectionState === 'connected'
-      const failed = connection.connectionState === 'failed'
-        || connection.connectionState === 'closed'
-        || connection.connectionState === 'disconnected'
+      const state = connection.connectionState
+      const connected = state === 'connected'
+      const terminal = state === 'failed' || state === 'closed'
 
       setVoiceParticipants(prev => prev.map(item => (
-        item.id === participantId ? { ...item, connected: connected || (!failed && item.connected) } : item
+        item.id === participantId ? { ...item, connected: connected || (!terminal && item.connected) } : item
       )))
 
       if (connected) {
+        clearDisconnectGraceTimer(participantId)
         reconnectAttemptsRef.current.delete(participantId)
         setVoiceStatus('Голос онлайн')
         return
       }
 
-      if (failed) {
+      if (terminal) {
+        clearDisconnectGraceTimer(participantId)
         setVoiceStatus('Кто-то отключился от голоса')
         schedulePeerReconnect(participantId)
+        return
+      }
+
+      // 'disconnected' часто восстанавливается сам — даём ICE шанс, прежде чем рвать соединение
+      if (state === 'disconnected' && !disconnectGraceTimersRef.current.has(participantId)) {
+        const timer = setTimeout(() => {
+          disconnectGraceTimersRef.current.delete(participantId)
+          const current = peerConnectionsRef.current.get(participantId)
+          if (current && current.connectionState !== 'connected') {
+            setVoiceStatus('Кто-то отключился от голоса')
+            schedulePeerReconnect(participantId)
+          }
+        }, DISCONNECT_GRACE_MS)
+        disconnectGraceTimersRef.current.set(participantId, timer)
       }
     }
 
@@ -406,6 +433,13 @@ export function useTableVoice({
     }
 
     return connection
+  }
+
+  // Тай-брейк при одновременном обмене offer'ами (glare): у ровно одного из двух участников
+  // id меньше — он «вежливый», откатывает свой offer и принимает чужой.
+  const isPoliteVoicePeer = (participantId: string) => {
+    const localId = chatUserRef.current?.id ?? ''
+    return localId < participantId
   }
 
   const handleVoiceSignal = async (signal: VoiceSignal) => {
@@ -436,6 +470,17 @@ export function useTableVoice({
 
       if (signal.type === 'offer' && signal.description) {
         const connection = await createVoicePeer(signal.from, false)
+        const offerCollision = connection.signalingState !== 'stable'
+
+        if (offerCollision && !isPoliteVoicePeer(signal.from)) {
+          // «невежливый» участник игнорирует встречный offer — дожидается ответа на свой
+          return
+        }
+
+        if (offerCollision) {
+          await connection.setLocalDescription({ type: 'rollback' })
+        }
+
         await connection.setRemoteDescription(signal.description)
         await flushPendingIceCandidates(signal.from, connection)
         const answer = await connection.createAnswer()
@@ -540,6 +585,8 @@ export function useTableVoice({
 
     reconnectTimersRef.current.forEach(timer => clearTimeout(timer))
     reconnectTimersRef.current.clear()
+    disconnectGraceTimersRef.current.forEach(timer => clearTimeout(timer))
+    disconnectGraceTimersRef.current.clear()
     reconnectAttemptsRef.current.clear()
 
     voiceEnabledRef.current = false
