@@ -9,7 +9,6 @@ type MediaLibraryProps = {
   isMaster: boolean
   isUploading: boolean
   fileInputRef: RefObject<HTMLInputElement | null>
-  folderInputRef: RefObject<HTMLInputElement | null>
   mediaSearchDraft: string
   textMaterialNameDraft: string
   textMaterialDraft: string
@@ -47,7 +46,6 @@ export default function MediaLibrary({
   isMaster,
   isUploading,
   fileInputRef,
-  folderInputRef,
   mediaSearchDraft,
   textMaterialNameDraft,
   textMaterialDraft,
@@ -103,9 +101,6 @@ export default function MediaLibrary({
       <div className="media-manager-toolbar">
         <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
           {isUploading ? t('Загрузка...') : t('Загрузить')}
-        </button>
-        <button type="button" onClick={() => folderInputRef.current?.click()} disabled={isUploading}>
-          {t('Папка файлов')}
         </button>
         <button type="button" onClick={() => void createNamedFolder(null, false)}>{t('Папка')}</button>
       </div>

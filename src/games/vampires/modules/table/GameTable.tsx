@@ -328,8 +328,6 @@ export default function VampireTable() {
   const [musicPanelOpen, setMusicPanelOpen] = useState(true)
   const [selectionRect, setSelectionRect] = useState<SelectionRect>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const folderInputRef = useRef<HTMLInputElement>(null)
-  const backgroundFileInputRef = useRef<HTMLInputElement>(null)
   const sceneMusicFileInputRef = useRef<HTMLInputElement>(null)
   const sceneRef = useRef<HTMLDivElement>(null)
   const triggerDiceOverlayRef = useRef<((roll: RollMessage) => void) | null>(null)
@@ -381,13 +379,6 @@ export default function VampireTable() {
   const selectedChatCharacterIdRef = useRef('')
   const journalEntriesRef = useRef<JournalEntry[]>([])
 
-
-  useEffect(() => {
-    const folderInput = folderInputRef.current
-    if (!folderInput) return
-    folderInput.setAttribute('webkitdirectory', '')
-    folderInput.setAttribute('directory', '')
-  }, [])
 
   useEffect(() => {
     setPreviewCharacterTab('mechanics')
@@ -717,8 +708,6 @@ export default function VampireTable() {
     uploadFiles,
     addRemoteMediaUrls,
     handleImageUpload,
-    handleFolderUpload,
-    handleBackgroundUpload,
     handleMediaUrlSubmit,
     createTextMaterial,
     handleSceneMediaDrop,
@@ -995,8 +984,6 @@ export default function VampireTable() {
     renameScene,
     activateScene,
     deleteScene,
-    setSceneThumbnailFromSelection,
-    saveSelectionAsGroup,
     publishSceneTrack,
     setSceneBackground,
     clearSceneBackground,
@@ -1749,8 +1736,6 @@ export default function VampireTable() {
             <a href={characterSheetHref(selectedActiveCharacter?.id)} title={t('Открыть лист персонажа')}>{t('Лист')}</a>
           ) : null}
           <input ref={fileInputRef} type="file" multiple onChange={handleImageUpload} />
-          <input ref={folderInputRef} type="file" multiple onChange={handleFolderUpload} />
-          <input ref={backgroundFileInputRef} type="file" accept="image/*" multiple onChange={handleBackgroundUpload} />
           <input ref={sceneMusicFileInputRef} type="file" accept="audio/*" multiple onChange={handleSceneMusicUpload} />
           </div>
         </div>
@@ -1871,15 +1856,7 @@ export default function VampireTable() {
                 <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
                   {isUploading ? t('Загрузка...') : t('Загрузить')}
                 </button>
-                <button type="button" onClick={() => folderInputRef.current?.click()} disabled={isUploading}>
-                  {t('Папка файлов')}
-                </button>
-                <button type="button" onClick={() => backgroundFileInputRef.current?.click()} disabled={isUploading}>
-                  {t('Фон')}
-                </button>
                 <button type="button" onClick={() => createNamedFolder(null, false)}>{t('Папка')}</button>
-                <button type="button" onClick={saveSelectionAsGroup} disabled={selectedLayerIds.size === 0}>{t('Группа')}</button>
-                <button type="button" onClick={setSceneThumbnailFromSelection} disabled={selectedLayerIds.size === 0}>Preview</button>
               </div>
               <form className="media-url-form" onSubmit={event => {
                 event.preventDefault()
@@ -2036,7 +2013,6 @@ export default function VampireTable() {
               isMaster={isMaster}
               isUploading={isUploading}
               fileInputRef={fileInputRef}
-              folderInputRef={folderInputRef}
               mediaSearchDraft={mediaSearchDraft}
               textMaterialNameDraft={textMaterialNameDraft}
               textMaterialDraft={textMaterialDraft}

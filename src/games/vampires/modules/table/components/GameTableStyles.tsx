@@ -1855,6 +1855,20 @@ export default function GameTableStyles() {
           box-shadow: inset 0 -2px 0 rgba(123, 168, 255, 0.8);
         }
 
+        .layer-manager-select-area {
+          position: relative;
+          flex: 1 0 auto;
+          min-height: 100%;
+        }
+
+        .layer-list-selection-rect {
+          position: fixed;
+          z-index: 9999;
+          border: 1px solid #9ab7ff;
+          background: rgba(154, 183, 255, 0.16);
+          pointer-events: none;
+        }
+
         .panel-empty {
           margin: auto;
           color: #888;

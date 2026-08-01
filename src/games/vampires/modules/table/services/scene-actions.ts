@@ -187,47 +187,6 @@ export function createSceneActions(deps: SceneActionsDeps) {
     else deps.setSelectedSceneId(nextActive?.id || null)
   }
 
-  const setSceneThumbnailFromSelection = async () => {
-    const selectedScene = deps.getSelectedScene()
-    if (!deps.isMaster || !selectedScene) return
-    const layer = deps.layers.find(item => deps.selectedLayerIds.has(item.id) && item.layerType === 'image')
-    if (!layer) {
-      window.alert(deps.t('Выдели картинку на активной сцене, чтобы сделать её preview.'))
-      return
-    }
-    const updatedAt = new Date().toISOString()
-    const next = { ...selectedScene, thumbnailUrl: layer.imageData, updatedAt }
-    deps.setScenes(prev => upsertScene(prev, next))
-    await updateSceneRecord(selectedScene.id, { thumbnail_url: layer.imageData, updated_at: updatedAt })
-    deps.broadcast('scene', next)
-  }
-
-  const saveSelectionAsGroup = async () => {
-    if (!deps.isMaster || deps.selectedLayerIds.size === 0) return
-    const name = window.prompt(deps.t('Название группы'), deps.t('Группа сцены'))?.trim()
-    if (!name) return
-    const folderId = await deps.createFolder(null, name, true, false)
-    if (!folderId) return
-    const selected = [...deps.selectedLayerIds]
-      .map(id => deps.layersRef.current.find(layer => layer.id === id))
-      .filter((layer): layer is TableLayer => Boolean(layer))
-      .filter(layer => layer.layerType !== 'folder')
-    for (const [index, layer] of selected.entries()) {
-      const createdId = await deps.addMediaLayer(
-        layer.imageData,
-        layer.name,
-        { width: layer.width, height: layer.height },
-        layer.layerType === 'folder' ? 'file' : layer.layerType,
-        index,
-        undefined,
-        false,
-        { x: layer.x, y: layer.y },
-      )
-      if (createdId) await deps.patchLayer(createdId, { parentId: folderId })
-    }
-    deps.setExpandedFolders(prev => new Set(prev).add(folderId))
-  }
-
   /**
    * Set the active-scene background from an image URL; stage size follows the
    * image's natural size (spec: scene size = background size). Never touches
@@ -294,8 +253,6 @@ export function createSceneActions(deps: SceneActionsDeps) {
     renameScene,
     activateScene,
     deleteScene,
-    setSceneThumbnailFromSelection,
-    saveSelectionAsGroup,
     publishSceneTrack,
     playSceneAutoplayMusic,
     setSceneBackground,

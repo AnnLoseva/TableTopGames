@@ -208,22 +208,6 @@ export function createMediaUploadActions(deps: MediaUploadActionsDeps) {
     }
   }
 
-  const handleFolderUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      await uploadFiles(event.target.files, deps.mediaTab !== 'library', { preserveFolders: true })
-      event.target.value = ''
-    }
-  }
-
-  const handleBackgroundUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const imageFiles = Array.from(event.target.files).filter(file => file.type.startsWith('image/'))
-      if (imageFiles.length === 0) window.alert(deps.t('Для фона выбери картинку.'))
-      else await uploadFiles(imageFiles, true, { asBackground: true })
-      event.target.value = ''
-    }
-  }
-
   const handleMediaUrlSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const items = getMediaUrlsFromText(deps.mediaUrlDraft)
@@ -314,8 +298,6 @@ export function createMediaUploadActions(deps: MediaUploadActionsDeps) {
     uploadFiles,
     addRemoteMediaUrls,
     handleImageUpload,
-    handleFolderUpload,
-    handleBackgroundUpload,
     handleMediaUrlSubmit,
     createTextMaterial,
     handleSceneMediaDrop,
