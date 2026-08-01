@@ -8,7 +8,6 @@ import type { CharacterToken, TokenPatch } from '@/games/vampires/modules/table/
 
 const DRAG_THRESHOLD = 5
 const DOUBLE_TAP_DELAY = 300
-const MOVE_BROADCAST_INTERVAL = 90
 /** Inline style raise while dragging; committed as a real zIndex patch on release. */
 const DRAG_RAISE_Z = 999999
 
@@ -21,7 +20,6 @@ type TokenDragState = {
   startClientX: number
   startClientY: number
   moved: boolean
-  lastBroadcastAt: number
   previewX: number
   previewY: number
   previewWidth: number
@@ -43,7 +41,6 @@ export type TokenLayerProps = {
   isOwnToken: (token: CharacterToken) => boolean
   canManageToken: (token: CharacterToken) => boolean
   canResizeToken: (token: CharacterToken) => boolean
-  broadcastTokenMove: (updates: Array<{ id: string; x: number; y: number }>) => void
   patchToken: (tokenId: string, patch: TokenPatch) => Promise<void>
   bringTokenToFront: (tokenId: string) => Promise<void>
   deleteToken: (tokenId: string) => Promise<void>
@@ -61,7 +58,6 @@ export default function TokenLayer({
   isOwnToken,
   canManageToken,
   canResizeToken,
-  broadcastTokenMove,
   patchToken,
   bringTokenToFront,
   deleteToken,
@@ -98,11 +94,6 @@ export default function TokenLayer({
       drag.previewX = Math.round(drag.token.x + sceneDx)
       drag.previewY = Math.round(drag.token.y + sceneDy)
       if (element) element.style.transform = `translate3d(${sceneDx}px, ${sceneDy}px, 0)`
-      const now = performance.now()
-      if (now - drag.lastBroadcastAt >= MOVE_BROADCAST_INTERVAL) {
-        drag.lastBroadcastAt = now
-        broadcastTokenMove([{ id: drag.token.id, x: drag.previewX, y: drag.previewY }])
-      }
       return
     }
 
@@ -261,7 +252,6 @@ export default function TokenLayer({
       startClientX: event.clientX,
       startClientY: event.clientY,
       moved: false,
-      lastBroadcastAt: 0,
       previewX: token.x,
       previewY: token.y,
       previewWidth: token.width,

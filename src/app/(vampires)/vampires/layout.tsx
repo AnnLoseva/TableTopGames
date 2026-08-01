@@ -4,6 +4,11 @@ import { GlobalMusicEngineMount } from '@/games/vampires/modules/music/component
 import '@/games/vampires/styles/vampires.css'
 
 export const metadata: Metadata = {
+  title: {
+    default: 'Vampire: The Masquerade',
+    template: '%s · Vampire: The Masquerade',
+  },
+  description: 'Цифровой лист персонажа и игровой стол для Vampire: The Masquerade V5',
   icons: {
     icon: '/vampires/favicon.ico',
   },

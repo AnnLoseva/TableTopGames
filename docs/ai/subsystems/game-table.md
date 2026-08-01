@@ -62,7 +62,10 @@ Three fixed visual layers (2026-07-18 DECISIONS entry):
 3. **Character tokens** (`table_tokens`, `TokenLayer.tsx`) — always above
    media (`TOKEN_LAYER_Z`), aspect-preserving (`DEFAULT_TOKEN_SIZE` 160 on the
    longer side), linked to `characters.id`; double-click/tap opens
-   `CharacterPreviewModal` for the master or a controlling player.
+   `CharacterPreviewModal` for the master or a controlling player. Drag/resize
+   is local-only (CSS transform) with a single sync (broadcast + DB write) on
+   release, same pattern as media/layers (see `DECISIONS.md` 2026-08-01). The
+   master or the controlling player may move or resize a token.
 
 Player visibility is geometric (`utils/scene-geometry.ts`): objects fully
 outside the stage are hidden, partial overlaps are clipped

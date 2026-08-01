@@ -1,5 +1,44 @@
 # Decisions
 
+## 2026-08-01 — Character tokens drag fully local, sync once on release; players may resize their own tokens
+
+**Area:** Game table / `TokenLayer.tsx`, `services/token-actions.ts`, `hooks/useTableRealtime.ts`
+
+**Decision:** Token drag no longer broadcasts a live position every ~90 ms during
+the move (the 2026-07-18 decision's "token drag broadcasts at ~90 ms and persists
+on pointerup"). It now matches the media/layer drag pattern exactly: the dragged
+element is moved with a local CSS `transform` only, and the position/size is
+broadcast (`token-update`) and persisted a single time, on pointer release. The
+`token-move` broadcast event and `broadcastTokenMove` plumbing were removed
+(dead code once nothing sends live updates). Resize permission (`canResizeToken`)
+now matches move permission (`canManageToken`): the master or whichever player
+controls the token's character may resize it — previously resize was
+master-only.
+
+**Reason:** The owner reported token movement was noticeably laggy. The live
+~90 ms broadcast meant every other connected client re-rendered its token list
+on every tick of someone else's drag, on top of the network chatter — unlike
+media/layer dragging, which was always local-only with a single sync on drop
+and never had this problem. Resize was master-only with no stated reason; the
+owner asked for players to be able to resize their own tokens, consistent with
+who is already allowed to move them.
+
+**Consequences:** Other clients now see a token jump to its new position once,
+on release, instead of animating smoothly across the table mid-drag (same
+tradeoff already accepted for media/layers). If live drag animation for
+onlookers is wanted back later, it should be reintroduced as a rate-limited,
+opt-in broadcast rather than default behavior, given the perf cost observed
+here.
+
+**Affected files:** `src/games/vampires/modules/table/components/canvas/TokenLayer.tsx`,
+`src/games/vampires/modules/table/services/token-actions.ts`,
+`src/games/vampires/modules/table/hooks/useTableRealtime.ts`,
+`src/games/vampires/modules/table/GameTable.tsx`.
+
+**Status:** active (supersedes the drag-broadcast detail of the 2026-07-18 entry below)
+
+---
+
 ## 2026-07-31 — Fixed a live RLS bug that silently broke every journal soft-delete and every image upload since the tables were created
 
 **Area:** Supabase RLS (`dnd_journal_pages`, `dnd_journal_images`, `storage.objects` for the `dnd-journal-images` bucket)

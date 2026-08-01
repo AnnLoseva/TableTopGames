@@ -256,15 +256,6 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
           token.id === update.id ? { ...token, ...patch } : token
         ))))
       })
-      .on('broadcast', { event: 'token-move' }, payload => {
-        const update = payload.payload as { room?: string; updates?: Array<{ id: string; x: number; y: number }> }
-        if (update.room !== currentRoom || !Array.isArray(update.updates) || update.updates.length === 0) return
-        const positions = new Map(update.updates.map(item => [item.id, item]))
-        setTokens(prev => prev.map(token => {
-          const position = positions.get(token.id)
-          return position ? { ...token, x: position.x, y: position.y } : token
-        }))
-      })
       .on('broadcast', { event: 'token-delete' }, payload => {
         const id = String((payload.payload as { id?: string })?.id || '')
         if (!id) return

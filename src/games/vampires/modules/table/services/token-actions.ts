@@ -26,7 +26,8 @@ export function createTokenActions(deps: TokenActionsDeps) {
   const canManageToken = (token: CharacterToken) =>
     deps.isMaster || deps.canControlCharacterId(token.characterId)
 
-  const canResizeToken = (token: CharacterToken) => deps.isMaster && Boolean(token)
+  /** Same rule as move: the master or the controlling player may resize a token. */
+  const canResizeToken = (token: CharacterToken) => canManageToken(token)
 
   /** One active token per character per scene: re-select the existing one instead of duplicating. */
   const addCharacterToken = async (character: {
@@ -107,12 +108,6 @@ export function createTokenActions(deps: TokenActionsDeps) {
     }
   }
 
-  /** Live drag positions: broadcast only, no DB write (throttled by the caller). */
-  const broadcastTokenMove = (updates: Array<{ id: string; x: number; y: number }>) => {
-    if (updates.length === 0) return
-    deps.broadcast('token-move', { room: deps.room, updates })
-  }
-
   const bringTokenToFront = async (tokenId: string) => {
     const token = deps.tokensRef.current.find(item => item.id === tokenId)
     if (!token || !canManageToken(token)) return
@@ -143,7 +138,6 @@ export function createTokenActions(deps: TokenActionsDeps) {
     canResizeToken,
     addCharacterToken,
     patchToken,
-    broadcastTokenMove,
     bringTokenToFront,
     deleteToken,
   }

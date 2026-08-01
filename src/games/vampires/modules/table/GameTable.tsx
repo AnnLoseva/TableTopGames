@@ -683,7 +683,6 @@ export default function VampireTable() {
     canResizeToken,
     addCharacterToken,
     patchToken,
-    broadcastTokenMove,
     bringTokenToFront,
     deleteToken,
   } = useTokenActions({
@@ -2125,7 +2124,6 @@ export default function VampireTable() {
               isOwnToken={isOwnToken}
               canManageToken={canManageToken}
               canResizeToken={canResizeToken}
-              broadcastTokenMove={broadcastTokenMove}
               patchToken={patchToken}
               bringTokenToFront={bringTokenToFront}
               deleteToken={deleteToken}
