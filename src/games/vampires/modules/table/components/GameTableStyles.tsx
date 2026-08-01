@@ -4478,6 +4478,23 @@ export default function GameTableStyles() {
           gap: 10px;
         }
 
+        .master-login-form {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 10px;
+          margin-bottom: 10px;
+        }
+
+        .master-login-form input {
+          min-width: 0;
+          border: 1px solid #333;
+          border-radius: 6px;
+          background: #0b0b0b;
+          color: #f4f4f4;
+          padding: 0 12px;
+          font: inherit;
+        }
+
         .role-gate button {
           border: 1px solid #773030;
           background: #171717;

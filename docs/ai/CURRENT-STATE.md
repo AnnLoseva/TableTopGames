@@ -68,7 +68,8 @@
   background candidates (`table_images.is_background`), images/folders,
   text/documents and tokens; Media has unified file/folder/background upload and
   multi-select. The master character roster bulk-adds from her full gallery and
-  the duplicate right-side Characters tab/password prompt are gone from the table.
+  the duplicate right-side Characters tab is gone. Master-role entry on the table
+  requires the compatibility password configured in the master console.
   Needs live-room testing with a
   logged-in master + player; server-side permission checks still impossible
   (custom users identity, permissive `table_*` RLS).

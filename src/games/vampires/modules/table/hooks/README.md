@@ -2,7 +2,7 @@
 
 | Hook | Status | Responsibility |
 |---|---|---|
-| `useRoomSession` | implemented | `room` + password-free table role selection |
+| `useRoomSession` | implemented | `room` + role selection with compatibility-password verification for master entry |
 | `useTableRolls` | implemented | roll history state + initial load |
 | `useTableAlerts` | implemented | sound + tab-title blink on new roll/incoming chat message (see `utils/notification-alerts.ts`) |
 | `useTableScenes` | implemented | scene folders, scenes, view mode, active scene/music + bootstrap |

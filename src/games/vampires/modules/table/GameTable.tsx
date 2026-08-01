@@ -221,9 +221,12 @@ export default function VampireTable() {
     roomRef,
     tableRole,
     isMaster,
+    masterPasswordDraft,
+    setMasterPasswordDraft,
     resetTableRole,
-    chooseTableRole,
-  } = useRoomSession()
+    choosePlayerRole,
+    enterAsMaster,
+  } = useRoomSession({ t })
   const { rolls, setRolls, rollsStatus } = useTableRolls(room)
   const {
     scenes,
@@ -2384,8 +2387,10 @@ export default function VampireTable() {
 
       <TableRoleGate
         open={!tableRole}
-        onChooseMaster={() => chooseTableRole('master')}
-        onChoosePlayer={() => chooseTableRole('player')}
+        masterPasswordDraft={masterPasswordDraft}
+        onMasterPasswordDraftChange={setMasterPasswordDraft}
+        onEnterAsMaster={enterAsMaster}
+        onChoosePlayer={choosePlayerRole}
       />
 
       {diceOverlayQueue[0] ? (

@@ -14,8 +14,8 @@ real time through Supabase and keyed by `room`.
 
 ## Major responsibilities (currently concentrated in `GameTable.tsx`)
 - Read `room` / `role` (params + localStorage) and gate master-only table UI by
-  the selected role. The table page does not display the master password; the
-  compatibility password control remains in the separate master console.
+  the selected role. Entering as master requires the compatibility password;
+  password configuration remains in the separate master console.
 - Load and subscribe to: rolls, chat, images, scenes, scene-music, music library.
 - Coordinate scenes, layers, media placement, dice, chat, journal, music panels.
 - Manage modals/overlays (e.g. dice roll overlay).

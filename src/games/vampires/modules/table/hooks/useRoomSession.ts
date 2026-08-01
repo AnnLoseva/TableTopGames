@@ -1,5 +1,6 @@
 'use client'
 
+import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import type { TableRole } from '../types'
 import {
@@ -8,11 +9,17 @@ import {
   getRoomFromLocation,
   rememberRoom,
   rememberTableRole,
+  verifyMasterPassword,
 } from '../utils/room-session'
 
-export function useRoomSession() {
+type UseRoomSessionOptions = {
+  t: (ru: string) => string
+}
+
+export function useRoomSession({ t }: UseRoomSessionOptions) {
   const [room, setRoom] = useState('campaign-666')
   const [tableRole, setTableRole] = useState<TableRole | null>(null)
+  const [masterPasswordDraft, setMasterPasswordDraft] = useState('')
   const roomRef = useRef(room)
 
   useEffect(() => {
@@ -32,10 +39,11 @@ export function useRoomSession() {
       rememberTableRole(urlRole)
       setTableRole(urlRole)
     } else if (urlRole === 'master') {
-      rememberTableRole(urlRole)
-      setTableRole(urlRole)
-    } else if (savedRole === 'master' || savedRole === 'player') {
-      setTableRole(savedRole)
+      clearTableRole()
+    } else if (savedRole === 'player') {
+      setTableRole('player')
+    } else if (savedRole === 'master') {
+      clearTableRole()
     }
   }, [])
 
@@ -44,8 +52,22 @@ export function useRoomSession() {
     setTableRole(role)
   }
 
+  const choosePlayerRole = () => chooseTableRole('player')
+
+  const enterAsMaster = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!verifyMasterPassword(masterPasswordDraft)) {
+      window.alert(t('Пароль мастера не подошёл.'))
+      return
+    }
+
+    setMasterPasswordDraft('')
+    chooseTableRole('master')
+  }
+
   const resetTableRole = () => {
     clearTableRole()
+    setMasterPasswordDraft('')
     setTableRole(null)
   }
 
@@ -57,7 +79,10 @@ export function useRoomSession() {
     roomRef,
     tableRole,
     isMaster,
-    chooseTableRole,
+    masterPasswordDraft,
+    setMasterPasswordDraft,
+    choosePlayerRole,
+    enterAsMaster,
     resetTableRole,
   }
 }

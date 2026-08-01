@@ -16,7 +16,7 @@ rolls, characters-at-table, and room orchestration.
 - `character-api.ts` — `characters` fetch/update
 
 ### Hooks (`hooks/*`) — wired in `GameTable.tsx`
-- `useRoomSession` — room + table role (password compatibility UI lives only in master console)
+- `useRoomSession` — room + table role; master entry requires the compatibility password configured in the master console
 - `useTableRolls` — roll history state
 - `useTableScenes` — scenes/folders, active scene, view mode, scene music
 - `useTableLayers` — layers + `loadLayersForScene`

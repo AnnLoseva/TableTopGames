@@ -1,17 +1,22 @@
 'use client'
 
+import type { FormEvent } from 'react'
 import { useLang } from '@/games/vampires/lib/i18n/LanguageProvider'
 import type { TableRole } from '../types'
 
 type TableRoleGateProps = {
   open: boolean
-  onChooseMaster: () => void
+  masterPasswordDraft: string
+  onMasterPasswordDraftChange: (value: string) => void
+  onEnterAsMaster: (event: FormEvent<HTMLFormElement>) => void
   onChoosePlayer: () => void
 }
 
 export function TableRoleGate({
   open,
-  onChooseMaster,
+  masterPasswordDraft,
+  onMasterPasswordDraftChange,
+  onEnterAsMaster,
   onChoosePlayer,
 }: TableRoleGateProps) {
   const { t } = useLang()
@@ -23,10 +28,18 @@ export function TableRoleGate({
       <section>
         <span>{t('Вход на стол')}</span>
         <h2>{t('Кто ты в этой сцене?')}</h2>
+        <form className="master-login-form" onSubmit={onEnterAsMaster}>
+          <input
+            value={masterPasswordDraft}
+            onChange={event => onMasterPasswordDraftChange(event.target.value)}
+            placeholder={t('Пароль мастера')}
+            aria-label={t('Пароль мастера')}
+            autoComplete="current-password"
+            type="password"
+          />
+          <button type="submit">{t('Мастер')}</button>
+        </form>
         <div>
-          <button type="button" onClick={onChooseMaster}>
-            {t('Мастер')}
-          </button>
           <button type="button" onClick={onChoosePlayer}>
             {t('Игрок')}
           </button>

@@ -1,5 +1,25 @@
 # Decisions
 
+## 2026-08-01 — Master table entry requires the compatibility password
+
+**Area:** Game table / role gate
+
+**Decision:** Selecting the master role requires the locally configured master
+password. A `role=master` URL and a remembered master role both reopen the role
+gate instead of bypassing verification. Player entry remains password-free, and
+password configuration remains in the separate master console.
+
+**Reason:** Opening the table as master must require an explicit password check.
+
+**Consequences:** This restores a client-side compatibility lock only; it does
+not replace server-side authorization or change the existing `table_*` RLS model.
+
+**Affected files:** `src/games/vampires/modules/table/{GameTable.tsx,hooks/useRoomSession.ts,components/MasterPasswordGate.tsx,components/GameTableStyles.tsx}`.
+
+**Status:** active
+
+---
+
 ## 2026-08-01 — Table scenes gain session folders, player view modes and reusable background candidates
 
 **Area:** Game table / scenes / media / Supabase
@@ -16,9 +36,8 @@ permits unrestricted panning. The master remains unrestricted in both modes.
 or uploading a background keeps one media row/storage object, moves the row
 off-table and exposes it in Layers → Background; the scene's canonical active
 background remains `table_scenes.background_url/width/height`. Media folders are
-ordinary `table_images` folder rows inside the image tree. The table role gate
-no longer displays the legacy master password; the separate master console
-retains that compatibility control. This does not create server-side table
+ordinary `table_images` folder rows inside the image tree. Password configuration
+remains in the separate master console. This does not create server-side table
 authorization: current permissive `table_*` RLS remains the existing contract.
 
 **Reason:** A session needs its own reusable scene set; players need an explicit
