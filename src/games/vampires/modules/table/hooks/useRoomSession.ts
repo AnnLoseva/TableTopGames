@@ -1,13 +1,11 @@
 'use client'
 
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import { MASTER_PASSWORD_KEY } from '../constants'
 import type { TableRole } from '../types'
 import {
   clearTableRole,
   getRoleFromLocation,
   getRoomFromLocation,
-  getStoredMasterPassword,
   rememberRoom,
   rememberTableRole,
   verifyMasterPassword,
@@ -21,7 +19,6 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
   const [room, setRoom] = useState('campaign-666')
   const [tableRole, setTableRole] = useState<TableRole | null>(null)
   const [masterPasswordDraft, setMasterPasswordDraft] = useState('')
-  const [masterPasswordEdit, setMasterPasswordEdit] = useState('1234')
   const roomRef = useRef(room)
 
   useEffect(() => {
@@ -35,8 +32,6 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
   }, [])
 
   useEffect(() => {
-    const savedMasterPassword = getStoredMasterPassword()
-    setMasterPasswordEdit(savedMasterPassword)
     const savedRole = window.localStorage.getItem('vtm-table-role')
     const urlRole = getRoleFromLocation()
     if (urlRole === 'player') {
@@ -64,11 +59,6 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
     chooseTableRole('master')
   }
 
-  const saveMasterPassword = () => {
-    window.localStorage.setItem(MASTER_PASSWORD_KEY, masterPasswordEdit)
-    window.alert(t('Пароль мастера обновлён.'))
-  }
-
   const resetTableRole = () => {
     clearTableRole()
     setTableRole(null)
@@ -84,11 +74,8 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
     isMaster,
     masterPasswordDraft,
     setMasterPasswordDraft,
-    masterPasswordEdit,
-    setMasterPasswordEdit,
     chooseTableRole,
     enterAsMaster,
-    saveMasterPassword,
     resetTableRole,
   }
 }

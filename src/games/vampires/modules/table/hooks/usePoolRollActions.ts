@@ -4,7 +4,7 @@ import { createPoolRollActions, type PoolRollActionsDeps } from '../services/poo
 
 export type { PoolRollActionsDeps, PoolRollSnapshot } from '../services/pool-roll-actions'
 
-/** Master/preview pool rolls and contested roll requests. */
+/** Preview pool rolls and contested roll requests. */
 export function usePoolRollActions(deps: PoolRollActionsDeps) {
   return createPoolRollActions(deps)
 }

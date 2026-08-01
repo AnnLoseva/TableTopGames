@@ -13,7 +13,6 @@ import type {
   JournalEntry,
   LayerContextMenu,
   LayerPatch,
-  MediaTab,
   RightRailTab,
   TableLayer,
   TableRole,
@@ -53,7 +52,6 @@ export type LayerActionsDeps = {
   setRightRailTab: Dispatch<SetStateAction<RightRailTab>>
   setExpandedFolders: Dispatch<SetStateAction<Set<string>>>
   setLayerContextMenu: Dispatch<SetStateAction<LayerContextMenu>>
-  setMediaTab: Dispatch<SetStateAction<MediaTab>>
   broadcast: (event: string, payload: unknown) => void
   journalEntriesRef: MutableRefObject<JournalEntry[]>
   getLayerContext: () => LayerContextSnapshot
@@ -409,42 +407,6 @@ export function createLayerActions(deps: LayerActionsDeps) {
     for (const id of ids) await deleteLayer(id)
   }
 
-  const duplicateLayer = async (layer: TableLayer) => {
-    if (!canEdit(layer) || layer.layerType === 'folder') return
-    await addMediaLayer(
-      layer.imageData,
-      `${layer.name} copy`,
-      { width: layer.width, height: layer.height },
-      layer.layerType === 'video'
-        ? 'video'
-        : layer.layerType === 'text'
-          ? 'text'
-          : layer.layerType === 'file'
-            ? 'file'
-            : 'image',
-      0,
-      undefined,
-      layer.onTable,
-      {
-        x: layer.x + 28,
-        y: layer.y + 28,
-        parentId: layer.parentId,
-        cropX: layer.cropX,
-        cropY: layer.cropY,
-        cropWidth: layer.cropWidth,
-        cropHeight: layer.cropHeight,
-        opacity: layer.opacity,
-        blendMode: layer.blendMode,
-        rotation: layer.rotation,
-        flipX: layer.flipX,
-        flipY: layer.flipY,
-        brightness: layer.brightness,
-        contrast: layer.contrast,
-        saturation: layer.saturation,
-      },
-    )
-  }
-
   const renameLayer = async (layer: TableLayer) => {
     const nextName = window.prompt(deps.t('Новое имя слоя'), layer.name)?.trim()
     if (!nextName || nextName === layer.name) return
@@ -452,55 +414,10 @@ export function createLayerActions(deps: LayerActionsDeps) {
     deps.setLayerContextMenu(null)
   }
 
-  const resetLayerCrop = async (layer: TableLayer) => {
-    await patchLayer(layer.id, { cropX: null, cropY: null, cropWidth: null, cropHeight: null })
-    deps.setLayerContextMenu(null)
-  }
-
   const createNamedFolder = async (parentId: string | null = null, onTable = true) => {
     const nextName = window.prompt(deps.t('Название папки'), deps.t('Новая папка'))?.trim()
     if (!nextName) return null
     return createFolder(parentId, nextName, true, onTable)
-  }
-
-  const copyLayerToPersonalMedia = async (layer: TableLayer) => {
-    if (layer.layerType === 'folder') return
-    await addMediaLayer(
-      layer.imageData,
-      `${layer.name} copy`,
-      { width: layer.width, height: layer.height },
-      layer.layerType === 'video'
-        ? 'video'
-        : layer.layerType === 'text'
-          ? 'text'
-          : layer.layerType === 'file'
-            ? 'file'
-            : 'image',
-      0,
-      undefined,
-      false,
-      {
-        parentId: null,
-        visible: true,
-        locked: false,
-        cropX: layer.cropX,
-        cropY: layer.cropY,
-        cropWidth: layer.cropWidth,
-        cropHeight: layer.cropHeight,
-        opacity: layer.opacity,
-        blendMode: layer.blendMode,
-        rotation: layer.rotation,
-        flipX: layer.flipX,
-        flipY: layer.flipY,
-        brightness: layer.brightness,
-        contrast: layer.contrast,
-        saturation: layer.saturation,
-      },
-    )
-    deps.setRightRailTab('media')
-    deps.setMediaTab('library')
-    deps.setLayerContextMenu(null)
-    deps.setTableStatus('Скопировано в мои медиа')
   }
 
   return {
@@ -515,11 +432,8 @@ export function createLayerActions(deps: LayerActionsDeps) {
     placeLayerOnTable,
     reorderLayers,
     deleteSelectedLayers,
-    duplicateLayer,
     renameLayer,
-    resetLayerCrop,
     createNamedFolder,
-    copyLayerToPersonalMedia,
     setLayerSelection,
     canEditLayer: canEdit,
   }

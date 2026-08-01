@@ -1,4 +1,37 @@
+import { useState } from 'react'
+import {
+  getStoredMasterPassword,
+  setStoredMasterPassword,
+} from '@/games/vampires/modules/table/utils/room-session'
 import type { MasterDisplayMode } from '../multi-window/types'
+
+function MasterPasswordControl() {
+  const [draft, setDraft] = useState(() => getStoredMasterPassword())
+  const [saved, setSaved] = useState(false)
+
+  return (
+    <label className="master-console-password-control">
+      <span>Пароль мастера</span>
+      <input
+        value={draft}
+        onChange={event => {
+          setDraft(event.target.value)
+          setSaved(false)
+        }}
+        aria-label="Пароль мастера"
+      />
+      <button
+        type="button"
+        onClick={() => {
+          setStoredMasterPassword(draft)
+          setSaved(true)
+        }}
+      >
+        {saved ? 'Сохранено' : 'Сменить'}
+      </button>
+    </label>
+  )
+}
 
 type MasterConsoleTopbarProps = {
   room: string
@@ -73,6 +106,7 @@ export default function MasterConsoleTopbar({
           ● {peerCount > 0 ? `${peerCount + 1} окна` : '1 окно'}
         </span>
         <span className="master-console-role">{detached ? 'Detached' : 'Мастер'}</span>
+        {!detached ? <MasterPasswordControl /> : null}
         <button type="button" onClick={onLock}>Заблокировать</button>
       </div>
     </header>

@@ -6,21 +6,6 @@ import { getRollPenalties, getRollTraits } from '../utils/roll-pool-helpers'
 import type { CharacterOption, OpposedRollProposal, RollMessage, RollMeta, RollMode } from '../types'
 
 export type PoolRollSnapshot = {
-  selectedMasterRollCharacter: CharacterOption | null
-  masterRollDiceCount: number
-  masterRollMode: RollMode
-  selectedMasterContestedOpponent: ContestedOpponentOption | null
-  masterRollPoolBeforeLimit: number
-  masterRollPoolName: string
-  masterRollHidden: boolean
-  masterUseBloodSurge: boolean
-  masterRollAttribute: string
-  masterRollAttributeTwo: string
-  masterRollSkill: string
-  masterRollDiscipline: string
-  masterWillpowerImpairmentPenalty: number
-  masterHealthImpairmentPenalty: number
-  disabledMasterRollModifierIds: string[]
   previewCharacter: CharacterOption | null
   canRollPreview: boolean
   previewDiceCount: number
@@ -145,77 +130,6 @@ export function createPoolRollActions(deps: PoolRollActionsDeps) {
     deps.setConnectionText(`Встречный бросок запрошен: ${opponent.label}`)
   }
 
-  const rollMasterPool = async () => {
-    const snapshot = deps.getPoolRollSnapshot()
-    if (!snapshot.selectedMasterRollCharacter) {
-      window.alert(deps.t('Выбери персонажа мастера.'))
-      return
-    }
-    if (snapshot.masterRollDiceCount < 1) {
-      window.alert(deps.t('Выбери характеристику, навык, дисциплину или положительный модификатор.'))
-      return
-    }
-    if (snapshot.masterRollMode === 'contested' && !snapshot.selectedMasterContestedOpponent) {
-      window.alert(deps.t('Выбери оппонента для встречного броска.'))
-      return
-    }
-    const options: QuickRollOptions = {
-      hidden: snapshot.masterRollHidden,
-      useBloodSurge: snapshot.masterUseBloodSurge,
-      source: snapshot.masterUseBloodSurge ? 'blood_surge' : 'manual',
-      rollTraits: getRollTraits(
-        snapshot.masterRollAttribute,
-        snapshot.masterRollAttributeTwo,
-        snapshot.masterRollSkill,
-        snapshot.masterRollDiscipline,
-      ),
-      rollAction: snapshot.masterRollMode,
-      rollPenalties: getRollPenalties(
-        deps.t,
-        snapshot.masterWillpowerImpairmentPenalty,
-        snapshot.masterHealthImpairmentPenalty,
-      ),
-      disabledRollModifierIds: snapshot.disabledMasterRollModifierIds,
-    }
-    if (snapshot.masterRollMode === 'contested') {
-      await sendContestedRollRequest(
-        snapshot.masterRollPoolBeforeLimit,
-        snapshot.masterRollPoolName,
-        snapshot.selectedMasterRollCharacter,
-        snapshot.selectedMasterContestedOpponent,
-        'master-character',
-        options,
-      )
-      return
-    }
-    await deps.rollQuickDiceRef.current(
-      snapshot.masterRollPoolBeforeLimit,
-      snapshot.masterRollPoolName,
-      snapshot.selectedMasterRollCharacter,
-      'master-character',
-      options,
-    )
-  }
-
-  const rollMasterQuick = async (diceCount: number) => {
-    const snapshot = deps.getPoolRollSnapshot()
-    if (!snapshot.selectedMasterRollCharacter) {
-      window.alert(deps.t('Выбери персонажа мастера.'))
-      return
-    }
-    await deps.rollQuickDiceRef.current(
-      diceCount,
-      deps.d10(diceCount),
-      snapshot.selectedMasterRollCharacter,
-      'master-quick',
-      {
-        hidden: snapshot.masterRollHidden,
-        useBloodSurge: snapshot.masterUseBloodSurge,
-        source: snapshot.masterUseBloodSurge ? 'blood_surge' : 'manual',
-      },
-    )
-  }
-
   const rollPreviewPool = async () => {
     const snapshot = deps.getPoolRollSnapshot()
     if (!snapshot.previewCharacter || !snapshot.canRollPreview) {
@@ -287,8 +201,6 @@ export function createPoolRollActions(deps: PoolRollActionsDeps) {
 
   return {
     sendContestedRollRequest,
-    rollMasterPool,
-    rollMasterQuick,
     rollPreviewPool,
   }
 }

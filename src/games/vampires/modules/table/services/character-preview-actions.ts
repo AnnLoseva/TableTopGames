@@ -6,14 +6,12 @@ import { tableGetDerivedStats } from '../system-runtime'
 import type { ActiveParticipant, CharacterOption } from '../types'
 
 export type CharacterPreviewActionsDeps = {
-  room: string
   t: (ru: string) => string
   chatUser: ChatUser | null
   chatCharacters: CharacterOption[]
   previewCharacter: CharacterOption | null
   selectedActiveCharacter: CharacterOption | null
   setPreviewCharacter: Dispatch<SetStateAction<CharacterOption | null>>
-  setSelectedMasterRollCharacterId: Dispatch<SetStateAction<string>>
   setChatCharacters: Dispatch<SetStateAction<CharacterOption[]>>
   hydrateChatCharacter?: (characterId: string) => Promise<CharacterOption | null>
 }
@@ -47,14 +45,6 @@ function buildFallbackPreview(
 }
 
 export function createCharacterPreviewActions(deps: CharacterPreviewActionsDeps) {
-  const chooseMasterRollCharacter = (characterId: string) => {
-    deps.setSelectedMasterRollCharacterId(characterId)
-    if (!deps.chatUser) return
-    window.localStorage.setItem(`vtm-master-roll-character:${deps.chatUser.id}:${deps.room}`, characterId)
-    window.localStorage.setItem(`vtm-master-roll-character:${deps.chatUser.id}`, characterId)
-    void deps.hydrateChatCharacter?.(characterId)
-  }
-
   const openCharacterPreview = async (character: CharacterOption, username?: string) => {
     if (character.hydrated !== false) {
       deps.setPreviewCharacter({ ...character, username: username || character.username })
@@ -133,7 +123,6 @@ export function createCharacterPreviewActions(deps: CharacterPreviewActionsDeps)
   }
 
   return {
-    chooseMasterRollCharacter,
     openCharacterPreview,
     openParticipantPreview,
     addExperienceToActiveCharacter,

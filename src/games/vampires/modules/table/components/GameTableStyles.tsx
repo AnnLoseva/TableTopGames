@@ -339,27 +339,6 @@ export default function GameTableStyles() {
           background: transparent !important;
         }
 
-        .master-password-control {
-          display: grid;
-          grid-template-columns: auto minmax(90px, 140px) auto;
-          gap: 6px;
-          align-items: center;
-          color: #a9a9a9;
-          font-size: 11px;
-          min-width: 0;
-        }
-
-        .master-password-control input {
-          height: 34px;
-          border: 1px solid #333;
-          border-radius: 5px;
-          background: #0c0c0c;
-          color: #f4f4f4;
-          padding: 0 8px;
-          font: inherit;
-          font-size: 12px;
-        }
-
         .active-character-strip {
           display: grid;
           grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
@@ -6986,16 +6965,6 @@ export default function GameTableStyles() {
             flex: 0 0 auto;
             padding: 8px 10px;
             font-size: 12px;
-          }
-
-          .master-password-control {
-            width: 100%;
-            min-width: 0;
-            grid-template-columns: 1fr;
-          }
-
-          .master-password-control input {
-            width: 100%;
           }
 
           .active-character-card {

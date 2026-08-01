@@ -48,11 +48,6 @@ export function createLayerClipboardActions(deps: LayerClipboardActionsDeps) {
     }
   }
 
-  const copyLayerForDiary = async (layer: TableLayer) => {
-    await copyTextToClipboard(getLayerClipboardText(layer))
-    deps.setLayerContextMenu(null)
-  }
-
   const addLayerToJournal = (imageUrl: string, name: string) => {
     if (!deps.chatUser) return
     const imgHtml = `<p><img src="${imageUrl}" alt="${name}"></p>`
@@ -114,7 +109,6 @@ export function createLayerClipboardActions(deps: LayerClipboardActionsDeps) {
   return {
     getContextLayerIds,
     copyTextToClipboard,
-    copyLayerForDiary,
     addLayerToJournal,
     copyLayerUrl,
     focusLayersForEveryone,

@@ -104,7 +104,6 @@ import {
   getPowerRollSummary,
   getSelectedDisciplinePowerLabels,
   getSelectedPathPowerNames,
-  getSkillDotValue,
   getStandaloneSelectedPowerNames,
   hasSelectedPathPowers,
   isPowerEntrySelected,
@@ -223,10 +222,7 @@ export default function VampireTable() {
     isMaster,
     masterPasswordDraft,
     setMasterPasswordDraft,
-    masterPasswordEdit,
-    setMasterPasswordEdit,
     enterAsMaster,
-    saveMasterPassword,
     resetTableRole,
     chooseTableRole,
   } = useRoomSession({ t })
@@ -281,16 +277,6 @@ export default function VampireTable() {
   const [disabledPreviewRollModifierIds, setDisabledPreviewRollModifierIds] = useState<string[]>([])
   const [previewRollMode, setPreviewRollMode] = useState<RollMode>('normal')
   const [previewContestedOpponentId, setPreviewContestedOpponentId] = useState('')
-  const [selectedMasterRollCharacterId, setSelectedMasterRollCharacterId] = useState('')
-  const [masterRollVisibility, setMasterRollVisibility] = useState<'public' | 'hidden'>('hidden')
-  const [masterRollAttribute, setMasterRollAttribute] = useState('')
-  const [masterRollAttributeTwo, setMasterRollAttributeTwo] = useState('')
-  const [masterRollSkill, setMasterRollSkill] = useState('')
-  const [masterRollDiscipline, setMasterRollDiscipline] = useState('')
-  const [masterRollModifier, setMasterRollModifier] = useState(0)
-  const [disabledMasterRollModifierIds, setDisabledMasterRollModifierIds] = useState<string[]>([])
-  const [masterRollMode, setMasterRollMode] = useState<RollMode>('normal')
-  const [masterContestedOpponentId, setMasterContestedOpponentId] = useState('')
   const [incomingOpposedProposal, setIncomingOpposedProposal] = useState<OpposedRollProposal | null>(null)
   const [opposedResponseSide, setOpposedResponseSide] = useState<RollPoolBuilder>({ ...DEFAULT_OPPOSED_RESPONSE })
   const [previewDisciplineName, setPreviewDisciplineName] = useState('')
@@ -302,7 +288,6 @@ export default function VampireTable() {
   const [disabledPreviewPowerModifierIds, setDisabledPreviewPowerModifierIds] = useState<string[]>([])
   const [previewPowerInputValues, setPreviewPowerInputValues] = useState<Record<string, string>>({})
   const [previewUseBloodSurge, setPreviewUseBloodSurge] = useState(false)
-  const [masterUseBloodSurge, setMasterUseBloodSurge] = useState(false)
   const [willpowerRerollDraft, setWillpowerRerollDraft] = useState<WillpowerRerollDraft | null>(null)
   const [quickInventoryName, setQuickInventoryName] = useState('')
   const [quickInventoryCategory, setQuickInventoryCategory] = useState<InventoryCategory>('Другое')
@@ -367,21 +352,6 @@ export default function VampireTable() {
     options?: QuickRollOptions,
   ) => Promise<void>>(async () => {})
   const poolRollSnapshotRef = useRef({
-    selectedMasterRollCharacter: null as CharacterOption | null,
-    masterRollDiceCount: 0,
-    masterRollMode: 'normal' as RollMode,
-    selectedMasterContestedOpponent: null as ContestedOpponentOption | null,
-    masterRollPoolBeforeLimit: 0,
-    masterRollPoolName: '',
-    masterRollHidden: false,
-    masterUseBloodSurge: false,
-    masterRollAttribute: '',
-    masterRollAttributeTwo: '',
-    masterRollSkill: '',
-    masterRollDiscipline: '',
-    masterWillpowerImpairmentPenalty: 0,
-    masterHealthImpairmentPenalty: 0,
-    disabledMasterRollModifierIds: [] as string[],
     previewCharacter: null as CharacterOption | null,
     canRollPreview: false,
     previewDiceCount: 0,
@@ -442,8 +412,7 @@ export default function VampireTable() {
   useEffect(() => {
     const shouldLoadDisciplineRules = Boolean(
       previewDisciplineName
-      || previewCharacter?.id
-      || selectedMasterRollCharacterId,
+      || previewCharacter?.id,
     )
     if (!shouldLoadDisciplineRules || disciplineRules) return
     let active = true
@@ -471,7 +440,7 @@ export default function VampireTable() {
     return () => {
       active = false
     }
-  }, [previewDisciplineName, previewCharacter?.id, selectedMasterRollCharacterId, disciplineRules])
+  }, [previewDisciplineName, previewCharacter?.id, disciplineRules])
 
   const suppressNextContextMenuRef = useRef(false)
   const {
@@ -570,34 +539,6 @@ export default function VampireTable() {
     selectedChatCharacterIdRef,
     t,
   })
-
-  useEffect(() => {
-    if (!chatUser) {
-      setSelectedMasterRollCharacterId('')
-      return
-    }
-    if (!hydratedChatCharacters.length) {
-      setSelectedMasterRollCharacterId('')
-      return
-    }
-
-    const savedMasterRollId = window.localStorage.getItem(`vtm-master-roll-character:${chatUser.id}:${room}`)
-      || window.localStorage.getItem(`vtm-master-roll-character:${chatUser.id}`)
-    const savedIsValid = Boolean(savedMasterRollId && hydratedChatCharacters.some(character => character.id === savedMasterRollId))
-    const fallbackId = selectedChatCharacterId && hydratedChatCharacters.some(character => character.id === selectedChatCharacterId)
-      ? selectedChatCharacterId
-      : hydratedChatCharacters[0]?.id || ''
-
-    setSelectedMasterRollCharacterId(current => {
-      const currentIsValid = Boolean(current && hydratedChatCharacters.some(character => character.id === current))
-      const nextId = currentIsValid ? current : savedIsValid ? savedMasterRollId || '' : fallbackId
-      if (nextId) {
-        window.localStorage.setItem(`vtm-master-roll-character:${chatUser.id}:${room}`, nextId)
-        window.localStorage.setItem(`vtm-master-roll-character:${chatUser.id}`, nextId)
-      }
-      return nextId
-    })
-  }, [hydratedChatCharacters, chatUser, room, selectedChatCharacterId])
 
   useEffect(() => {
     if (!layerContextMenu) return
@@ -719,11 +660,8 @@ export default function VampireTable() {
     placeLayerOnTable,
     reorderLayers,
     deleteSelectedLayers,
-    duplicateLayer,
     renameLayer,
-    resetLayerCrop,
     createNamedFolder,
-    copyLayerToPersonalMedia,
     setLayerSelection,
     canEditLayer,
   } = useLayerActions({
@@ -741,7 +679,6 @@ export default function VampireTable() {
     setRightRailTab,
     setExpandedFolders,
     setLayerContextMenu,
-    setMediaTab,
     broadcast: (event, payload) => broadcastRef.current(event, payload),
     journalEntriesRef,
     getLayerContext: () => layerContextRef.current,
@@ -1022,22 +959,15 @@ export default function VampireTable() {
   })
 
   const {
-    toggleMasterRollAttribute,
     togglePreviewAttribute,
   } = useRollAttributeActions({
-    masterRollAttribute,
-    masterRollAttributeTwo,
     previewRollAttribute,
     previewRollAttributeTwo,
-    setMasterRollAttribute,
-    setMasterRollAttributeTwo,
     setPreviewRollAttribute,
     setPreviewRollAttributeTwo,
   })
 
   const {
-    rollMasterPool,
-    rollMasterQuick,
     rollPreviewPool,
   } = usePoolRollActions({
     room,
@@ -1122,19 +1052,16 @@ export default function VampireTable() {
   const characterSheetHref = (characterId?: string | null) => getCharacterSheetHref(room, tableRole, characterId)
 
   const {
-    chooseMasterRollCharacter,
     openCharacterPreview,
     openParticipantPreview,
     addExperienceToActiveCharacter,
   } = useCharacterPreviewActions({
-    room,
     t,
     chatUser,
     chatCharacters,
     previewCharacter,
     selectedActiveCharacter,
     setPreviewCharacter,
-    setSelectedMasterRollCharacterId,
     setChatCharacters,
     hydrateChatCharacter,
   })
@@ -1149,7 +1076,6 @@ export default function VampireTable() {
   }
   const opposedPoolContext = { t, d10, disciplineRules }
 
-  const selectedMasterRollCharacter = hydratedChatCharacters.find(item => item.id === selectedMasterRollCharacterId) || selectedActiveCharacter
   const journalStorageKey = chatUser ? `vtm-journal:${chatUser.id}:${room}` : ''
   const selectedJournalEntry = journalEntries.find(entry => entry.id === selectedJournalEntryId) || journalEntries[0] || null
 
@@ -1172,7 +1098,6 @@ export default function VampireTable() {
 
   const {
     getContextLayerIds,
-    copyLayerForDiary,
     addLayerToJournal,
     copyLayerUrl,
     focusLayersForEveryone,
@@ -1208,48 +1133,7 @@ export default function VampireTable() {
       : message.fromUserId === selectedMasterChatUserId || message.toUserId === selectedMasterChatUserId
     return message.fromUserId === chatUser.id || message.toUserId === chatUser.id
   })
-  const getSkillDots = (value: unknown) => getSkillDotValue(value)
-  const getSkillSpecs = (value: unknown) => {
-    if (!value || typeof value !== 'object') return []
-    const specs = (value as { specs?: unknown }).specs
-    return Array.isArray(specs) ? specs.filter((spec): spec is string => typeof spec === 'string') : []
-  }
   const getDisciplineDots = (sources: Record<string, number>) => Object.values(sources || {}).reduce((sum, value) => sum + (Number(value) || 0), 0)
-
-  const {
-    attributeDots: masterRollAttributeDots,
-    attributeTwoDots: masterRollAttributeTwoDots,
-    skillDots: masterRollSkillDots,
-    disciplineDots: masterRollDisciplineDots,
-    poolBeforeLimit: masterRollPoolBeforeLimit,
-    willpowerImpairmentPenalty: masterWillpowerImpairmentPenalty,
-    healthImpairmentPenalty: masterHealthImpairmentPenalty,
-    rollEffectResult: masterRollEffectResult,
-    diceCount: masterRollDiceCount,
-    poolName: masterRollPoolName,
-    extraAttributes: masterRollExtraAttributes,
-    extraSkills: masterRollExtraSkills,
-    disciplineNames: masterRollDisciplineNames,
-  } = buildCharacterRollPool({
-    character: selectedMasterRollCharacter,
-    attribute: masterRollAttribute,
-    attributeTwo: masterRollAttributeTwo,
-    skill: masterRollSkill,
-    discipline: masterRollDiscipline,
-    modifier: masterRollModifier,
-    rollMode: masterRollMode,
-    useBloodSurge: masterUseBloodSurge,
-    poolType: 'master-character',
-    disciplineRules,
-    disabledModifierIds: disabledMasterRollModifierIds,
-    t,
-    d10,
-  })
-  const masterBloodPotency = getCharacterBloodPotency(selectedMasterRollCharacter)
-  const masterBloodSurgeBonus = getBloodSurgeBonus(masterBloodPotency)
-  const masterRollHidden = masterRollVisibility === 'hidden'
-  const masterContestedOpponentOptions = getContestedOpponentOptions(contestedOpponentContext, selectedMasterRollCharacter)
-  const selectedMasterContestedOpponent = masterContestedOpponentOptions.find(option => option.id === masterContestedOpponentId) || null
 
   useEffect(() => {
     if (!incomingOpposedProposal) return
@@ -1405,21 +1289,6 @@ export default function VampireTable() {
   )
 
   poolRollSnapshotRef.current = {
-    selectedMasterRollCharacter,
-    masterRollDiceCount,
-    masterRollMode,
-    selectedMasterContestedOpponent,
-    masterRollPoolBeforeLimit,
-    masterRollPoolName,
-    masterRollHidden,
-    masterUseBloodSurge,
-    masterRollAttribute,
-    masterRollAttributeTwo,
-    masterRollSkill,
-    masterRollDiscipline,
-    masterWillpowerImpairmentPenalty,
-    masterHealthImpairmentPenalty,
-    disabledMasterRollModifierIds,
     previewCharacter,
     canRollPreview,
     previewDiceCount,
@@ -1473,17 +1342,6 @@ export default function VampireTable() {
     setDisabledPreviewPowerModifierIds([])
     setPreviewPowerInputValues({})
   }, [previewPowerName, resolvedPreviewPowerPool])
-
-  useEffect(() => {
-    setMasterRollAttribute('')
-    setMasterRollAttributeTwo('')
-    setMasterRollSkill('')
-    setMasterRollDiscipline('')
-    setMasterRollModifier(0)
-    setDisabledMasterRollModifierIds([])
-    setMasterRollMode('normal')
-    setMasterContestedOpponentId('')
-  }, [selectedMasterRollCharacterId])
 
   const openPreviewDiscipline = (name: string) => {
     setPreviewDisciplineName(name)
@@ -1885,10 +1743,7 @@ export default function VampireTable() {
           <MasterRoleTopbar
             tableRole={tableRole}
             isMaster={isMaster}
-            masterPasswordEdit={masterPasswordEdit}
-            onMasterPasswordEditChange={setMasterPasswordEdit}
             onResetTableRole={resetTableRole}
-            onSaveMasterPassword={saveMasterPassword}
           />
           {isMaster ? (
             <a href={characterSheetHref(selectedActiveCharacter?.id)} title={t('Открыть лист персонажа')}>{t('Лист')}</a>
@@ -2271,277 +2126,22 @@ export default function VampireTable() {
             setChatDraft={setChatDraft}
           />
 
-          {isMaster ? (
-            <section className={`master-roll-sidebar table-right-panel ${rightRailTab === 'diary' ? '' : 'table-right-panel-hidden'}`} aria-label={t('Персонажи мастера')}>
-              <header>
-                <div>
-                  <span>{t('Персонажи')}</span>
-                  <strong>{chatCharacters.length}</strong>
-                </div>
-                <div>
-                  <span>{t('Бросок')}</span>
-                  <strong>{masterRollHidden ? t('скрытый') : t('открытый')}</strong>
-                </div>
-              </header>
-
-              {!chatUser ? (
-                <div className="master-roll-empty">
-                  <p>{t('Войди на главной, чтобы увидеть своих персонажей.')}</p>
-                  <a href="/vampires">{t('На главную')}</a>
-                </div>
-              ) : chatCharacters.length === 0 ? (
-                <div className="master-roll-empty">
-                  <p>{t('Сохранённых персонажей пока нет.')}</p>
-                  <a href={characterSheetHref()}>{t('Создать лист')}</a>
-                </div>
-              ) : (
-                <div className="master-roll-layout">
-                  <aside className="master-roll-character-list" aria-label={t('Персонажи для бросков')}>
-                    {chatCharacters.map(character => (
-                      <button
-                        type="button"
-                        key={character.id}
-                        className={character.id === selectedMasterRollCharacter?.id ? 'active' : ''}
-                        onClick={() => chooseMasterRollCharacter(character.id)}
-                      >
-                        <span className="chat-avatar" aria-hidden="true">
-                          {character.image ? <img src={character.image} alt="" /> : <i>{(character.name || '?').slice(0, 1).toUpperCase()}</i>}
-                        </span>
-                        <span>
-                          <strong>{character.name || t('Безымянный')}</strong>
-                          <small>{character.clan || t('без клана')}</small>
-                        </span>
-                      </button>
-                    ))}
-                  </aside>
-
-                  <section className="master-roll-builder" aria-label={t('Бросок персонажа мастера')}>
-                    {selectedMasterRollCharacter ? (
-                      <>
-                        <div className="master-roll-current">
-                          <div className="chat-avatar large" aria-hidden="true">
-                            {selectedMasterRollCharacter.image ? (
-                              <img src={selectedMasterRollCharacter.image} alt="" />
-                            ) : (
-                              <span>{(selectedMasterRollCharacter.name || '?').slice(0, 1).toUpperCase()}</span>
-                            )}
-                          </div>
-                          <div>
-                            <span>{t('Выбран')}</span>
-                            <strong>{selectedMasterRollCharacter.name}</strong>
-                            <small>{tf('{clan} · Голод {hunger}/5 · Воля {willpowerCurrent}/{willpowerMax} · Сила Крови {bloodPotency}', {
-                              clan: selectedMasterRollCharacter.clan || t('без клана'),
-                              hunger: getCharacterHunger(selectedMasterRollCharacter),
-                              willpowerCurrent: getCharacterWillpower(selectedMasterRollCharacter).current,
-                              willpowerMax: getCharacterWillpower(selectedMasterRollCharacter).max,
-                              bloodPotency: masterBloodPotency
-                            })}</small>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              void openCharacterPreview(selectedMasterRollCharacter)
-                              setPreviewCharacterTab('mechanics')
-                            }}
-                          >
-                            {t('Просмотр')}
-                          </button>
-                          <a href={characterSheetHref(selectedMasterRollCharacter.id)}>{t('Лист')}</a>
-                        </div>
-
-                        <div className="master-roll-mode" aria-label={t('Видимость броска')}>
-                          <button
-                            type="button"
-                            className={masterRollVisibility === 'public' ? 'active' : ''}
-                            onClick={() => setMasterRollVisibility('public')}
-                          >
-                            {t('Открытый')}
-                          </button>
-                          <button
-                            type="button"
-                            className={masterRollVisibility === 'hidden' ? 'active' : ''}
-                            onClick={() => setMasterRollVisibility('hidden')}
-                          >
-                            {t('Скрытый')}
-                          </button>
-                        </div>
-
-                        <div className="preview-roll-controls master-roll-controls">
-                          <label>
-                            <span>{t('Характеристика 1')}</span>
-                            <select value={masterRollAttribute} onChange={event => setMasterRollAttribute(event.target.value)}>
-                              <option value="">{t('Без характеристики')}</option>
-                              {ATTRIBUTE_GROUPS.map(group => (
-                                <optgroup key={group.name} label={group.name}>
-                                  {group.traits.map(name => <option key={name} value={name} disabled={masterRollAttributeTwo === name}>{name} · {getAttributeDots(selectedMasterRollCharacter.attributes, name)}</option>)}
-                                </optgroup>
-                              ))}
-                              {masterRollExtraAttributes.length ? (
-                                <optgroup label={t('Другие')}>
-                                  {masterRollExtraAttributes.map(name => <option key={name} value={name} disabled={masterRollAttributeTwo === name}>{name} · {getAttributeDots(selectedMasterRollCharacter.attributes, name)}</option>)}
-                                </optgroup>
-                              ) : null}
-                            </select>
-                          </label>
-                          <label>
-                            <span>{t('Характеристика 2')}</span>
-                            <select value={masterRollAttributeTwo} onChange={event => setMasterRollAttributeTwo(event.target.value)}>
-                              <option value="">{t('Без второй характеристики')}</option>
-                              {ATTRIBUTE_GROUPS.map(group => (
-                                <optgroup key={group.name} label={t(group.name)}>
-                                  {group.traits.map(name => <option key={name} value={name} disabled={masterRollAttribute === name}>{t(name)} · {getAttributeDots(selectedMasterRollCharacter.attributes, name)}</option>)}
-                                </optgroup>
-                              ))}
-                              {masterRollExtraAttributes.length ? (
-                                <optgroup label={t('Другие')}>
-                                  {masterRollExtraAttributes.map(name => <option key={name} value={name} disabled={masterRollAttribute === name}>{name} · {getAttributeDots(selectedMasterRollCharacter.attributes, name)}</option>)}
-                                </optgroup>
-                              ) : null}
-                            </select>
-                          </label>
-                          <label>
-                            <span>{t('Навык')}</span>
-                            <select value={masterRollSkill} onChange={event => setMasterRollSkill(event.target.value)}>
-                              <option value="">{t('Без навыка')}</option>
-                              {SKILL_GROUPS.map(group => (
-                                <optgroup key={group.name} label={t(group.name)}>
-                                  {group.traits.map(name => <option key={name} value={name}>{t(name)} · {getSkillDots(resolveSkillValue(selectedMasterRollCharacter.skills, name))}</option>)}
-                                </optgroup>
-                              ))}
-                              {masterRollExtraSkills.length ? (
-                                <optgroup label={t('Другие')}>
-                                  {masterRollExtraSkills.map(name => <option key={name} value={name}>{name} · {getSkillDots(resolveSkillValue(selectedMasterRollCharacter.skills, name))}</option>)}
-                                </optgroup>
-                              ) : null}
-                            </select>
-                          </label>
-                          <label>
-                            <span>{t('Дисциплина')}</span>
-                            <select value={masterRollDiscipline} onChange={event => setMasterRollDiscipline(event.target.value)}>
-                              <option value="">{t('Без дисциплины')}</option>
-                              {masterRollDisciplineNames.map(name => (
-                                <option key={name} value={name}>{name} · {getDisciplineDots(selectedMasterRollCharacter.disciplines[name] || {})}</option>
-                              ))}
-                            </select>
-                          </label>
-                          <label>
-                            <span>{t('Модификатор')}</span>
-                            <input
-                              type="number"
-                              min="-20"
-                              max="20"
-                              value={masterRollModifier}
-                              onChange={event => setMasterRollModifier(Math.max(-20, Math.min(20, Number(event.target.value) || 0)))}
-                            />
-                          </label>
-                          <label className="preview-blood-surge-toggle">
-                            <span>{tf('Прилив Крови +{bonus}к10', { bonus: masterBloodSurgeBonus })}</span>
-                            <input
-                              type="checkbox"
-                              checked={masterUseBloodSurge}
-                              onChange={event => setMasterUseBloodSurge(event.target.checked)}
-                            />
-                          </label>
-                          <label className="roll-mode-field">
-                            <span>{t('Тип броска')}</span>
-                            <select
-                              value={masterRollMode}
-                              onChange={event => {
-                                const nextMode = event.target.value as RollMode
-                                setMasterRollMode(nextMode)
-                                if (nextMode === 'normal') setMasterContestedOpponentId('')
-                              }}
-                            >
-                              <option value="normal">{t('Обычный бросок')}</option>
-                              <option value="contested">{t('Встречный бросок')}</option>
-                            </select>
-                          </label>
-                          {masterRollMode === 'contested' ? (
-                            <label className="contested-opponent-field">
-                              <span>{t('Оппонент')}</span>
-                              <select
-                                value={masterContestedOpponentId}
-                                onChange={event => setMasterContestedOpponentId(event.target.value)}
-                                disabled={masterContestedOpponentOptions.length === 0}
-                              >
-                                <option value="">{masterContestedOpponentOptions.length ? t('Выбрать оппонента') : t('Нет доступных оппонентов')}</option>
-                                {masterContestedOpponentOptions.map(option => (
-                                  <option key={option.id} value={option.id}>{option.label}</option>
-                                ))}
-                              </select>
-                            </label>
-                          ) : null}
-                          <button
-                            type="button"
-                            className="preview-roll-submit"
-                            onClick={rollMasterPool}
-                            disabled={masterRollDiceCount < 1 || (masterRollMode === 'contested' && !selectedMasterContestedOpponent)}
-                          >
-                            {masterRollMode === 'contested' ? t('Запросить встречный') : t('Бросить')} {d10(Math.min(20, masterRollDiceCount + (masterUseBloodSurge ? masterBloodSurgeBonus : 0)) || 0)}
-                          </button>
-                        </div>
-
-                        <RollModifierControls result={masterRollEffectResult} isMaster={isMaster} setDisabledIds={setDisabledMasterRollModifierIds} />
-
-                        <div className="quick-roll-grid master-quick-rolls" aria-label={t('Быстрые броски мастера')}>
-                          {[1, 3, 5, 7, 10].map(count => (
-                            <button type="button" key={count} onClick={() => rollMasterQuick(count)}>
-                              {d10(count)}
-                            </button>
-                          ))}
-                        </div>
-
-                        <div className="master-roll-traits">
-                          {ATTRIBUTE_GROUPS.map(group => (
-                            <section key={group.name}>
-                              <strong>{t(group.name)}</strong>
-                              {group.traits.map(name => {
-                                const dots = getAttributeDots(selectedMasterRollCharacter.attributes, name)
-                                return (
-                                  <button
-                                    type="button"
-                                    key={name}
-                                    className={masterRollAttribute === name || masterRollAttributeTwo === name ? 'active' : ''}
-                                    onClick={() => toggleMasterRollAttribute(name)}
-                                  >
-                                    <span>{t(name)}</span>
-                                    <i>{getDotDisplay(dots)}</i>
-                                  </button>
-                                )
-                              })}
-                            </section>
-                          ))}
-                        </div>
-
-                        {masterRollPoolBeforeLimit > 20 ? <p className="preview-roll-notice">{t('Пул ограничен двадцатью костями.')}</p> : null}
-                        {getActivePenaltyDelta(masterRollEffectResult, 'willpower_impairment') ? <p className="preview-roll-notice">{t('Истощение Воли: -2к10 к этому пулу.')}</p> : null}
-                        {getActivePenaltyDelta(masterRollEffectResult, 'health_impairment') ? <p className="preview-roll-notice">{t('Изнурение по здоровью: -2к10 к этому пулу.')}</p> : null}
-                      </>
-                    ) : (
-                      <p className="panel-empty">{t('Выбери персонажа.')}</p>
-                    )}
-                  </section>
-                </div>
-              )}
-            </section>
-          ) : (
-            <JournalPanel
-              rightRailTab={rightRailTab}
-              journalEntries={journalEntries}
-              journalSaveStatus={journalSaveStatus}
-              chatUser={chatUser}
-              journalSearch={journalSearch}
-              filteredJournalEntries={filteredJournalEntries}
-              selectedJournalEntry={selectedJournalEntry}
-              setJournalSearch={setJournalSearch}
-              createJournalEntry={createJournalEntry}
-              setSelectedJournalEntryId={setSelectedJournalEntryId}
-              updateJournalEntry={updateJournalEntry}
-              persistCurrentJournal={persistCurrentJournal}
-              deleteJournalEntry={deleteJournalEntry}
-              addLayerToJournal={addLayerToJournal}
-            />
-          )}
+          <JournalPanel
+            rightRailTab={rightRailTab}
+            journalEntries={journalEntries}
+            journalSaveStatus={journalSaveStatus}
+            chatUser={chatUser}
+            journalSearch={journalSearch}
+            filteredJournalEntries={filteredJournalEntries}
+            selectedJournalEntry={selectedJournalEntry}
+            setJournalSearch={setJournalSearch}
+            createJournalEntry={createJournalEntry}
+            setSelectedJournalEntryId={setSelectedJournalEntryId}
+            updateJournalEntry={updateJournalEntry}
+            persistCurrentJournal={persistCurrentJournal}
+            deleteJournalEntry={deleteJournalEntry}
+            addLayerToJournal={addLayerToJournal}
+          />
 
           <MasterPanel
             rightRailTab={rightRailTab}
@@ -2749,23 +2349,14 @@ export default function VampireTable() {
           getContextLayerIds={getContextLayerIds}
           canEditLayer={canEditLayer}
           addLayerToJournal={addLayerToJournal}
-          copyLayerForDiary={copyLayerForDiary}
           copyLayerUrl={copyLayerUrl}
-          copyLayerToPersonalMedia={copyLayerToPersonalMedia}
           renameLayer={renameLayer}
-          openImageEditor={openImageEditor}
-          patchLayer={patchLayer}
           patchSelectedLayers={patchSelectedLayers}
-          duplicateLayer={duplicateLayer}
-          resetLayerCrop={resetLayerCrop}
           reorderLayers={reorderLayers}
-          createNamedFolder={createNamedFolder}
           moveLayersToFolder={moveLayersToFolder}
           createFolderForSelection={createFolderForSelection}
           focusLayersForEveryone={focusLayersForEveryone}
           deleteSelectedLayers={deleteSelectedLayers}
-          previewLayerOpacity={previewLayerOpacity}
-          commitLayerOpacity={commitLayerOpacity}
           setLayerAsBackground={setLayerAsBackground}
           onClose={() => setLayerContextMenu(null)}
         />

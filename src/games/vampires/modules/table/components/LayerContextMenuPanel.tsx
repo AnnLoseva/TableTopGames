@@ -2,8 +2,7 @@
 
 import { useLang } from '@/games/vampires/lib/i18n/LanguageProvider'
 import type { ChatUser } from '@/games/vampires/modules/chat/types'
-import { getLayerCrop } from '../utils/layer-utils'
-import type { BlendMode, LayerContextMenu, LayerPatch, TableLayer } from '../types'
+import type { LayerContextMenu, TableLayer } from '../types'
 import SmartContextMenu from './SmartContextMenu'
 
 export type LayerContextMenuPanelProps = {
@@ -16,23 +15,14 @@ export type LayerContextMenuPanelProps = {
   getContextLayerIds: (layerId: string | null) => string[]
   canEditLayer: (layer: TableLayer) => boolean
   addLayerToJournal: (imageData: string, name: string) => void
-  copyLayerForDiary: (layer: TableLayer) => void
   copyLayerUrl: (layer: TableLayer) => void
-  copyLayerToPersonalMedia: (layer: TableLayer) => void
   renameLayer: (layer: TableLayer) => void
-  openImageEditor: (layer: TableLayer) => void
-  patchLayer: (layerId: string, patch: LayerPatch) => void | Promise<void>
-  patchSelectedLayers: (ids: string[], patchFn: (layer: TableLayer) => LayerPatch) => void | Promise<void>
-  duplicateLayer: (layer: TableLayer) => void
-  resetLayerCrop: (layer: TableLayer) => void
+  patchSelectedLayers: (ids: string[], patchFn: (layer: TableLayer) => { visible?: boolean; locked?: boolean }) => void | Promise<void>
   reorderLayers: (ids: string[], direction: 'top' | 'up' | 'down' | 'bottom') => void
-  createNamedFolder: (parentId?: string | null, onTable?: boolean) => void
   moveLayersToFolder: (ids: string[], folderId: string) => void
   createFolderForSelection: (ids: string[]) => void
   focusLayersForEveryone: (ids: string[]) => void
   deleteSelectedLayers: (ids: string[]) => void
-  previewLayerOpacity: (layerId: string, opacity: number) => void
-  commitLayerOpacity: (layerId: string, input: HTMLInputElement) => void
   setLayerAsBackground: (layer: TableLayer) => void | Promise<void>
   onClose: () => void
 }
@@ -47,23 +37,14 @@ export default function LayerContextMenuPanel({
   getContextLayerIds,
   canEditLayer,
   addLayerToJournal,
-  copyLayerForDiary,
   copyLayerUrl,
-  copyLayerToPersonalMedia,
   renameLayer,
-  openImageEditor,
-  patchLayer,
   patchSelectedLayers,
-  duplicateLayer,
-  resetLayerCrop,
   reorderLayers,
-  createNamedFolder,
   moveLayersToFolder,
   createFolderForSelection,
   focusLayersForEveryone,
   deleteSelectedLayers,
-  previewLayerOpacity,
-  commitLayerOpacity,
   setLayerAsBackground,
   onClose,
 }: LayerContextMenuPanelProps) {
@@ -95,6 +76,13 @@ export default function LayerContextMenuPanel({
       y={layerContextMenu.y}
       onClick={event => event.stopPropagation()}
     >
+      {canManageContext ? (
+        <button type="button" onClick={() => {
+          focusLayersForEveryone(ids.length > 0 ? ids : [firstLayer.id])
+          onClose()
+        }}>{t('Указать всем')}</button>
+      ) : null}
+
       {singleLayer && singleLayer.layerType !== 'folder' ? (
         <>
           {chatUser && !isMaster && singleLayer.layerType === 'image' ? (
@@ -106,14 +94,13 @@ export default function LayerContextMenuPanel({
               📖 {t('Добавить в дневник')}
             </button>
           ) : null}
-          <div className="context-menu-group">
-            <span>{t('Копировать')}</span>
-            <button type="button" onClick={() => copyLayerForDiary(singleLayer)}>{t('Для дневника')}</button>
-            <button type="button" onClick={() => copyLayerUrl(singleLayer)}>{t('Ссылку')}</button>
-            <button type="button" onClick={() => copyLayerToPersonalMedia(singleLayer)}>{t('В мои медиа')}</button>
-          </div>
+          <button type="button" onClick={() => {
+            copyLayerUrl(singleLayer)
+            onClose()
+          }}>{t('Копировать изображение')}</button>
         </>
       ) : null}
+
       {canManageContext ? (
         <>
           {isMaster && singleLayer && singleLayer.layerType === 'image' ? (
@@ -129,17 +116,6 @@ export default function LayerContextMenuPanel({
             </button>
           ) : null}
           {singleLayer ? <button type="button" onClick={() => renameLayer(singleLayer)}>{t('Переименовать')}</button> : null}
-          {singleLayer && ['image', 'video'].includes(singleLayer.layerType) ? (
-            <div className="context-menu-group">
-              <span>{t('Изображение')}</span>
-              <button type="button" onClick={() => openImageEditor(singleLayer)}>{t('Обрезать')}</button>
-              <button type="button" onClick={() => patchLayer(singleLayer.id, { rotation: (singleLayer.rotation + 90) % 360 })}>{t('Повернуть')}</button>
-              <button type="button" onClick={() => duplicateLayer(singleLayer)}>{t('Дублировать')}</button>
-            </div>
-          ) : null}
-          {singleLayer && getLayerCrop(singleLayer).cropped ? (
-            <button type="button" onClick={() => resetLayerCrop(singleLayer)}>{t('Восстановить обрезанное')}</button>
-          ) : null}
           <button type="button" onClick={() => {
             patchSelectedLayers(ids, () => ({ visible: !allVisible }))
             onClose()
@@ -152,39 +128,6 @@ export default function LayerContextMenuPanel({
           }}>
             {allLocked ? t('Разблокировать') : t('Заблокировать')}
           </button>
-          {singleLayer && singleLayer.layerType !== 'folder' ? (
-            <div className="context-menu-group context-menu-controls">
-              <span>{t('Слой')}</span>
-              <label>
-                <small>Opacity</small>
-                <input
-                  key={`${singleLayer.id}:${singleLayer.opacity}`}
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.05"
-                  defaultValue={singleLayer.opacity}
-                  data-committed-value={singleLayer.opacity}
-                  onInput={event => previewLayerOpacity(singleLayer.id, Number(event.currentTarget.value))}
-                  onPointerUp={event => commitLayerOpacity(singleLayer.id, event.currentTarget)}
-                  onPointerCancel={event => commitLayerOpacity(singleLayer.id, event.currentTarget)}
-                  onKeyUp={event => commitLayerOpacity(singleLayer.id, event.currentTarget)}
-                  onBlur={event => commitLayerOpacity(singleLayer.id, event.currentTarget)}
-                />
-              </label>
-              <label>
-                <small>Blend</small>
-                <select
-                  value={singleLayer.blendMode}
-                  onChange={event => patchLayer(singleLayer.id, { blendMode: event.target.value as BlendMode })}
-                >
-                  {(['normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'luminosity'] as BlendMode[]).map(mode => (
-                    <option value={mode} key={mode}>{mode}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          ) : null}
           <div className="context-menu-group">
             <span>{t('Порядок слоя')}</span>
             <button type="button" onClick={() => {
@@ -204,30 +147,6 @@ export default function LayerContextMenuPanel({
               onClose()
             }}>{t('На самый низ')}</button>
           </div>
-          {singleLayer?.layerType === 'folder' ? (
-            <button type="button" onClick={() => {
-              createNamedFolder(singleLayer.id, singleLayer.onTable)
-              onClose()
-            }}>{t('Новая папка внутри')}</button>
-          ) : null}
-          {contextLayers.some(item => item.parentId) ? (
-            <button type="button" onClick={() => {
-              patchSelectedLayers(ids, () => ({ parentId: null }))
-              onClose()
-            }}>{t('Вынести из папки')}</button>
-          ) : null}
-          {contextLayers.some(item => item.onTable) ? (
-            <button type="button" onClick={() => {
-              patchSelectedLayers(ids, () => ({ onTable: false, parentId: null }))
-              onClose()
-            }}>{t('Убрать в медиа сцены')}</button>
-          ) : null}
-          {contextLayers.some(item => !item.onTable) ? (
-            <button type="button" onClick={() => {
-              patchSelectedLayers(ids, () => ({ onTable: true, visible: true, parentId: null }))
-              onClose()
-            }}>{t('Вынести на стол')}</button>
-          ) : null}
           {movableIds.length > 0 ? (
             <div className="context-menu-group">
               <span>{t('Поместить в папку')}</span>
@@ -243,10 +162,6 @@ export default function LayerContextMenuPanel({
               }}>{t('Создать новую папку')}</button>
             </div>
           ) : null}
-          <button type="button" onClick={() => {
-            focusLayersForEveryone(ids.length > 0 ? ids : [firstLayer.id])
-            onClose()
-          }}>{t('Указать всем')}</button>
           <button type="button" className="danger" onClick={() => {
             deleteSelectedLayers(ids)
             onClose()

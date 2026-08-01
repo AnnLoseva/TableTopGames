@@ -7,7 +7,7 @@ import {
 
 export type { CharacterPreviewActionsDeps }
 
-/** Character preview modal, participant lookup, and master roll character selection. */
+/** Character preview modal and participant lookup. */
 export function useCharacterPreviewActions(deps: CharacterPreviewActionsDeps) {
   return createCharacterPreviewActions(deps)
 }

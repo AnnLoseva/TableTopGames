@@ -33,6 +33,10 @@ export function getStoredMasterPassword() {
   return window.localStorage.getItem(MASTER_PASSWORD_KEY) || DEFAULT_MASTER_PASSWORD
 }
 
+export function setStoredMasterPassword(password: string) {
+  window.localStorage.setItem(MASTER_PASSWORD_KEY, password)
+}
+
 export function verifyMasterPassword(candidate: string) {
   return candidate === getStoredMasterPassword()
 }

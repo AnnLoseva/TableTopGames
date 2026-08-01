@@ -107,6 +107,37 @@ body:has(.master-console-state) {
   color: var(--vtm-ink-faint);
 }
 
+.master-console-password-control {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--vtm-ink-dim);
+  font-size: var(--fs-10);
+}
+
+.master-console-password-control input {
+  width: 90px;
+  height: var(--ctrl-md);
+  border: 1px solid var(--vtm-line-soft);
+  border-radius: var(--r-sm);
+  background: var(--vtm-surface-2);
+  color: var(--vtm-ink);
+  padding: 0 var(--sp-3);
+  font: inherit;
+  font-size: 12px;
+}
+
+.master-console-password-control button {
+  min-height: var(--ctrl-md);
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--vtm-line-soft);
+  border-radius: var(--r-sm);
+  color: var(--vtm-ink-dim);
+  background: var(--vtm-surface-2);
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .master-console-topbar-status {
   max-width: 280px;
   overflow: hidden;

@@ -50,38 +50,19 @@ export function MasterPasswordGate({
 type MasterRoleTopbarProps = {
   tableRole: TableRole | null
   isMaster: boolean
-  masterPasswordEdit: string
-  onMasterPasswordEditChange: (value: string) => void
   onResetTableRole: () => void
-  onSaveMasterPassword: () => void
 }
 
 export function MasterRoleTopbar({
   tableRole,
   isMaster,
-  masterPasswordEdit,
-  onMasterPasswordEditChange,
   onResetTableRole,
-  onSaveMasterPassword,
 }: MasterRoleTopbarProps) {
   const { t } = useLang()
 
   return (
-    <>
-      <button type="button" className="role-pill" onClick={onResetTableRole}>
-        {isMaster ? t('Мастер') : tableRole === 'player' ? t('Игрок') : t('Выбрать роль')}
-      </button>
-      {isMaster ? (
-        <label className="master-password-control">
-          <span>{t('Пароль мастера')}</span>
-          <input
-            value={masterPasswordEdit}
-            onChange={event => onMasterPasswordEditChange(event.target.value)}
-            aria-label={t('Пароль мастера')}
-          />
-          <button type="button" onClick={onSaveMasterPassword}>{t('Сменить')}</button>
-        </label>
-      ) : null}
-    </>
+    <button type="button" className="role-pill" onClick={onResetTableRole}>
+      {isMaster ? t('Мастер') : tableRole === 'player' ? t('Игрок') : t('Выбрать роль')}
+    </button>
   )
 }
