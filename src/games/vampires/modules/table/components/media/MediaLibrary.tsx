@@ -1,4 +1,4 @@
-import type { Dispatch, DragEvent, FormEvent, RefObject, SetStateAction } from 'react'
+import type { Dispatch, DragEvent, SetStateAction } from 'react'
 import { ROOT_LAYER_DROP_ID } from '@/games/vampires/modules/table/constants'
 import type { LayerContextMenu, LayerDropTarget, LayerPatch, LayerTreeNode, MediaTab, TableLayer } from '@/games/vampires/modules/table/types'
 import LayerManager from '../layers/LayerManager'
@@ -8,20 +8,15 @@ type MediaLibraryProps = {
   mediaTab: MediaTab
   isMaster: boolean
   isUploading: boolean
-  fileInputRef: RefObject<HTMLInputElement | null>
   mediaSearchDraft: string
-  textMaterialNameDraft: string
-  textMaterialDraft: string
   libraryTree: LayerTreeNode[]
   layerDropTarget: LayerDropTarget
   expandedFolders: Set<string>
   selectedLayerIds: Set<string>
   draggingLayerId: string | null
   createNamedFolder: (parentId?: string | null, onTable?: boolean) => Promise<string | null>
+  onOpenUpload: () => void
   setMediaSearchDraft: Dispatch<SetStateAction<string>>
-  setTextMaterialNameDraft: Dispatch<SetStateAction<string>>
-  setTextMaterialDraft: Dispatch<SetStateAction<string>>
-  createTextMaterial: (event: FormEvent<HTMLFormElement>) => Promise<void>
   handleLayerRootDragOver: (event: DragEvent<HTMLDivElement>) => void
   handleLayerRootDrop: (event: DragEvent<HTMLDivElement>) => Promise<void>
   uploadFiles: (files: FileList | File[], onTable?: boolean, options?: { asBackground?: boolean; point?: { x: number; y: number }; preserveFolders?: boolean }) => Promise<void>
@@ -45,20 +40,15 @@ export default function MediaLibrary({
   mediaTab,
   isMaster,
   isUploading,
-  fileInputRef,
   mediaSearchDraft,
-  textMaterialNameDraft,
-  textMaterialDraft,
   libraryTree,
   layerDropTarget,
   expandedFolders,
   selectedLayerIds,
   draggingLayerId,
   createNamedFolder,
+  onOpenUpload,
   setMediaSearchDraft,
-  setTextMaterialNameDraft,
-  setTextMaterialDraft,
-  createTextMaterial,
   handleLayerRootDragOver,
   handleLayerRootDrop,
   uploadFiles,
@@ -99,7 +89,7 @@ export default function MediaLibrary({
       </header>
 
       <div className="media-manager-toolbar">
-        <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+        <button type="button" onClick={onOpenUpload} disabled={isUploading}>
           {isUploading ? t('Загрузка...') : t('Загрузить')}
         </button>
         <button type="button" onClick={() => void createNamedFolder(null, false)}>{t('Папка')}</button>
@@ -111,23 +101,6 @@ export default function MediaLibrary({
         onChange={event => setMediaSearchDraft(event.target.value)}
         placeholder={t('Поиск медиа')}
       />
-
-      {isMaster ? (
-        <form className="text-material-form" onSubmit={createTextMaterial}>
-          <input
-            value={textMaterialNameDraft}
-            onChange={event => setTextMaterialNameDraft(event.target.value)}
-            placeholder={t('Название текста')}
-          />
-          <textarea
-            value={textMaterialDraft}
-            onChange={event => setTextMaterialDraft(event.target.value)}
-            placeholder={t('Текст, дневник, заметка...')}
-            rows={4}
-          />
-          <button type="submit" disabled={!textMaterialDraft.trim()}>{t('Добавить текст')}</button>
-        </form>
-      ) : null}
 
       <div
         className={`layer-list library-list ${layerDropTarget?.layerId === ROOT_LAYER_DROP_ID ? 'drop-root' : ''}`}

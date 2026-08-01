@@ -7,7 +7,7 @@ import { sortLayers } from '../utils/layer-utils'
 import { safeStorageName } from '../utils/media-utils'
 import { createTableId } from './scene-api'
 
-const LAYER_SELECT = 'id, room, scene_id, layer_type, owner_role, owner_id, parent_id, name, image_data, x, y, width, height, crop_x, crop_y, crop_width, crop_height, z_index, visible, locked, opacity, blend_mode, rotation, flip_x, flip_y, brightness, contrast, saturation, on_table, created_at'
+const LAYER_SELECT = 'id, room, scene_id, layer_type, owner_role, owner_id, parent_id, name, image_data, x, y, width, height, crop_x, crop_y, crop_width, crop_height, z_index, visible, locked, opacity, blend_mode, rotation, flip_x, flip_y, brightness, contrast, saturation, on_table, is_background, created_at'
 
 export function toLayerDbRow(layer: TableLayer) {
   return {
@@ -40,6 +40,7 @@ export function toLayerDbRow(layer: TableLayer) {
     contrast: layer.contrast,
     saturation: layer.saturation,
     on_table: layer.onTable,
+    is_background: layer.isBackground,
     created_at: layer.createdAt,
   }
 }

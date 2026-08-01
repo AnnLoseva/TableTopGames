@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { DragEvent, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode } from 'react'
 import type { LayerContextMenu, LayerDropTarget, LayerPatch, LayerTreeNode, TableLayer } from '@/games/vampires/modules/table/types'
 import { useLang } from '@/games/vampires/lib/i18n/LanguageProvider'
@@ -27,14 +27,6 @@ type LayerManagerProps = {
   toggleFolder: (folderId: string) => void
 }
 
-/** Flattened, visually-ordered ids of every rendered row (only descends into expanded folders). */
-function flattenVisibleOrder(nodes: LayerTreeNode[], expandedFolders: Set<string>): string[] {
-  return nodes.flatMap(node => {
-    const isExpandedFolder = node.layerType === 'folder' && expandedFolders.has(node.id)
-    return isExpandedFolder ? [node.id, ...flattenVisibleOrder(node.children, expandedFolders)] : [node.id]
-  })
-}
-
 type DragSelectRect = { left: number; top: number; width: number; height: number }
 
 export default function LayerManager({
@@ -60,39 +52,21 @@ export default function LayerManager({
 }: LayerManagerProps) {
   const { t } = useLang()
   const containerRef = useRef<HTMLDivElement>(null)
-  const anchorIdRef = useRef<string | null>(null)
-  const dragSelectRef = useRef<{ startX: number; startY: number; moved: boolean; cleanup: () => void } | null>(null)
+  const dragSelectRef = useRef<{ moved: boolean; baseIds: Set<string>; cleanup: () => void } | null>(null)
   const [dragSelectRect, setDragSelectRect] = useState<DragSelectRect | null>(null)
 
-  const visibleOrder = flattenVisibleOrder(layers, expandedFolders)
-
   const handleRowClick = (event: ReactMouseEvent<HTMLElement>, layerId: string) => {
-    if (event.shiftKey) {
-      const anchorId = anchorIdRef.current
-      const anchorIndex = anchorId ? visibleOrder.indexOf(anchorId) : -1
-      const targetIndex = visibleOrder.indexOf(layerId)
-      if (anchorIndex === -1 || targetIndex === -1) {
-        setLayerSelection([layerId], layerId)
-        anchorIdRef.current = layerId
-        return
-      }
-      const [from, to] = anchorIndex < targetIndex ? [anchorIndex, targetIndex] : [targetIndex, anchorIndex]
-      setLayerSelection(visibleOrder.slice(from, to + 1), layerId)
-      return
-    }
-    if (event.ctrlKey || event.metaKey) {
+    if (event.shiftKey || event.ctrlKey || event.metaKey) {
       const next = new Set(selectedLayerIds)
       if (next.has(layerId)) next.delete(layerId)
       else next.add(layerId)
       setLayerSelection([...next], layerId)
-      anchorIdRef.current = layerId
       return
     }
     setLayerSelection([layerId], layerId)
-    anchorIdRef.current = layerId
   }
 
-  const applyDragSelectRect = (rect: DragSelectRect) => {
+  const applyDragSelectRect = (rect: DragSelectRect, baseIds: Set<string>) => {
     if (!containerRef.current) return
     const ids = Array.from(containerRef.current.querySelectorAll<HTMLElement>('[data-layer-id]'))
       .filter(element => {
@@ -103,13 +77,17 @@ export default function LayerManager({
           && box.top + box.height > rect.top
       })
       .map(element => element.dataset.layerId as string)
-    setLayerSelection(ids, ids[ids.length - 1] || null)
+    const next = new Set(baseIds)
+    ids.forEach(id => next.add(id))
+    const selected = [...next]
+    setLayerSelection(selected, ids[ids.length - 1] || selected[selected.length - 1] || null)
   }
 
   const startDragSelect = (event: ReactPointerEvent<HTMLDivElement>) => {
     // Only start when the gesture begins on empty list background, not on a row.
     if ((event.target as HTMLElement).closest('[data-layer-id]')) return
-    if (event.button !== 0) return
+    if (event.button !== 0 || !event.shiftKey) return
+    event.preventDefault()
 
     const startX = event.clientX
     const startY = event.clientY
@@ -128,7 +106,7 @@ export default function LayerManager({
         height: Math.abs(dy),
       }
       setDragSelectRect(rect)
-      applyDragSelectRect(rect)
+      applyDragSelectRect(rect, state.baseIds)
     }
     const finish = () => {
       dragSelectRef.current?.cleanup()
@@ -143,8 +121,10 @@ export default function LayerManager({
     window.addEventListener('pointermove', handleMove)
     window.addEventListener('pointerup', finish)
     window.addEventListener('pointercancel', finish)
-    dragSelectRef.current = { startX, startY, moved: false, cleanup }
+    dragSelectRef.current = { moved: false, baseIds: new Set(selectedLayerIds), cleanup }
   }
+
+  useEffect(() => () => dragSelectRef.current?.cleanup(), [])
 
   const renderLayerNode = (layer: LayerTreeNode, depth = 0): ReactNode => {
     const isFolder = layer.layerType === 'folder'

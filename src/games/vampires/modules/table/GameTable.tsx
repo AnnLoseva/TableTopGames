@@ -17,6 +17,7 @@ import PlayerTopbarCharacter from '@/games/vampires/modules/table/components/top
 import type { DiceOverlayRoll } from '@/games/vampires/modules/rolls/components/DiceRollOverlay'
 import GameTableStyles from './components/GameTableStyles'
 import LayerManager from './components/layers/LayerManager'
+import SceneLayerPanel from './components/layers/SceneLayerPanel'
 import TableCanvas from './components/canvas/TableCanvas'
 import TokenLayer from './components/canvas/TokenLayer'
 import TableLeftPanel from './components/panels/TableLeftPanel'
@@ -24,6 +25,7 @@ import TableRightPanel from './components/panels/TableRightPanel'
 import CharactersPanel, { type CharacterListEntry } from './components/panels/CharactersPanel'
 import SceneManager from './components/scenes/SceneManager'
 import MediaLibrary from './components/media/MediaLibrary'
+import MediaUploadDialog from './components/media/MediaUploadDialog'
 import { ChatPanel, useChat } from '@/games/vampires/modules/chat'
 import type { ChatUser } from '@/games/vampires/modules/chat/types'
 import JournalPanel from '@/games/vampires/modules/journal/components/JournalPanel'
@@ -36,7 +38,6 @@ import {
   DEFAULT_SCENE_HEIGHT,
   DEFAULT_SCENE_NAME,
   DEFAULT_SCENE_WIDTH,
-  ROOT_LAYER_DROP_ID,
   SKILL_GROUPS,
   type InventoryCategory,
 } from '@/games/vampires/modules/table/constants'
@@ -50,7 +51,6 @@ import {
   extractVideoUrlsFromHtml,
   getDroppedMediaUrls,
   getMediaSize,
-  getMediaUrlsFromText,
 } from '@/games/vampires/modules/table/utils/media-utils'
 import {
   getCharacterBloodPotency,
@@ -71,7 +71,7 @@ import {
   sortLayers,
 } from '@/games/vampires/modules/table/utils/layer-utils'
 import { sortSceneMusic } from '@/games/vampires/modules/table/utils/scene-utils'
-import { intersectsScene, isObjectVisibleToPlayer } from '@/games/vampires/modules/table/utils/scene-geometry'
+import { clampPanToStage, getMinimumStageCoverZoom, intersectsScene, isObjectVisibleToPlayer } from '@/games/vampires/modules/table/utils/scene-geometry'
 import { getCharacterSheetHref } from '@/games/vampires/modules/table/utils/table-urls'
 import { getContestedOpponentOptions, getOpposedCharacterPool } from '@/games/vampires/modules/table/utils/contested-roll-helpers'
 import { buildCharacterRollPool } from '@/games/vampires/modules/table/utils/roll-pool-builders'
@@ -79,7 +79,7 @@ import { buildCharacterRollPool } from '@/games/vampires/modules/table/utils/rol
 import {
   CharacterPreviewModal,
   DisciplinePowerPanel,
-  MasterPasswordGate,
+  TableRoleGate,
   MasterRoleTopbar,
   OpposedRollModal,
   RollModifierControls,
@@ -136,6 +136,7 @@ import {
   useRollPublishActions,
   useWillpowerRerollActions,
   useRoomSession,
+  useTableAlerts,
   useTableCanvas,
   useTableVoice,
   useTableLayers,
@@ -220,16 +221,17 @@ export default function VampireTable() {
     roomRef,
     tableRole,
     isMaster,
-    masterPasswordDraft,
-    setMasterPasswordDraft,
-    enterAsMaster,
     resetTableRole,
     chooseTableRole,
-  } = useRoomSession({ t })
+  } = useRoomSession()
   const { rolls, setRolls, rollsStatus } = useTableRolls(room)
   const {
     scenes,
     setScenes,
+    sceneFolders,
+    setSceneFolders,
+    sceneFoldersRef,
+    loadSceneFolders,
     activeSceneId,
     setActiveSceneId,
     selectedSceneId,
@@ -311,7 +313,6 @@ export default function VampireTable() {
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [isDraggingOver, setIsDraggingOver] = useState(false)
-  const [mediaUrlDraft, setMediaUrlDraft] = useState('')
   const [mediaSearchDraft, setMediaSearchDraft] = useState('')
   const [textMaterialDraft, setTextMaterialDraft] = useState('')
   const [textMaterialNameDraft, setTextMaterialNameDraft] = useState('')
@@ -327,9 +328,14 @@ export default function VampireTable() {
   const [rightPanelOpen, setRightPanelOpen] = useState(true)
   const [musicPanelOpen, setMusicPanelOpen] = useState(true)
   const [selectionRect, setSelectionRect] = useState<SelectionRect>(null)
+  const [mediaUploadOpen, setMediaUploadOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const folderInputRef = useRef<HTMLInputElement>(null)
+  const backgroundFileInputRef = useRef<HTMLInputElement>(null)
   const sceneMusicFileInputRef = useRef<HTMLInputElement>(null)
   const sceneRef = useRef<HTMLDivElement>(null)
+  const tableRoleRef = useRef(tableRole)
+  tableRoleRef.current = tableRole
   const triggerDiceOverlayRef = useRef<((roll: RollMessage) => void) | null>(null)
   const broadcastRef = useRef<(event: string, payload: unknown) => void>(() => {})
   const setSceneBackgroundRef = useRef<(url: string, natural: { width: number; height: number }) => void | Promise<void>>(() => {})
@@ -378,6 +384,13 @@ export default function VampireTable() {
   })
   const selectedChatCharacterIdRef = useRef('')
   const journalEntriesRef = useRef<JournalEntry[]>([])
+
+  useEffect(() => {
+    const input = folderInputRef.current
+    if (!input) return
+    input.setAttribute('webkitdirectory', '')
+    input.setAttribute('directory', '')
+  }, [])
 
 
   useEffect(() => {
@@ -436,6 +449,7 @@ export default function VampireTable() {
   const suppressNextContextMenuRef = useRef(false)
   const {
     chatMessages,
+    chatMessagesLoaded,
     chatUser,
     chatCharacters,
     setChatCharacters,
@@ -448,6 +462,7 @@ export default function VampireTable() {
     sendChatMessage,
     hydrateChatCharacter,
   } = useChat({ chronicleId: room })
+  useTableAlerts({ rolls, rollsStatus, chatMessages, chatMessagesLoaded, chatUser, t })
   const hydratedChatCharacters = useMemo(
     () => chatCharacters.filter(isHydratedCharacter),
     [chatCharacters],
@@ -574,6 +589,18 @@ export default function VampireTable() {
     setTableStatus(result.status)
   }
 
+  const constrainViewportFocus = (focus: { pan: { x: number; y: number }; zoom: number }) => {
+    const scene = scenesRef.current.find(item => item.id === activeSceneIdRef.current)
+    const viewport = sceneRef.current?.getBoundingClientRect()
+    if (tableRoleRef.current !== 'player' || scene?.viewMode === 'free' || !scene || !viewport) return focus
+    const stage = { width: scene.width || DEFAULT_SCENE_WIDTH, height: scene.height || DEFAULT_SCENE_HEIGHT }
+    const zoom = Math.min(5, Math.max(focus.zoom, getMinimumStageCoverZoom(viewport, stage)))
+    return {
+      zoom,
+      pan: clampPanToStage(focus.pan, zoom, viewport, stage),
+    }
+  }
+
   const { channelRef, broadcast } = useTableRealtime({
     room,
     tf,
@@ -583,6 +610,7 @@ export default function VampireTable() {
     setRolls,
     setLayers,
     setScenes,
+    setSceneFolders,
     setSceneMusic,
     setActiveSceneId,
     setSelectedSceneId,
@@ -598,9 +626,11 @@ export default function VampireTable() {
     setMasterWhispers,
     setZoom,
     setPan,
+    constrainViewportFocus,
     setTokens,
     setSelectedTokenId,
     loadLayersForScene,
+    loadSceneFolders,
     loadSceneMusic,
     loadTokensForScene,
     loadControllers,
@@ -708,25 +738,22 @@ export default function VampireTable() {
     uploadFiles,
     addRemoteMediaUrls,
     handleImageUpload,
-    handleMediaUrlSubmit,
+    handleFolderUpload,
+    handleBackgroundUpload,
     createTextMaterial,
     handleSceneMediaDrop,
-    handleTableLayerPanelDrop,
     pasteOnTable,
   } = useMediaUploadActions({
     room,
     t,
     isMaster,
     chatUser,
-    mediaTab,
-    mediaUrlDraft,
     textMaterialDraft,
     textMaterialNameDraft,
     layersRef,
     setIsUploading,
     setTableStatus,
     setRightRailTab,
-    setMediaUrlDraft,
     setTextMaterialDraft,
     setTextMaterialNameDraft,
     addMediaLayer,
@@ -984,6 +1011,12 @@ export default function VampireTable() {
     renameScene,
     activateScene,
     deleteScene,
+    createSceneFolder,
+    renameSceneFolder,
+    deleteSceneFolder,
+    moveSceneToFolder,
+    copyScene,
+    setSceneViewMode,
     publishSceneTrack,
     setSceneBackground,
     clearSceneBackground,
@@ -993,27 +1026,22 @@ export default function VampireTable() {
     t,
     tf,
     isMaster,
-    selectedLayerIds,
-    layers,
-    layersRef,
     scenesRef,
+    sceneFoldersRef,
     activeSceneIdRef,
     sceneMusicRef,
     channelRef,
     setScenes,
+    setSceneFolders,
     setSelectedSceneId,
     setActiveSceneId,
     setSceneStatus,
-    setExpandedFolders,
     getSelectedScene: resolveSelectedScene,
     getActiveScene: () => scenesRef.current.find(scene => scene.id === activeSceneId) || null,
     getCurrentOwnerId: () => (isMaster ? 'master' : chatUser?.id ?? null),
     loadLayersForScene,
     loadSceneMusic,
     broadcast,
-    createFolder,
-    addMediaLayer,
-    patchLayer,
   })
   setSceneBackgroundRef.current = setSceneBackground
 
@@ -1501,28 +1529,38 @@ export default function VampireTable() {
     width: activeScene?.width || DEFAULT_SCENE_WIDTH,
     height: activeScene?.height || DEFAULT_SCENE_HEIGHT,
   }), [activeScene?.width, activeScene?.height])
+  const playerTableMode = !isMaster && (activeScene?.viewMode || 'table') === 'table'
+
+  useLayoutEffect(() => {
+    if (!playerTableMode) return
+    const viewport = sceneRef.current?.getBoundingClientRect()
+    if (!viewport || viewport.width <= 0 || viewport.height <= 0) return
+    const nextZoom = Math.min(5, Math.max(0.2, getMinimumStageCoverZoom(viewport, stageBounds)))
+    setZoom(nextZoom)
+    setPan({
+      x: Math.round((viewport.width - stageBounds.width * nextZoom) / 2),
+      y: Math.round((viewport.height - stageBounds.height * nextZoom) / 2),
+    })
+  }, [playerTableMode, activeSceneId, stageBounds.width, stageBounds.height, rightPanelOpen])
 
   const visibleLayers = useMemo(
     () => sortLayers(layers).filter(layer => {
       if (!isLayerEffectivelyVisible(layer, layers)) return false
       // Master sees the whole workspace; players only what intersects the stage
       // (everything beyond the stage rectangle is the master's prep area).
-      if (isMaster) return true
+      if (isMaster || !playerTableMode) return true
       return intersectsScene(layer, stageBounds)
     }),
-    [layers, isMaster, stageBounds],
+    [layers, isMaster, playerTableMode, stageBounds],
   )
 
   const visibleTokens = useMemo(() => {
-    if (isMaster) return tokens
+    if (isMaster || !playerTableMode) return tokens
     return tokens.filter(token => isObjectVisibleToPlayer({
       object: token,
       scene: stageBounds,
-      isOwnToken: controlledCharacterIds.has(token.characterId),
     }))
-  }, [tokens, isMaster, stageBounds, controlledCharacterIds])
-
-  const isOwnToken = (token: CharacterToken) => controlledCharacterIds.has(token.characterId)
+  }, [tokens, isMaster, playerTableMode, stageBounds])
 
   const openCharacterCard = (character: { id: string; name: string; image: string }) => {
     if (!isMaster && !controlledCharacterIds.has(character.id)) {
@@ -1573,7 +1611,7 @@ export default function VampireTable() {
     username: character.username,
   })), [hydratedChatCharacters])
 
-  const masterCharacterEntries = useMemo<CharacterListEntry[]>(() => {
+  const masterRosterEntries = useMemo<CharacterListEntry[]>(() => {
     const map = new Map<string, CharacterListEntry>()
     ownCharacterEntries.forEach(entry => map.set(entry.id, entry))
     roomParticipants.forEach(participant => {
@@ -1588,15 +1626,18 @@ export default function VampireTable() {
         })
       }
     })
-    return [...map.values()]
-  }, [ownCharacterEntries, roomParticipants])
+    return tokens.map(token => map.get(token.characterId) || {
+      id: token.characterId,
+      name: token.characterName,
+      clan: null,
+      image: token.imageUrl,
+    })
+  }, [ownCharacterEntries, roomParticipants, tokens])
 
-  const panelBaseEntries = isMaster ? masterCharacterEntries : ownCharacterEntries
+  const panelBaseEntries = isMaster ? masterRosterEntries : ownCharacterEntries
   const panelExtraCharacterIds = useMemo(() => {
     const known = new Set(panelBaseEntries.map(entry => entry.id))
-    const relevant = isMaster
-      ? controllers
-      : controllers.filter(controller => controller.userId === chatUser?.id)
+    const relevant = isMaster ? [] : controllers.filter(controller => controller.userId === chatUser?.id)
     return [...new Set(relevant.map(controller => controller.characterId).filter(id => !known.has(id)))]
   }, [panelBaseEntries, controllers, isMaster, chatUser?.id])
 
@@ -1606,10 +1647,12 @@ export default function VampireTable() {
       chatUser={chatUser}
       baseEntries={panelBaseEntries}
       extraCharacterIds={panelExtraCharacterIds}
+      availableEntries={isMaster ? ownCharacterEntries : undefined}
+      newCharacterHref={isMaster ? `${characterSheetHref()}&new=1` : undefined}
       controllers={controllers}
       roomParticipants={roomParticipants}
       tokens={tokens}
-      onAddToken={entry => void addCharacterToken({ id: entry.id, name: entry.name, image: entry.image })}
+      onAddToken={entry => addCharacterToken({ id: entry.id, name: entry.name, image: entry.image })}
       onFindToken={focusCharacterToken}
       onOpenCharacter={entry => openCharacterCard({ id: entry.id, name: entry.name, image: entry.image })}
       assignCharacter={isMaster ? assignCharacter : undefined}
@@ -1622,6 +1665,9 @@ export default function VampireTable() {
     try {
       const natural = await getMediaSize(layer.imageData, 'image')
       await setSceneBackground(layer.imageData, natural)
+      if (!layer.isBackground || layer.onTable || layer.parentId) {
+        await patchLayer(layer.id, { isBackground: true, onTable: false, parentId: null })
+      }
     } catch (error) {
       console.error('Не удалось определить размер фонового изображения:', error)
     }
@@ -1632,9 +1678,13 @@ export default function VampireTable() {
     [isMaster, layers, chatUser]
   )
   const tableManagerLayers = useMemo(() => managerLayers.filter(layer => layer.onTable), [managerLayers])
+  const backgroundLayers = useMemo(
+    () => managerLayers.filter(layer => layer.isBackground && layer.layerType === 'image'),
+    [managerLayers],
+  )
   const libraryLayers = useMemo(() => {
     const query = mediaSearchDraft.trim().toLowerCase()
-    return managerLayers.filter(layer => !layer.onTable && (!query || layer.name.toLowerCase().includes(query) || layer.layerType.includes(query)))
+    return managerLayers.filter(layer => !layer.onTable && !layer.isBackground && (!query || layer.name.toLowerCase().includes(query) || layer.layerType.includes(query)))
   }, [managerLayers, mediaSearchDraft])
   const selectedManagerLayer = managerLayers.find(layer => layer.id === selectedLayerId) || null
   const layerTree = useMemo<LayerTreeNode[]>(() => {
@@ -1653,6 +1703,7 @@ export default function VampireTable() {
     updateLayerDrag,
     finishLayerDrag,
     handleWheel,
+    setToolbarZoom,
     startSceneTouch,
     updateSceneTouch,
     finishSceneTouch,
@@ -1662,6 +1713,8 @@ export default function VampireTable() {
     zoom,
     pan,
     isMaster,
+    clampToStage: playerTableMode,
+    stageBounds,
     selectedLayerIds,
     visibleLayers,
     sceneRef,
@@ -1736,6 +1789,8 @@ export default function VampireTable() {
             <a href={characterSheetHref(selectedActiveCharacter?.id)} title={t('Открыть лист персонажа')}>{t('Лист')}</a>
           ) : null}
           <input ref={fileInputRef} type="file" multiple onChange={handleImageUpload} />
+          <input ref={folderInputRef} type="file" multiple onChange={handleFolderUpload} />
+          <input ref={backgroundFileInputRef} type="file" accept="image/*" multiple onChange={handleBackgroundUpload} />
           <input ref={sceneMusicFileInputRef} type="file" accept="audio/*" multiple onChange={handleSceneMusicUpload} />
           </div>
         </div>
@@ -1771,6 +1826,7 @@ export default function VampireTable() {
               selectedScene={selectedScene}
               sceneStatus={sceneStatus}
               scenes={scenes}
+              sceneFolders={sceneFolders}
               selectedSceneMusic={selectedSceneMusic}
               room={room}
               sceneMusicDraft={sceneMusicDraft}
@@ -1780,6 +1836,12 @@ export default function VampireTable() {
               renameScene={renameScene}
               deleteScene={deleteScene}
               activateScene={activateScene}
+              createSceneFolder={createSceneFolder}
+              renameSceneFolder={renameSceneFolder}
+              deleteSceneFolder={deleteSceneFolder}
+              moveSceneToFolder={moveSceneToFolder}
+              copyScene={copyScene}
+              setSceneViewMode={setSceneViewMode}
               loadSceneMusic={loadSceneMusic}
               setSelectedSceneId={setSelectedSceneId}
               handleSceneMusicDrop={handleSceneMusicDrop}
@@ -1790,56 +1852,49 @@ export default function VampireTable() {
               patchSceneMusic={patchSceneMusic}
               renameSceneMusic={renameSceneMusic}
               deleteSceneMusic={deleteSceneMusic}
-              clearSceneBackground={clearSceneBackground}
             />
 
-            <section className={`scene-layer-panel ${leftToolbarTab === 'layers' ? '' : 'table-right-panel-hidden'}`}>
-              <header>
-                <strong>{t('Слои сцены')}</strong>
-                <span>{activeScene?.name || t('активная сцена')}</span>
-              </header>
-              <div className="scene-layer-groups">
-                {/* 'фон'/'токен' below match layer.name, a Storyteller-assigned scene-layer
-                    label (data, not UI copy) — not part of the RU/EN site translation. */}
-                {[
-                  ['Фон', tableManagerLayers.filter(layer => layer.onTable && (layer.zIndex < 0 || layer.name.toLowerCase().includes('фон')))],
-                  ['Картинки / декорации', tableManagerLayers.filter(layer => layer.onTable && ['image', 'video'].includes(layer.layerType) && layer.zIndex >= 0 && !layer.name.toLowerCase().includes('фон'))],
-                  ['Токены', tableManagerLayers.filter(layer => layer.onTable && layer.name.toLowerCase().includes('токен'))],
-                  ['Группы / папки', tableManagerLayers.filter(layer => layer.onTable && layer.layerType === 'folder')],
-                  ['Текст / документы', tableManagerLayers.filter(layer => layer.onTable && ['text', 'file'].includes(layer.layerType))],
-                ].map(([title, items]) => (
-                  <details open key={title as string}>
-                    <summary>{t(title as string)}<span>{(items as TableLayer[]).length}</span></summary>
-                    <div
-                      className={`layer-list ${layerDropTarget?.layerId === ROOT_LAYER_DROP_ID ? 'drop-root' : ''}`}
-                      onDragOver={handleLayerRootDragOver}
-                      onDrop={handleLayerRootDrop}
-                    >
-                      {(items as TableLayer[]).length === 0 ? <p className="panel-empty">{t('Пусто')}</p> : <LayerManager layers={buildLayerTree(items as TableLayer[])}
-                            isMaster={isMaster}
-                            expandedFolders={expandedFolders}
-                            layerDropTarget={layerDropTarget}
-                            selectedLayerIds={selectedLayerIds}
-                            draggingLayerId={draggingLayerId}
-                            canMoveLayer={canMoveLayer}
-                            isLayerEffectivelyVisible={checkLayerEffectivelyVisible}
-                            handleLayerDragStart={handleLayerDragStart}
-                            handleLayerDragOver={handleLayerDragOver}
-                            handleLayerDrop={handleLayerDrop}
-                            handleLayerDragEnd={handleLayerDragEnd}
-                            handleManagerDoubleClick={handleManagerDoubleClick}
-                            patchLayer={patchLayer}
-                            placeLayerOnTable={placeLayerOnTable}
-                            deleteLayer={deleteLayer}
-                            setLayerSelection={setLayerSelection}
-                            setLayerContextMenu={setLayerContextMenu}
-                            toggleFolder={toggleFolder}
-                          />}
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </section>
+            <SceneLayerPanel
+              visible={leftToolbarTab === 'layers'}
+              activeScene={activeScene}
+              backgroundLayers={backgroundLayers}
+              tableManagerLayers={tableManagerLayers}
+              tokens={tokens}
+              textMaterialNameDraft={textMaterialNameDraft}
+              textMaterialDraft={textMaterialDraft}
+              layerManagerProps={{
+                isMaster,
+                expandedFolders,
+                layerDropTarget,
+                selectedLayerIds,
+                draggingLayerId,
+                canMoveLayer,
+                isLayerEffectivelyVisible: checkLayerEffectivelyVisible,
+                handleLayerDragStart,
+                handleLayerDragOver,
+                handleLayerDrop,
+                handleLayerDragEnd,
+                handleManagerDoubleClick,
+                patchLayer,
+                placeLayerOnTable,
+                deleteLayer,
+                setLayerSelection,
+                setLayerContextMenu,
+                toggleFolder,
+              }}
+              clearSceneBackground={clearSceneBackground}
+              setLayerAsBackground={setLayerAsBackground}
+              setLayerSelection={setLayerSelection}
+              setLayerContextMenu={setLayerContextMenu}
+              setTextMaterialNameDraft={setTextMaterialNameDraft}
+              setTextMaterialDraft={setTextMaterialDraft}
+              createTextMaterial={createTextMaterial}
+              handleLayerRootDragOver={handleLayerRootDragOver}
+              handleLayerRootDrop={handleLayerRootDrop}
+              focusCharacterToken={focusCharacterToken}
+              canManageToken={canManageToken}
+              deleteToken={deleteToken}
+            />
 
             <section
               className={`scene-media-panel ${leftToolbarTab === 'media' ? '' : 'table-right-panel-hidden'}`}
@@ -1853,26 +1908,11 @@ export default function VampireTable() {
                 <span>{selectedScene?.name || activeScene?.name || t('сцена')}</span>
               </header>
               <div className="media-manager-toolbar">
-                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                <button type="button" onClick={() => setMediaUploadOpen(true)} disabled={isUploading}>
                   {isUploading ? t('Загрузка...') : t('Загрузить')}
                 </button>
                 <button type="button" onClick={() => createNamedFolder(null, false)}>{t('Папка')}</button>
               </div>
-              <form className="media-url-form" onSubmit={event => {
-                event.preventDefault()
-                const items = getMediaUrlsFromText(mediaUrlDraft)
-                void addRemoteMediaUrls(items, undefined, false).then(added => {
-                  if (added) setMediaUrlDraft('')
-                })
-              }}>
-                <input
-                  value={mediaUrlDraft}
-                  onChange={event => setMediaUrlDraft(event.target.value)}
-                  placeholder={t('Ссылка на картинку, видео или YouTube')}
-                  disabled={isUploading}
-                />
-                <button type="submit" disabled={isUploading || !mediaUrlDraft.trim()}>{t('В папку')}</button>
-              </form>
               <input
                 className="media-search-input"
                 data-media-search
@@ -1943,17 +1983,16 @@ export default function VampireTable() {
             height: stageBounds.height,
             backgroundUrl: activeScene?.backgroundUrl || '',
           }}
-          clipMediaToStage={!isMaster}
+          clipMediaToStage={playerTableMode}
           tokenLayer={(
             <TokenLayer
               tokens={visibleTokens}
               sceneBounds={stageBounds}
               zoom={zoom}
               isMaster={isMaster}
-              clipForeign={!isMaster}
+              clipToStage={playerTableMode}
               selectedTokenId={selectedTokenId}
               setSelectedTokenId={setSelectedTokenId}
-              isOwnToken={isOwnToken}
               canManageToken={canManageToken}
               canResizeToken={canResizeToken}
               patchToken={patchToken}
@@ -1971,7 +2010,7 @@ export default function VampireTable() {
           suppressNextContextMenuRef={suppressNextContextMenuRef}
           canEditLayer={canEditLayer}
           raiseHand={raiseHand}
-          setZoom={setZoom}
+          setZoom={setToolbarZoom}
           setIsDraggingOver={setIsDraggingOver}
           setLayerContextMenu={setLayerContextMenu}
           setLayerSelection={setLayerSelection}
@@ -2012,20 +2051,15 @@ export default function VampireTable() {
               mediaTab="library"
               isMaster={isMaster}
               isUploading={isUploading}
-              fileInputRef={fileInputRef}
               mediaSearchDraft={mediaSearchDraft}
-              textMaterialNameDraft={textMaterialNameDraft}
-              textMaterialDraft={textMaterialDraft}
               libraryTree={libraryTree}
               layerDropTarget={layerDropTarget}
               expandedFolders={expandedFolders}
               selectedLayerIds={selectedLayerIds}
               draggingLayerId={draggingLayerId}
               createNamedFolder={createNamedFolder}
+              onOpenUpload={() => setMediaUploadOpen(true)}
               setMediaSearchDraft={setMediaSearchDraft}
-              setTextMaterialNameDraft={setTextMaterialNameDraft}
-              setTextMaterialDraft={setTextMaterialDraft}
-              createTextMaterial={createTextMaterial}
               handleLayerRootDragOver={handleLayerRootDragOver}
               handleLayerRootDrop={handleLayerRootDrop}
               uploadFiles={uploadFiles}
@@ -2338,11 +2372,19 @@ export default function VampireTable() {
         />
       ) : null}
 
-      <MasterPasswordGate
+      <MediaUploadDialog
+        open={mediaUploadOpen}
+        isUploading={isUploading}
+        canUploadBackground={isMaster}
+        onChooseFiles={() => fileInputRef.current?.click()}
+        onChooseFolder={() => folderInputRef.current?.click()}
+        onChooseBackground={() => backgroundFileInputRef.current?.click()}
+        onClose={() => setMediaUploadOpen(false)}
+      />
+
+      <TableRoleGate
         open={!tableRole}
-        masterPasswordDraft={masterPasswordDraft}
-        onMasterPasswordDraftChange={setMasterPasswordDraft}
-        onEnterAsMaster={enterAsMaster}
+        onChooseMaster={() => chooseTableRole('master')}
         onChoosePlayer={() => chooseTableRole('player')}
       />
 

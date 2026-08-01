@@ -61,10 +61,15 @@
   idempotent. Ancestry, background and class galleries support characteristic
   filtering from pinned pf2r/PF2e dependency data.
 - **TableTopGames portal and shared account (2026-07-29)** — `/` is the game selector, VTM lives under `/vampires/*`, and Pathfinder remains at `/pathfinder2/sheet`. The root `AccountProvider` uses the existing Vampire Supabase account, persists its session, and mirrors the profile into the legacy VTM storage keys used by the sheet, table and journal. Old root VTM URLs are compatibility redirects.
-- **Game table lite (2026-07-18)** — scene stage/background on `table_scenes`,
-  character tokens (`table_tokens`) above media, `table_character_controllers`
-  (several characters per player), geometric player visibility (outside-stage
-  hidden/clipped, own tokens always visible). Needs live-room testing with a
+- **Game table master workspace (2026-08-01)** — scene folders are session
+  groupings (`table_scene_folders` + `table_scenes.folder_id`), scene copies
+  include layers/tokens/music, and per-scene `view_mode` switches players
+  between stage-clamped Table and unrestricted Free. Layers now expose reusable
+  background candidates (`table_images.is_background`), images/folders,
+  text/documents and tokens; Media has unified file/folder/background upload and
+  multi-select. The master character roster bulk-adds from her full gallery and
+  the duplicate right-side Characters tab/password prompt are gone from the table.
+  Needs live-room testing with a
   logged-in master + player; server-side permission checks still impossible
   (custom users identity, permissive `table_*` RLS).
 - **Master console (PROMPT 6–15)** — six modules live under `/vampires/master`: overview,
@@ -75,7 +80,7 @@
   for new chronicles/members remains operator-owned.
 - **Legacy character sheet phase** — iframe sheet (`public/vampires/main.js` +
   `old-sheet.html`) stays load-bearing; bridge in `src/games/vampires/modules/character-sheet/`.
-- Hub + Modules architecture is **mostly complete** (`GameTable.tsx` ~2.6k lines —
+- Hub + Modules architecture is **mostly complete** (`GameTable.tsx` ~2.4k lines —
   do not grow for master features).
 - Run `npm run test:vtm-parity` after health/humanity edits; `npm run test:master-console`
   for layout/deep-link/registry/privacy unit checks.

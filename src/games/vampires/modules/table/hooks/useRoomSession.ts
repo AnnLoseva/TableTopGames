@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { TableRole } from '../types'
 import {
   clearTableRole,
@@ -8,17 +8,11 @@ import {
   getRoomFromLocation,
   rememberRoom,
   rememberTableRole,
-  verifyMasterPassword,
 } from '../utils/room-session'
 
-type UseRoomSessionOptions = {
-  t: (ru: string) => string
-}
-
-export function useRoomSession({ t }: UseRoomSessionOptions) {
+export function useRoomSession() {
   const [room, setRoom] = useState('campaign-666')
   const [tableRole, setTableRole] = useState<TableRole | null>(null)
-  const [masterPasswordDraft, setMasterPasswordDraft] = useState('')
   const roomRef = useRef(room)
 
   useEffect(() => {
@@ -38,7 +32,8 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
       rememberTableRole(urlRole)
       setTableRole(urlRole)
     } else if (urlRole === 'master') {
-      clearTableRole()
+      rememberTableRole(urlRole)
+      setTableRole(urlRole)
     } else if (savedRole === 'master' || savedRole === 'player') {
       setTableRole(savedRole)
     }
@@ -47,16 +42,6 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
   const chooseTableRole = (role: TableRole) => {
     rememberTableRole(role)
     setTableRole(role)
-  }
-
-  const enterAsMaster = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!verifyMasterPassword(masterPasswordDraft)) {
-      window.alert(t('Пароль мастера не подошёл.'))
-      return
-    }
-    setMasterPasswordDraft('')
-    chooseTableRole('master')
   }
 
   const resetTableRole = () => {
@@ -72,10 +57,7 @@ export function useRoomSession({ t }: UseRoomSessionOptions) {
     roomRef,
     tableRole,
     isMaster,
-    masterPasswordDraft,
-    setMasterPasswordDraft,
     chooseTableRole,
-    enterAsMaster,
     resetTableRole,
   }
 }

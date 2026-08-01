@@ -15,13 +15,26 @@ local-audio and YouTube sources, synced across the room.
   `src/games/vampires/modules/music/adapters/youtubeAdapter.ts`.
 - Table media/layers: `src/games/vampires/modules/table/components/{canvas,media,layers,scenes}/*`.
 - Media/layer/scene helpers: `src/games/vampires/modules/table/utils/{media-utils,layer-utils,scene-utils}.ts`.
-- Data: `table_images`, `table_music`, `table_music_library`,
-  `table_scene_music`, `media_studio_layers`; buckets `table-images` + music
+- Data: `table_images` (including background candidates), `table_music`,
+  `table_music_library`, `table_scene_music`, `media_studio_layers`; buckets `table-images` + music
   bucket (see `supabase-persistence.md`).
 
 ## Images / video / files / layers
 - Media items live on the tldraw canvas (`TableCanvas.tsx`) and are grouped into
   **layers** inside a **scene**. Visibility is scene/layer driven.
+- The media toolbar intentionally has only **Upload** and **Folder**. Upload opens
+  one chooser for files, a whole folder (preserving nested relative paths), or a
+  background image. Folders are `table_images` folder rows nested inside the
+  image/media tree; there is no separate folders section.
+- `table_images.is_background=true` marks reusable background candidates. They
+  are off-table, excluded from the ordinary media library and surfaced in
+  Layers → Background, where one click updates the active scene background.
+- Layers → Images/Decorations, Text/Documents and Tokens are working sections.
+  Text creation lives in Text/Documents. Shift/Ctrl/Cmd click toggles individual
+  media selection; Shift-drag on empty list space adds every intersecting row.
+- The master image context menu is deliberately object-focused: point everyone,
+  copy image, set background, rename, hide, lock, layer order, move to folder,
+  delete (in that order). Canvas-only opacity/position controls do not appear there.
 - Root layer drop target id is `ROOT_LAYER_DROP_ID` (`__root__`) in
   `src/games/vampires/modules/table/constants.ts`.
 - Use `src/games/vampires/modules/table/utils/{layer,scene,media}-utils.ts` for placement/visibility logic —
@@ -36,6 +49,8 @@ local-audio and YouTube sources, synced across the room.
   mounting on Pathfinder routes.
 - Persistence: current music via `table_music`, per-scene via `table_scene_music`,
   a reusable library via `table_music_library`; audio files in the music bucket.
+- Scene music is intentionally the larger lower section of the Scenes tab; the
+  separate Music tab remains available for the room-level player/library UI.
 
 ## Browser & platform limitations
 - **Autoplay is blocked** until a user gesture — playback must be gated on

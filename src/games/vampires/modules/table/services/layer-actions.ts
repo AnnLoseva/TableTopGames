@@ -177,6 +177,7 @@ export function createLayerActions(deps: LayerActionsDeps) {
       contrast: 1,
       saturation: 1,
       onTable,
+      isBackground: false,
       createdAt: new Date().toISOString(),
     }
     Object.assign(layer, overrides)
@@ -247,6 +248,7 @@ export function createLayerActions(deps: LayerActionsDeps) {
       contrast: 1,
       saturation: 1,
       onTable,
+      isBackground: false,
       createdAt: new Date().toISOString(),
     }
 

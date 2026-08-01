@@ -1,4 +1,4 @@
-import type { CharacterController, CharacterControllerRow, CharacterOption, CharacterRow, CharacterToken, CharacterTokenRow, CharacterType, Die, HealthMetaState, InventoryItem, LayerPatch, NormalizedWillpower, OpposedRollResult, RollMessage, RollMeta, RollRow, RouseCheckResult, SceneMusicRow, SceneMusicTrack, TableLayer, TableLayerRow, TableScene, TableSceneRow, TokenPatch, VitalTrackers, WillpowerMetaState, WillpowerTracker } from './types'
+import type { CharacterController, CharacterControllerRow, CharacterOption, CharacterRow, CharacterToken, CharacterTokenRow, CharacterType, Die, HealthMetaState, InventoryItem, LayerPatch, NormalizedWillpower, OpposedRollResult, RollMessage, RollMeta, RollRow, RouseCheckResult, SceneMusicRow, SceneMusicTrack, TableLayer, TableLayerRow, TableScene, TableSceneFolder, TableSceneFolderRow, TableSceneRow, TokenPatch, VitalTrackers, WillpowerMetaState, WillpowerTracker } from './types'
 import { DEFAULT_SCENE_HEIGHT, DEFAULT_SCENE_WIDTH } from './constants'
 import { getMusicProvider } from '@/games/vampires/modules/music/utils'
 import type { HumanityStainEvent } from '@/games/vampires/core/vtm5/rules/humanity'
@@ -544,6 +544,7 @@ export function mapLayerRow(row: TableLayerRow): TableLayer {
     contrast: row.contrast ?? 1,
     saturation: row.saturation ?? 1,
     onTable: row.on_table ?? true,
+    isBackground: row.is_background ?? false,
     createdAt: row.created_at,
   }
 }
@@ -577,6 +578,7 @@ export function toDbPatch(patch: LayerPatch) {
   if (patch.contrast !== undefined) dbPatch.contrast = patch.contrast
   if (patch.saturation !== undefined) dbPatch.saturation = patch.saturation
   if (patch.onTable !== undefined) dbPatch.on_table = patch.onTable
+  if (patch.isBackground !== undefined) dbPatch.is_background = patch.isBackground
   return dbPatch
 }
 
@@ -590,7 +592,20 @@ export function mapSceneRow(row: TableSceneRow): TableScene {
     backgroundUrl: row.background_url || '',
     width: row.width || DEFAULT_SCENE_WIDTH,
     height: row.height || DEFAULT_SCENE_HEIGHT,
+    folderId: row.folder_id ?? null,
+    viewMode: row.view_mode === 'free' ? 'free' : 'table',
     createdBy: row.created_by ?? null,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }
+}
+
+export function mapSceneFolderRow(row: TableSceneFolderRow): TableSceneFolder {
+  return {
+    id: row.id,
+    room: row.room,
+    name: row.name,
+    orderIndex: row.order_index ?? 0,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }

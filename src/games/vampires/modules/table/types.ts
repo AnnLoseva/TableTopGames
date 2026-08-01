@@ -500,6 +500,8 @@ export type TableLayer = {
   contrast: number
   saturation: number
   onTable: boolean
+  /** Flagged as a background candidate for its scene; shows in the Layers-tab "Фон" group. */
+  isBackground: boolean
   createdAt: string
 }
 
@@ -533,13 +535,14 @@ export type TableLayerRow = {
   contrast?: number | null
   saturation?: number | null
   on_table?: boolean | null
+  is_background?: boolean | null
   created_at: string
 }
 
 export type TableRole = 'master' | 'player'
 export type BlendMode = 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'luminosity'
 
-export type LayerPatch = Partial<Pick<TableLayer, 'sceneId' | 'layerType' | 'ownerRole' | 'ownerId' | 'parentId' | 'name' | 'imageData' | 'x' | 'y' | 'width' | 'height' | 'cropX' | 'cropY' | 'cropWidth' | 'cropHeight' | 'zIndex' | 'visible' | 'locked' | 'opacity' | 'blendMode' | 'rotation' | 'flipX' | 'flipY' | 'brightness' | 'contrast' | 'saturation' | 'onTable'>>
+export type LayerPatch = Partial<Pick<TableLayer, 'sceneId' | 'layerType' | 'ownerRole' | 'ownerId' | 'parentId' | 'name' | 'imageData' | 'x' | 'y' | 'width' | 'height' | 'cropX' | 'cropY' | 'cropWidth' | 'cropHeight' | 'zIndex' | 'visible' | 'locked' | 'opacity' | 'blendMode' | 'rotation' | 'flipX' | 'flipY' | 'brightness' | 'contrast' | 'saturation' | 'onTable' | 'isBackground'>>
 
 export type ImageEditorState = {
   cropX: number
@@ -579,6 +582,10 @@ export type TableScene = {
   /** Stage size in scene units; follows the background image's natural size. */
   width: number
   height: number
+  /** Optional session folder this scene belongs to; null = ungrouped. */
+  folderId: string | null
+  /** 'table' clamps player pan/zoom to the stage; 'free' lets players pan anywhere. */
+  viewMode: 'table' | 'free'
   createdBy: string | null
   createdAt: string
   updatedAt: string
@@ -593,7 +600,28 @@ export type TableSceneRow = {
   background_url?: string | null
   width?: number | null
   height?: number | null
+  folder_id?: string | null
+  view_mode?: string | null
   created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+/** Scene folder ("session"): groups table_scenes rows for one game night. */
+export type TableSceneFolder = {
+  id: string
+  room: string
+  name: string
+  orderIndex: number
+  createdAt: string
+  updatedAt: string
+}
+
+export type TableSceneFolderRow = {
+  id: string
+  room: string
+  name: string
+  order_index: number | null
   created_at: string
   updated_at: string
 }

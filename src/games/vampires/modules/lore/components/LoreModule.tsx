@@ -142,6 +142,8 @@ export default function LoreModule({ room, role, deepLinkParams }: MasterModuleP
         backgroundUrl: '',
         width: 1920,
         height: 1080,
+        folderId: null,
+        viewMode: 'table' as const,
         createdBy: 'master',
         createdAt: now,
         updatedAt: now,
@@ -208,6 +210,7 @@ export default function LoreModule({ room, role, deepLinkParams }: MasterModuleP
           contrast: 1,
           saturation: 1,
           onTable: false,
+          isBackground: false,
           createdAt: new Date().toISOString(),
         }
         await insertLayer(layer)

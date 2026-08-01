@@ -1,5 +1,7 @@
 export { useRoomSession } from './useRoomSession'
 export { useTableRolls } from './useTableRolls'
+export { useTableAlerts } from './useTableAlerts'
+export type { UseTableAlertsOptions } from './useTableAlerts'
 export { useTableScenes } from './useTableScenes'
 export { useTableLayers } from './useTableLayers'
 export { useTableRealtime } from './useTableRealtime'

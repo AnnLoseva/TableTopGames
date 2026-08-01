@@ -3,27 +3,27 @@
 Module boundary for the shared campaign table: scenes, layers, canvas, media,
 rolls, characters-at-table, and room orchestration.
 
-## Current state (2026-07-02)
+## Current state (2026-08-01)
 
 ### Data layer (canonical)
 - `types.ts`, `constants.ts`, `constants/roll-traits.ts`, `mappers.ts`
 - `utils/*` — scene, layer, media, room-session, dice-display, roll-utils
 
 ### API (`api/*`)
-- `scene-api.ts` — scenes + scene music Supabase I/O
+- `scene-api.ts` — scenes, scene/session folders, deep copy + scene music Supabase I/O
 - `layer-api.ts` — layers + storage I/O
 - `roll-api.ts` — roll history insert/update
 - `character-api.ts` — `characters` fetch/update
 
 ### Hooks (`hooks/*`) — wired in `GameTable.tsx`
-- `useRoomSession` — room, role, master password
+- `useRoomSession` — room + table role (password compatibility UI lives only in master console)
 - `useTableRolls` — roll history state
-- `useTableScenes` — scenes, active scene, scene music
+- `useTableScenes` — scenes/folders, active scene, view mode, scene music
 - `useTableLayers` — layers + `loadLayersForScene`
 - `useTableRealtime` — Supabase channel `table-room:{room}` + broadcast
 
 ### Components (`components/*`) — wired in `GameTable.tsx`
-- `MasterPasswordGate`, `MasterRoleTopbar`
+- `TableRoleGate`, `MasterRoleTopbar`
 - `OpposedRollModal`, `WillpowerRerollControls`
 - `CharacterPreviewModal`, `DisciplinePowerPanel`
 - `RollModifierControls`

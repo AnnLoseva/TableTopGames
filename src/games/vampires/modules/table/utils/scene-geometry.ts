@@ -22,16 +22,48 @@ export function intersectsScene(object: SceneObjectRect, scene: SceneBounds): bo
   )
 }
 
-/** Player visibility rule: own tokens are always visible, everything else must intersect the stage. */
+/** Player Table-mode visibility rule: every object must intersect the stage. */
 export function isObjectVisibleToPlayer({
   object,
   scene,
-  isOwnToken,
 }: {
   object: SceneObjectRect
   scene: SceneBounds
-  isOwnToken: boolean
 }): boolean {
-  if (isOwnToken) return true
   return intersectsScene(object, scene)
+}
+
+/** Smallest zoom that covers the whole player viewport with the stage. */
+export function getMinimumStageCoverZoom(
+  viewport: { width: number; height: number },
+  stage: SceneBounds,
+): number {
+  return Math.max(
+    viewport.width / Math.max(1, stage.width),
+    viewport.height / Math.max(1, stage.height),
+  )
+}
+
+/**
+ * Clamps one pan axis so the stage rectangle never scrolls out of a "Стол"-mode
+ * viewport: if the stage (at the current zoom) is bigger than the viewport, the
+ * viewport stays fully inside the stage; if smaller, the stage is centered and
+ * panning that axis is locked.
+ */
+function clampPanAxis(value: number, viewportSize: number, stagePxSize: number): number {
+  if (stagePxSize <= viewportSize) return (viewportSize - stagePxSize) / 2
+  return Math.min(0, Math.max(viewportSize - stagePxSize, value))
+}
+
+/** Clamps a pan point so the stage stays within a "Стол"-mode viewport on both axes. */
+export function clampPanToStage(
+  pan: { x: number; y: number },
+  zoom: number,
+  viewport: { width: number; height: number },
+  stage: SceneBounds,
+): { x: number; y: number } {
+  return {
+    x: clampPanAxis(pan.x, viewport.width, stage.width * zoom),
+    y: clampPanAxis(pan.y, viewport.height, stage.height * zoom),
+  }
 }

@@ -34,11 +34,10 @@ export type TokenLayerProps = {
   sceneBounds: { width: number; height: number }
   zoom: number
   isMaster: boolean
-  /** Player view: foreign tokens are clipped to the stage; own tokens render unclipped. */
-  clipForeign: boolean
+  /** Player Table mode: every token is clipped to the stage. */
+  clipToStage: boolean
   selectedTokenId: string | null
   setSelectedTokenId: (id: string | null) => void
-  isOwnToken: (token: CharacterToken) => boolean
   canManageToken: (token: CharacterToken) => boolean
   canResizeToken: (token: CharacterToken) => boolean
   patchToken: (tokenId: string, patch: TokenPatch) => Promise<void>
@@ -52,10 +51,9 @@ export default function TokenLayer({
   sceneBounds,
   zoom,
   isMaster,
-  clipForeign,
+  clipToStage,
   selectedTokenId,
   setSelectedTokenId,
-  isOwnToken,
   canManageToken,
   canResizeToken,
   patchToken,
@@ -341,22 +339,21 @@ export default function TokenLayer({
     )
   }
 
-  const ownTokens = clipForeign ? tokens.filter(token => isOwnToken(token)) : tokens
-  const foreignTokens = clipForeign ? tokens.filter(token => !isOwnToken(token)) : []
-
   return (
     <>
-      {clipForeign ? (
+      {clipToStage ? (
         <div
           className="token-layer token-layer-clip"
           style={{ zIndex: TOKEN_LAYER_Z, width: sceneBounds.width, height: sceneBounds.height }}
         >
-          {foreignTokens.map(renderToken)}
+          {tokens.map(renderToken)}
         </div>
       ) : null}
-      <div className="token-layer" style={{ zIndex: TOKEN_LAYER_Z + 1 }}>
-        {ownTokens.map(renderToken)}
-      </div>
+      {!clipToStage ? (
+        <div className="token-layer" style={{ zIndex: TOKEN_LAYER_Z }}>
+          {tokens.map(renderToken)}
+        </div>
+      ) : null}
     </>
   )
 }

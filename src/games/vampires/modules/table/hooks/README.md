@@ -2,9 +2,10 @@
 
 | Hook | Status | Responsibility |
 |---|---|---|
-| `useRoomSession` | implemented | `room`, `role`, master password gate |
+| `useRoomSession` | implemented | `room` + password-free table role selection |
 | `useTableRolls` | implemented | roll history state + initial load |
-| `useTableScenes` | implemented | scenes, active scene, scene music state + bootstrap |
+| `useTableAlerts` | implemented | sound + tab-title blink on new roll/incoming chat message (see `utils/notification-alerts.ts`) |
+| `useTableScenes` | implemented | scene folders, scenes, view mode, active scene/music + bootstrap |
 | `useTableLayers` | implemented | layers state + `loadLayersForScene` |
 | `useTableRealtime` | implemented | Supabase channel `table-room:{room}` + `broadcast` |
 | `useJournal` | planned | in-table journal entries |

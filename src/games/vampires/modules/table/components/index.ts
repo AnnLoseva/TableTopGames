@@ -1,4 +1,4 @@
-export { MasterPasswordGate, MasterRoleTopbar } from './MasterPasswordGate'
+export { TableRoleGate, MasterRoleTopbar } from './MasterPasswordGate'
 export { CharacterPreviewModal } from './CharacterPreviewModal'
 export type { CharacterPreviewModalProps } from './CharacterPreviewModal'
 export { DisciplinePowerPanel } from './DisciplinePowerPanel'

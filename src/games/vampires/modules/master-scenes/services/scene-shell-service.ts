@@ -108,6 +108,8 @@ export async function createMasterScene(input: {
     backgroundUrl: '',
     width: 1920,
     height: 1080,
+    folderId: null,
+    viewMode: 'table',
     createdBy: input.createdBy || 'master',
     createdAt: now,
     updatedAt: now,

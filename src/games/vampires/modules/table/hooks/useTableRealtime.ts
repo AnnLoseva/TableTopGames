@@ -10,6 +10,7 @@ import { getTableSupabaseClient, removeTableRoomChannel } from '../api/realtime-
 import {
   TABLE_IMAGES,
   TABLE_ROLLS,
+  TABLE_SCENE_FOLDERS,
   TABLE_SCENE_MUSIC,
   TABLE_SCENES,
   TABLE_TOKENS,
@@ -17,6 +18,7 @@ import {
 import {
   mapLayerRow,
   mapRollRow,
+  mapSceneFolderRow,
   mapSceneMusicRow,
   mapSceneRow,
   mapTokenRow,
@@ -37,6 +39,8 @@ import type {
   TableLayer,
   TableLayerRow,
   TableScene,
+  TableSceneFolder,
+  TableSceneFolderRow,
   TableSceneRow,
   TokenPatch,
   VoiceSignal,
@@ -54,6 +58,7 @@ export type UseTableRealtimeOptions = {
   setRolls: Dispatch<SetStateAction<RollMessage[]>>
   setLayers: Dispatch<SetStateAction<TableLayer[]>>
   setScenes: Dispatch<SetStateAction<TableScene[]>>
+  setSceneFolders: Dispatch<SetStateAction<TableSceneFolder[]>>
   setSceneMusic: Dispatch<SetStateAction<SceneMusicTrack[]>>
   setActiveSceneId: Dispatch<SetStateAction<string | null>>
   setSelectedSceneId: Dispatch<SetStateAction<string | null>>
@@ -69,9 +74,11 @@ export type UseTableRealtimeOptions = {
   setMasterWhispers: Dispatch<SetStateAction<MasterWhisper[]>>
   setZoom: Dispatch<SetStateAction<number>>
   setPan: Dispatch<SetStateAction<{ x: number; y: number }>>
+  constrainViewportFocus: (focus: { pan: { x: number; y: number }; zoom: number }) => { pan: { x: number; y: number }; zoom: number }
   setTokens: (next: CharacterToken[] | ((prev: CharacterToken[]) => CharacterToken[])) => void
   setSelectedTokenId: Dispatch<SetStateAction<string | null>>
   loadLayersForScene: (targetRoom: string, sceneId: string) => void | Promise<void>
+  loadSceneFolders: (targetRoom: string) => void | Promise<void>
   loadSceneMusic: (targetRoom: string, sceneId: string) => void | Promise<void>
   loadTokensForScene: (targetRoom: string, sceneId: string) => void | Promise<void>
   loadControllers: () => void | Promise<void>
@@ -102,6 +109,7 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
       setRolls,
       setLayers,
       setScenes,
+      setSceneFolders,
       setSceneMusic,
       setActiveSceneId,
       setSelectedSceneId,
@@ -117,9 +125,11 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
       setMasterWhispers,
       setZoom,
       setPan,
+      constrainViewportFocus,
       setTokens,
       setSelectedTokenId,
       loadLayersForScene,
+      loadSceneFolders,
       loadSceneMusic,
       loadTokensForScene,
       loadControllers,
@@ -137,6 +147,7 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
       void loadSceneMusic(currentRoom, sceneId)
       void loadTokensForScene(currentRoom, sceneId)
     })
+    void loadSceneFolders(currentRoom)
 
     const channel = supabase
       .channel(`table-room:${currentRoom}`)
@@ -243,6 +254,19 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
           void loadTokensForScene(currentRoom, deleted.nextActiveSceneId)
         }
       })
+      .on('broadcast', { event: 'scene-folder' }, payload => {
+        const folder = payload.payload as TableSceneFolder
+        if (!folder || folder.room !== currentRoom) return
+        setSceneFolders(prev => (prev.some(item => item.id === folder.id)
+          ? prev.map(item => (item.id === folder.id ? folder : item))
+          : [...prev, folder]))
+      })
+      .on('broadcast', { event: 'scene-folder-delete' }, payload => {
+        const deleted = payload.payload as { room?: string; id?: string }
+        if (deleted.room !== currentRoom || !deleted.id) return
+        setSceneFolders(prev => prev.filter(folder => folder.id !== deleted.id))
+        setScenes(prev => prev.map(scene => (scene.folderId === deleted.id ? { ...scene, folderId: null } : scene)))
+      })
       .on('broadcast', { event: 'token' }, payload => {
         const token = payload.payload as CharacterToken
         if (!token || token.room !== currentRoom || token.sceneId !== activeSceneIdRef.current) return
@@ -310,8 +334,9 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
       .on('broadcast', { event: 'viewport-focus' }, payload => {
         const focus = payload.payload as { room?: string; pan?: { x: number; y: number }; zoom?: number }
         if (focus.room !== currentRoom || !focus.pan || typeof focus.zoom !== 'number') return
-        setZoom(focus.zoom)
-        setPan(focus.pan)
+        const constrained = constrainViewportFocus({ pan: focus.pan, zoom: focus.zoom })
+        setZoom(constrained.zoom)
+        setPan(constrained.pan)
       })
       .on(
         'postgres_changes',
@@ -383,6 +408,23 @@ export function useTableRealtime(options: UseTableRealtimeOptions) {
             void loadLayersForScene(currentRoom, scene.id)
             void loadSceneMusic(currentRoom, scene.id)
           }
+        },
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: TABLE_SCENE_FOLDERS, filter: `room=eq.${currentRoom}` },
+        payload => {
+          if (payload.eventType === 'DELETE') {
+            const deleted = payload.old as { id?: string }
+            if (!deleted.id) return
+            setSceneFolders(prev => prev.filter(folder => folder.id !== deleted.id))
+            setScenes(prev => prev.map(scene => (scene.folderId === deleted.id ? { ...scene, folderId: null } : scene)))
+            return
+          }
+          const folder = mapSceneFolderRow(payload.new as TableSceneFolderRow)
+          setSceneFolders(prev => (prev.some(item => item.id === folder.id)
+            ? prev.map(item => (item.id === folder.id ? folder : item))
+            : [...prev, folder]))
         },
       )
       .on(

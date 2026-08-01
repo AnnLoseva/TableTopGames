@@ -48,6 +48,7 @@ function isHydratedCharacter(character?: CharacterOption | null) {
 export function useChat({ chronicleId }: UseChatOptions) {
   const { t } = useLang()
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
+  const [chatMessagesLoaded, setChatMessagesLoaded] = useState(false)
   const [chatUser, setChatUser] = useState<ChatUser | null>(null)
   const [chatCharacters, setChatCharacters] = useState<CharacterOption[]>([])
   const [selectedChatCharacterId, setSelectedChatCharacterId] = useState('')
@@ -80,11 +81,13 @@ export function useChat({ chronicleId }: UseChatOptions) {
         if (cancelled) return
         setChatMessages(messages)
         setChatStatus('Чат онлайн')
+        setChatMessagesLoaded(true)
       })
       .catch(error => {
         if (cancelled) return
         console.error('Не удалось загрузить чат:', error)
         setChatStatus('Нет общей истории чата')
+        setChatMessagesLoaded(true)
       })
 
     const supabase = createClient()
@@ -327,6 +330,7 @@ export function useChat({ chronicleId }: UseChatOptions) {
   return {
     chatMessages,
     setChatMessages,
+    chatMessagesLoaded,
     chatStatus,
     setChatStatus,
     chatUser,

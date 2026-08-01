@@ -1,14 +1,13 @@
 import type { ChangeEvent, Dispatch, FormEvent, MutableRefObject, SetStateAction } from 'react'
 import type { ChatUser } from '@/games/vampires/modules/chat/types'
 import { uploadTableImageFile } from '../api/layer-api'
-import type { LayerPatch, MediaTab, RightRailTab, TableLayer } from '../types'
+import type { LayerPatch, RightRailTab, TableLayer } from '../types'
 import {
   escapeHtml,
   getDroppedMediaUrls,
   getFileText,
   getImageNameFromUrl,
   getMediaSize,
-  getMediaUrlsFromText,
   getTextLayerData,
   isReadableTextFile,
   isWordLikeFile,
@@ -21,15 +20,12 @@ export type MediaUploadActionsDeps = {
   t: (ru: string) => string
   isMaster: boolean
   chatUser: ChatUser | null
-  mediaTab: MediaTab
-  mediaUrlDraft: string
   textMaterialDraft: string
   textMaterialNameDraft: string
   layersRef: MutableRefObject<TableLayer[]>
   setIsUploading: Dispatch<SetStateAction<boolean>>
   setTableStatus: Dispatch<SetStateAction<string>>
   setRightRailTab: Dispatch<SetStateAction<RightRailTab>>
-  setMediaUrlDraft: Dispatch<SetStateAction<string>>
   setTextMaterialDraft: Dispatch<SetStateAction<string>>
   setTextMaterialNameDraft: Dispatch<SetStateAction<string>>
   addMediaLayer: (
@@ -136,8 +132,16 @@ export function createMediaUploadActions(deps: MediaUploadActionsDeps) {
         }
 
         if (options.asBackground && layerType === 'image') {
-          // Scene background is a scene property, not a layer: the stage size
-          // follows the image's natural size and nothing lands on the canvas.
+          await deps.addMediaLayer(
+            publicUrl,
+            file.name,
+            natural,
+            'image',
+            index,
+            undefined,
+            false,
+            { isBackground: true, parentId: null },
+          )
           await deps.setSceneBackground(publicUrl, natural)
           continue
         }
@@ -203,21 +207,25 @@ export function createMediaUploadActions(deps: MediaUploadActionsDeps) {
 
   const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      await uploadFiles(event.target.files, deps.mediaTab !== 'library')
+      await uploadFiles(event.target.files, false)
       event.target.value = ''
     }
   }
 
-  const handleMediaUrlSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const items = getMediaUrlsFromText(deps.mediaUrlDraft)
-    if (items.length === 0) {
-      window.alert(deps.t('Вставь ссылку на YouTube или прямую ссылку на файл: jpg, png, webp, gif, svg, mp4, webm, mov, m4v, ogg.'))
-      return
+  const handleFolderUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      await uploadFiles(event.target.files, false, { preserveFolders: true })
+      event.target.value = ''
     }
+  }
 
-    const added = await addRemoteMediaUrls(items)
-    if (added) deps.setMediaUrlDraft('')
+  const handleBackgroundUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const imageFiles = Array.from(event.target.files).filter(file => file.type.startsWith('image/'))
+      if (imageFiles.length === 0) window.alert(deps.t('Для фона выбери картинку.'))
+      else await uploadFiles(imageFiles, false, { asBackground: true })
+      event.target.value = ''
+    }
   }
 
   const createTextMaterial = async (event: FormEvent<HTMLFormElement>) => {
@@ -231,7 +239,7 @@ export function createMediaUploadActions(deps: MediaUploadActionsDeps) {
       'text',
       0,
       undefined,
-      false,
+      true,
     )
     deps.setTextMaterialDraft('')
     deps.setTextMaterialNameDraft('')
@@ -282,26 +290,14 @@ export function createMediaUploadActions(deps: MediaUploadActionsDeps) {
     return true
   }
 
-  const handleTableLayerPanelDrop = async (event: React.DragEvent<HTMLElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    const droppedFiles = Array.from(event.dataTransfer.files || [])
-    if (droppedFiles.length > 0) {
-      await uploadFiles(droppedFiles, true, { preserveFolders: true })
-      return
-    }
-    const mediaUrls = getDroppedMediaUrls(event.dataTransfer)
-    if (mediaUrls.length > 0) await addRemoteMediaUrls(mediaUrls, undefined, true)
-  }
-
   return {
     uploadFiles,
     addRemoteMediaUrls,
     handleImageUpload,
-    handleMediaUrlSubmit,
+    handleFolderUpload,
+    handleBackgroundUpload,
     createTextMaterial,
     handleSceneMediaDrop,
-    handleTableLayerPanelDrop,
     pasteOnTable,
   }
 }

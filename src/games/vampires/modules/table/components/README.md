@@ -5,7 +5,8 @@ modals now live under `src/games/vampires/modules/table/components/*`.
 
 | Component | Status | Responsibility |
 |---|---|---|
-| `MasterPasswordGate` / `MasterRoleTopbar` | implemented | Role gate + topbar password controls |
+| `TableRoleGate` / `MasterRoleTopbar` | implemented | Password-free table role chooser + role reset |
+| `SceneManager` / `SceneLayerPanel` | implemented | Session folders, scene mode/music + layer groups |
 | `OpposedRollModal` | implemented | Incoming opposed proposal + response builder |
 | `WillpowerRerollControls` | implemented | Dice selection + willpower reroll in roll rail |
 | `CharacterPreviewModal` | implemented | Quick character sheet (rolls, vitals, inventory) |

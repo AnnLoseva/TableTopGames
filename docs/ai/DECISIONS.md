@@ -1,5 +1,46 @@
 # Decisions
 
+## 2026-08-01 — Table scenes gain session folders, player view modes and reusable background candidates
+
+**Area:** Game table / scenes / media / Supabase
+
+**Decision:** `table_scene_folders` groups scenes by game session and
+`table_scenes.folder_id` is a nullable `ON DELETE SET NULL` reference. Scene
+copy is deep: it creates new scene, layer (including remapped media-folder
+parents), token and scene-music rows. `table_scenes.view_mode` is constrained to
+`table` or `free` and defaults to `table`; Table mode clips player content and
+clamps/fits the viewport to the stage, while Free shows the complete scene and
+permits unrestricted panning. The master remains unrestricted in both modes.
+
+`table_images.is_background` marks reusable background candidates. Converting
+or uploading a background keeps one media row/storage object, moves the row
+off-table and exposes it in Layers → Background; the scene's canonical active
+background remains `table_scenes.background_url/width/height`. Media folders are
+ordinary `table_images` folder rows inside the image tree. The table role gate
+no longer displays the legacy master password; the separate master console
+retains that compatibility control. This does not create server-side table
+authorization: current permissive `table_*` RLS remains the existing contract.
+
+**Reason:** A session needs its own reusable scene set; players need an explicit
+bounded-table presentation mode; and backgrounds/folders must behave like the
+media objects they contain instead of parallel disconnected UI sections.
+
+**Consequences:** Live Supabase migrations
+`table_images_add_is_background`, `table_scene_folders` and
+`table_scenes_add_view_mode` were applied to project
+`klhxbaagarqxaqnrvurr`. The new table/columns have explicit Data API grants,
+RLS matching the existing shared table model, and Realtime publication for
+scene folders. Clients must preserve the row mappings and subscribe by room.
+
+**Affected files:** `src/games/vampires/modules/table/{types,constants,mappers}.ts`,
+`src/games/vampires/modules/table/{api,hooks,services,components}/*`,
+`src/games/vampires/modules/table/GameTable.tsx`,
+`src/games/vampires/supabase/table_{images_is_background,scene_folders,scenes_view_mode}.sql`.
+
+**Status:** active
+
+---
+
 ## 2026-08-01 — Character tokens drag fully local, sync once on release; players may resize their own tokens
 
 **Area:** Game table / `TokenLayer.tsx`, `services/token-actions.ts`, `hooks/useTableRealtime.ts`

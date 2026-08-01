@@ -56,8 +56,9 @@ Tables (from `src/games/vampires/modules/table/constants.ts` and `src/games/vamp
 | `blood_bonds` | blood-bonds | Active thrall→regnant bonds (master) |
 | `blood_bond_events` | blood-bonds | Append-only bond history |
 | `table_chat_messages` | table | Room chat |
-| `table_images` | table | Images/media placed on the table |
-| `table_scenes` | table | Scenes (incl. `background_url`, `width`, `height` — the stage) |
+| `table_images` | table | Images/media; `is_background` marks off-table background candidates |
+| `table_scenes` | table | Scenes incl. stage, nullable session `folder_id`, and player `view_mode` |
+| `table_scene_folders` | table | Room-scoped scene/session folders |
 | `table_tokens` | table | Character tokens above the media layer |
 | `table_character_controllers` | table | Which room users control which characters |
 | `table_scene_music` | table | Music attached to scenes |
@@ -109,6 +110,13 @@ the SQL is not deployed.
 realtime channel (`table-room:{room}`). Chat is handled by `src/games/vampires/modules/chat/*`
 against `table_chat_messages`. Names must come from `src/games/vampires/modules/table/constants.ts`;
 row mapping belongs in the relevant module/API.
+
+The 2026-08-01 table contract adds `table_images.is_background`,
+`table_scene_folders`, `table_scenes.folder_id` and `table_scenes.view_mode`
+(`table`/`free`). Canonical SQL is in
+`src/games/vampires/supabase/table_{images_is_background,scene_folders,scenes_view_mode}.sql`;
+all three row shapes are mapped in the table module and included in room
+Realtime subscriptions. See the matching `DECISIONS.md` entry for live migration names.
 
 ## Master console persistence
 
@@ -174,7 +182,7 @@ Librarian's fixed Chronicle tool combines `search_library_chronicle(...)` with
 `search_my_personal_chronicle(...)`, both under the caller's JWT.
 
 ## Music / media persistence
-Images/media → `table_images` + `table-images` bucket; music → `table_music`,
+Images/media/background candidates → `table_images` + `table-images` bucket; music → `table_music`,
 `table_music_library`, `table_scene_music` + the music bucket; layers →
 `media_studio_layers`. See `music-and-media.md`.
 

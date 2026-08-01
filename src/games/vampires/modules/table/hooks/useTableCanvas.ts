@@ -11,12 +11,16 @@ import type {
 } from '../types'
 import { getDescendantIds, layerUsesInteractiveDragHandle } from '../utils/layer-utils'
 import { isEditablePasteTarget, parseClipboardForTablePaste } from '../utils/media-utils'
+import { clampPanToStage, getMinimumStageCoverZoom } from '../utils/scene-geometry'
 
 export type UseTableCanvasOptions = {
   room: string
   zoom: number
   pan: { x: number; y: number }
   isMaster: boolean
+  /** Player pan/zoom is clamped to stageBounds when true (active scene's "Стол" view mode). */
+  clampToStage: boolean
+  stageBounds: { width: number; height: number }
   selectedLayerIds: Set<string>
   visibleLayers: TableLayer[]
   sceneRef: MutableRefObject<HTMLDivElement | null>
@@ -68,6 +72,26 @@ export function useTableCanvas(options: UseTableCanvasOptions) {
   useEffect(() => {
     zoomRef.current = options.zoom
   }, [options.zoom])
+
+  /** Clamps a candidate pan to the stage when the active scene is in "Стол" mode for a player. */
+  const clampPan = (nextPan: { x: number; y: number }, zoomValue: number) => {
+    const opts = optionsRef.current
+    if (!opts.clampToStage) return nextPan
+    const rect = opts.sceneRef.current?.getBoundingClientRect()
+    if (!rect) return nextPan
+    return clampPanToStage(nextPan, zoomValue, { width: rect.width, height: rect.height }, opts.stageBounds)
+  }
+
+  const clampZoom = (zoomValue: number) => {
+    const opts = optionsRef.current
+    if (!opts.clampToStage) return zoomValue
+    const rect = opts.sceneRef.current?.getBoundingClientRect()
+    if (!rect) return zoomValue
+    return Math.min(5, Math.max(
+      zoomValue,
+      getMinimumStageCoverZoom({ width: rect.width, height: rect.height }, opts.stageBounds),
+    ))
+  }
 
   useEffect(() => () => {
     if (dragAnimationFrameRef.current !== null) cancelAnimationFrame(dragAnimationFrameRef.current)
@@ -290,7 +314,7 @@ export function useTableCanvas(options: UseTableCanvasOptions) {
 
     if (drag.mode === 'pan') {
       if (Math.abs(dx) + Math.abs(dy) > 6) opts.suppressNextContextMenuRef.current = true
-      opts.setPan({ x: drag.startPanX + dx, y: drag.startPanY + dy })
+      opts.setPan(clampPan({ x: drag.startPanX + dx, y: drag.startPanY + dy }, opts.zoom))
       return
     }
 
@@ -404,15 +428,23 @@ export function useTableCanvas(options: UseTableCanvasOptions) {
     event.preventDefault()
     const opts = optionsRef.current
     const rect = event.currentTarget.getBoundingClientRect()
-    const nextZoom = Math.min(5, Math.max(0.2, opts.zoom * (event.deltaY > 0 ? 0.9 : 1.1)))
+    const nextZoom = clampZoom(Math.min(5, Math.max(0.2, opts.zoom * (event.deltaY > 0 ? 0.9 : 1.1))))
     const cursorX = event.clientX - rect.left
     const cursorY = event.clientY - rect.top
     const worldX = (cursorX - opts.pan.x) / opts.zoom
     const worldY = (cursorY - opts.pan.y) / opts.zoom
-    opts.setPan({
+    opts.setPan(clampPan({
       x: Math.round(cursorX - worldX * nextZoom),
       y: Math.round(cursorY - worldY * nextZoom),
-    })
+    }, nextZoom))
+    opts.setZoom(nextZoom)
+  }
+
+  const setToolbarZoom: Dispatch<SetStateAction<number>> = action => {
+    const opts = optionsRef.current
+    const requestedZoom = typeof action === 'function' ? action(opts.zoom) : action
+    const nextZoom = clampZoom(requestedZoom)
+    opts.setPan(clampPan(opts.pan, nextZoom))
     opts.setZoom(nextZoom)
   }
 
@@ -484,21 +516,21 @@ export function useTableCanvas(options: UseTableCanvasOptions) {
     event.preventDefault()
     if (gesture.mode === 'pinch' && event.touches.length >= 2) {
       const center = getTouchCenter(event.touches)
-      const nextZoom = Math.min(5, Math.max(0.2, gesture.startZoom * (getTouchDistance(event.touches) / gesture.startDistance)))
+      const nextZoom = clampZoom(Math.min(5, Math.max(0.2, gesture.startZoom * (getTouchDistance(event.touches) / gesture.startDistance))))
       opts.setZoom(nextZoom)
-      opts.setPan({
+      opts.setPan(clampPan({
         x: Math.round(center.x - rect.left - gesture.worldCenterX * nextZoom),
         y: Math.round(center.y - rect.top - gesture.worldCenterY * nextZoom),
-      })
+      }, nextZoom))
       return
     }
 
     if (gesture.mode === 'pan' && event.touches.length === 1) {
       const touch = event.touches[0]
-      opts.setPan({
+      opts.setPan(clampPan({
         x: Math.round(gesture.startPanX + touch.clientX - gesture.startClientX),
         y: Math.round(gesture.startPanY + touch.clientY - gesture.startClientY),
-      })
+      }, opts.zoom))
     }
   }
 
@@ -547,6 +579,7 @@ export function useTableCanvas(options: UseTableCanvasOptions) {
     updateLayerDrag,
     finishLayerDrag,
     handleWheel,
+    setToolbarZoom,
     startSceneTouch,
     updateSceneTouch,
     finishSceneTouch,

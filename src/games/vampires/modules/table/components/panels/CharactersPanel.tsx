@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLang } from '@/games/vampires/lib/i18n/LanguageProvider'
 import type { ChatUser } from '@/games/vampires/modules/chat/types'
 import { fetchCharactersByIds } from '../../api/character-api'
-import { searchCharactersByName } from '../../api/controller-api'
 import type {
   ActiveParticipant,
   CharacterController,
@@ -39,10 +38,13 @@ export type CharactersPanelProps = {
   baseEntries: CharacterListEntry[]
   /** Characters known only from control assignments; fetched lazily by id. */
   extraCharacterIds: string[]
+  /** Full account library shown in the master's add-character gallery. */
+  availableEntries?: CharacterListEntry[]
+  newCharacterHref?: string
   controllers: CharacterController[]
   roomParticipants: ActiveParticipant[]
   tokens: CharacterToken[]
-  onAddToken: (entry: CharacterListEntry) => void
+  onAddToken: (entry: CharacterListEntry) => void | Promise<unknown>
   onFindToken: (characterId: string) => void
   onOpenCharacter: (entry: CharacterListEntry) => void
   assignCharacter?: (characterId: string, userId: string) => Promise<void>
@@ -54,6 +56,8 @@ export default function CharactersPanel({
   chatUser,
   baseEntries,
   extraCharacterIds,
+  availableEntries = [],
+  newCharacterHref,
   controllers,
   roomParticipants,
   tokens,
@@ -65,9 +69,9 @@ export default function CharactersPanel({
 }: CharactersPanelProps) {
   const { t } = useLang()
   const [fetchedEntries, setFetchedEntries] = useState<CharacterListEntry[]>([])
-  const [searchDraft, setSearchDraft] = useState('')
-  const [searchResults, setSearchResults] = useState<CharacterListEntry[]>([])
-  const [searchStatus, setSearchStatus] = useState('')
+  const [galleryOpen, setGalleryOpen] = useState(false)
+  const [gallerySelection, setGallerySelection] = useState<Set<string>>(new Set())
+  const [addingFromGallery, setAddingFromGallery] = useState(false)
 
   const knownIds = useMemo(
     () => new Set([...baseEntries.map(entry => entry.id), ...fetchedEntries.map(entry => entry.id)]),
@@ -118,18 +122,6 @@ export default function CharactersPanel({
 
   const participantName = (userId: string) =>
     roomParticipants.find(participant => participant.userId === userId)?.username || userId.slice(0, 8)
-
-  const runSearch = async () => {
-    setSearchStatus(t('Ищу персонажей...'))
-    const { rows, error } = await searchCharactersByName(searchDraft)
-    if (error) {
-      console.error('Не удалось найти персонажей:', error)
-      setSearchStatus(t('Поиск не удался.'))
-      return
-    }
-    setSearchResults((rows as CharacterRow[]).map(rowToEntry))
-    setSearchStatus(rows.length === 0 ? t('Ничего не нашлось.') : '')
-  }
 
   const renderEntry = (entry: CharacterListEntry) => {
     const token = tokensByCharacter.get(entry.id)
@@ -194,39 +186,103 @@ export default function CharactersPanel({
     <div className="characters-panel">
       <header>
         <strong>{isMaster ? t('Персонажи') : t('Мои персонажи')}</strong>
-        <span>{entries.length}</span>
+        <div>
+          <span>{entries.length}</span>
+          {isMaster ? (
+            <button type="button" onClick={() => {
+              setGallerySelection(new Set())
+              setGalleryOpen(true)
+            }}>
+              {t('Добавить персонажа')}
+            </button>
+          ) : null}
+        </div>
       </header>
       {!chatUser ? (
         <p className="panel-empty">{t('Войди на главной, чтобы увидеть своих персонажей.')}</p>
       ) : entries.length === 0 ? (
         <p className="panel-empty">
-          {isMaster ? t('Персонажи появятся, когда игроки подключатся.') : t('Тебе пока не назначены персонажи.')}
+          {isMaster ? t('Добавьте персонажей мастера на эту сцену.') : t('Тебе пока не назначены персонажи.')}
         </p>
       ) : (
         <div className="characters-panel-list">{entries.map(renderEntry)}</div>
       )}
-      {isMaster ? (
-        <div className="characters-panel-search">
-          <form
-            className="media-url-form"
-            onSubmit={event => {
-              event.preventDefault()
-              void runSearch()
-            }}
-          >
-            <input
-              value={searchDraft}
-              onChange={event => setSearchDraft(event.target.value)}
-              placeholder={t('Поиск персонажа по имени')}
-            />
-            <button type="submit">{t('Найти')}</button>
-          </form>
-          {searchStatus ? <p className="panel-empty">{searchStatus}</p> : null}
-          {searchResults.length > 0 ? (
-            <div className="characters-panel-list">
-              {searchResults.filter(entry => !knownIds.has(entry.id)).map(renderEntry)}
+      {galleryOpen ? (
+        <div className="character-gallery-dialog" role="dialog" aria-modal="true" aria-label={t('Галерея персонажей')} onMouseDown={() => setGalleryOpen(false)}>
+          <section onMouseDown={event => event.stopPropagation()}>
+            <header>
+              <div>
+                <span>{t('Персонажи мастера')}</span>
+                <strong>{t('Добавить на сцену')}</strong>
+              </div>
+              <button type="button" onClick={() => setGalleryOpen(false)} aria-label={t('Закрыть')}>×</button>
+            </header>
+            <div className="character-gallery-toolbar">
+              <button type="button" onClick={() => {
+                setGallerySelection(current => current.size === availableEntries.length
+                  ? new Set()
+                  : new Set(availableEntries.map(entry => entry.id)))
+              }} disabled={availableEntries.length === 0}>
+                {gallerySelection.size === availableEntries.length && availableEntries.length > 0
+                  ? t('Снять выделение')
+                  : t('Выделить всех')}
+              </button>
+              {newCharacterHref ? (
+                <a href={newCharacterHref} target="_blank" rel="noreferrer">{t('Создать нового персонажа')}</a>
+              ) : null}
             </div>
-          ) : null}
+            {availableEntries.length === 0 ? (
+              <p className="panel-empty">{t('Сохранённых персонажей пока нет.')}</p>
+            ) : (
+              <div className="character-gallery-grid">
+                {availableEntries.map(entry => {
+                  const selected = gallerySelection.has(entry.id)
+                  const alreadyOnTable = tokensByCharacter.has(entry.id)
+                  return (
+                    <button
+                      type="button"
+                      className={selected ? 'selected' : ''}
+                      key={entry.id}
+                      onClick={() => setGallerySelection(current => {
+                        const next = new Set(current)
+                        if (next.has(entry.id)) next.delete(entry.id)
+                        else next.add(entry.id)
+                        return next
+                      })}
+                    >
+                      <span className="chat-avatar" aria-hidden="true">
+                        {entry.image ? <img src={entry.image} alt="" /> : <i>{(entry.name || '?').slice(0, 1).toUpperCase()}</i>}
+                      </span>
+                      <span>
+                        <strong>{entry.name || t('Безымянный')}</strong>
+                        <small>{entry.clan || t('без клана')}{alreadyOnTable ? ` · ${t('на столе')}` : ''}</small>
+                      </span>
+                      <i aria-hidden="true">{selected ? '✓' : ''}</i>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+            <footer>
+              <span>{t('Выбрано')}: {gallerySelection.size}</span>
+              <button
+                type="button"
+                disabled={gallerySelection.size === 0 || addingFromGallery}
+                onClick={() => {
+                  setAddingFromGallery(true)
+                  void (async () => {
+                    for (const entry of availableEntries) {
+                      if (gallerySelection.has(entry.id)) await onAddToken(entry)
+                    }
+                    setAddingFromGallery(false)
+                    setGalleryOpen(false)
+                  })()
+                }}
+              >
+                {addingFromGallery ? t('Добавляю...') : t('Добавить выбранных')}
+              </button>
+            </footer>
+          </section>
         </div>
       ) : null}
     </div>

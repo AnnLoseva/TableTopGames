@@ -542,7 +542,7 @@ export default function GameTableStyles() {
 
         .left-tabs {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(5, minmax(0, 1fr));
           gap: 4px;
           padding: 4px;
           border-bottom: 1px solid #2b2b2b;
@@ -582,11 +582,15 @@ export default function GameTableStyles() {
         }
 
         .scene-control-panel {
-          grid-template-rows: auto auto minmax(150px, 0.85fr) minmax(210px, 1fr);
+          grid-template-rows: auto auto auto minmax(150px, 0.85fr) minmax(230px, 1.15fr);
+        }
+
+        .scene-layer-panel {
+          grid-template-rows: auto minmax(0, 1fr);
         }
 
         .scene-media-panel {
-          grid-template-rows: auto auto auto auto minmax(0, 1fr);
+          grid-template-rows: auto auto auto minmax(0, 1fr);
         }
 
         .scene-control-panel > header,
@@ -639,7 +643,7 @@ export default function GameTableStyles() {
 
         .scene-toolbar {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           gap: 6px;
           padding: 8px;
           border-bottom: 1px solid #2b2b2b;
@@ -668,6 +672,52 @@ export default function GameTableStyles() {
           cursor: not-allowed;
         }
 
+        .scene-view-mode {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          align-items: center;
+          gap: 6px 10px;
+          padding: 8px;
+          border-bottom: 1px solid #2b2b2b;
+          background: #121212;
+        }
+
+        .scene-view-mode > span {
+          color: #d0d0d0;
+          font-weight: 600;
+        }
+
+        .scene-view-mode > div {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 4px;
+        }
+
+        .scene-view-mode button {
+          min-width: 0;
+          height: 28px;
+          border: 1px solid #3a3a3a;
+          border-radius: 5px;
+          background: #1b1b1b;
+          color: #aaa;
+          font: inherit;
+          font-size: 11px;
+          cursor: pointer;
+        }
+
+        .scene-view-mode button.active {
+          border-color: #9ab7ff;
+          background: rgba(71, 99, 160, 0.28);
+          color: #fff;
+        }
+
+        .scene-view-mode small {
+          grid-column: 1 / -1;
+          color: #777;
+          font-size: 10px;
+          line-height: 1.35;
+        }
+
         .scene-list,
         .scene-track-list,
         .scene-layer-groups {
@@ -675,9 +725,57 @@ export default function GameTableStyles() {
           overflow-y: auto;
         }
 
+        .scene-folder-group {
+          border-bottom: 1px solid #2b2b2b;
+          background: #121212;
+        }
+
+        .scene-folder-group summary {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 10px;
+          cursor: pointer;
+          color: #f1f1f1;
+          font-size: 12px;
+          list-style: none;
+        }
+
+        .scene-folder-group summary::-webkit-details-marker {
+          display: none;
+        }
+
+        .scene-folder-group summary span:first-child {
+          flex: 1 1 auto;
+          font-weight: 600;
+        }
+
+        .scene-folder-group summary em {
+          color: #36d675;
+          font-style: normal;
+        }
+
+        .scene-folder-group summary button {
+          width: 22px;
+          height: 22px;
+          border: 1px solid #3a3a3a;
+          border-radius: 3px;
+          background: #272727;
+          color: #cfcfcf;
+          font: inherit;
+          font-size: 11px;
+          padding: 0;
+          cursor: pointer;
+        }
+
+        .scene-folder-group summary button.danger {
+          color: #ff9c9c;
+          border-color: #5d2929;
+        }
+
         .scene-list-row {
           display: grid;
-          grid-template-columns: 44px minmax(0, 1fr) 74px;
+          grid-template-columns: 44px minmax(0, 1fr) auto;
           gap: 8px;
           align-items: center;
           min-height: 58px;
@@ -685,6 +783,23 @@ export default function GameTableStyles() {
           border-bottom: 1px solid #292929;
           background: #161616;
           cursor: pointer;
+        }
+
+        .scene-list-row-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          align-items: stretch;
+        }
+
+        .scene-list-row-actions select {
+          height: 26px;
+          border: 1px solid #3a3a3a;
+          border-radius: 5px;
+          background: #1b1b1b;
+          color: #f4f4f4;
+          font: inherit;
+          font-size: 11px;
         }
 
         .scene-list-row:hover,
@@ -728,6 +843,10 @@ export default function GameTableStyles() {
           display: grid;
           grid-template-rows: auto auto auto minmax(0, 1fr);
           border-top: 1px solid #2b2b2b;
+        }
+
+        .scene-music-box-prominent > header strong {
+          font-size: 15px;
         }
 
         .scene-music-actions {
@@ -804,6 +923,27 @@ export default function GameTableStyles() {
 
         .scene-layer-groups summary span {
           color: #36d675;
+        }
+
+        .scene-layer-group-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .scene-layer-group-actions button {
+          color: #cfcfcf;
+          border: 1px solid #3a3a3a;
+          border-radius: 3px;
+          background: #272727;
+          font: inherit;
+          font-size: 11px;
+          padding: 2px 8px;
+          cursor: pointer;
+        }
+
+        .scene-layer-group-actions button:hover {
+          color: #ffffff;
         }
 
         .layer-panel header,
@@ -1144,6 +1284,23 @@ export default function GameTableStyles() {
           color: var(--vtm-ink-dim);
         }
 
+        .characters-panel > header > div {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .characters-panel > header button {
+          border: 1px solid var(--vtm-line-blood);
+          border-radius: var(--r-sm);
+          background: var(--vtm-surface-blood);
+          color: var(--vtm-blood-pale);
+          padding: 5px 8px;
+          font: inherit;
+          font-size: var(--fs-10);
+          cursor: pointer;
+        }
+
         .characters-panel-list {
           display: flex;
           flex-direction: column;
@@ -1209,45 +1366,190 @@ export default function GameTableStyles() {
           padding: 3px 8px;
         }
 
-        .characters-panel-search {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          border-top: 1px solid var(--vtm-line);
-          padding-top: 10px;
+        .character-gallery-dialog,
+        .media-upload-dialog {
+          position: fixed;
+          inset: 0;
+          z-index: 2400;
+          display: grid;
+          place-items: center;
+          padding: 18px;
+          background: rgba(0, 0, 0, 0.82);
         }
 
-        .scene-background-box {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          padding: 10px 12px;
-          border-top: 1px solid var(--vtm-line);
+        .character-gallery-dialog > section,
+        .media-upload-dialog > section {
+          width: min(720px, 100%);
+          max-height: min(720px, calc(100vh - 36px));
+          display: grid;
+          grid-template-rows: auto auto minmax(0, 1fr) auto;
+          border: 1px solid var(--vtm-line-strong);
+          border-radius: var(--r-lg);
+          background: #111;
+          box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+          overflow: hidden;
         }
 
-        .scene-background-box > header {
+        .character-gallery-dialog > section > header,
+        .media-upload-dialog > section > header {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          gap: 8px;
-          font-size: var(--fs-11);
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: var(--vtm-ink-dim);
+          align-items: center;
+          gap: 12px;
+          padding: 14px 16px;
+          border-bottom: 1px solid var(--vtm-line);
         }
 
-        .scene-background-preview {
+        .character-gallery-dialog header div,
+        .media-upload-dialog header div {
+          display: grid;
+          gap: 3px;
+        }
+
+        .character-gallery-dialog header span,
+        .media-upload-dialog header span {
+          color: var(--vtm-ink-faint);
+          font-size: var(--fs-10);
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .character-gallery-dialog header strong,
+        .media-upload-dialog header strong {
+          color: var(--vtm-ink);
+          font-size: var(--fs-16);
+        }
+
+        .character-gallery-dialog header > button,
+        .media-upload-dialog header > button {
+          width: 32px;
+          height: 32px;
+          border: 1px solid var(--vtm-line);
+          border-radius: 50%;
+          background: transparent;
+          color: var(--vtm-ink-dim);
+          font-size: 20px;
+          cursor: pointer;
+        }
+
+        .character-gallery-toolbar,
+        .character-gallery-dialog footer {
           display: flex;
+          justify-content: space-between;
           align-items: center;
           gap: 10px;
+          padding: 10px 16px;
+          border-bottom: 1px solid var(--vtm-line);
         }
 
-        .scene-background-preview img {
-          width: 84px;
-          height: 48px;
-          object-fit: cover;
+        .character-gallery-dialog footer {
+          border-top: 1px solid var(--vtm-line);
+          border-bottom: 0;
+        }
+
+        .character-gallery-toolbar button,
+        .character-gallery-toolbar a,
+        .character-gallery-dialog footer button {
+          border: 1px solid var(--vtm-line-blood);
           border-radius: var(--r-sm);
+          background: var(--vtm-surface-blood);
+          color: var(--vtm-blood-pale);
+          padding: 7px 10px;
+          font: inherit;
+          font-size: var(--fs-11);
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .character-gallery-grid {
+          min-height: 0;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+          gap: 8px;
+          padding: 12px;
+          overflow-y: auto;
+        }
+
+        .character-gallery-grid > button {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: 42px minmax(0, 1fr) 20px;
+          align-items: center;
+          gap: 9px;
           border: 1px solid var(--vtm-line);
+          border-radius: var(--r-md);
+          background: rgba(24, 14, 17, 0.8);
+          color: var(--vtm-ink);
+          padding: 9px;
+          text-align: left;
+          cursor: pointer;
+        }
+
+        .character-gallery-grid > button.selected {
+          border-color: #9ab7ff;
+          box-shadow: inset 0 0 0 1px rgba(154, 183, 255, 0.35);
+        }
+
+        .character-gallery-grid > button > span:nth-child(2) {
+          min-width: 0;
+          display: grid;
+          gap: 3px;
+        }
+
+        .character-gallery-grid strong,
+        .character-gallery-grid small {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .character-gallery-grid small {
+          color: var(--vtm-ink-faint);
+          font-size: var(--fs-10);
+        }
+
+        .character-gallery-grid > button > i {
+          color: #9ab7ff;
+          font-style: normal;
+          font-size: 17px;
+          text-align: center;
+        }
+
+        .media-upload-dialog > section {
+          width: min(520px, 100%);
+          grid-template-rows: auto auto;
+        }
+
+        .media-upload-options {
+          display: grid;
+          gap: 8px;
+          padding: 14px;
+        }
+
+        .media-upload-options > button {
+          display: grid;
+          gap: 4px;
+          border: 1px solid var(--vtm-line);
+          border-radius: var(--r-md);
+          background: rgba(24, 14, 17, 0.8);
+          color: var(--vtm-ink);
+          padding: 13px 14px;
+          text-align: left;
+          cursor: pointer;
+        }
+
+        .media-upload-options > button:hover {
+          border-color: var(--vtm-line-blood);
+          background: var(--vtm-surface-blood);
+        }
+
+        .media-upload-options strong {
+          font-size: var(--fs-13);
+        }
+
+        .media-upload-options span {
+          color: var(--vtm-ink-faint);
+          font-size: var(--fs-10);
         }
 
         .scene-empty {
@@ -2248,6 +2550,67 @@ export default function GameTableStyles() {
           display: grid;
           gap: 0;
           margin-top: 0;
+        }
+
+        .token-manager-row {
+          display: grid;
+          grid-template-columns: 36px minmax(0, 1fr) auto;
+          gap: 7px;
+          align-items: center;
+          width: 100%;
+          min-height: 44px;
+          max-height: 44px;
+          padding: 4px 8px;
+          box-sizing: border-box;
+          border: 0;
+          border-bottom: 1px solid #2b2b2b;
+          background: #303030;
+          color: #eeeeee;
+        }
+
+        .token-manager-row:hover {
+          background: #393939;
+        }
+
+        .token-manager-row.active {
+          background: #4b4b4b;
+          box-shadow: inset 3px 0 0 #9ab7ff;
+        }
+
+        .background-active-badge {
+          color: #9ab7ff;
+          font-size: 10px;
+          font-weight: 600;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .token-manager-actions {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+        }
+
+        .token-manager-actions button {
+          border: 1px solid #3a3a3a;
+          border-radius: 3px;
+          background: #272727;
+          color: #cfcfcf;
+          font: inherit;
+          font-size: 11px;
+          padding: 3px 8px;
+          cursor: pointer;
+        }
+
+        .token-manager-actions button.danger {
+          width: 20px;
+          padding: 3px 0;
+          color: #ff9c9c;
+          border-color: #5d2929;
+        }
+
+        .token-manager-actions button:hover {
+          color: #ffffff;
         }
 
         .layer-root-drop-zone {
@@ -4113,23 +4476,6 @@ export default function GameTableStyles() {
         .role-gate div {
           display: grid;
           gap: 10px;
-        }
-
-        .master-login-form {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          gap: 10px;
-          margin-bottom: 10px;
-        }
-
-        .master-login-form input {
-          min-width: 0;
-          border: 1px solid #333;
-          border-radius: 6px;
-          background: #0b0b0b;
-          color: #f4f4f4;
-          padding: 0 12px;
-          font: inherit;
         }
 
         .role-gate button {

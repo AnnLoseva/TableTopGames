@@ -11,11 +11,9 @@ export function useTableTokens() {
   const tokensRef = useRef<CharacterToken[]>([])
 
   const commitTokens = useCallback((next: CharacterToken[] | ((prev: CharacterToken[]) => CharacterToken[])) => {
-    setTokens(prev => {
-      const resolved = typeof next === 'function' ? next(prev) : next
-      tokensRef.current = resolved
-      return resolved
-    })
+    const resolved = typeof next === 'function' ? next(tokensRef.current) : next
+    tokensRef.current = resolved
+    setTokens(resolved)
   }, [])
 
   const loadTokensForScene = useCallback(async (targetRoom: string, sceneId: string) => {

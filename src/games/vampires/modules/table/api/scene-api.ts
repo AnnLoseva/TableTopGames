@@ -1,12 +1,13 @@
-/** Table module API: scenes and per-scene music tracks (table_scenes, table_scene_music). */
+/** Table module API: scenes, session folders and per-scene music tracks (table_scenes, table_scene_folders, table_scene_music). */
 import { createClient } from '@/games/vampires/lib/supabase'
-import { TABLE_IMAGES, TABLE_SCENE_MUSIC, TABLE_SCENES } from '../constants'
-import { mapSceneMusicRow, mapSceneRow } from '../mappers'
-import type { SceneMusicRow, SceneMusicTrack, TableScene, TableSceneRow } from '../types'
+import { TABLE_IMAGES, TABLE_SCENE_FOLDERS, TABLE_SCENE_MUSIC, TABLE_SCENES } from '../constants'
+import { mapSceneFolderRow, mapSceneMusicRow, mapSceneRow } from '../mappers'
+import type { SceneMusicRow, SceneMusicTrack, TableLayer, TableScene, TableSceneFolder, TableSceneFolderRow, TableSceneRow } from '../types'
 import { sortSceneMusic, sortScenes } from '../utils/scene-utils'
 
-const SCENE_SELECT = 'id, room, name, thumbnail_url, is_active, background_url, width, height, created_by, created_at, updated_at'
+const SCENE_SELECT = 'id, room, name, thumbnail_url, is_active, background_url, width, height, folder_id, view_mode, created_by, created_at, updated_at'
 const SCENE_MUSIC_SELECT = 'id, room, scene_id, title, url, source_type, order_index, is_default, autoplay, created_at, updated_at'
+const SCENE_FOLDER_SELECT = 'id, room, name, order_index, created_at, updated_at'
 
 export function createTableId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
@@ -22,9 +23,22 @@ export function toSceneDbRow(scene: TableScene) {
     background_url: scene.backgroundUrl,
     width: scene.width,
     height: scene.height,
+    folder_id: scene.folderId,
+    view_mode: scene.viewMode,
     created_by: scene.createdBy,
     created_at: scene.createdAt,
     updated_at: scene.updatedAt,
+  }
+}
+
+export function toSceneFolderDbRow(folder: TableSceneFolder) {
+  return {
+    id: folder.id,
+    room: folder.room,
+    name: folder.name,
+    order_index: folder.orderIndex,
+    created_at: folder.createdAt,
+    updated_at: folder.updatedAt,
   }
 }
 
@@ -70,6 +84,8 @@ export async function updateSceneRecord(
     background_url?: string
     width?: number
     height?: number
+    folder_id?: string | null
+    view_mode?: 'table' | 'free'
     updated_at: string
   },
 ) {
@@ -171,4 +187,114 @@ export async function deleteSceneWithAssets(sceneId: string) {
 async function deleteSceneTokens(sceneId: string) {
   const { deleteTokensByScene } = await import('./token-api')
   return deleteTokensByScene(sceneId)
+}
+
+export async function fetchSceneFolders(room: string) {
+  const { data, error } = await createClient()
+    .from(TABLE_SCENE_FOLDERS)
+    .select(SCENE_FOLDER_SELECT)
+    .eq('room', room)
+    .order('order_index', { ascending: true })
+
+  return {
+    folders: data ? data.map(row => mapSceneFolderRow(row as TableSceneFolderRow)) : [],
+    error,
+  }
+}
+
+export async function insertSceneFolder(folder: TableSceneFolder) {
+  return createClient().from(TABLE_SCENE_FOLDERS).insert(toSceneFolderDbRow(folder))
+}
+
+export async function updateSceneFolderRecord(
+  folderId: string,
+  patch: { name?: string; order_index?: number; updated_at: string },
+) {
+  return createClient().from(TABLE_SCENE_FOLDERS).update(patch).eq('id', folderId)
+}
+
+export async function deleteSceneFolderRecord(folderId: string) {
+  return createClient().from(TABLE_SCENE_FOLDERS).delete().eq('id', folderId)
+}
+
+/**
+ * Deep-clones a scene (new id) plus its layers, tokens and scene music into
+ * an independent copy, optionally into a different folder. The original is
+ * left untouched.
+ */
+export async function copySceneDeep(source: TableScene, folderId: string | null) {
+  const now = new Date().toISOString()
+  const newSceneId = createTableId()
+  const newScene: TableScene = {
+    ...source,
+    id: newSceneId,
+    name: `${source.name} (копия)`,
+    isActive: false,
+    folderId,
+    createdAt: now,
+    updatedAt: now,
+  }
+  const { error: sceneError } = await insertScene(newScene)
+  if (sceneError) return { scene: null, error: sceneError }
+
+  const rollbackCopy = async (error: unknown) => {
+    const { error: rollbackError } = await deleteSceneWithAssets(newSceneId)
+    if (rollbackError) console.error('Не удалось откатить неполную копию сцены:', rollbackError)
+    return { scene: null, error }
+  }
+
+  const { fetchLayersForScene, insertLayer } = await import('./layer-api')
+  const { layers, error: layersFetchError } = await fetchLayersForScene(source.room, source.id)
+  if (layersFetchError) return rollbackCopy(layersFetchError)
+  const layerIdMap = new Map<string, string>(layers.map(layer => [layer.id, createTableId()]))
+  const layersById = new Map(layers.map(layer => [layer.id, layer]))
+  const layerDepth = (layer: TableLayer, visited = new Set<string>()): number => {
+    if (!layer.parentId || visited.has(layer.id)) return 0
+    const parent = layersById.get(layer.parentId)
+    if (!parent) return 0
+    visited.add(layer.id)
+    return 1 + layerDepth(parent, visited)
+  }
+  const parentFirstLayers = [...layers].sort((left, right) => layerDepth(left) - layerDepth(right))
+  for (const layer of parentFirstLayers) {
+    const clonedId = layerIdMap.get(layer.id) as string
+    const clonedParentId = layer.parentId ? layerIdMap.get(layer.parentId) || null : null
+    const { error: layerError } = await insertLayer({
+      ...layer,
+      id: clonedId,
+      sceneId: newSceneId,
+      parentId: clonedParentId,
+      createdAt: now,
+    })
+    if (layerError) return rollbackCopy(layerError)
+  }
+
+  const { fetchTokensForScene, insertToken } = await import('./token-api')
+  const { tokens, error: tokensFetchError } = await fetchTokensForScene(source.room, source.id)
+  if (tokensFetchError) return rollbackCopy(tokensFetchError)
+  for (const token of tokens) {
+    const { error: tokenError } = await insertToken({
+      ...token,
+      id: createTableId(),
+      sceneId: newSceneId,
+      createdAt: now,
+      updatedAt: now,
+    })
+    if (tokenError) return rollbackCopy(tokenError)
+  }
+
+  const { tracks, error: tracksFetchError } = await fetchSceneMusic(source.room, source.id)
+  if (tracksFetchError) return rollbackCopy(tracksFetchError)
+  for (const track of tracks) {
+    const { error: trackError } = await insertSceneMusic({
+      ...track,
+      id: createTableId(),
+      sceneId: newSceneId,
+      createdAt: now,
+      updatedAt: now,
+    })
+    if (trackError) return rollbackCopy(trackError)
+  }
+
+  return { scene: newScene, error: null }
 }
