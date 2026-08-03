@@ -142,10 +142,7 @@ export async function loadPersonalChronicleDocuments(chronicleId: string): Promi
   const chunks = (Array.isArray(chunkResult.data) ? chunkResult.data : []).filter(isDocumentChunkRow)
 
   return documents
-    .sort((left, right) => {
-      if (left.kind !== right.kind) return left.kind === 'player_chronicle' ? -1 : 1
-      return right.created_at.localeCompare(left.created_at)
-    })
+    .sort((left, right) => right.created_at.localeCompare(left.created_at))
     .map(document => {
       const documentChunks = chunks
         .filter(chunk => chunk.document_id === document.id)

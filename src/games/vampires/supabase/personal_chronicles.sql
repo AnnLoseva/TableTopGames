@@ -88,7 +88,7 @@ create table if not exists public.personal_chronicle_documents (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint personal_chronicle_documents_kind_check
-    check (kind in ('clean_transcript', 'player_chronicle')),
+    check (kind = 'clean_transcript'),
   constraint personal_chronicle_documents_source_check
     check (length(btrim(source_name)) between 1 and 240),
   constraint personal_chronicle_documents_title_check
@@ -301,9 +301,8 @@ using ((select auth.uid()) is not null and user_id = (select auth.uid()));
 
 -- Personal chronicle "player_chronicle" narrative generation was removed
 -- (2026-08-03): the pipeline now only produces the clean full-session
--- transcript. Historical player_chronicle documents/chunks from before that
--- date are left in place and still readable — this RPC no longer creates
--- new ones.
+-- transcript. Historical player_chronicle documents/chunks were deleted the
+-- same day (no longer supported by the kind check constraint below).
 create or replace function public.complete_personal_chronicle_job(
   p_job_id uuid
 )

@@ -19,16 +19,18 @@ which now takes a single parameter and creates/updates only the
 only whole-session transcription and the master's own manually written
 chronicle should remain.
 
-**Consequences:** Historical `player_chronicle` documents/chunks created
-before this date (8 rows in production) are left in place and still render
-via the existing owner-only read path — nothing deletes them. The old
-3-parameter `complete_personal_chronicle_job(uuid, text, text)` function was
-dropped in production (migration
-`personal_chronicle_drop_player_chronicle_generation`); the Edge Function was
-redeployed to match (v3). `personal_chronicle_documents_kind_check` still
-permits `'player_chronicle'` for backward compatibility, and
-`PersonalChronicleDocumentKind` keeps both variants in its union so old
-documents keep loading.
+**Consequences:** The old 3-parameter
+`complete_personal_chronicle_job(uuid, text, text)` function was dropped in
+production (migration `personal_chronicle_drop_player_chronicle_generation`);
+the Edge Function was redeployed to match (v3). The 8 historical
+`player_chronicle` documents (and their chunks, cascade-deleted) were removed
+from production the same day at the user's explicit request (migration ran
+directly via `execute_sql`; the underlying `clean_transcript` documents and
+their jobs were untouched). `personal_chronicle_documents_kind_check` was
+then tightened to `kind = 'clean_transcript'` only (migration
+`personal_chronicle_documents_kind_check_clean_transcript_only`), and
+`PersonalChronicleDocumentKind` dropped the `'player_chronicle'` variant to
+match — there is no more legacy data to keep it for.
 
 **Affected files:** `src/games/vampires/supabase/functions/personal-chronicle-processor/index.ts`,
 `src/games/vampires/supabase/personal_chronicles.sql`,
