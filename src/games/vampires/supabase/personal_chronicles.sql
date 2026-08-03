@@ -299,14 +299,16 @@ create policy "Owners can delete personal chronicle document chunks"
 on public.personal_chronicle_document_chunks for delete to authenticated
 using ((select auth.uid()) is not null and user_id = (select auth.uid()));
 
+-- Personal chronicle "player_chronicle" narrative generation was removed
+-- (2026-08-03): the pipeline now only produces the clean full-session
+-- transcript. Historical player_chronicle documents/chunks from before that
+-- date are left in place and still readable — this RPC no longer creates
+-- new ones.
 create or replace function public.complete_personal_chronicle_job(
-  p_job_id uuid,
-  p_summary_title text,
-  p_summary_content text
+  p_job_id uuid
 )
 returns table (
-  clean_document_id uuid,
-  summary_document_id uuid
+  clean_document_id uuid
 )
 language plpgsql
 security invoker
@@ -316,9 +318,6 @@ declare
   v_user_id uuid := auth.uid();
   v_job public.personal_chronicle_jobs%rowtype;
   v_clean_document_id uuid;
-  v_summary_document_id uuid;
-  v_summary_title text := btrim(coalesce(p_summary_title, ''));
-  v_summary_content text := btrim(coalesce(p_summary_content, ''));
 begin
   if v_user_id is null then
     raise exception 'Authentication required' using errcode = '28000';
@@ -331,12 +330,6 @@ begin
 
   if v_job.id is null then
     raise exception 'Personal chronicle job not found' using errcode = 'P0002';
-  end if;
-  if length(v_summary_title) not between 1 and 240 then
-    raise exception 'Summary title must contain 1 to 240 characters' using errcode = '22023';
-  end if;
-  if length(v_summary_content) not between 1 and 100000 then
-    raise exception 'Summary content must contain 1 to 100000 characters' using errcode = '22023';
   end if;
   if (
     select count(*)
@@ -366,25 +359,8 @@ begin
         updated_at = excluded.updated_at
   returning id into v_clean_document_id;
 
-  insert into public.personal_chronicle_documents (
-    user_id, chronicle_id, job_id, kind, source_name, title, updated_at
-  ) values (
-    v_user_id,
-    v_job.chronicle_id,
-    v_job.id,
-    'player_chronicle',
-    left(regexp_replace(v_job.source_name, '\.[^.]+$', ''), 220) || '-player-chronicle.md',
-    v_summary_title,
-    now()
-  )
-  on conflict (job_id, kind) do update
-    set source_name = excluded.source_name,
-        title = excluded.title,
-        updated_at = excluded.updated_at
-  returning id into v_summary_document_id;
-
   delete from public.personal_chronicle_document_chunks chunk
-  where chunk.document_id in (v_clean_document_id, v_summary_document_id)
+  where chunk.document_id = v_clean_document_id
     and chunk.user_id = v_user_id;
 
   insert into public.personal_chronicle_document_chunks (
@@ -402,17 +378,6 @@ begin
     and chunk.user_id = v_user_id
   order by chunk.chunk_index;
 
-  insert into public.personal_chronicle_document_chunks (
-    document_id, user_id, chronicle_id, section_title, chunk_index, content
-  ) values (
-    v_summary_document_id,
-    v_user_id,
-    v_job.chronicle_id,
-    'Личная хроника',
-    0,
-    v_summary_content
-  );
-
   update public.personal_chronicle_jobs
   set status = 'completed',
       processed_chunks = total_chunks,
@@ -421,12 +386,12 @@ begin
       completed_at = now()
   where id = v_job.id and user_id = v_user_id;
 
-  return query select v_clean_document_id, v_summary_document_id;
+  return query select v_clean_document_id;
 end;
 $$;
 
-revoke all on function public.complete_personal_chronicle_job(uuid, text, text) from public, anon;
-grant execute on function public.complete_personal_chronicle_job(uuid, text, text) to authenticated;
+revoke all on function public.complete_personal_chronicle_job(uuid) from public, anon;
+grant execute on function public.complete_personal_chronicle_job(uuid) to authenticated;
 
 create or replace function public.search_my_personal_chronicle(
   p_chronicle_id uuid,

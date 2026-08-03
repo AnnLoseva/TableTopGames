@@ -1,5 +1,44 @@
 # Decisions
 
+## 2026-08-03 — Personal chronicle pipeline drops player-chronicle narrative generation
+
+**Area:** Chronicle library / Supabase persistence / external LLM
+
+**Decision:** The owner-only transcript pipeline now only produces the full
+clean speaker-labelled transcript (`clean_transcript`); it no longer generates
+the short first-person narrative recap (`player_chronicle`). `processChunk`
+asks DeepSeek for plain cleaned text only (dropped the JSON `chunk_summary`
+field and the whole `summarize_batch` action). `finalizeJob` no longer calls
+DeepSeek at all — it just invokes `complete_personal_chronicle_job(p_job_id)`,
+which now takes a single parameter and creates/updates only the
+`clean_transcript` document. The master's separate written-chronicle upload
+(`replace_library_chronicle_document`, shared/official scope, gated by
+`isMaster` in `ChronicleLibraryPage.tsx`) is unrelated and unchanged.
+
+**Reason:** Requested removal of the "personal chronicle" processing step;
+only whole-session transcription and the master's own manually written
+chronicle should remain.
+
+**Consequences:** Historical `player_chronicle` documents/chunks created
+before this date (8 rows in production) are left in place and still render
+via the existing owner-only read path — nothing deletes them. The old
+3-parameter `complete_personal_chronicle_job(uuid, text, text)` function was
+dropped in production (migration
+`personal_chronicle_drop_player_chronicle_generation`); the Edge Function was
+redeployed to match (v3). `personal_chronicle_documents_kind_check` still
+permits `'player_chronicle'` for backward compatibility, and
+`PersonalChronicleDocumentKind` keeps both variants in its union so old
+documents keep loading.
+
+**Affected files:** `src/games/vampires/supabase/functions/personal-chronicle-processor/index.ts`,
+`src/games/vampires/supabase/personal_chronicles.sql`,
+`src/games/vampires/modules/chronicle-library/components/PersonalChroniclePanel.tsx`,
+`src/games/vampires/modules/chronicle-library/types.ts`
+
+**Status:** active
+
+---
+
 ## 2026-08-01 — Master table entry requires the compatibility password
 
 **Area:** Game table / role gate

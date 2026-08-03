@@ -73,6 +73,8 @@ export type PersonalChronicleJobChunk = {
   status: 'pending' | 'processing' | 'processed' | 'failed'
 }
 
+// 'player_chronicle' is legacy-only: the pipeline stopped generating it on 2026-08-03
+// (see personal_chronicles.sql). Kept in the union so pre-existing documents still load.
 export type PersonalChronicleDocumentKind = 'clean_transcript' | 'player_chronicle'
 
 export type PersonalChronicleDocumentRow = {

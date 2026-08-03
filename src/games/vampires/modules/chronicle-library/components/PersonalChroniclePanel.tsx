@@ -15,8 +15,6 @@ import {
   preparePersonalTranscript,
 } from '../utils/personal-transcript'
 
-const SUMMARY_BATCH_SIZE = 20
-
 type PersonalChroniclePanelProps = {
   chronicles: LibraryChronicle[]
   activeChronicleId: string
@@ -91,7 +89,7 @@ export default function PersonalChroniclePanel({
       const completed = new Set(
         chunks.filter(chunk => chunk.status === 'processed').map(chunk => chunk.chunk_index),
       )
-      setProgress(12 + (completed.size / job.total_chunks) * 72)
+      setProgress(12 + (completed.size / job.total_chunks) * 84)
 
       for (let chunkIndex = 0; chunkIndex < job.total_chunks; chunkIndex += 1) {
         if (!completed.has(chunkIndex)) {
@@ -106,41 +104,18 @@ export default function PersonalChroniclePanel({
           })
           completed.add(chunkIndex)
         }
-        setProgress(12 + (completed.size / job.total_chunks) * 72)
+        setProgress(12 + (completed.size / job.total_chunks) * 84)
       }
 
-      const summaryParts: string[] = []
-      const batchCount = Math.ceil(job.total_chunks / SUMMARY_BATCH_SIZE)
-      for (let batch = 0; batch < batchCount; batch += 1) {
-        const startIndex = batch * SUMMARY_BATCH_SIZE
-        const endIndex = Math.min(job.total_chunks - 1, startIndex + SUMMARY_BATCH_SIZE - 1)
-        setStage(tf('ИИ собирает конспект: этап {current} из {total}', {
-          current: batch + 1,
-          total: batchCount,
-        }))
-        const result = await invokeWithRetry({
-          action: 'summarize_batch',
-          job_id: job.id,
-          start_index: startIndex,
-          end_index: endIndex,
-        })
-        if (typeof result.summary !== 'string' || !result.summary.trim()) {
-          throw new Error(t('ИИ не вернул промежуточный конспект.'))
-        }
-        summaryParts.push(result.summary)
-        setProgress(84 + ((batch + 1) / batchCount) * 10)
-      }
-
-      setStage(t('ИИ пишет короткую личную хронику и сохраняет оба файла'))
+      setStage(t('Сохраняю полную расшифровку'))
       setProgress(96)
       await invokeWithRetry({
         action: 'finalize',
         job_id: job.id,
-        summary_parts: summaryParts,
       })
       setProgress(100)
       setStage(t('Готово'))
-      setMessage(t('Полная чистая расшифровка и короткая личная хроника сохранены. Их видите только вы и библиотекарь в рамках вашего доступа.'))
+      setMessage(t('Полная чистая расшифровка сохранена. Её видите только вы и библиотекарь в рамках вашего доступа.'))
       await refreshJobs()
       onCompleted(job.chronicle_id)
     } catch (error) {
@@ -214,9 +189,9 @@ export default function PersonalChroniclePanel({
   return (
     <section className="personal-chronicle-panel">
       <div className="personal-chronicle-intro">
-        <span>{t('Личная хроника игрока')}</span>
-        <strong>{t('Загрузите полную расшифровку: ИИ очистит весь текст, отметит говорящих и создаст короткую хронику от лица вашего персонажа.')}</strong>
-        <small>{t('Исходник, полный обработанный текст и пересказ принадлежат только вам. Другие участники хроники их не увидят.')}</small>
+        <span>{t('Транскрипция игры')}</span>
+        <strong>{t('Загрузите полную расшифровку сессии: ИИ очистит текст и отметит говорящих. Получится полная чистая запись сессии, без пересказа.')}</strong>
+        <small>{t('Исходник и полный обработанный текст принадлежат только вам. Другие участники хроники их не увидят.')}</small>
       </div>
 
       <div className="personal-chronicle-fields">
@@ -229,7 +204,7 @@ export default function PersonalChroniclePanel({
           </select>
         </label>
         <label>
-          <span>{t('От чьего лица писать')}</span>
+          <span>{t('Ваш персонаж (для распознавания реплик)')}</span>
           <input
             value={characterName}
             onChange={event => setCharacterName(event.target.value)}

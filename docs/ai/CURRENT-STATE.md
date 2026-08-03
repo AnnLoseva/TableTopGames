@@ -139,6 +139,11 @@ _(none recorded — add temporary bugs here only while being worked, then remove
   constant, or the edit UI and the actual write permission disagree.
 
 ## Last updated
+2026-08-03 — Personal chronicle pipeline (`chronicle-library`) no longer
+generates the short first-person `player_chronicle` narrative; it only
+produces the full clean transcript. `complete_personal_chronicle_job` RPC
+signature dropped to `(p_job_id)` and the Edge Function redeployed (v3). See
+`DECISIONS.md`.
 2026-07-31 — Fixed a live RLS bug: pages'/images' soft-delete and image
 uploads were unconditionally failing since these tables were created
 (Postgres requires the post-write row to also satisfy a SELECT policy).
