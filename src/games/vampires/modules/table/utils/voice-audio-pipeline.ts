@@ -6,9 +6,19 @@ const VAD_HANGOVER_MS = 450
 const SPEECH_THRESHOLD = 0.018
 const REMOTE_SPEECH_THRESHOLD = 0.012
 
+/** Ключ локального (своего) потока в наборе анализаторов монитора. */
+export const LOCAL_VOICE_KEY = '__local__'
+
 export type VoiceAudioPipeline = {
   processedStream: MediaStream
   destroy: () => void
+}
+
+export type VoiceSpeakingListener = (participantId: string, speaking: boolean) => void
+
+export type VoiceDuckingMonitorOptions = {
+  /** Вызывается при смене «говорит / молчит» у своего или чужого потока. */
+  onSpeakingChange?: VoiceSpeakingListener
 }
 
 export type VoiceDuckingMonitor = {
@@ -100,11 +110,14 @@ export function createVoiceAudioPipeline(
 
 export function createVoiceDuckingMonitor(
   localStream: MediaStream | null,
+  options: VoiceDuckingMonitorOptions = {},
 ): VoiceDuckingMonitor {
   const context = new AudioContext({ sampleRate: 48000, latencyHint: 'interactive' })
   const analysers = new Map<string, AnalyserNode>()
   const teardowns = new Map<string, () => void>()
   const buffer = new Float32Array(2048) as Float32Array<ArrayBuffer>
+  // Состояние VAD отдельно на каждый поток — для индикации «кто говорит»
+  const speakingStates = new Map<string, { speaking: boolean; lastSpeechAt: number }>()
 
   let localAnalyser: AnalyserNode | null = null
   let localTeardown: (() => void) | null = null
@@ -112,6 +125,28 @@ export function createVoiceDuckingMonitor(
   let lastSpeechAt = 0
   let intervalId: ReturnType<typeof setInterval> | null = null
   let duckingActive = false
+
+  const updateSpeakingState = (key: string, level: number, threshold: number, now: number) => {
+    const previous = speakingStates.get(key)
+    const wasSpeaking = previous?.speaking ?? false
+    const state = { speaking: wasSpeaking, lastSpeechAt: previous?.lastSpeechAt ?? 0 }
+
+    if (level >= threshold) {
+      state.lastSpeechAt = now
+      state.speaking = true
+    } else if (now - state.lastSpeechAt > VAD_HANGOVER_MS) {
+      state.speaking = false
+    }
+
+    speakingStates.set(key, state)
+    if (wasSpeaking !== state.speaking) options.onSpeakingChange?.(key, state.speaking)
+  }
+
+  const clearSpeakingState = (key: string) => {
+    const state = speakingStates.get(key)
+    speakingStates.delete(key)
+    if (state?.speaking) options.onSpeakingChange?.(key, false)
+  }
 
   const connectStream = (stream: MediaStream, key: string) => {
     const source = context.createMediaStreamSource(stream)
@@ -139,11 +174,12 @@ export function createVoiceDuckingMonitor(
     localTeardown?.()
     localTeardown = null
     localAnalyser = null
+    clearSpeakingState(LOCAL_VOICE_KEY)
 
     if (!stream) return
-    connectStream(stream, '__local__')
-    localAnalyser = analysers.get('__local__') ?? null
-    localTeardown = teardowns.get('__local__') ?? null
+    connectStream(stream, LOCAL_VOICE_KEY)
+    localAnalyser = analysers.get(LOCAL_VOICE_KEY) ?? null
+    localTeardown = teardowns.get(LOCAL_VOICE_KEY) ?? null
   }
 
   setLocalStream(localStream)
@@ -152,17 +188,20 @@ export function createVoiceDuckingMonitor(
   const evaluateSpeech = () => {
     let localLevel = 0
     let remoteLevel = 0
+    const now = Date.now()
 
     if (localAnalyser) {
       localLevel = getRmsLevel(localAnalyser, buffer)
+      updateSpeakingState(LOCAL_VOICE_KEY, localLevel, SPEECH_THRESHOLD, now)
     }
 
     analysers.forEach((analyser, key) => {
-      if (key === '__local__') return
-      remoteLevel = Math.max(remoteLevel, getRmsLevel(analyser, buffer))
+      if (key === LOCAL_VOICE_KEY) return
+      const level = getRmsLevel(analyser, buffer)
+      updateSpeakingState(key, level, REMOTE_SPEECH_THRESHOLD, now)
+      remoteLevel = Math.max(remoteLevel, level)
     })
 
-    const now = Date.now()
     const hasSpeech = (localAnalyser && localLevel >= SPEECH_THRESHOLD)
       || remoteLevel >= REMOTE_SPEECH_THRESHOLD
 
@@ -188,10 +227,12 @@ export function createVoiceDuckingMonitor(
     },
     detachRemoteStream: participantId => {
       teardowns.get(participantId)?.()
+      clearSpeakingState(participantId)
     },
     destroy: () => {
       if (intervalId) clearInterval(intervalId)
       if (duckingActive) dispatchVoiceDuck(false)
+      speakingStates.forEach((_state, key) => clearSpeakingState(key))
       teardowns.forEach(teardown => teardown())
       teardowns.clear()
       localTeardown?.()

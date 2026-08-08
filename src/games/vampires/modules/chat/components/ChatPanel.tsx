@@ -30,6 +30,9 @@ type ChatPanelProps = {
   voiceOutputDeviceId: string | null
   voiceDevices: VoiceDeviceInfo[]
   voiceParticipants: VoiceParticipant[]
+  voiceSelfSpeaking: boolean
+  voiceSpeakingCount: number
+  unreadChatCount: number
   chatDraft: string
   voiceAudioRefs: RefObject<Map<string, HTMLAudioElement>>
   remoteStreamsRef: RefObject<Map<string, MediaStream>>
@@ -66,6 +69,9 @@ export default function ChatPanel({
   voiceOutputDeviceId,
   voiceDevices,
   voiceParticipants,
+  voiceSelfSpeaking,
+  voiceSpeakingCount,
+  unreadChatCount,
   chatDraft,
   voiceAudioRefs,
   remoteStreamsRef,
@@ -92,6 +98,9 @@ export default function ChatPanel({
   const inputDevices = voiceDevices.filter(device => device.kind === 'audioinput')
   const outputDevices = voiceDevices.filter(device => device.kind === 'audiooutput')
   const supportsOutputSelection = typeof HTMLAudioElement.prototype.setSinkId === 'function'
+  const selfSpeaking = voiceEnabled && voiceSelfSpeaking && !voiceMuted
+  // Замьюченный участник не «говорит», даже если его поток ещё доигрывает хвост
+  const isParticipantSpeaking = (participant: VoiceParticipant) => Boolean(participant.speaking) && !participant.muted
 
   useEffect(() => {
     chatListRef.current?.scrollTo({ top: chatListRef.current.scrollHeight })
@@ -115,11 +124,25 @@ export default function ChatPanel({
       </header>
 
       <nav className="sub-tabs" aria-label={t('Панели чата')}>
-        <button type="button" className={chatPanelTab === 'text' ? 'active' : ''} onClick={() => setChatPanelTab('text')}>
-          {t('Текст')}
+        <button
+          type="button"
+          className={`${chatPanelTab === 'text' ? 'active' : ''} ${unreadChatCount > 0 ? 'has-unread' : ''}`}
+          onClick={() => setChatPanelTab('text')}
+        >
+          <span className="tab-label">{t('Текст')}</span>
+          {unreadChatCount > 0 ? (
+            <span className="tab-unread" aria-label={tf('{count} непрочитанных', { count: unreadChatCount })}>
+              {unreadChatCount > 99 ? '99+' : unreadChatCount}
+            </span>
+          ) : null}
         </button>
-        <button type="button" className={chatPanelTab === 'voice' ? 'active' : ''} onClick={() => setChatPanelTab('voice')}>
-          {t('Голос')}
+        <button
+          type="button"
+          className={`${chatPanelTab === 'voice' ? 'active' : ''} ${voiceSpeakingCount > 0 ? 'has-speaking' : ''}`}
+          onClick={() => setChatPanelTab('voice')}
+        >
+          <span className="tab-label">{t('Голос')}</span>
+          {voiceSpeakingCount > 0 ? <i className="tab-speaking" aria-hidden="true" /> : null}
         </button>
       </nav>
 
@@ -213,7 +236,7 @@ export default function ChatPanel({
 
         <div className="voice-participants">
           {voiceEnabled ? (
-            <article className="voice-participant self">
+            <article className={`voice-participant self ${selfSpeaking ? 'speaking' : ''}`}>
               <div className="chat-avatar" aria-hidden="true">
                 {selectedVoiceCharacter?.image ? (
                   <img src={selectedVoiceCharacter.image} alt="" />
@@ -223,7 +246,9 @@ export default function ChatPanel({
               </div>
               <div>
                 <strong>{selectedVoiceCharacter?.name || t('Вы')}</strong>
-                <span>{voiceMuted ? t('микрофон выключен') : t('вы в голосе')}</span>
+                <span>
+                  {voiceMuted ? t('микрофон выключен') : selfSpeaking ? t('вы говорите') : t('вы в голосе')}
+                </span>
               </div>
             </article>
           ) : null}
@@ -232,7 +257,10 @@ export default function ChatPanel({
             <p>{voiceEnabled ? t('Пока никого не слышно.') : t('Войди в голос, чтобы слышать участников.')}</p>
           ) : (
             voiceParticipants.map(participant => (
-              <article className="voice-participant" key={participant.id}>
+              <article
+                className={`voice-participant ${isParticipantSpeaking(participant) ? 'speaking' : ''}`}
+                key={participant.id}
+              >
                 <audio
                   autoPlay
                   playsInline
@@ -254,7 +282,13 @@ export default function ChatPanel({
                 <div className="voice-participant-main">
                   <div>
                     <strong>{participant.characterName}</strong>
-                    <span>{participant.muted ? t('микрофон выключен') : participant.connected ? t('слышно') : t('соединение...')}</span>
+                    <span>
+                      {participant.muted
+                        ? t('микрофон выключен')
+                        : isParticipantSpeaking(participant)
+                          ? t('говорит')
+                          : participant.connected ? t('слышно') : t('соединение...')}
+                    </span>
                   </div>
                   <label>
                     <span>{t('Громкость')}</span>

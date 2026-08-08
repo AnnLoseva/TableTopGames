@@ -139,6 +139,7 @@ import {
   useTableAlerts,
   useTableCanvas,
   useTableVoice,
+  useUnreadFeed,
   useTableLayers,
   useTableRealtime,
   useTableRolls,
@@ -470,6 +471,24 @@ export default function VampireTable() {
     () => chatCharacters.filter(isHydratedCharacter),
     [chatCharacters],
   )
+  const ownCharacterNames = useMemo(
+    () => new Set(chatCharacters.map(character => character.name)),
+    [chatCharacters],
+  )
+  const unreadChatCount = useUnreadFeed({
+    items: chatMessages,
+    getId: message => message.id,
+    ready: chatMessagesLoaded,
+    active: rightPanelOpen && rightRailTab === 'chat' && chatPanelTab === 'text',
+    isOwn: message => message.userId === chatUser?.id,
+  })
+  const unreadRollCount = useUnreadFeed({
+    items: rolls,
+    getId: roll => roll.id,
+    ready: rollsStatus !== 'loading',
+    active: rightPanelOpen && rightRailTab === 'rolls',
+    isOwn: roll => ownCharacterNames.has(roll.characterName),
+  })
   const selectedActiveCharacter = hydratedChatCharacters.find(item => item.id === selectedChatCharacterId) || null
 
   const {
@@ -527,6 +546,7 @@ export default function VampireTable() {
     voiceOutputDeviceId,
     voiceDevices,
     voiceParticipants,
+    voiceSelfSpeaking,
     voiceAudioRefs,
     remoteStreamsRef,
     handleVoiceSignalRef,
@@ -548,6 +568,12 @@ export default function VampireTable() {
     selectedChatCharacterIdRef,
     t,
   })
+
+  // Сколько человек сейчас говорит — для подсветки вкладок «Чат» / «Голос»
+  const voiceSpeakingCount = useMemo(() => (
+    (voiceEnabled && voiceSelfSpeaking && !voiceMuted ? 1 : 0)
+      + voiceParticipants.filter(participant => participant.speaking && !participant.muted).length
+  ), [voiceEnabled, voiceSelfSpeaking, voiceMuted, voiceParticipants])
 
   useEffect(() => {
     if (!layerContextMenu) return
@@ -2045,6 +2071,9 @@ export default function VampireTable() {
           isMaster={isMaster}
           rightPanelOpen={rightPanelOpen}
           rightRailTab={rightRailTab}
+          unreadChatCount={unreadChatCount}
+          unreadRollCount={unreadRollCount}
+          voiceSpeakingCount={voiceSpeakingCount}
           setRightPanelOpen={setRightPanelOpen}
           setRightRailTab={setRightRailTab}
         >
@@ -2120,6 +2149,9 @@ export default function VampireTable() {
             voiceOutputDeviceId={voiceOutputDeviceId}
             voiceDevices={voiceDevices}
             voiceParticipants={voiceParticipants}
+            voiceSelfSpeaking={voiceSelfSpeaking}
+            voiceSpeakingCount={voiceSpeakingCount}
+            unreadChatCount={unreadChatCount}
             chatDraft={chatDraft}
             voiceAudioRefs={voiceAudioRefs}
             remoteStreamsRef={remoteStreamsRef}

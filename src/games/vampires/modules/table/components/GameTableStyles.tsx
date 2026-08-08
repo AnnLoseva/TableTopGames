@@ -2107,6 +2107,129 @@ export default function GameTableStyles() {
           color: var(--vtm-blood-pale);
         }
 
+        /* Непрочитанное в чате / бросках: индикатор + мигание вкладки до открытия панели */
+        .sub-tabs button.has-unread,
+        .sub-tabs button.has-speaking {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+        }
+
+        .right-tabs button.has-unread,
+        .sub-tabs button.has-unread {
+          color: #f3d9b1;
+          animation: tab-unread-blink 1.4s ease-in-out infinite;
+        }
+
+        .right-tabs button.has-unread.active,
+        .sub-tabs button.has-unread.active {
+          animation: none;
+        }
+
+        .tab-label {
+          display: block;
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        /* В узком рейле точки уводим в углы кнопки, чтобы не резать подпись */
+        .right-tabs button {
+          position: relative;
+        }
+
+        .right-tabs .tab-unread-dot,
+        .right-tabs .tab-speaking {
+          position: absolute;
+          top: 4px;
+          width: 6px;
+          height: 6px;
+          margin: 0;
+        }
+
+        .right-tabs .tab-unread-dot {
+          right: 4px;
+        }
+
+        .right-tabs .tab-speaking {
+          left: 4px;
+        }
+
+        .tab-unread-dot {
+          flex: 0 0 auto;
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: var(--vtm-blood, #8a1c1c);
+          vertical-align: middle;
+        }
+
+        .tab-unread {
+          flex: 0 0 auto;
+          display: inline-block;
+          min-width: 16px;
+          padding: 0 4px;
+          border-radius: 999px;
+          background: var(--vtm-blood, #8a1c1c);
+          color: #fff;
+          font-size: 10px;
+          font-weight: 700;
+          line-height: 16px;
+          text-align: center;
+          vertical-align: middle;
+        }
+
+        .tab-speaking {
+          flex: 0 0 auto;
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #36d675;
+          vertical-align: middle;
+          animation: tab-speaking-pulse 1.1s ease-in-out infinite;
+        }
+
+        .column-edge-toggle .edge-unread {
+          position: absolute;
+          top: -4px;
+          right: -4px;
+          width: 9px;
+          height: 9px;
+          border-radius: 50%;
+          border: 1px solid #0e0e0e;
+          background: var(--vtm-blood, #8a1c1c);
+        }
+
+        .column-edge-toggle.has-unread {
+          border-color: var(--vtm-blood, #8a1c1c);
+          animation: tab-unread-blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes tab-unread-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.42; }
+        }
+
+        @keyframes tab-speaking-pulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.35); opacity: 0.65; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .right-tabs button.has-unread,
+          .sub-tabs button.has-unread,
+          .column-edge-toggle.has-unread,
+          .tab-speaking,
+          .tab-unread-dot,
+          .voice-participant.speaking .chat-avatar {
+            animation: none;
+          }
+        }
+
         .media-sidebar {
           min-width: 0;
           min-height: 0;
@@ -5208,6 +5331,26 @@ export default function GameTableStyles() {
         .voice-participant.speaking {
           border-color: rgba(54, 214, 117, 0.72);
           box-shadow: 0 0 0 1px rgba(54, 214, 117, 0.2);
+        }
+
+        /* Индикация речи: зелёное кольцо вокруг аватара, как в дискорде */
+        .voice-participant .chat-avatar {
+          transition: box-shadow var(--dur-fast, 140ms) var(--ease, ease), border-color var(--dur-fast, 140ms) var(--ease, ease);
+        }
+
+        .voice-participant.speaking .chat-avatar {
+          border-color: rgba(54, 214, 117, 0.9);
+          animation: voice-speaking-ring 1.1s ease-in-out infinite;
+        }
+
+        .voice-participant.speaking strong {
+          color: #8ce8ae;
+        }
+
+        @keyframes voice-speaking-ring {
+          0% { box-shadow: 0 0 0 0 rgba(54, 214, 117, 0.55); }
+          70% { box-shadow: 0 0 0 5px rgba(54, 214, 117, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(54, 214, 117, 0); }
         }
 
         .voice-participant.connection-poor {

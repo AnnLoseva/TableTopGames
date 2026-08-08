@@ -13,6 +13,7 @@ import type {
 import {
   createVoiceAudioPipeline,
   createVoiceDuckingMonitor,
+  LOCAL_VOICE_KEY,
   type VoiceAudioPipeline,
   type VoiceDuckingMonitor,
 } from '../utils/voice-audio-pipeline'
@@ -63,6 +64,8 @@ export function useTableVoice({
   const [voiceOutputDeviceId, setVoiceOutputDeviceId] = useState<string | null>(savedSettings.outputDeviceId)
   const [voiceDevices, setVoiceDevices] = useState<VoiceDeviceInfo[]>([])
   const [voiceParticipants, setVoiceParticipants] = useState<VoiceParticipant[]>([])
+  // «Говорю сейчас я» — определяется локально по уровню сигнала своего микрофона
+  const [voiceSelfSpeaking, setVoiceSelfSpeaking] = useState(false)
 
   const handleVoiceSignalRef = useRef<((signal: VoiceSignal) => void | Promise<void>) | null>(null)
   const voiceEnabledRef = useRef(false)
@@ -195,6 +198,19 @@ export function useTableVoice({
       const next = { ...base, ...patch }
       return existing ? prev.map(item => (item.id === signal.from ? next : item)) : [...prev, next]
     })
+  }
+
+  // Кто говорит, считаем локально по каждому потоку — сигналить в комнату не нужно.
+  // Мьют здесь не учитываем: монитор слушает сырой микрофон, а UI сам гасит индикатор,
+  // иначе после снятия мьюта пришлось бы ждать следующей паузы в речи.
+  const handleVoiceSpeakingChange = (participantId: string, speaking: boolean) => {
+    if (participantId === LOCAL_VOICE_KEY) {
+      setVoiceSelfSpeaking(speaking)
+      return
+    }
+    setVoiceParticipants(prev => prev.map(item => (
+      item.id === participantId ? { ...item, speaking } : item
+    )))
   }
 
   const clearReconnectTimer = (participantId: string) => {
@@ -526,6 +542,7 @@ export function useTableVoice({
     voicePipelineRef.current?.destroy()
     voicePipelineRef.current = null
     localVoiceStreamRef.current = null
+    setVoiceSelfSpeaking(false)
   }
 
   const setupLocalVoiceCapture = async () => {
@@ -550,7 +567,9 @@ export function useTableVoice({
       track.enabled = !voiceMutedRef.current
     })
 
-    voiceDuckingRef.current = createVoiceDuckingMonitor(rawStream)
+    voiceDuckingRef.current = createVoiceDuckingMonitor(rawStream, {
+      onSpeakingChange: handleVoiceSpeakingChange,
+    })
 
     remoteStreamsRef.current.forEach((stream, participantId) => {
       voiceDuckingRef.current?.attachRemoteStream(participantId, stream)
@@ -696,6 +715,7 @@ export function useTableVoice({
     voiceOutputDeviceId,
     voiceDevices,
     voiceParticipants,
+    voiceSelfSpeaking,
     voiceAudioRefs,
     remoteStreamsRef,
     handleVoiceSignalRef,
