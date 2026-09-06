@@ -1,15 +1,20 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { fetchPollBySlug, fetchPollResults, submitPollResponse } from '../api/pollsApi'
 import { createEvenAllocations, redistributeAllocations, roundAllocationsToIntegers } from '../lib/allocations'
 import { getVotedResponseId, markVoted } from '../lib/localVote'
+import { extractAccentPalette, type ExtractedPalette } from '../lib/paletteFromImage'
 import type { Poll, PollResults } from '../types'
 import styles from './PollRoute.module.css'
 
 type LoadState = 'loading' | 'not-found' | 'ready' | 'error'
 type Phase = 'voting' | 'submitting' | 'results'
+type PageCssVars = CSSProperties & {
+  '--accent'?: string
+  '--accent-strong'?: string
+}
 
 export default function PollRoute({ slug }: { slug: string }) {
   const [loadState, setLoadState] = useState<LoadState>('loading')
@@ -19,6 +24,7 @@ export default function PollRoute({ slug }: { slug: string }) {
   const [results, setResults] = useState<PollResults | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [copied, setCopied] = useState(false)
+  const [palette, setPalette] = useState<ExtractedPalette | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -58,6 +64,19 @@ export default function PollRoute({ slug }: { slug: string }) {
       cancelled = true
     }
   }, [slug])
+
+  const backgroundImageUrl = poll?.backgroundImageUrl
+  useEffect(() => {
+    let cancelled = false
+    setPalette(null)
+    if (!backgroundImageUrl) return
+    extractAccentPalette(backgroundImageUrl).then(result => {
+      if (!cancelled) setPalette(result)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [backgroundImageUrl])
 
   const orderedOptionIds = useMemo(() => poll?.options.map(option => option.id) ?? [], [poll])
 
@@ -137,13 +156,21 @@ export default function PollRoute({ slug }: { slug: string }) {
     )
   }
 
-  const pageStyle = poll.backgroundImageUrl
-    ? {
-        backgroundImage: `linear-gradient(rgba(6, 6, 10, 0.72), rgba(6, 6, 10, 0.82)), url(${poll.backgroundImageUrl})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }
-    : undefined
+  const pageStyle: PageCssVars = {
+    ...(poll.backgroundImageUrl
+      ? {
+          backgroundImage: `linear-gradient(rgba(6, 6, 10, 0.72), rgba(6, 6, 10, 0.82)), url(${poll.backgroundImageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }
+      : {}),
+    ...(palette
+      ? {
+          '--accent': palette.accent,
+          '--accent-strong': palette.accentStrong,
+        }
+      : {}),
+  }
 
   return (
     <main className={styles.page} style={pageStyle}>

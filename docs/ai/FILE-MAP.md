@@ -65,6 +65,8 @@ code. See `docs/ai/DECISIONS.md` (2026-09-06).
 | `src/features/votes/routes/CreatePollRoute.tsx` | Poll-creation form + share link | medium | before-any-change | No auth; generates the poll's slug client-side |
 | `src/features/votes/routes/PollRoute.tsx` | Voting sliders + gated results view | medium | before-any-change | Results shown only after `localStorage` records a vote for this browser — UX gate, not RLS |
 | `src/features/votes/lib/allocations.ts` | Slider redistribution so allocations always sum to 100 | medium | before-any-change | Pure; mirrored server-side by `votes_allocations_valid()` |
+| `src/features/votes/lib/paletteFromImage.ts` | Samples a poll's background image to pick an accent color that matches it | medium | before-any-change | Decorative only, degrades to violet on any failure; drives the CORS-fallback below |
+| `src/app/votes/api/image-proxy/route.ts` | Same-origin re-fetch of a poll's background image, for palette sampling when the source host sends no CORS headers | **critical** | before-any-change | Fetches an arbitrary user-supplied URL server-side — an SSRF surface. Guards: http/https + default ports only, DNS-resolves every hop (including redirects) and rejects private/loopback/link-local/reserved IPs, `image/*` content-type only, 8 MB cap. Do not relax these checks without re-reading the threat model in the file's header comment |
 | `src/features/votes/api/pollsApi.ts` | Supabase CRUD for polls/responses | medium | supabase-edit-protocol | Anonymous insert/select only, no update/delete |
 | `src/features/votes/supabase/votes.sql` | `votes_polls`/`votes_responses` schema, RLS, allocation check constraint | **critical** | supabase-edit-protocol | **Applied** live; fully open RLS, no owner concept |
 

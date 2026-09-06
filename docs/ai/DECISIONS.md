@@ -1,5 +1,41 @@
 # Decisions
 
+## 2026-09-06 — `/votes` background-adaptive accent color needs a same-origin image proxy (SSRF-guarded)
+
+**Area:** Votes domain / new API route
+
+**Decision:** `PollRoute.tsx` samples a poll's background image on a small
+canvas to pick an accent color that matches it (`lib/paletteFromImage.ts`),
+instead of always using violet. Most hotlinked images (Pinterest, personal
+blogs, etc.) send no CORS headers, which taints the canvas and blocks
+`getImageData`. The client first tries a direct CORS-mode image load; only on
+failure does it fall back to `src/app/votes/api/image-proxy/route.ts`, which
+re-fetches the same URL server-side and serves the bytes same-origin.
+Because that route fetches an arbitrary visitor-supplied URL from our server,
+it is an SSRF surface and is guarded accordingly: only `http`/`https` on
+default ports, DNS-resolves the hostname *and every redirect hop* and rejects
+private/loopback/link-local/CGNAT/reserved IP ranges, requires an `image/*`
+response content-type, and caps the response at 8 MB with an 8s timeout.
+
+**Reason:** A real test with a Pinterest-hosted background image showed the
+accent staying violet (silently falling back) because Pinterest doesn't send
+CORS headers — the direct-load path alone wasn't enough to make the feature
+actually work for the hotlinked images people realistically paste in.
+
+**Consequences:** Any future change to `image-proxy/route.ts` must preserve
+the SSRF guards (protocol/port allowlist, per-hop IP validation, content-type
+check, size cap) — do not simplify them away to "just fetch the URL." The
+proxy is unauthenticated and public like the rest of `/votes`; it must stay
+strictly read-only (GET, no persistence) and must never be reused for
+non-image content types.
+
+**Affected files:** `src/features/votes/lib/paletteFromImage.ts`,
+`src/app/votes/api/image-proxy/route.ts`, `src/features/votes/routes/PollRoute.tsx`
+
+**Status:** active
+
+---
+
 ## 2026-09-06 — `/votes` percentage-allocation polls: a fourth isolated domain, sharing only the Supabase project
 
 **Area:** New domain / Supabase persistence
