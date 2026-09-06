@@ -1,0 +1,287 @@
+.page {
+  --ink: #f2f0f7;
+  --muted: rgba(242, 240, 247, 0.62);
+  --accent: #8b7bff;
+  --accent-strong: #a898ff;
+  --panel: rgba(20, 20, 28, 0.72);
+  --border: rgba(255, 255, 255, 0.1);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(139, 123, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 82% 78%, rgba(60, 200, 180, 0.16), transparent 36%),
+    linear-gradient(150deg, #08080c 0%, #101018 46%, #07070a 100%);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.card {
+  width: min(640px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  backdrop-filter: blur(12px);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.card h1 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.lead {
+  margin: 0 0 28px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.field input,
+.field textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 15px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.optionsHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.optionsHint {
+  opacity: 0.7;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.optionIndex {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(139, 123, 255, 0.2);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.optionFields {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  min-width: 0;
+}
+
+.optionFields input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--ink);
+  font-size: 14px;
+  min-width: 0;
+}
+
+.optionFields input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.removeOption {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.removeOption:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--ink);
+}
+
+.removeOption:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.addOption {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: var(--accent-strong);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.addOption:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.addOption:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(220, 80, 80, 0.14);
+  border: 1px solid rgba(220, 80, 80, 0.3);
+  color: #ffb4b4;
+  font-size: 14px;
+}
+
+.submitButton {
+  margin-top: 8px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent);
+  color: #0a0a0f;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.linkRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.linkInput {
+  flex: 1 1 auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 14px;
+  min-width: 0;
+}
+
+.primaryButton {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #0a0a0f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryButton:hover {
+  background: var(--accent-strong);
+}
+
+.successActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondaryButton {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.secondaryButton:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+@media (max-width: 520px) {
+  .card {
+    padding: 28px 22px;
+  }
+
+  .optionFields {
+    grid-template-columns: 1fr;
+  }
+}

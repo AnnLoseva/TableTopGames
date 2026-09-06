@@ -53,6 +53,21 @@ opening code**. Risk levels drive how careful you must be.
 | `src/games/dnd/journal/components/*` | Sidebar, editor, image gallery — all branch on an `isEditor` prop to hide write UI | medium | before-any-change | UI-level hiding only; RLS is the real boundary |
 | `src/games/dnd/journal/supabase/dnd_journal.sql` | `dnd_journal_pages`/`dnd_journal_folders`/`dnd_journal_images` schema, RLS, Realtime publication and public image bucket | **critical** | supabase-edit-protocol | **Applied** live; public reads, owner-or-device writes, folder tombstones; explicit API grants and FK indexes are intentional; see `DECISIONS.md` 2026-07-31 |
 
+## Votes domain (`src/features/votes/*`)
+
+Fully anonymous percentage-allocation polls at `/votes` and `/votes/[slug]`.
+Unrelated to any tabletop game; do not import from or into VTM/Pathfinder/D&D
+code. See `docs/ai/DECISIONS.md` (2026-09-06).
+
+| Path | Role | Risk | Edit protocol | Notes |
+|---|---|---|---|---|
+| `src/app/votes/page.tsx`, `src/app/votes/[slug]/page.tsx` | `/votes`, `/votes/[slug]` routes | low | before-any-change | Thin wrappers |
+| `src/features/votes/routes/CreatePollRoute.tsx` | Poll-creation form + share link | medium | before-any-change | No auth; generates the poll's slug client-side |
+| `src/features/votes/routes/PollRoute.tsx` | Voting sliders + gated results view | medium | before-any-change | Results shown only after `localStorage` records a vote for this browser — UX gate, not RLS |
+| `src/features/votes/lib/allocations.ts` | Slider redistribution so allocations always sum to 100 | medium | before-any-change | Pure; mirrored server-side by `votes_allocations_valid()` |
+| `src/features/votes/api/pollsApi.ts` | Supabase CRUD for polls/responses | medium | supabase-edit-protocol | Anonymous insert/select only, no update/delete |
+| `src/features/votes/supabase/votes.sql` | `votes_polls`/`votes_responses` schema, RLS, allocation check constraint | **critical** | supabase-edit-protocol | **Applied** live; fully open RLS, no owner concept |
+
 ## Home module (`src/games/vampires/modules/home/*`)
 | Path | Role | Risk | Edit protocol | Notes |
 |---|---|---|---|---|

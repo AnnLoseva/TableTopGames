@@ -1,5 +1,44 @@
 # Decisions
 
+## 2026-09-06 — `/votes` percentage-allocation polls: a fourth isolated domain, sharing only the Supabase project
+
+**Area:** New domain / Supabase persistence
+
+**Decision:** `/votes` and `/votes/[slug]` are a standalone percentage-allocation
+polling tool, unrelated to any tabletop game. It lives entirely under
+`src/features/votes/*` and owns two new tables, `votes_polls` and
+`votes_responses` (schema in `src/features/votes/supabase/votes.sql`). No auth:
+anyone can create a poll (gets a random slug), and anyone with the link can
+submit one response — each visitor gets "their own 100%" split across the
+poll's options via mutually-redistributing sliders (`lib/allocations.ts`).
+Results are only shown client-side after the visitor submits (gated via a
+`localStorage` flag, not RLS — RLS on both tables is fully open `select`/
+`insert` for `anon`/`authenticated`, mirroring the existing open pattern used
+by `table_*` VTM session tables).
+
+**Reason:** The user wanted a lightweight, no-signup allocation-voting tool
+and asked to host it on this site/Supabase project rather than stand up new
+infrastructure, explicitly noting it has nothing to do with the tabletop-game
+product.
+
+**Consequences:** `votes_*` tables and `src/features/votes/*` must stay fully
+isolated from VTM/Pathfinder/D&D code and schema — do not let VTM modules
+import from `src/features/votes/*` or vice versa, and do not reuse
+`votes_polls`/`votes_responses` for anything game-related. Because there is no
+owner/account concept, a response, once submitted, cannot be edited or
+retracted by its author (no update/delete policy on `votes_responses`).
+Allocation integrity (each response's percentages sum to exactly 100) is
+enforced twice: client-side by the redistribution algorithm, and server-side
+by the `votes_allocations_valid()` check constraint on `votes_responses`.
+
+**Affected files:** `src/features/votes/*`, `src/app/votes/page.tsx`,
+`src/app/votes/[slug]/page.tsx`, `src/features/votes/supabase/votes.sql`
+(applied directly to the `klhxbaagarqxaqnrvurr` project)
+
+**Status:** active
+
+---
+
 ## 2026-08-03 — Personal chronicle pipeline drops player-chronicle narrative generation
 
 **Area:** Chronicle library / Supabase persistence / external LLM

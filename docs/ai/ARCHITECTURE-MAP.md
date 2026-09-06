@@ -17,7 +17,11 @@ contracts; it uses its own read-only Storage bucket for rule delivery. D&D
 (same Supabase project) to identify the one account allowed to edit. It owns
 separate `dnd_journal_*` tables and a public storage bucket, and is the
 **same journal data** the RenaCompanion iPad app (separate repo)
-reads/writes — see "Flow: D&D journal" below.
+reads/writes — see "Flow: D&D journal" below. `/votes` (`src/features/votes/`)
+is a fourth isolated domain, unrelated to any tabletop game: fully anonymous
+percentage-allocation polls at custom `/votes/<slug>` links, backed by its own
+`votes_polls`/`votes_responses` tables in the same Supabase project. See
+`docs/ai/DECISIONS.md` (2026-09-06).
 
 ## Routes
 | Route | Component | Layer |
@@ -32,6 +36,8 @@ reads/writes — see "Flow: D&D journal" below.
 | `/pathfinder2/sheet` | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute` | React local character-creation draft |
 | `/vampires/old` | `src/app/(vampires)/vampires/old/page.tsx` | redirect → `/vampires/character-sheet` |
 | `/dnd/journal` | `src/games/dnd/journal/DndJournalRoute` | React + Supabase, shared with the RenaCompanion iPad app |
+| `/votes` | `src/features/votes/routes/CreatePollRoute` | React + Supabase, anonymous, unrelated to tabletop games |
+| `/votes/[slug]` | `src/features/votes/routes/PollRoute` | React + Supabase, anonymous, unrelated to tabletop games |
 
 VTM route files live in `src/app/(vampires)/vampires/` and import their entries directly from
 `src/games/vampires/modules/*`. Parentheses create an App Router route group, so the
