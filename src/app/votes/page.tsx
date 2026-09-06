@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import CreatePollRoute from '@/features/votes/routes/CreatePollRoute'
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function VotesPage() {
-  return <CreatePollRoute />
+  return (
+    <Suspense fallback={null}>
+      <CreatePollRoute />
+    </Suspense>
+  )
 }

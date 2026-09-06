@@ -50,6 +50,20 @@
   color: var(--accent-strong);
 }
 
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.resultsActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .card h1 {
   margin: 0;
   font-size: 26px;

@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, type FormEvent } from 'react'
-import { createPoll } from '../api/pollsApi'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState, type FormEvent } from 'react'
+import { createPoll, fetchPollBySlug } from '../api/pollsApi'
 import { MAX_OPTIONS, MIN_OPTIONS } from '../constants'
 import { generateOptionId } from '../lib/slug'
 import type { Poll, PollOptionDraft } from '../types'
@@ -13,6 +14,9 @@ function createEmptyOption(): PollOptionDraft {
 }
 
 export default function CreatePollRoute() {
+  const searchParams = useSearchParams()
+  const templateSlug = searchParams.get('from')
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [backgroundImageUrl, setBackgroundImageUrl] = useState('')
@@ -21,6 +25,33 @@ export default function CreatePollRoute() {
   const [errorMessage, setErrorMessage] = useState('')
   const [createdPoll, setCreatedPoll] = useState<Poll | null>(null)
   const [copied, setCopied] = useState(false)
+  const [isPrefilling, setIsPrefilling] = useState(Boolean(templateSlug))
+
+  useEffect(() => {
+    if (!templateSlug) return
+    let cancelled = false
+
+    setIsPrefilling(true)
+    fetchPollBySlug(templateSlug)
+      .then(template => {
+        if (cancelled || !template) return
+        setTitle(template.title)
+        setDescription(template.description)
+        setBackgroundImageUrl(template.backgroundImageUrl ?? '')
+        setOptions(template.options.map(option => ({
+          id: generateOptionId(),
+          label: option.label,
+          imageUrl: option.imageUrl ?? '',
+        })))
+      })
+      .finally(() => {
+        if (!cancelled) setIsPrefilling(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [templateSlug])
 
   const updateOption = (id: string, patch: Partial<PollOptionDraft>) => {
     setOptions(current => current.map(option => (option.id === id ? { ...option, ...patch } : option)))
@@ -129,6 +160,14 @@ export default function CreatePollRoute() {
           сам — 70% сюда, 30% туда. Результаты видны только после того, как
           человек отправит свой ответ. Регистрация не нужна: голосуют по ссылке.
         </p>
+
+        {templateSlug && (
+          <p className={styles.templateNote}>
+            {isPrefilling
+              ? 'Подставляю название и варианты из другого голосования…'
+              : 'Название и варианты подставлены из другого голосования — поправьте, что нужно, и создайте свою ссылку.'}
+          </p>
+        )}
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <label className={styles.field}>

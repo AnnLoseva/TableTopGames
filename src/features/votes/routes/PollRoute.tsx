@@ -24,6 +24,7 @@ export default function PollRoute({ slug }: { slug: string }) {
   const [results, setResults] = useState<PollResults | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [copied, setCopied] = useState(false)
+  const [templateLinkCopied, setTemplateLinkCopied] = useState(false)
   const [palette, setPalette] = useState<ExtractedPalette | null>(null)
 
   useEffect(() => {
@@ -125,6 +126,16 @@ export default function PollRoute({ slug }: { slug: string }) {
     }
   }
 
+  const handleCopyTemplateLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}/votes?from=${slug}`)
+      setTemplateLinkCopied(true)
+      window.setTimeout(() => setTemplateLinkCopied(false), 2000)
+    } catch {
+      setTemplateLinkCopied(false)
+    }
+  }
+
   if (loadState === 'loading') {
     return (
       <main className={styles.page}>
@@ -180,9 +191,18 @@ export default function PollRoute({ slug }: { slug: string }) {
             <p className={styles.eyebrow}>Голосование</p>
             <h1>{poll.title}</h1>
           </div>
-          <button type="button" className={styles.linkButton} onClick={handleCopyLink}>
-            {copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}
-          </button>
+          <div className={styles.headerActions}>
+            <button type="button" className={styles.linkButton} onClick={handleCopyLink}>
+              {copied ? 'Ссылка скопирована' : 'Скопировать ссылку'}
+            </button>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={handleCopyTemplateLink}
+            >
+              {templateLinkCopied ? 'Ссылка-шаблон скопирована' : 'Скопировать как шаблон'}
+            </button>
+          </div>
         </div>
 
         {poll.description && <p className={styles.lead}>{poll.description}</p>}
@@ -259,9 +279,14 @@ export default function PollRoute({ slug }: { slug: string }) {
                 })}
             </div>
 
-            <button type="button" className={styles.secondaryButton} onClick={handleRefreshResults}>
-              Обновить результаты
-            </button>
+            <div className={styles.resultsActions}>
+              <button type="button" className={styles.secondaryButton} onClick={handleRefreshResults}>
+                Обновить результаты
+              </button>
+              <Link href={`/votes?from=${slug}`} className={styles.secondaryButton}>
+                Создать новое такое же
+              </Link>
+            </div>
           </>
         )}
       </section>
