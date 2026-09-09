@@ -1,4 +1,6 @@
+import { withSheetDefaults } from './constants'
 import type {
+  CharacterSheet,
   MapCharacter,
   MapCharacterRow,
   MapRelationship,
@@ -14,6 +16,7 @@ export function mapCharacterRow(row: MapCharacterRow): MapCharacter {
     imagePath: row.image_path,
     positionX: row.position_x,
     positionY: row.position_y,
+    sheet: withSheetDefaults(row.sheet as Partial<CharacterSheet> | null | undefined),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }

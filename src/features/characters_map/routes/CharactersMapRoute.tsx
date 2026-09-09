@@ -18,9 +18,9 @@ import {
   listRelationships,
   updateRelationship,
 } from '../api/relationshipsApi'
-import { CHARACTERS_MAP_OWNER_AUTH_USER_ID } from '../constants'
+import { CHARACTERS_MAP_OWNER_AUTH_USER_ID, createDefaultCharacterSheet } from '../constants'
 import { createCharactersMapClient } from '../supabase'
-import type { MapCharacter, MapRelationship, RelationshipKind } from '../types'
+import type { CharacterSheet, MapCharacter, MapRelationship, RelationshipKind } from '../types'
 import AddCharacterModal from '../components/AddCharacterModal'
 import AddRelationshipModal from '../components/AddRelationshipModal'
 import CharacterPanel from '../components/CharacterPanel'
@@ -125,6 +125,7 @@ export default function CharactersMapRoute() {
       imagePath,
       positionX: spawn.x,
       positionY: spawn.y,
+      sheet: createDefaultCharacterSheet(),
     })
     setCharacters(previous => [...previous, created])
   }, [client, characters.length])
@@ -138,7 +139,7 @@ export default function CharactersMapRoute() {
     })
   }, [client])
 
-  const handleSaveCharacter = useCallback(async (id: string, patch: { name: string; description: string }) => {
+  const handleSaveCharacter = useCallback(async (id: string, patch: { name: string; description: string; sheet: CharacterSheet }) => {
     const updated = await updateCharacter(client, id, patch)
     setCharacters(previous => previous.map(character => (character.id === id ? updated : character)))
   }, [client])

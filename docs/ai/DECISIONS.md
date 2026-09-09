@@ -1,5 +1,46 @@
 # Decisions
 
+## 2026-09-09 — `/characters_map`: VTM-styled detailed sheet (`sheet` jsonb) + clearer arrowheads
+
+**Area:** `src/features/characters_map/*`, Supabase schema
+
+**Decision:** Added a `sheet jsonb not null default '{}'` column to
+`characters_map_characters` (migration `characters_map_add_sheet`, checked
+into `supabase/characters_map.sql`) holding a free-form VTM-style character
+sheet: concept/clan/generation/predator type/sire, ambition/desire, the 9 V5
+attributes and 27 V5 skills (dot ratings 0-5), a free-form disciplines list
+(name + dot rating), health/willpower damage tracks (per-box
+empty/superficial/aggravated state), humanity + stains, blood potency, and
+touchstones/merits/flaws text. The shape lives only in
+`src/features/characters_map/types.ts` (`CharacterSheet`) and
+`constants.ts` (`ATTRIBUTE_GROUPS`/`SKILL_GROUPS`/`withSheetDefaults`) — it is
+**not** validated against or generated from
+`src/games/vampires/core/vtm5/rules/*` or `rules.json`, keeping this domain's
+isolation from the VTM game code intact (per the 2026-09-09 domain-creation
+entry below): the labels merely *look like* a V5 sheet, the values are plain
+owner-entered data with a `pg_column_size(sheet) <= 50000` sanity cap, no
+rules engine involved. `CharacterPanel.tsx` was rewritten from a narrow side
+panel into a full-page scrollable sheet view to fit this. Also fixed
+`MapCanvas.tsx`'s directed-relationship arrowheads, which were technically
+correct but too small (11px/5px) to read at normal zoom — enlarged to
+20px/8px with a dark outline stroke for contrast against any edge color.
+
+**Reason:** User request: "сделай так чтобы было видно направление стрелки и
+сделай листы персонажей более подробными... пусть листы персонажей будут как
+листы в vampire the masquerade."
+
+**Consequences:** Any future rename of `CharacterSheet` fields must update
+`withSheetDefaults` (merge-with-defaults on read, so old rows without a field
+still render) — do not remove fields without a migration note, existing rows
+keep old shapes until re-saved. `ATTRIBUTE_GROUPS`/`SKILL_GROUPS` are UI label
+lists only; do not wire them to the real VTM skill/attribute data or import
+from `src/games/vampires/*` — that would break the domain isolation this
+feature was built under.
+
+**Affected files:** `src/features/characters_map/**`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: new universal domain, owner-write/public-read, non-symmetric relationship edges
 
 **Area:** New domain (`src/features/characters_map/*`), Supabase schema

@@ -1,5 +1,47 @@
 export type RelationshipKind = 'directed' | 'mutual'
 
+export type AttributeKey =
+  | 'strength' | 'dexterity' | 'stamina'
+  | 'charisma' | 'manipulation' | 'composure'
+  | 'intelligence' | 'wits' | 'resolve'
+
+export type SkillKey =
+  | 'athletics' | 'brawl' | 'craft' | 'drive' | 'firearms' | 'larceny' | 'melee' | 'stealth' | 'survival'
+  | 'animalKen' | 'etiquette' | 'insight' | 'intimidation' | 'leadership' | 'performance' | 'persuasion' | 'streetwise' | 'subterfuge'
+  | 'academics' | 'awareness' | 'finance' | 'investigation' | 'medicine' | 'occult' | 'politics' | 'science' | 'technology'
+
+export type Discipline = {
+  id: string
+  name: string
+  level: number
+}
+
+export type DamageTrack = {
+  max: number
+  boxes: number[] // 0 = empty, 1 = superficial, 2 = aggravated
+}
+
+export type CharacterSheet = {
+  concept: string
+  clan: string
+  generation: string
+  predatorType: string
+  sire: string
+  ambition: string
+  desire: string
+  attributes: Partial<Record<AttributeKey, number>>
+  skills: Partial<Record<SkillKey, number>>
+  disciplines: Discipline[]
+  health: DamageTrack
+  willpower: DamageTrack
+  humanity: number
+  stains: number
+  bloodPotency: number
+  touchstones: string
+  merits: string
+  flaws: string
+}
+
 export type MapCharacter = {
   id: string
   name: string
@@ -7,6 +49,7 @@ export type MapCharacter = {
   imagePath: string | null
   positionX: number
   positionY: number
+  sheet: CharacterSheet
   createdAt: string
   updatedAt: string
 }
@@ -19,6 +62,7 @@ export type MapCharacterRow = {
   image_path: string | null
   position_x: number
   position_y: number
+  sheet: unknown
   created_at: string
   updated_at: string
 }
@@ -29,6 +73,7 @@ export type MapCharacterInput = {
   imagePath?: string | null
   positionX?: number
   positionY?: number
+  sheet?: CharacterSheet
 }
 
 export type MapCharacterPatch = Partial<MapCharacterInput>

@@ -5,7 +5,8 @@ import type { MapCharacter, MapRelationship } from '../types'
 import styles from './MapCanvas.module.css'
 
 const NODE_RADIUS = 40
-const ARROW_LENGTH = 11
+const ARROW_LENGTH = 20
+const ARROW_WIDTH = 8
 const EDGE_OFFSET_STEP = 34
 const CLICK_DRAG_THRESHOLD = 5
 const MIN_SCALE = 0.25
@@ -282,8 +283,8 @@ export default function MapCanvas({
             if (edge.relationship.kind === 'directed') {
               const tip = pointAt(geometry.end, geometry.endDir, ARROW_LENGTH)
               const perp = { x: -geometry.endDir.y, y: geometry.endDir.x }
-              const left = { x: geometry.end.x + perp.x * 5, y: geometry.end.y + perp.y * 5 }
-              const right = { x: geometry.end.x - perp.x * 5, y: geometry.end.y - perp.y * 5 }
+              const left = { x: geometry.end.x + perp.x * ARROW_WIDTH, y: geometry.end.y + perp.y * ARROW_WIDTH }
+              const right = { x: geometry.end.x - perp.x * ARROW_WIDTH, y: geometry.end.y - perp.y * ARROW_WIDTH }
               arrowPoints = `${tip.x},${tip.y} ${left.x},${left.y} ${right.x},${right.y}`
             }
             return (
@@ -300,7 +301,15 @@ export default function MapCanvas({
                   strokeDasharray={edge.relationship.kind === 'mutual' ? '2 6' : undefined}
                   onClick={() => onSelectRelationship(edge.relationship.id)}
                 />
-                {arrowPoints && <polygon points={arrowPoints} fill={color} />}
+                {arrowPoints && (
+                  <polygon
+                    points={arrowPoints}
+                    fill={color}
+                    stroke="rgba(6, 6, 9, 0.65)"
+                    strokeWidth={1.5}
+                    strokeLinejoin="round"
+                  />
+                )}
                 <rect
                   x={labelPoint.x - labelWidth / 2}
                   y={labelPoint.y - 11}

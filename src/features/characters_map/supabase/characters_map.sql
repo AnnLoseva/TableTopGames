@@ -36,6 +36,22 @@ create table if not exists public.characters_map_characters (
   constraint characters_map_characters_description_check check (length(description) <= 10000)
 );
 
+-- Added 2026-09-09 (see DECISIONS.md): a free-form VTM-style character sheet
+-- (concept/clan/generation/predator type/sire/ambition/desire, attributes,
+-- skills, disciplines, health/willpower tracks, humanity, blood potency,
+-- touchstones, merits & flaws). Deliberately untyped JSON, not validated
+-- against any rules engine — this domain stays isolated from
+-- src/games/vampires/core/vtm5/rules/* and rules.json; the shape lives only
+-- in src/features/characters_map/types.ts (`CharacterSheet`). The size cap
+-- is a sanity bound, not a real quota.
+alter table public.characters_map_characters
+  add column if not exists sheet jsonb not null default '{}'::jsonb;
+
+alter table public.characters_map_characters
+  drop constraint if exists characters_map_characters_sheet_check;
+alter table public.characters_map_characters
+  add constraint characters_map_characters_sheet_check check (pg_column_size(sheet) <= 50000);
+
 create index if not exists characters_map_characters_user_idx
   on public.characters_map_characters (user_id);
 
