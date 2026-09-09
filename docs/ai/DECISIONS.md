@@ -1,5 +1,48 @@
 # Decisions
 
+## 2026-09-09 — `/characters_map`: arrowheads were rendering underneath the node (invisible) + labels now always paint above lines/arrows
+
+**Area:** `src/features/characters_map/components/MapCanvas.tsx`
+
+**Decision:** Two more `MapCanvas` fixes, both confirmed against live data by
+reading rendered SVG coordinates (not just screenshots):
+
+1. **Arrowhead visibility bug.** The arrow tip was computed as
+   `geometry.end + endDir * ARROW_LENGTH`, where `geometry.end` was already
+   trimmed to sit exactly on the node's boundary (`NODE_RADIUS` from center).
+   Moving further *toward* the node by `ARROW_LENGTH` put the tip at
+   `NODE_RADIUS - ARROW_LENGTH` from the center — **inside** the node's own
+   radius. Character nodes render after edges, so that inner portion painted
+   over and hid the pointed tip entirely; only a sliver of the flared base
+   (right at the boundary) was ever visible, which read as "no arrow" (user
+   report + screenshot). Fixed by trimming the line itself to
+   `NODE_RADIUS + ARROW_LENGTH` for directed edges (`endTrim` param added to
+   `edgeGeometry`) and placing the tip (`arrowTip`) at exactly `NODE_RADIUS` —
+   so the whole triangle, base to tip, sits outside the node circle. Verified
+   live: every arrow tip lands at distance 40 (`NODE_RADIUS`) from its target
+   node's center, every base corner at ~60.5 (`NODE_RADIUS + ARROW_LENGTH`,
+   widened by `ARROW_WIDTH`) — zero exceptions across the full live edge set.
+2. **Label stacking order.** Edge labels are now rendered in a second pass
+   over all edges, after a first pass draws every line/arrowhead — so no
+   edge's arrowhead can ever paint over a *different* edge's label. Before,
+   each edge's own `<g>` bundled its line+arrow+label together, so labels only
+   beat their own edge's arrow, not arrows from other, later-drawn edges.
+
+**Reason:** User reports, with a close-up screenshot showing lines converging
+on a node with no visible arrowheads, plus an explicit "labels must always be
+above arrows" requirement.
+
+**Consequences:** Any future geometry change touching `edgeGeometry` must keep
+the tip-vs-line-end distinction (`arrowTip` at `NODE_RADIUS`, the drawn line
+trimmed further back by `ARROW_LENGTH` when directed) — collapsing them back
+into one trim point reintroduces the hidden-tip bug. The two-pass render
+(all lines+arrows, then all labels) must stay two separate `.map()` calls
+over `edgeRenders`, not merged back into one per-edge `<g>`.
+
+**Affected files:** `src/features/characters_map/components/MapCanvas.tsx`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: mutual-centered edge layout + fixed a curve-collapse bug
 
 **Area:** `src/features/characters_map/components/MapCanvas.tsx`

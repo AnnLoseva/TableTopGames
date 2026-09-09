@@ -100,7 +100,17 @@ function buildEdges(characters: MapCharacter[], relationships: MapRelationship[]
  * negatives of each other, cancelling the offset and collapsing both curves onto
  * the same side instead of opposite ones.
  */
-function edgeGeometry(a: Point, b: Point, offset: number, perp: Point) {
+/**
+ * `endTrim` is how far from the target node center the visible line/arrow-base
+ * stops: for a plain line that's just `NODE_RADIUS` (touching the node), but for
+ * a directed edge it must be `NODE_RADIUS + ARROW_LENGTH` so the whole arrowhead
+ * — base included — sits outside the node circle. The arrow's pointed tip is
+ * always exactly at `NODE_RADIUS` (`arrowTip`), never closer to the center than
+ * that: a tip drawn inside the node's own radius renders underneath the node
+ * (character portraits paint on top of edges) and disappears completely, which
+ * is what made every arrowhead invisible before this fix.
+ */
+function edgeGeometry(a: Point, b: Point, offset: number, perp: Point, endTrim: number) {
   const mid: Point = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
   if (offset !== 0) {
     mid.x += perp.x * offset
@@ -111,7 +121,8 @@ function edgeGeometry(a: Point, b: Point, offset: number, perp: Point) {
   return {
     start: pointAt(a, startDir, NODE_RADIUS),
     control: mid,
-    end: pointAt(b, endDir, -NODE_RADIUS),
+    end: pointAt(b, endDir, -endTrim),
+    arrowTip: pointAt(b, endDir, -NODE_RADIUS),
     endDir,
   }
 }
@@ -400,14 +411,16 @@ export default function MapCanvas({
     const anchor = anchorIsFrom ? from : to
     const other = anchorIsFrom ? to : from
     const perp = normalize({ x: -(other.y - anchor.y), y: other.x - anchor.x })
-    const geometry = edgeGeometry(from, to, edge.offset, perp)
+    const isDirected = edge.relationship.kind === 'directed'
+    const endTrim = isDirected ? NODE_RADIUS + ARROW_LENGTH : NODE_RADIUS
+    const geometry = edgeGeometry(from, to, edge.offset, perp, endTrim)
     const color = edge.relationship.color || '#d9b45c'
     const path = `M ${geometry.start.x} ${geometry.start.y} Q ${geometry.control.x} ${geometry.control.y} ${geometry.end.x} ${geometry.end.y}`
     const labelPoint = quadraticAt(geometry.start, geometry.control, geometry.end, 0.5)
     const labelWidth = Math.max(28, edge.relationship.label.length * 7.2 + 16)
     let arrowPoints = ''
-    if (edge.relationship.kind === 'directed') {
-      const tip = pointAt(geometry.end, geometry.endDir, ARROW_LENGTH)
+    if (isDirected) {
+      const tip = geometry.arrowTip
       const perp = { x: -geometry.endDir.y, y: geometry.endDir.x }
       const left = { x: geometry.end.x + perp.x * ARROW_WIDTH, y: geometry.end.y + perp.y * ARROW_WIDTH }
       const right = { x: geometry.end.x - perp.x * ARROW_WIDTH, y: geometry.end.y - perp.y * ARROW_WIDTH }
@@ -453,9 +466,11 @@ export default function MapCanvas({
       )}
       <svg className={styles.svg}>
         <g transform={`translate(${view.x} ${view.y}) scale(${view.scale})`}>
-          {edgeRenders.map(({ edge, path, color, labelWidth, arrowPoints }) => {
+          {/* Pass 1: every line and arrowhead, all beneath every label (pass 2 below) —
+              rendered as two separate loops so one edge's arrow can never paint over
+              another edge's label, regardless of which edge comes first in the list. */}
+          {edgeRenders.map(({ edge, path, color, arrowPoints }) => {
             const isSelected = edge.relationship.id === selectedRelationshipId
-            const labelPoint = labelPositions.get(edge.relationship.id)!
             return (
               <g key={edge.relationship.id}>
                 <path
@@ -479,6 +494,15 @@ export default function MapCanvas({
                     strokeLinejoin="round"
                   />
                 )}
+              </g>
+            )
+          })}
+
+          {/* Pass 2: labels, always on top of every line/arrow from pass 1. */}
+          {edgeRenders.map(({ edge, labelWidth }) => {
+            const labelPoint = labelPositions.get(edge.relationship.id)!
+            return (
+              <g key={edge.relationship.id}>
                 <rect
                   x={labelPoint.x - labelWidth / 2}
                   y={labelPoint.y - 11}
