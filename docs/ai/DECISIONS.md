@@ -1,5 +1,46 @@
 # Decisions
 
+## 2026-09-09 — `/characters_map`: mutual-centered edge layout + fixed a curve-collapse bug
+
+**Area:** `src/features/characters_map/components/MapCanvas.tsx`
+
+**Decision:** `buildEdges` now lays out multiple edges between the same pair
+by kind/direction instead of plain insertion order: a `mutual` relationship
+runs straight through the middle (offset 0, or symmetrically spread around 0
+if there is more than one), and each *direction* of a one-sided relationship
+gets pushed to its own side of that center line — every A→B edge curves one
+way, every B→A edge curves the other. A pair with only one edge stays a
+straight line regardless of its kind.
+
+While implementing this, found and fixed a real pre-existing bug in
+`edgeGeometry`: it derived the perpendicular "which side to bulge" vector
+from the edge's own `from`/`to` positions. Two opposite-direction edges
+between the same pair have `from`/`to` swapped, so their perpendiculars were
+exact negatives of each other — combined with `offset` values of `+34`/`-34`,
+the negation cancelled out and **both curves landed on the same side**
+instead of opposite ones (confirmed by reading the live `<path>` `d`
+attributes: both edges had the identical control point). Fixed by computing
+the perpendicular from a pair-stable anchor order (whichever character id
+sorts first) rather than from each edge's own direction; `edgeGeometry` now
+takes that `perp` as an explicit parameter instead of deriving it internally.
+
+**Reason:** User request — lines between the same two characters must never
+overlap; the mutual/shared relationship belongs in the middle, one-directional
+ones on the sides.
+
+**Consequences:** Any future edge-layout change must keep computing `perp`
+from the anchor order (`edge.from.id < edge.to.id`), never from the specific
+edge's `from`/`to` — re-deriving it per-edge direction reintroduces the
+same cancellation bug. Verified against live production data (three-edge
+Тали↔Став group: one mutual + two opposite directed) by reading rendered SVG
+path control points and confirming the mutual's control point equals the
+exact straight-line midpoint while the two directed edges are symmetric on
+each side.
+
+**Affected files:** `src/features/characters_map/components/MapCanvas.tsx`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: overlapping edge labels + right-click "drag a connection" relationship creation
 
 **Area:** `src/features/characters_map/components/MapCanvas.tsx`, `AddRelationshipModal.tsx`, `routes/CharactersMapRoute.tsx`

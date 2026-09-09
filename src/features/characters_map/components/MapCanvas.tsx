@@ -44,6 +44,13 @@ type Edge = {
   offset: number
 }
 
+/**
+ * Lays multiple edges between the same pair out so they never overlap:
+ * mutual (undirected) relationships run straight through the middle, and
+ * each direction of a one-sided relationship gets pushed to its own side —
+ * A→B curves one way, B→A curves the other. A pair with just one edge stays
+ * a straight line (offset 0), regardless of its kind.
+ */
 function buildEdges(characters: MapCharacter[], relationships: MapRelationship[]): Edge[] {
   const byId = new Map(characters.map(character => [character.id, character]))
   const groups = new Map<string, MapRelationship[]>()
@@ -56,25 +63,46 @@ function buildEdges(characters: MapCharacter[], relationships: MapRelationship[]
   }
 
   const edges: Edge[] = []
-  for (const group of groups.values()) {
-    const count = group.length
-    group.forEach((relationship, index) => {
-      const offset = (index - (count - 1) / 2) * EDGE_OFFSET_STEP
-      const from = byId.get(relationship.fromCharacterId)
-      const to = byId.get(relationship.toCharacterId)
-      if (!from || !to) return
-      edges.push({ relationship, from, to, offset })
+  const pushEdge = (relationship: MapRelationship, offset: number) => {
+    const from = byId.get(relationship.fromCharacterId)
+    const to = byId.get(relationship.toCharacterId)
+    if (!from || !to) return
+    edges.push({ relationship, from, to, offset })
+  }
+
+  for (const [key, group] of groups) {
+    if (group.length === 1) {
+      pushEdge(group[0], 0)
+      continue
+    }
+    const [anchorId] = key.split('|')
+    const mutuals = group.filter(relationship => relationship.kind === 'mutual')
+    const forward = group.filter(relationship => relationship.kind !== 'mutual' && relationship.fromCharacterId === anchorId)
+    const backward = group.filter(relationship => relationship.kind !== 'mutual' && relationship.fromCharacterId !== anchorId)
+
+    mutuals.forEach((relationship, index) => {
+      pushEdge(relationship, (index - (mutuals.length - 1) / 2) * EDGE_OFFSET_STEP)
+    })
+    forward.forEach((relationship, index) => {
+      pushEdge(relationship, (index + 1) * EDGE_OFFSET_STEP)
+    })
+    backward.forEach((relationship, index) => {
+      pushEdge(relationship, -(index + 1) * EDGE_OFFSET_STEP)
     })
   }
   return edges
 }
 
-function edgeGeometry(from: MapCharacter, to: MapCharacter, offset: number) {
-  const a: Point = { x: from.positionX, y: from.positionY }
-  const b: Point = { x: to.positionX, y: to.positionY }
+/**
+ * `perp` must be derived from a pair-stable ordering (not from this edge's own
+ * from/to), otherwise two opposite-direction edges between the same pair — whose
+ * a/b are literally swapped — would compute perpendiculars that are exact
+ * negatives of each other, cancelling the offset and collapsing both curves onto
+ * the same side instead of opposite ones.
+ */
+function edgeGeometry(a: Point, b: Point, offset: number, perp: Point) {
   const mid: Point = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
   if (offset !== 0) {
-    const perp = normalize({ x: -(b.y - a.y), y: b.x - a.x })
     mid.x += perp.x * offset
     mid.y += perp.y * offset
   }
@@ -364,9 +392,15 @@ export default function MapCanvas({
   }, [draggingId, dragOverride])
 
   const edgeRenders = useMemo(() => edges.map(edge => {
-    const from = { ...edge.from, positionX: positionFor(edge.from).x, positionY: positionFor(edge.from).y }
-    const to = { ...edge.to, positionX: positionFor(edge.to).x, positionY: positionFor(edge.to).y }
-    const geometry = edgeGeometry(from, to, edge.offset)
+    const from = positionFor(edge.from)
+    const to = positionFor(edge.to)
+    // Anchor on whichever character id sorts first, regardless of this edge's own
+    // from/to — see edgeGeometry's doc comment for why that stability matters.
+    const anchorIsFrom = edge.from.id < edge.to.id
+    const anchor = anchorIsFrom ? from : to
+    const other = anchorIsFrom ? to : from
+    const perp = normalize({ x: -(other.y - anchor.y), y: other.x - anchor.x })
+    const geometry = edgeGeometry(from, to, edge.offset, perp)
     const color = edge.relationship.color || '#d9b45c'
     const path = `M ${geometry.start.x} ${geometry.start.y} Q ${geometry.control.x} ${geometry.control.y} ${geometry.end.x} ${geometry.end.y}`
     const labelPoint = quadraticAt(geometry.start, geometry.control, geometry.end, 0.5)
