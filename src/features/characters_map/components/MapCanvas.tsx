@@ -96,6 +96,47 @@ function quadraticAt(p0: Point, p1: Point, p2: Point, t: number): Point {
   }
 }
 
+type LabelBox = { id: string; x: number; y: number; width: number; height: number }
+
+/** Pairwise AABB separation so edge labels that start out overlapping (e.g. several
+ * relationships converging on the same character) get nudged apart instead of
+ * rendering on top of each other. Runs on label centers only — the curves/arrows
+ * they annotate are drawn at their original geometry, unaffected. */
+function resolveLabelOverlaps(boxes: LabelBox[]): Map<string, Point> {
+  const positions = new Map<string, Point>(boxes.map(box => [box.id, { x: box.x, y: box.y }]))
+  const PADDING = 4
+  for (let iteration = 0; iteration < 60; iteration += 1) {
+    let moved = false
+    for (let i = 0; i < boxes.length; i += 1) {
+      for (let j = i + 1; j < boxes.length; j += 1) {
+        const a = boxes[i]
+        const b = boxes[j]
+        const pa = positions.get(a.id)!
+        const pb = positions.get(b.id)!
+        const dx = pb.x - pa.x
+        const dy = pb.y - pa.y
+        const overlapX = (a.width + b.width) / 2 + PADDING - Math.abs(dx)
+        const overlapY = (a.height + b.height) / 2 + PADDING - Math.abs(dy)
+        if (overlapX <= 0 || overlapY <= 0) continue
+        moved = true
+        if (overlapX < overlapY) {
+          const push = overlapX / 2
+          const dir = dx >= 0 ? 1 : -1
+          pa.x -= dir * push
+          pb.x += dir * push
+        } else {
+          const push = overlapY / 2
+          const dir = dy >= 0 ? 1 : -1
+          pa.y -= dir * push
+          pb.y += dir * push
+        }
+      }
+    }
+    if (!moved) break
+  }
+  return positions
+}
+
 type Props = {
   characters: MapCharacter[]
   relationships: MapRelationship[]
@@ -262,6 +303,33 @@ export default function MapCanvas({
     return { x: character.positionX, y: character.positionY }
   }, [draggingId, dragOverride])
 
+  const edgeRenders = useMemo(() => edges.map(edge => {
+    const from = { ...edge.from, positionX: positionFor(edge.from).x, positionY: positionFor(edge.from).y }
+    const to = { ...edge.to, positionX: positionFor(edge.to).x, positionY: positionFor(edge.to).y }
+    const geometry = edgeGeometry(from, to, edge.offset)
+    const color = edge.relationship.color || '#d9b45c'
+    const path = `M ${geometry.start.x} ${geometry.start.y} Q ${geometry.control.x} ${geometry.control.y} ${geometry.end.x} ${geometry.end.y}`
+    const labelPoint = quadraticAt(geometry.start, geometry.control, geometry.end, 0.5)
+    const labelWidth = Math.max(28, edge.relationship.label.length * 7.2 + 16)
+    let arrowPoints = ''
+    if (edge.relationship.kind === 'directed') {
+      const tip = pointAt(geometry.end, geometry.endDir, ARROW_LENGTH)
+      const perp = { x: -geometry.endDir.y, y: geometry.endDir.x }
+      const left = { x: geometry.end.x + perp.x * ARROW_WIDTH, y: geometry.end.y + perp.y * ARROW_WIDTH }
+      const right = { x: geometry.end.x - perp.x * ARROW_WIDTH, y: geometry.end.y - perp.y * ARROW_WIDTH }
+      arrowPoints = `${tip.x},${tip.y} ${left.x},${left.y} ${right.x},${right.y}`
+    }
+    return { edge, path, color, labelPoint, labelWidth, labelHeight: 22, arrowPoints }
+  }), [edges, positionFor])
+
+  const labelPositions = useMemo(() => resolveLabelOverlaps(edgeRenders.map(render => ({
+    id: render.edge.relationship.id,
+    x: render.labelPoint.x,
+    y: render.labelPoint.y,
+    width: render.labelWidth,
+    height: render.labelHeight,
+  }))), [edgeRenders])
+
   return (
     <div
       ref={containerRef}
@@ -270,23 +338,9 @@ export default function MapCanvas({
     >
       <svg className={styles.svg}>
         <g transform={`translate(${view.x} ${view.y}) scale(${view.scale})`}>
-          {edges.map(edge => {
-            const from = { ...edge.from, positionX: positionFor(edge.from).x, positionY: positionFor(edge.from).y }
-            const to = { ...edge.to, positionX: positionFor(edge.to).x, positionY: positionFor(edge.to).y }
-            const geometry = edgeGeometry(from, to, edge.offset)
-            const color = edge.relationship.color || '#d9b45c'
+          {edgeRenders.map(({ edge, path, color, labelWidth, arrowPoints }) => {
             const isSelected = edge.relationship.id === selectedRelationshipId
-            const labelPoint = quadraticAt(geometry.start, geometry.control, geometry.end, 0.5)
-            const path = `M ${geometry.start.x} ${geometry.start.y} Q ${geometry.control.x} ${geometry.control.y} ${geometry.end.x} ${geometry.end.y}`
-            const labelWidth = Math.max(28, edge.relationship.label.length * 7.2 + 16)
-            let arrowPoints = ''
-            if (edge.relationship.kind === 'directed') {
-              const tip = pointAt(geometry.end, geometry.endDir, ARROW_LENGTH)
-              const perp = { x: -geometry.endDir.y, y: geometry.endDir.x }
-              const left = { x: geometry.end.x + perp.x * ARROW_WIDTH, y: geometry.end.y + perp.y * ARROW_WIDTH }
-              const right = { x: geometry.end.x - perp.x * ARROW_WIDTH, y: geometry.end.y - perp.y * ARROW_WIDTH }
-              arrowPoints = `${tip.x},${tip.y} ${left.x},${left.y} ${right.x},${right.y}`
-            }
+            const labelPoint = labelPositions.get(edge.relationship.id)!
             return (
               <g key={edge.relationship.id}>
                 <path
