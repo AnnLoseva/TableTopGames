@@ -8,6 +8,7 @@ import styles from './Modal.module.css'
 type Props = {
   characters: MapCharacter[]
   initialFromId?: string | null
+  initialToId?: string | null
   onClose: () => void
   onCreate: (input: {
     fromCharacterId: string
@@ -19,9 +20,11 @@ type Props = {
   }) => Promise<void>
 }
 
-export default function AddRelationshipModal({ characters, initialFromId, onClose, onCreate }: Props) {
+export default function AddRelationshipModal({ characters, initialFromId, initialToId, onClose, onCreate }: Props) {
   const [fromId, setFromId] = useState(initialFromId || characters[0]?.id || '')
-  const [toId, setToId] = useState(characters.find(c => c.id !== (initialFromId || characters[0]?.id))?.id || '')
+  const [toId, setToId] = useState(
+    initialToId || characters.find(c => c.id !== (initialFromId || characters[0]?.id))?.id || '',
+  )
   const [kind, setKind] = useState<RelationshipKind>('directed')
   const [label, setLabel] = useState('')
   const [description, setDescription] = useState('')

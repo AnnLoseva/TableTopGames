@@ -146,8 +146,11 @@ type Props = {
   onSelectCharacter: (id: string | null) => void
   onSelectRelationship: (id: string | null) => void
   onMoveCharacter: (id: string, x: number, y: number) => void
+  onCreateRelationshipRequest: (fromCharacterId: string, toCharacterId: string) => void
   getImageUrl: (imagePath: string) => string
 }
+
+type ContextMenuState = { characterId: string; screenX: number; screenY: number }
 
 export default function MapCanvas({
   characters,
@@ -158,6 +161,7 @@ export default function MapCanvas({
   onSelectCharacter,
   onSelectRelationship,
   onMoveCharacter,
+  onCreateRelationshipRequest,
   getImageUrl,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -166,6 +170,9 @@ export default function MapCanvas({
   const [isPanning, setIsPanning] = useState(false)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragOverride, setDragOverride] = useState<Point | null>(null)
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
+  const [connectFromId, setConnectFromId] = useState<string | null>(null)
+  const [connectMouseWorld, setConnectMouseWorld] = useState<Point | null>(null)
   const dragState = useRef<{
     kind: 'pan' | 'node'
     startClientX: number
@@ -215,7 +222,54 @@ export default function MapCanvas({
     return () => element.removeEventListener('wheel', handleWheel)
   }, [])
 
+  const cancelConnect = useCallback(() => {
+    setConnectFromId(null)
+    setConnectMouseWorld(null)
+  }, [])
+
+  useEffect(() => {
+    if (!connectFromId && !contextMenu) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        cancelConnect()
+        setContextMenu(null)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [connectFromId, contextMenu, cancelConnect])
+
+  const toWorld = useCallback((clientX: number, clientY: number): Point => {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return { x: 0, y: 0 }
+    return { x: (clientX - rect.left - view.x) / view.scale, y: (clientY - rect.top - view.y) / view.scale }
+  }, [view])
+
+  const handleContainerMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (!connectFromId) return
+    setConnectMouseWorld(toWorld(event.clientX, event.clientY))
+  }, [connectFromId, toWorld])
+
+  const handleNodeContextMenu = useCallback((character: MapCharacter, event: React.MouseEvent) => {
+    if (!isEditor) return
+    event.preventDefault()
+    event.stopPropagation()
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setContextMenu({ characterId: character.id, screenX: event.clientX - rect.left, screenY: event.clientY - rect.top })
+  }, [isEditor])
+
+  const handleStartConnect = useCallback((characterId: string) => {
+    setContextMenu(null)
+    setConnectFromId(characterId)
+  }, [])
+
   const handleBackgroundMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (contextMenu) setContextMenu(null)
+    if (connectFromId) {
+      cancelConnect()
+      return
+    }
     if (event.button !== 0) return
     dragState.current = {
       kind: 'pan',
@@ -248,10 +302,16 @@ export default function MapCanvas({
     }
     window.addEventListener('mousemove', handleMove)
     window.addEventListener('mouseup', handleUp)
-  }, [view, onSelectCharacter, onSelectRelationship])
+  }, [view, onSelectCharacter, onSelectRelationship, contextMenu, connectFromId, cancelConnect])
 
   const handleNodeMouseDown = useCallback((character: MapCharacter, event: React.MouseEvent) => {
     if (event.button !== 0) return
+    if (connectFromId) {
+      event.stopPropagation()
+      if (character.id !== connectFromId) onCreateRelationshipRequest(connectFromId, character.id)
+      cancelConnect()
+      return
+    }
     event.stopPropagation()
     dragState.current = {
       kind: 'node',
@@ -296,7 +356,7 @@ export default function MapCanvas({
     }
     window.addEventListener('mousemove', handleMove)
     window.addEventListener('mouseup', handleUp)
-  }, [view, isEditor, onSelectCharacter, onMoveCharacter])
+  }, [view, isEditor, onSelectCharacter, onMoveCharacter, connectFromId, onCreateRelationshipRequest, cancelConnect])
 
   const positionFor = useCallback((character: MapCharacter): Point => {
     if (draggingId === character.id && dragOverride) return dragOverride
@@ -330,12 +390,33 @@ export default function MapCanvas({
     height: render.labelHeight,
   }))), [edgeRenders])
 
+  const connectFromCharacter = connectFromId ? characters.find(character => character.id === connectFromId) : null
+
   return (
     <div
       ref={containerRef}
       className={`${styles.canvas} ${isPanning ? styles.panning : ''}`}
       onMouseDown={handleBackgroundMouseDown}
+      onMouseMove={handleContainerMouseMove}
     >
+      {connectFromCharacter && (
+        <p className={styles.connectHint}>Кликните на персонажа, к которому ведёт связь. Esc — отмена.</p>
+      )}
+      {contextMenu && (
+        <div
+          className={styles.contextMenu}
+          style={{ left: contextMenu.screenX, top: contextMenu.screenY }}
+          onMouseDown={event => event.stopPropagation()}
+        >
+          <button
+            type="button"
+            className={styles.contextMenuButton}
+            onClick={() => handleStartConnect(contextMenu.characterId)}
+          >
+            Создать связь
+          </button>
+        </div>
+      )}
       <svg className={styles.svg}>
         <g transform={`translate(${view.x} ${view.y}) scale(${view.scale})`}>
           {edgeRenders.map(({ edge, path, color, labelWidth, arrowPoints }) => {
@@ -381,6 +462,16 @@ export default function MapCanvas({
             )
           })}
 
+          {connectFromCharacter && connectMouseWorld && (
+            <line
+              className={styles.connectLine}
+              x1={positionFor(connectFromCharacter).x}
+              y1={positionFor(connectFromCharacter).y}
+              x2={connectMouseWorld.x}
+              y2={connectMouseWorld.y}
+            />
+          )}
+
           {characters.map(character => {
             const position = positionFor(character)
             const imageUrl = character.imagePath ? getImageUrl(character.imagePath) : null
@@ -392,6 +483,7 @@ export default function MapCanvas({
                 transform={`translate(${position.x} ${position.y})`}
                 className={`${styles.nodeGroup} ${isSelected ? styles.selected : ''}`}
                 onMouseDown={event => handleNodeMouseDown(character, event)}
+                onContextMenu={event => handleNodeContextMenu(character, event)}
               >
                 <defs>
                   <clipPath id={clipId}>

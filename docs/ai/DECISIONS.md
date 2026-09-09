@@ -1,5 +1,49 @@
 # Decisions
 
+## 2026-09-09 — `/characters_map`: overlapping edge labels + right-click "drag a connection" relationship creation
+
+**Area:** `src/features/characters_map/components/MapCanvas.tsx`, `AddRelationshipModal.tsx`, `routes/CharactersMapRoute.tsx`
+
+**Decision:** Two `MapCanvas` UX fixes/additions:
+1. Edge labels that started out overlapping (several relationships converging
+   on one character, e.g. "Сир-Дитя" appearing at nearly the same spot for
+   multiple different edges) are now separated by `resolveLabelOverlaps` — a
+   simple iterative pairwise AABB-separation pass over label bounding boxes,
+   run after the base per-edge label position (curve midpoint) is computed.
+   Only label positions move; the underlying curve/arrow geometry is
+   untouched, so a nudged label can sit slightly off its own curve — accepted
+   tradeoff for readability.
+2. Editors can now right-click a character portrait → "Создать связь" → a
+   dashed rubber-band line follows the cursor → clicking another character
+   completes the connection and opens `AddRelationshipModal` pre-filled with
+   that from/to pair (Escape or a background click cancels). This is in
+   addition to, not a replacement for, the existing "+ Связь" button (which
+   still opens the same modal with manual from/to dropdowns).
+
+Verified the arrow-direction concern raised alongside this request was
+already correct (not a bug): cross-checked all 7 live directed relationships
+programmatically (arrow-tip proximity to each row's `to_character_id` node) —
+every arrowhead lands on the intended target. No code change was needed
+there beyond the earlier 2026-09-09 arrow-size fix.
+
+**Reason:** User request: labels overlapping into unreadable stacks near
+high-degree nodes, screenshot attached; plus a faster relationship-creation
+flow than picking both characters from dropdowns.
+
+**Consequences:** `MapCanvas` now owns local UI-only state for the connect
+gesture and the context menu (`connectFromId`, `connectMouseWorld`,
+`contextMenu`) — not persisted, not lifted to the route beyond the single
+`onCreateRelationshipRequest(fromId, toId)` callback fired on completion.
+Any future canvas interaction (multi-select, marquee, etc.) must coordinate
+with this gesture's mousedown/keydown interception order (connect-mode is
+checked first in both `handleNodeMouseDown` and `handleBackgroundMouseDown`).
+
+**Affected files:** `src/features/characters_map/components/MapCanvas.tsx`,
+`src/features/characters_map/components/AddRelationshipModal.tsx`,
+`src/features/characters_map/routes/CharactersMapRoute.tsx`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: VTM-styled detailed sheet (`sheet` jsonb) + clearer arrowheads
 
 **Area:** `src/features/characters_map/*`, Supabase schema

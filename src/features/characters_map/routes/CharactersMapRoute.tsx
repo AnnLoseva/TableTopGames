@@ -50,7 +50,7 @@ export default function CharactersMapRoute() {
   const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null)
   const [selectedRelationshipId, setSelectedRelationshipId] = useState<string | null>(null)
   const [showAddCharacter, setShowAddCharacter] = useState(false)
-  const [showAddRelationship, setShowAddRelationship] = useState(false)
+  const [relationshipDraft, setRelationshipDraft] = useState<{ fromId: string | null; toId: string | null } | null>(null)
   const [didReadInitialParams, setDidReadInitialParams] = useState(false)
 
   const isEditor = authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID
@@ -182,6 +182,10 @@ export default function CharactersMapRoute() {
     setRelationships(previous => previous.map(relationship => (relationship.id === id ? updated : relationship)))
   }, [client])
 
+  const handleConnectRequest = useCallback((fromId: string, toId: string) => {
+    setRelationshipDraft({ fromId, toId })
+  }, [])
+
   const handleDeleteRelationship = useCallback(async (id: string) => {
     await deleteRelationship(client, id)
     setRelationships(previous => previous.filter(relationship => relationship.id !== id))
@@ -214,7 +218,7 @@ export default function CharactersMapRoute() {
             <button
               type="button"
               className={styles.addButton}
-              onClick={() => setShowAddRelationship(true)}
+              onClick={() => setRelationshipDraft({ fromId: selectedCharacterId, toId: null })}
               disabled={characters.length < 2}
             >
               + Связь
@@ -245,12 +249,16 @@ export default function CharactersMapRoute() {
           onSelectCharacter={selectCharacter}
           onSelectRelationship={selectRelationship}
           onMoveCharacter={handleMoveCharacter}
+          onCreateRelationshipRequest={handleConnectRequest}
           getImageUrl={getImageUrl}
         />
       )}
 
       {!isLoading && characters.length > 0 && (
-        <p className={styles.hint}>Колесо мыши — масштаб, перетаскивание фона — панорама{isEditor ? ', перетаскивание персонажа — перемещение' : ''}.</p>
+        <p className={styles.hint}>
+          Колесо мыши — масштаб, перетаскивание фона — панорама
+          {isEditor ? ', перетаскивание персонажа — перемещение, правая кнопка мыши на персонаже — создать связь' : ''}.
+        </p>
       )}
 
       {selectedCharacter && (
@@ -288,11 +296,12 @@ export default function CharactersMapRoute() {
         />
       )}
 
-      {showAddRelationship && (
+      {relationshipDraft && (
         <AddRelationshipModal
           characters={characters}
-          initialFromId={selectedCharacterId}
-          onClose={() => setShowAddRelationship(false)}
+          initialFromId={relationshipDraft.fromId}
+          initialToId={relationshipDraft.toId}
+          onClose={() => setRelationshipDraft(null)}
           onCreate={handleCreateRelationship}
         />
       )}
