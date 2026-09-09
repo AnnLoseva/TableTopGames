@@ -1,5 +1,55 @@
 # Decisions
 
+## 2026-09-09 — `/characters_map`: new universal domain, owner-write/public-read, non-symmetric relationship edges
+
+**Area:** New domain (`src/features/characters_map/*`), Supabase schema
+
+**Decision:** Added `/characters_map`, a pannable/zoomable map of characters
+(image, name, description, canvas position) connected by relationship edges.
+Modeled as its own domain in `src/features/characters_map/*` — unrelated to
+VTM/Pathfinder/D&D, shares only the Supabase project (same shape as `/votes`
+and `/dnd/journal`; see `FILE-MAP.md`). Access model mirrors `/dnd/journal`:
+public read, single owner-write, enforced by RLS against the same owner
+`auth_user_id` (`44153f98-aaf2-4935-b7b2-45fe3155edc6`, "Anna" — the shared
+TableTopGames account already used by the journal). Unlike the journal there
+is only one writer (no offline device sync), so this uses plain hard deletes
+instead of soft-delete tombstones.
+
+Schema: `characters_map_characters` (name, description, `image_path` into the
+public `characters-map-images` Storage bucket, `position_x`/`position_y` for
+the canvas layout) and `characters_map_relationships` (`from_character_id`,
+`to_character_id`, `kind` — `'directed'` renders one arrow A→B, `'mutual'`
+renders a plain undirected line — `label`, `description`, `color`,
+`sort_order`). Relationships are intentionally **not** symmetric: A can carry
+a `directed` "Любит" edge pointing at B while B carries a different
+`directed` "Боится" edge pointing back at A, and any pair may carry several
+edges at once (e.g. a `mutual` "Команда" edge alongside the two one-way
+ones) — `MapCanvas.tsx` groups edges by unordered pair and offsets each
+into its own parallel curve so they render as distinct, clickable arrows
+instead of overlapping.
+
+**Reason:** User request — a character-relationship map where clicking a
+portrait opens that character's page, clicking an arrow opens that
+relationship's page, and relationships between the same two characters can
+differ by direction and stack (including one shared/mutual label like "team,
+classmates, married").
+
+**Consequences:** Do not rename `characters_map_characters` /
+`characters_map_relationships` / the `characters-map-images` bucket without
+updating `src/features/characters_map/constants.ts`,
+`src/features/characters_map/supabase/characters_map.sql` (checked-in source
+of truth for the applied migration) and this entry. The owner id is
+duplicated in the SQL RLS literals and
+`CHARACTERS_MAP_OWNER_AUTH_USER_ID` — both must match or edit UI/actual write
+permission disagree (same footgun as `DND_JOURNAL_OWNER_AUTH_USER_ID`). Schema
+applied live via Supabase MCP `apply_migration` (migration name
+`characters_map_schema`); no `get_advisors` regressions introduced.
+
+**Affected files:** `src/features/characters_map/**`,
+`src/app/characters_map/page.tsx`
+
+**Status:** active
+
 ## 2026-09-06 — `/votes` background-adaptive accent color needs a same-origin image proxy (SSRF-guarded)
 
 **Area:** Votes domain / new API route

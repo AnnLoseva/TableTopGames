@@ -70,6 +70,24 @@ code. See `docs/ai/DECISIONS.md` (2026-09-06).
 | `src/features/votes/api/pollsApi.ts` | Supabase CRUD for polls/responses | medium | supabase-edit-protocol | Anonymous insert/select only, no update/delete |
 | `src/features/votes/supabase/votes.sql` | `votes_polls`/`votes_responses` schema, RLS, allocation check constraint | **critical** | supabase-edit-protocol | **Applied** live; fully open RLS, no owner concept |
 
+## Characters map domain (`src/features/characters_map/*`)
+
+Universal character-relationship map at `/characters_map`: click a portrait for
+that character's page, click an arrow for that relationship's page. Not tied to
+any tabletop game; do not import from or into VTM/Pathfinder/D&D code. Owner
+account writes ("Anna"), public read — same shape as `/dnd/journal`. See
+`docs/ai/DECISIONS.md` (2026-09-09).
+
+| Path | Role | Risk | Edit protocol | Notes |
+|---|---|---|---|---|
+| `src/app/characters_map/page.tsx` | `/characters_map` route | low | before-any-change | Thin wrapper, wraps route in `Suspense` for `useSearchParams` |
+| `src/features/characters_map/routes/CharactersMapRoute.tsx` | Data loading, `isEditor` gate, selection/URL sync, all mutation handlers | medium | before-any-change | `isEditor` mirrors `DndJournalRoute`'s pattern against `CHARACTERS_MAP_OWNER_AUTH_USER_ID` |
+| `src/features/characters_map/components/MapCanvas.tsx` | Pannable/zoomable SVG canvas: character nodes, grouped/offset relationship curves, drag-to-reposition | medium | before-any-change | Groups edges by unordered character pair so multiple/opposite-direction edges render as separate curves |
+| `src/features/characters_map/components/{CharacterPanel,RelationshipPanel,AddCharacterModal,AddRelationshipModal}.tsx` | View/edit UI for a selected node/edge and creation forms | low | before-any-change | Edit affordances hidden unless `isEditor` |
+| `src/features/characters_map/api/{charactersApi,relationshipsApi}.ts` | Supabase CRUD + portrait upload | high | supabase-edit-protocol | Hard delete (single writer, no offline sync) |
+| `src/features/characters_map/{types,constants,mappers,supabase}.ts` | Row↔app contract, table/bucket names, owner auth id | high | supabase-edit-protocol | `CHARACTERS_MAP_OWNER_AUTH_USER_ID` must match the RLS literal in the SQL below |
+| `src/features/characters_map/supabase/characters_map.sql` | `characters_map_characters`/`characters_map_relationships` schema, RLS, `characters-map-images` bucket | **critical** | supabase-edit-protocol | **Applied** live; public reads, owner-only writes, `kind in ('directed','mutual')` |
+
 ## Home module (`src/games/vampires/modules/home/*`)
 | Path | Role | Risk | Edit protocol | Notes |
 |---|---|---|---|---|

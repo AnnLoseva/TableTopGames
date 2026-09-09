@@ -21,7 +21,14 @@ reads/writes — see "Flow: D&D journal" below. `/votes` (`src/features/votes/`)
 is a fourth isolated domain, unrelated to any tabletop game: fully anonymous
 percentage-allocation polls at custom `/votes/<slug>` links, backed by its own
 `votes_polls`/`votes_responses` tables in the same Supabase project. See
-`docs/ai/DECISIONS.md` (2026-09-06).
+`docs/ai/DECISIONS.md` (2026-09-06). `/characters_map`
+(`src/features/characters_map/`) is a fifth isolated domain, also unrelated to
+any tabletop game: a pan/zoom map of characters and non-symmetric relationship
+edges between them (a pair can carry several directed and/or mutual edges at
+once). Owner-write/public-read like `/dnd/journal`, backed by its own
+`characters_map_characters`/`characters_map_relationships` tables and a public
+`characters-map-images` bucket in the same Supabase project. See
+`docs/ai/DECISIONS.md` (2026-09-09).
 
 ## Routes
 | Route | Component | Layer |
@@ -38,6 +45,7 @@ percentage-allocation polls at custom `/votes/<slug>` links, backed by its own
 | `/dnd/journal` | `src/games/dnd/journal/DndJournalRoute` | React + Supabase, shared with the RenaCompanion iPad app |
 | `/votes` | `src/features/votes/routes/CreatePollRoute` | React + Supabase, anonymous, unrelated to tabletop games |
 | `/votes/[slug]` | `src/features/votes/routes/PollRoute` | React + Supabase, anonymous, unrelated to tabletop games |
+| `/characters_map` | `src/features/characters_map/routes/CharactersMapRoute` | React + Supabase, owner-write/public-read, unrelated to tabletop games |
 
 VTM route files live in `src/app/(vampires)/vampires/` and import their entries directly from
 `src/games/vampires/modules/*`. Parentheses create an App Router route group, so the

@@ -4,6 +4,14 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
+- **Characters map, new domain (2026-09-09)** — `/characters_map`
+  (`src/features/characters_map/*`) is a new universal, game-agnostic
+  character-relationship map: pan/zoom SVG canvas, click a portrait for that
+  character's page, click an arrow for that relationship's page. Relationships
+  are directed and non-symmetric (A→B and B→A can carry different labels) and
+  a pair can carry several edges at once, including one `mutual` (undirected)
+  edge. Owner-write/public-read against the same shared TableTopGames account
+  used by `/dnd/journal`; schema applied live. See `DECISIONS.md`.
 - **D&D journal, new domain (2026-07-31)** — `/dnd/journal` (`src/games/dnd/journal/*`)
   is a new isolated game domain, live against Supabase (`dnd_journal_pages`,
   `dnd_journal_folders`, `dnd_journal_images`, public `dnd-journal-images`
@@ -87,6 +95,10 @@
   for layout/deep-link/registry/privacy unit checks.
 
 ## What is stable enough
+- `/characters_map` renders, reads/writes through RLS as expected in manual
+  testing; the owner has not yet done a live edit pass with her own login
+  (add/edit/delete character and relationship, image upload) — only verified
+  via direct SQL fixtures + anon read, since agents don't have her credentials.
 - Routes `/`, `/vampires`, `/vampires/character-sheet`, `/vampires/table`,
   `/vampires/journal`, `/vampires/reference`, `/vampires/library/chronicles`,
   `/vampires/master`, `/pathfinder2/sheet` are active. VTM wrappers live in
@@ -128,6 +140,9 @@ _(none recorded — add temporary bugs here only while being worked, then remove
 - D&D journal: have the owner log in herself once to confirm the real edit
   experience plus folder create/rename/delete and an app↔site folder
   round-trip with production data (agents can't — no owner credentials).
+- Characters map: have the owner log in herself once and confirm the real
+  edit experience (add/edit/delete character, portrait upload, add/edit/delete
+  relationship, drag-to-reposition) — same credential limitation as above.
 
 ## Do not touch casually
 - `public/vampires/main.js`, `public/vampires/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.
