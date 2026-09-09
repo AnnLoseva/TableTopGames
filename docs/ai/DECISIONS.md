@@ -1,5 +1,64 @@
 # Decisions
 
+## 2026-09-10 — `/characters_map`: plain-text export + touch/tablet support (Pointer Events)
+
+**Area:** `src/features/characters_map/{export.ts,components/ExportModal*,routes/CharactersMapRoute.tsx,components/MapCanvas.tsx}`
+
+**Decision:** Two additions:
+
+1. **Text export.** `exportCharactersMapToText()` (`export.ts`) renders every
+   character (name + concept/clan/generation/predator/sire + description) and
+   every relationship (`A → B: label` for directed, `A ↔ B: label` for mutual,
+   with an explicit legend up front) as plain text, meant to be pasted into a
+   chat with an AI that can't see the canvas. Surfaced via a new "Экспорт"
+   button in the top bar — visible to **everyone**, not gated by `isEditor`,
+   since it's a read-only convenience — opening `ExportModal` (copy to
+   clipboard with an honest success/failure status, since `execCommand('copy')`
+   can silently return `false`; download as `.txt`).
+2. **Touch/tablet support.** The canvas previously only wired up mouse events
+   (`onMouseDown` + `window` `mousemove`/`mouseup`), despite `.canvas` already
+   declaring `touch-action: none` — so on a touchscreen the browser's own pan/
+   zoom was suppressed and nothing replaced it; the map was inert (user
+   report: tried it on a tablet, "nothing happened"). Fixed in `MapCanvas.tsx`
+   by switching every interaction to Pointer Events (`onPointerDown` +
+   `pointermove`/`pointerup`/`pointercancel`), which mouse, touch and pen all
+   dispatch identically:
+   - Single-finger drag now pans/moves nodes exactly like a mouse drag did.
+   - Two-finger pinch-to-zoom is a **new** capture-phase listener pair
+     (registered with `{ capture: true }` so it always sees a touch
+     pointerdown even on a node, before that node's bubble-phase handler can
+     `stopPropagation()`); the instant a second touch appears it cancels any
+     in-progress single-pointer pan/drag so the two gestures never fight.
+   - Touch has no right-click, so a ~500ms long-press on a node (cancelled by
+     movement past the drag threshold, exactly like a click-vs-drag
+     distinction) opens the same "Создать связь" context menu a desktop
+     right-click does.
+   Verified headlessly by dispatching synthetic `PointerEvent`s with
+   `pointerType: 'touch'` directly at the DOM (screenshots of the emulated
+   mobile viewport proved unreliable in this environment) — confirmed
+   single-finger pan, two-finger pinch in both directions (with `MIN_SCALE`/
+   `MAX_SCALE` clamping), long-press opening the menu, tap-to-complete a
+   pending connection, and a short tap still opening the character sheet
+   instead of the menu.
+
+**Reason:** User requests: "add a button to export in text format... so an AI
+that can't see the picture can understand who's connected to whom", and "add
+tablet controls — I tried opening it on a tablet and nothing worked at all."
+
+**Consequences:** Any new canvas gesture must keep checking
+`touchPointsRef.current.size >= 2` before starting a single-pointer
+interaction (pan or node-drag) — that guard is what lets the pinch tracker
+take over cleanly when a second finger lands. `ExportModal`'s copy button
+must keep checking `execCommand`'s boolean return (and
+`clipboard.writeText`'s rejection) rather than assuming success, per the bug
+this surfaced during testing.
+
+**Affected files:** `src/features/characters_map/export.ts`,
+`src/features/characters_map/components/{ExportModal.tsx,ExportModal.module.css,MapCanvas.tsx,MapCanvas.module.css}`,
+`src/features/characters_map/routes/{CharactersMapRoute.tsx,CharactersMapRoute.module.css}`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: explicit edit/view mode toggle for the owner
 
 **Area:** `src/features/characters_map/routes/CharactersMapRoute.tsx`,

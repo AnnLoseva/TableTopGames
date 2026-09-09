@@ -19,11 +19,13 @@ import {
   updateRelationship,
 } from '../api/relationshipsApi'
 import { CHARACTERS_MAP_OWNER_AUTH_USER_ID, createDefaultCharacterSheet } from '../constants'
+import { exportCharactersMapToText } from '../export'
 import { createCharactersMapClient } from '../supabase'
 import type { CharacterSheet, MapCharacter, MapRelationship, RelationshipKind } from '../types'
 import AddCharacterModal from '../components/AddCharacterModal'
 import AddRelationshipModal from '../components/AddRelationshipModal'
 import CharacterPanel from '../components/CharacterPanel'
+import ExportModal from '../components/ExportModal'
 import MapCanvas from '../components/MapCanvas'
 import RelationshipPanel from '../components/RelationshipPanel'
 import styles from './CharactersMapRoute.module.css'
@@ -55,6 +57,7 @@ export default function CharactersMapRoute() {
   const [relationshipDraft, setRelationshipDraft] = useState<{ fromId: string | null; toId: string | null } | null>(null)
   const [didReadInitialParams, setDidReadInitialParams] = useState(false)
   const [editModeOn, setEditModeOn] = useState(true)
+  const [showExport, setShowExport] = useState(false)
 
   const isOwner = authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID
   const isEditor = isOwner && editModeOn
@@ -217,6 +220,7 @@ export default function CharactersMapRoute() {
   const relationshipTo = selectedRelationship
     ? characters.find(character => character.id === selectedRelationship.toCharacterId)
     : null
+  const exportText = useMemo(() => exportCharactersMapToText(characters, relationships), [characters, relationships])
 
   return (
     <div className={styles.page}>
@@ -227,28 +231,35 @@ export default function CharactersMapRoute() {
             {isEditor ? 'Режим редактирования' : !isAccountReady ? 'Проверяю аккаунт…' : 'Режим просмотра'}
           </p>
         </div>
-        {isOwner && (
-          <div className={styles.actions}>
-            <button type="button" className={styles.addButton} onClick={toggleEditMode}>
-              {isEditor ? 'Режим просмотра' : 'Режим редактирования'}
+        <div className={styles.actions}>
+          {characters.length > 0 && (
+            <button type="button" className={styles.addButton} onClick={() => setShowExport(true)}>
+              Экспорт
             </button>
-            {isEditor && (
-              <>
-                <button type="button" className={styles.addButton} onClick={() => setShowAddCharacter(true)}>
-                  + Персонаж
-                </button>
-                <button
-                  type="button"
-                  className={styles.addButton}
-                  onClick={() => setRelationshipDraft({ fromId: selectedCharacterId, toId: null })}
-                  disabled={characters.length < 2}
-                >
-                  + Связь
-                </button>
-              </>
-            )}
-          </div>
-        )}
+          )}
+          {isOwner && (
+            <>
+              <button type="button" className={styles.addButton} onClick={toggleEditMode}>
+                {isEditor ? 'Режим просмотра' : 'Режим редактирования'}
+              </button>
+              {isEditor && (
+                <>
+                  <button type="button" className={styles.addButton} onClick={() => setShowAddCharacter(true)}>
+                    + Персонаж
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.addButton}
+                    onClick={() => setRelationshipDraft({ fromId: selectedCharacterId, toId: null })}
+                    disabled={characters.length < 2}
+                  >
+                    + Связь
+                  </button>
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {actionError && <div className={styles.errorBanner}>{actionError}</div>}
@@ -280,8 +291,10 @@ export default function CharactersMapRoute() {
 
       {!isLoading && characters.length > 0 && (
         <p className={styles.hint}>
-          Колесо мыши — масштаб, перетаскивание фона — панорама
-          {isEditor ? ', перетаскивание персонажа — перемещение, правая кнопка мыши на персонаже — создать связь' : ''}.
+          Колесо мыши или щипок двумя пальцами — масштаб, перетаскивание фона — панорама
+          {isEditor
+            ? ', перетаскивание персонажа — перемещение, правая кнопка мыши (или долгое нажатие) на персонаже — создать связь'
+            : ''}.
         </p>
       )}
 
@@ -329,6 +342,8 @@ export default function CharactersMapRoute() {
           onCreate={handleCreateRelationship}
         />
       )}
+
+      {showExport && <ExportModal text={exportText} onClose={() => setShowExport(false)} />}
     </div>
   )
 }

@@ -11,6 +11,15 @@ const EDGE_OFFSET_STEP = 34
 const CLICK_DRAG_THRESHOLD = 5
 const MIN_SCALE = 0.25
 const MAX_SCALE = 2.5
+const LONG_PRESS_MS = 500
+
+function distanceBetween(a: Point, b: Point): number {
+  return Math.hypot(a.x - b.x, a.y - b.y)
+}
+
+function midpointOf(a: Point, b: Point): Point {
+  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+}
 
 type View = { x: number; y: number; scale: number }
 
@@ -223,6 +232,13 @@ export default function MapCanvas({
     nodeStartY?: number
     moved: boolean
   } | null>(null)
+  const touchPointsRef = useRef<Map<number, Point>>(new Map())
+  const pinchStateRef = useRef<{ startDistance: number; startMid: Point; startView: View } | null>(null)
+  const viewRef = useRef(view)
+
+  useEffect(() => {
+    viewRef.current = view
+  }, [view])
 
   const edges = useMemo(() => buildEdges(characters, relationships), [characters, relationships])
 
@@ -261,6 +277,74 @@ export default function MapCanvas({
     return () => element.removeEventListener('wheel', handleWheel)
   }, [])
 
+  /**
+   * Two-finger pinch-to-zoom for touch devices. Registered in the CAPTURE phase so
+   * it always sees every touch pointerdown/move/up on the canvas — including ones
+   * landing on a node — before any bubble-phase handler (node drag, background pan)
+   * gets a chance to call stopPropagation. The moment a second touch appears, any
+   * in-progress single-pointer pan/drag is cancelled so the two gestures never
+   * fight over the same view state; `handleBackgroundPointerDown` and
+   * `handleNodePointerDown` also refuse to start a new drag while 2+ touches are
+   * active, since by then this capture-phase listener has already run for that
+   * same pointerdown (capture always fires before bubble).
+   */
+  useEffect(() => {
+    const element = containerRef.current
+    if (!element) return
+    const points = touchPointsRef.current
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch') return
+      points.set(event.pointerId, { x: event.clientX, y: event.clientY })
+      if (points.size === 2) {
+        dragState.current = null
+        setIsPanning(false)
+        setDraggingId(null)
+        setDragOverride(null)
+        const [p1, p2] = Array.from(points.values())
+        pinchStateRef.current = {
+          startDistance: distanceBetween(p1, p2) || 1,
+          startMid: midpointOf(p1, p2),
+          startView: viewRef.current,
+        }
+      }
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch' || !points.has(event.pointerId)) return
+      points.set(event.pointerId, { x: event.clientX, y: event.clientY })
+      const pinch = pinchStateRef.current
+      if (points.size !== 2 || !pinch) return
+      const [p1, p2] = Array.from(points.values())
+      const distance = distanceBetween(p1, p2)
+      const mid = midpointOf(p1, p2)
+      const rect = element.getBoundingClientRect()
+      const nextScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, pinch.startView.scale * (distance / pinch.startDistance)))
+      const startMidLocal = { x: pinch.startMid.x - rect.left, y: pinch.startMid.y - rect.top }
+      const worldX = (startMidLocal.x - pinch.startView.x) / pinch.startView.scale
+      const worldY = (startMidLocal.y - pinch.startView.y) / pinch.startView.scale
+      const nowLocal = { x: mid.x - rect.left, y: mid.y - rect.top }
+      setView({ scale: nextScale, x: nowLocal.x - worldX * nextScale, y: nowLocal.y - worldY * nextScale })
+    }
+
+    const handlePointerUp = (event: PointerEvent) => {
+      if (event.pointerType !== 'touch') return
+      points.delete(event.pointerId)
+      if (points.size < 2) pinchStateRef.current = null
+    }
+
+    element.addEventListener('pointerdown', handlePointerDown, { capture: true })
+    element.addEventListener('pointermove', handlePointerMove, { capture: true })
+    element.addEventListener('pointerup', handlePointerUp, { capture: true })
+    element.addEventListener('pointercancel', handlePointerUp, { capture: true })
+    return () => {
+      element.removeEventListener('pointerdown', handlePointerDown, { capture: true })
+      element.removeEventListener('pointermove', handlePointerMove, { capture: true })
+      element.removeEventListener('pointerup', handlePointerUp, { capture: true })
+      element.removeEventListener('pointercancel', handlePointerUp, { capture: true })
+    }
+  }, [])
+
   const cancelConnect = useCallback(() => {
     setConnectFromId(null)
     setConnectMouseWorld(null)
@@ -284,7 +368,7 @@ export default function MapCanvas({
     return { x: (clientX - rect.left - view.x) / view.scale, y: (clientY - rect.top - view.y) / view.scale }
   }, [view])
 
-  const handleContainerMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+  const handleContainerPointerMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     if (!connectFromId) return
     setConnectMouseWorld(toWorld(event.clientX, event.clientY))
   }, [connectFromId, toWorld])
@@ -303,13 +387,17 @@ export default function MapCanvas({
     setConnectFromId(characterId)
   }, [])
 
-  const handleBackgroundMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+  const handleBackgroundPointerDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     if (contextMenu) setContextMenu(null)
     if (connectFromId) {
       cancelConnect()
       return
     }
     if (event.button !== 0) return
+    // A second touch landing on empty background mid-pinch must not start its own
+    // pan — the capture-phase pinch tracker (registered above) already owns the
+    // view for as long as 2+ touches are down, and always runs before this.
+    if (touchPointsRef.current.size >= 2) return
     dragState.current = {
       kind: 'pan',
       startClientX: event.clientX,
@@ -320,7 +408,7 @@ export default function MapCanvas({
     }
     setIsPanning(true)
 
-    const handleMove = (moveEvent: MouseEvent) => {
+    const handleMove = (moveEvent: PointerEvent) => {
       const state = dragState.current
       if (!state) return
       const dx = moveEvent.clientX - state.startClientX
@@ -328,22 +416,24 @@ export default function MapCanvas({
       if (Math.hypot(dx, dy) > CLICK_DRAG_THRESHOLD) state.moved = true
       setView(previous => ({ ...previous, x: state.startViewX + dx, y: state.startViewY + dy }))
     }
-    const handleUp = (upEvent: MouseEvent) => {
+    const handleUp = (upEvent: PointerEvent) => {
       const state = dragState.current
       dragState.current = null
       setIsPanning(false)
-      window.removeEventListener('mousemove', handleMove)
-      window.removeEventListener('mouseup', handleUp)
+      window.removeEventListener('pointermove', handleMove)
+      window.removeEventListener('pointerup', handleUp)
+      window.removeEventListener('pointercancel', handleUp)
       if (state && !state.moved && upEvent.target === containerRef.current) {
         onSelectCharacter(null)
         onSelectRelationship(null)
       }
     }
-    window.addEventListener('mousemove', handleMove)
-    window.addEventListener('mouseup', handleUp)
+    window.addEventListener('pointermove', handleMove)
+    window.addEventListener('pointerup', handleUp)
+    window.addEventListener('pointercancel', handleUp)
   }, [view, onSelectCharacter, onSelectRelationship, contextMenu, connectFromId, cancelConnect])
 
-  const handleNodeMouseDown = useCallback((character: MapCharacter, event: React.MouseEvent) => {
+  const handleNodePointerDown = useCallback((character: MapCharacter, event: React.PointerEvent) => {
     if (event.button !== 0) return
     if (connectFromId) {
       event.stopPropagation()
@@ -352,10 +442,13 @@ export default function MapCanvas({
       return
     }
     event.stopPropagation()
+    if (touchPointsRef.current.size >= 2) return
+    const clientX = event.clientX
+    const clientY = event.clientY
     dragState.current = {
       kind: 'node',
-      startClientX: event.clientX,
-      startClientY: event.clientY,
+      startClientX: clientX,
+      startClientY: clientY,
       startViewX: view.x,
       startViewY: view.y,
       nodeId: character.id,
@@ -364,22 +457,54 @@ export default function MapCanvas({
       moved: false,
     }
 
-    const handleMove = (moveEvent: MouseEvent) => {
+    // Touch has no right-click, so a long press on a node is its "create a
+    // relationship from here" gesture instead — opens the same context menu a
+    // desktop right-click would. Any movement past the drag threshold, or the
+    // finger lifting first, cancels the timer below and falls through to the
+    // ordinary tap-to-select / drag-to-move handling.
+    let longPressTimer: number | null = null
+    if (event.pointerType === 'touch' && isEditor) {
+      longPressTimer = window.setTimeout(() => {
+        longPressTimer = null
+        const state = dragState.current
+        if (!state || state.moved) return
+        dragState.current = null
+        window.removeEventListener('pointermove', handleMove)
+        window.removeEventListener('pointerup', handleUp)
+        window.removeEventListener('pointercancel', handleUp)
+        const rect = containerRef.current?.getBoundingClientRect()
+        if (!rect) return
+        setContextMenu({ characterId: character.id, screenX: clientX - rect.left, screenY: clientY - rect.top })
+      }, LONG_PRESS_MS)
+    }
+
+    const handleMove = (moveEvent: PointerEvent) => {
       const state = dragState.current
       if (!state || state.nodeId === undefined) return
       const dx = (moveEvent.clientX - state.startClientX) / view.scale
       const dy = (moveEvent.clientY - state.startClientY) / view.scale
-      if (Math.hypot(dx, dy) > CLICK_DRAG_THRESHOLD) state.moved = true
+      if (Math.hypot(dx, dy) > CLICK_DRAG_THRESHOLD) {
+        state.moved = true
+        if (longPressTimer !== null) {
+          window.clearTimeout(longPressTimer)
+          longPressTimer = null
+        }
+      }
       if (isEditor && state.moved) {
         setDraggingId(state.nodeId)
         setDragOverride({ x: (state.nodeStartX ?? 0) + dx, y: (state.nodeStartY ?? 0) + dy })
       }
     }
     const handleUp = () => {
+      if (longPressTimer !== null) {
+        window.clearTimeout(longPressTimer)
+        longPressTimer = null
+      }
       const state = dragState.current
       dragState.current = null
-      window.removeEventListener('mousemove', handleMove)
-      window.removeEventListener('mouseup', handleUp)
+      window.removeEventListener('pointermove', handleMove)
+      window.removeEventListener('pointerup', handleUp)
+      window.removeEventListener('pointercancel', handleUp)
       setDraggingId(null)
       if (!state || state.nodeId === undefined) return
       if (!state.moved) {
@@ -393,8 +518,9 @@ export default function MapCanvas({
         })
       }
     }
-    window.addEventListener('mousemove', handleMove)
-    window.addEventListener('mouseup', handleUp)
+    window.addEventListener('pointermove', handleMove)
+    window.addEventListener('pointerup', handleUp)
+    window.addEventListener('pointercancel', handleUp)
   }, [view, isEditor, onSelectCharacter, onMoveCharacter, connectFromId, onCreateRelationshipRequest, cancelConnect])
 
   const positionFor = useCallback((character: MapCharacter): Point => {
@@ -443,17 +569,17 @@ export default function MapCanvas({
     <div
       ref={containerRef}
       className={`${styles.canvas} ${isPanning ? styles.panning : ''}`}
-      onMouseDown={handleBackgroundMouseDown}
-      onMouseMove={handleContainerMouseMove}
+      onPointerDown={handleBackgroundPointerDown}
+      onPointerMove={handleContainerPointerMove}
     >
       {connectFromCharacter && (
-        <p className={styles.connectHint}>Кликните на персонажа, к которому ведёт связь. Esc — отмена.</p>
+        <p className={styles.connectHint}>Нажмите на персонажа, к которому ведёт связь. Esc — отмена.</p>
       )}
       {contextMenu && (
         <div
           className={styles.contextMenu}
           style={{ left: contextMenu.screenX, top: contextMenu.screenY }}
-          onMouseDown={event => event.stopPropagation()}
+          onPointerDown={event => event.stopPropagation()}
         >
           <button
             type="button"
@@ -540,7 +666,7 @@ export default function MapCanvas({
                 key={character.id}
                 transform={`translate(${position.x} ${position.y})`}
                 className={`${styles.nodeGroup} ${isSelected ? styles.selected : ''}`}
-                onMouseDown={event => handleNodeMouseDown(character, event)}
+                onPointerDown={event => handleNodePointerDown(character, event)}
                 onContextMenu={event => handleNodeContextMenu(character, event)}
               >
                 <defs>
