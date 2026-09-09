@@ -1,5 +1,38 @@
 # Decisions
 
+## 2026-09-09 — `/characters_map`: explicit edit/view mode toggle for the owner
+
+**Area:** `src/features/characters_map/routes/CharactersMapRoute.tsx`,
+`components/{CharacterPanel,RelationshipPanel}.tsx`
+
+**Decision:** `isEditor` (the flag gating every edit affordance) is now
+`isOwner && editModeOn` instead of just `isOwner`. `isOwner` is still the real
+permission check (`authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID`, enforced
+server-side by RLS regardless); `editModeOn` is a local UI preference, default
+`true`, persisted in `localStorage` (`characters-map-edit-mode`) and flippable
+via a new top-bar button visible only to the owner ("Режим просмотра" /
+"Режим редактирования" — labelled with the mode you'd switch *to*). This lets
+the owner preview the map exactly as a visitor sees it (no drag handles, no
+right-click-to-connect, no edit buttons) without signing out. `CharacterPanel`
+and `RelationshipPanel` each got a `useEffect` that forces their local
+`isEditing` back to `false` whenever the `isEditor` prop goes false, so
+toggling to view mode mid-edit doesn't strand an editable form with its
+Save/Cancel buttons hidden.
+
+**Reason:** User request: a button to switch between edit and view modes.
+
+**Consequences:** RLS remains the actual security boundary — `editModeOn`
+never grants access, it only hides UI for someone who already has write
+access. Any new edit-only control added to the map must gate on `isEditor`
+(not `isOwner`) to respect the toggle.
+
+**Affected files:**
+`src/features/characters_map/routes/CharactersMapRoute.tsx`,
+`src/features/characters_map/components/CharacterPanel.tsx`,
+`src/features/characters_map/components/RelationshipPanel.tsx`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: arrowheads were rendering underneath the node (invisible) + labels now always paint above lines/arrows
 
 **Area:** `src/features/characters_map/components/MapCanvas.tsx`

@@ -43,6 +43,10 @@ export default function RelationshipPanel({
     setError('')
   }, [relationship.id, relationship.label, relationship.description, relationship.color, relationship.kind])
 
+  useEffect(() => {
+    if (!isEditor) setIsEditing(false)
+  }, [isEditor])
+
   const handleSave = async () => {
     if (!label.trim()) {
       setError('Введите название отношения.')

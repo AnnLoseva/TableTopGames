@@ -35,6 +35,8 @@ function randomSpawnPosition(index: number): { x: number; y: number } {
   return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius }
 }
 
+const EDIT_MODE_STORAGE_KEY = 'characters-map-edit-mode'
+
 export default function CharactersMapRoute() {
   const { isReady: isAccountReady } = useAccount()
   const client = useMemo(() => createCharactersMapClient(), [])
@@ -52,8 +54,10 @@ export default function CharactersMapRoute() {
   const [showAddCharacter, setShowAddCharacter] = useState(false)
   const [relationshipDraft, setRelationshipDraft] = useState<{ fromId: string | null; toId: string | null } | null>(null)
   const [didReadInitialParams, setDidReadInitialParams] = useState(false)
+  const [editModeOn, setEditModeOn] = useState(true)
 
-  const isEditor = authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID
+  const isOwner = authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID
+  const isEditor = isOwner && editModeOn
 
   useEffect(() => {
     let cancelled = false
@@ -62,6 +66,19 @@ export default function CharactersMapRoute() {
     })
     return () => { cancelled = true }
   }, [client, isAccountReady])
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(EDIT_MODE_STORAGE_KEY)
+    if (stored === 'off') setEditModeOn(false)
+  }, [])
+
+  const toggleEditMode = useCallback(() => {
+    setEditModeOn(previous => {
+      const next = !previous
+      window.localStorage.setItem(EDIT_MODE_STORAGE_KEY, next ? 'on' : 'off')
+      return next
+    })
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -210,19 +227,26 @@ export default function CharactersMapRoute() {
             {isEditor ? 'Режим редактирования' : !isAccountReady ? 'Проверяю аккаунт…' : 'Режим просмотра'}
           </p>
         </div>
-        {isEditor && (
+        {isOwner && (
           <div className={styles.actions}>
-            <button type="button" className={styles.addButton} onClick={() => setShowAddCharacter(true)}>
-              + Персонаж
+            <button type="button" className={styles.addButton} onClick={toggleEditMode}>
+              {isEditor ? 'Режим просмотра' : 'Режим редактирования'}
             </button>
-            <button
-              type="button"
-              className={styles.addButton}
-              onClick={() => setRelationshipDraft({ fromId: selectedCharacterId, toId: null })}
-              disabled={characters.length < 2}
-            >
-              + Связь
-            </button>
+            {isEditor && (
+              <>
+                <button type="button" className={styles.addButton} onClick={() => setShowAddCharacter(true)}>
+                  + Персонаж
+                </button>
+                <button
+                  type="button"
+                  className={styles.addButton}
+                  onClick={() => setRelationshipDraft({ fromId: selectedCharacterId, toId: null })}
+                  disabled={characters.length < 2}
+                >
+                  + Связь
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>

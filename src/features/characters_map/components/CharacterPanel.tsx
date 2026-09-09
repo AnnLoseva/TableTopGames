@@ -61,6 +61,10 @@ export default function CharacterPanel({
     setError('')
   }, [character.id, character.name, character.description, character.sheet])
 
+  useEffect(() => {
+    if (!isEditor) setIsEditing(false)
+  }, [isEditor])
+
   const patchSheet = (patch: Partial<CharacterSheet>) => setSheet(previous => ({ ...previous, ...patch }))
 
   const handleSave = async () => {
