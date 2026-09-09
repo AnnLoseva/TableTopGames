@@ -5,6 +5,7 @@ import {
   ATTRIBUTE_GROUPS,
   BLOOD_POTENCY_MAX,
   CHARACTER_DESCRIPTION_MAX_LENGTH,
+  CHARACTER_KIND_LABELS,
   CHARACTER_NAME_MAX_LENGTH,
   DOT_MAX,
   HUMANITY_MAX,
@@ -12,7 +13,7 @@ import {
   STAINS_MAX,
   withSheetDefaults,
 } from '../constants'
-import type { CharacterSheet, Discipline, MapCharacter } from '../types'
+import type { CharacterEvent, CharacterKind, CharacterSheet, Discipline, MapCharacter } from '../types'
 import DotRating from './DotRating'
 import TrackBoxes from './TrackBoxes'
 import styles from './CharacterSheetView.module.css'
@@ -127,6 +128,19 @@ export default function CharacterPanel({
     patchSheet({ disciplines: sheet.disciplines.filter(discipline => discipline.id !== id) })
   }
 
+  const addEvent = () => {
+    const event: CharacterEvent = { id: crypto.randomUUID(), year: new Date().getFullYear(), dateLabel: '', title: '', description: '' }
+    patchSheet({ events: [...sheet.events, event] })
+  }
+
+  const updateEvent = (id: string, patch: Partial<CharacterEvent>) => {
+    patchSheet({ events: sheet.events.map(event => (event.id === id ? { ...event, ...patch } : event)) })
+  }
+
+  const removeEvent = (id: string) => {
+    patchSheet({ events: sheet.events.filter(event => event.id !== id) })
+  }
+
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.sheet} onClick={event => event.stopPropagation()}>
@@ -196,6 +210,125 @@ export default function CharacterPanel({
               </>
             )}
           </div>
+        </div>
+
+        <div className={styles.section}>
+          <h3 className={styles.sectionTitle}>Линия времени</h3>
+          <div className={styles.driveGrid}>
+            <div className={styles.driveRow}>
+              <span className={styles.driveLabel}>Год рождения</span>
+              {isEditing ? (
+                <input
+                  type="number"
+                  value={sheet.birthYear ?? ''}
+                  placeholder="не указан"
+                  onChange={event => patchSheet({ birthYear: event.target.value === '' ? null : Number(event.target.value) })}
+                />
+              ) : (
+                <span className={styles.driveValue}>{sheet.birthYear ?? 'не указан'}</span>
+              )}
+            </div>
+            <div className={styles.driveRow}>
+              <span className={styles.driveLabel}>Дата рождения (текстом)</span>
+              {isEditing ? (
+                <input
+                  type="text"
+                  placeholder="например: 12 апреля 1993"
+                  value={sheet.birthDateLabel}
+                  onChange={event => patchSheet({ birthDateLabel: event.target.value })}
+                />
+              ) : (
+                <span className={styles.driveValue}>{sheet.birthDateLabel || '—'}</span>
+              )}
+            </div>
+            <div className={styles.driveRow}>
+              <span className={styles.driveLabel}>Кем родился(-ась)</span>
+              {isEditing ? (
+                <select value={sheet.baseKind} onChange={event => patchSheet({ baseKind: event.target.value as CharacterKind })}>
+                  {(Object.keys(CHARACTER_KIND_LABELS) as CharacterKind[]).map(kind => (
+                    <option key={kind} value={kind}>{CHARACTER_KIND_LABELS[kind]}</option>
+                  ))}
+                </select>
+              ) : (
+                <span className={styles.driveValue}>{CHARACTER_KIND_LABELS[sheet.baseKind]}</span>
+              )}
+            </div>
+          </div>
+
+          {sheet.events.length === 0 && !isEditing && <p className={styles.emptyHint}>Событий не добавлено.</p>}
+          {sheet.events.map(event => (
+            <div key={event.id} className={styles.timelineEventRow}>
+              {isEditing ? (
+                <>
+                  <div className={styles.timelineEventFields}>
+                    <input
+                      type="number"
+                      className={styles.timelineYearInput}
+                      value={event.year}
+                      onChange={changeEvent => updateEvent(event.id, { year: Number(changeEvent.target.value) })}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Что случилось"
+                      value={event.title}
+                      onChange={changeEvent => updateEvent(event.id, { title: changeEvent.target.value })}
+                    />
+                    <select
+                      value={event.kind ?? ''}
+                      onChange={changeEvent => updateEvent(event.id, {
+                        kind: changeEvent.target.value ? changeEvent.target.value as CharacterKind : undefined,
+                      })}
+                    >
+                      <option value="">Вид: не менять</option>
+                      {(Object.keys(CHARACTER_KIND_LABELS) as CharacterKind[]).map(kind => (
+                        <option key={kind} value={kind}>Стал(а): {CHARACTER_KIND_LABELS[kind]}</option>
+                      ))}
+                    </select>
+                    <select
+                      value={event.alive === undefined ? '' : String(event.alive)}
+                      onChange={changeEvent => updateEvent(event.id, {
+                        alive: changeEvent.target.value === '' ? undefined : changeEvent.target.value === 'true',
+                      })}
+                    >
+                      <option value="">Статус: не менять</option>
+                      <option value="false">Погиб(ла)</option>
+                      <option value="true">Жив(а) / воскрес(ла)</option>
+                    </select>
+                    <button
+                      type="button"
+                      className={styles.removeButton}
+                      onClick={() => removeEvent(event.id)}
+                      aria-label="Удалить событие"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <textarea
+                    rows={2}
+                    placeholder="Описание события"
+                    value={event.description}
+                    onChange={changeEvent => updateEvent(event.id, { description: changeEvent.target.value })}
+                  />
+                </>
+              ) : (
+                <div className={styles.timelineEventView}>
+                  <span className={styles.timelineYearBadge}>{event.year}</span>
+                  <div>
+                    <p className={styles.timelineEventTitle}>
+                      {event.title || 'Событие'}
+                      {event.kind && ` — стал(а) ${CHARACTER_KIND_LABELS[event.kind].toLowerCase()}`}
+                      {event.alive === false && ' — погиб(ла)'}
+                      {event.alive === true && ' — жив(а)'}
+                    </p>
+                    {event.description && <p className={styles.timelineEventDescription}>{event.description}</p>}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+          {isEditing && (
+            <button type="button" className={styles.addButton} onClick={addEvent}>+ Событие</button>
+          )}
         </div>
 
         <div className={styles.section}>

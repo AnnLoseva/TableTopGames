@@ -196,6 +196,17 @@
   font-size: 14px;
 }
 
+.driveRow input[type='text'],
+.driveRow input[type='number'],
+.driveRow select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #f2f0f7;
+  font-size: 13px;
+}
+
 .traitGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -217,6 +228,96 @@
   gap: 10px;
   padding: 3px 0;
   font-size: 13px;
+}
+
+.timelineEventRow {
+  padding: 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.timelineEventRow:first-child {
+  border-top: none;
+}
+
+.timelineEventFields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.timelineEventFields input[type='text'],
+.timelineEventFields select {
+  flex: 1 1 140px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #f2f0f7;
+  font-size: 13px;
+}
+
+.timelineYearInput {
+  width: 76px;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #f2f0f7;
+  font-size: 13px;
+}
+
+.timelineEventRow > input[type='text'] {
+  display: block;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #f2f0f7;
+  font-size: 13px;
+}
+
+.timelineEventRow textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #f2f0f7;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.timelineEventView {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.timelineYearBadge {
+  flex: 0 0 auto;
+  min-width: 48px;
+  text-align: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(217, 180, 92, 0.14);
+  color: var(--map-accent, #d9b45c);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.timelineEventTitle {
+  margin: 0;
+  font-size: 13px;
+}
+
+.timelineEventDescription {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(242, 240, 247, 0.65);
 }
 
 .disciplineRow {

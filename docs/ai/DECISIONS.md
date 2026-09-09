@@ -1,5 +1,72 @@
 # Decisions
 
+## 2026-09-10 — `/characters_map`: timeline — dated events change character species/alive state and relationship visibility/color/description
+
+**Area:** `src/features/characters_map/{types.ts,timeline.ts,constants.ts,mappers.ts,api/relationshipsApi.ts,components/{CharacterPanel,RelationshipPanel,MapCanvas,TimelineControl,CharacterRosterModal}.tsx,routes/CharactersMapRoute.tsx}`, Supabase schema
+
+**Decision:** Added a timeline to the map. Characters get a species/state model
+independent of VTM clans (`CharacterKind = 'human' | 'vampire' | 'ghost'`, plus
+an orthogonal alive/dead flag) that renders as the node's border color —
+white/red/grey for human/vampire/ghost, black for dead regardless of kind
+(a light halo ring is added around dead nodes since black is low-contrast on
+the near-black canvas; the name label also gets a `✝` suffix). A character
+has a `birthYear` (nullable — null means "always on the map", so every
+existing character stays visible after this ships) and a chronological list
+of `events`, each optionally changing `kind` and/or `alive` from that year on.
+Relationships got a parallel `events` list where each event can optionally
+flip `active` (appear/disappear) and override `label`/`color`/`description`
+from that year on — a relationship with no events behaves exactly as before.
+
+All of this is resolved by pure functions in the new `timeline.ts`
+(`resolveCharacterState`, `isCharacterBornAt`, `resolveRelationshipState`),
+folding events chronologically up to a given year. The map's `timelineYear`
+state (`CharactersMapRoute`) defaults to `null` ("show everyone's latest
+state, nobody hidden") until any timeline data exists anywhere on the map, at
+which point it snaps once to `computeTimelineBounds(...).max` ("present") and
+stays user-controlled after that — `MapCanvas` resolves every character/
+relationship against `timelineYear ?? Infinity`, so `null` and "the present"
+behave identically once there's data, and "the present" additionally starts
+respecting birth-year gating. A new `TimelineControl` bar (range slider +
+year field + prev/next-event step buttons + a "present" snap button) sits at
+the bottom of the map, visible to everyone once `computeTimelineBounds`
+returns non-null. Because a not-yet-born character is invisible on the
+canvas — including to its own owner, who needs to open it to set that very
+birth year — added an editor-only "Все персонажи" roster modal
+(`CharacterRosterModal`) listing every character regardless of visibility.
+
+Storage: character birth year/kind/events live inside the existing flexible
+`sheet` jsonb column (no migration needed, same pattern as the earlier VTM
+sheet fields); relationships needed one new `events jsonb not null default
+'[]'` column (migration `characters_map_relationship_events`).
+
+**Reason:** User request, verbatim requirements: characters appear on the map
+at their birth date and not before; human/vampire/ghost borders in
+white/red/grey; dead characters stay on the map marked dead (black border)
+rather than disappearing; anyone can become a vampire or a ghost, and anyone
+can die; relationship lines can appear, disappear, and change state/color/
+description over time via dated events.
+
+**Consequences:** `resolveCharacterState`/`resolveRelationshipState` must stay
+pure and re-sort events by year internally — UI code never assumes `events`
+arrays are stored in chronological order (the editors append, they don't
+reorder, to avoid rows jumping under the user mid-edit). Any new
+per-character or per-relationship "changes over time" field must be threaded
+through these two resolvers, not read directly off the base record, or it
+will silently ignore the timeline. `CHARACTER_KIND_BORDER_COLORS`/
+`DEAD_BORDER_COLOR` are the single source of truth for border colors — do not
+hardcode them elsewhere (`MapCanvas` is the only consumer today).
+
+**Affected files:** `src/features/characters_map/types.ts`,
+`src/features/characters_map/timeline.ts` (new),
+`src/features/characters_map/constants.ts`,
+`src/features/characters_map/mappers.ts`,
+`src/features/characters_map/api/relationshipsApi.ts`,
+`src/features/characters_map/components/{CharacterPanel,RelationshipPanel,MapCanvas,MapCanvas.module.css,TimelineControl,TimelineControl.module.css,CharacterRosterModal,CharacterRosterModal.module.css,CharacterSheetView.module.css}.tsx`,
+`src/features/characters_map/routes/CharactersMapRoute.tsx`,
+`src/features/characters_map/supabase/characters_map.sql`
+
+**Status:** active
+
 ## 2026-09-10 — `/characters_map`: plain-text export + touch/tablet support (Pointer Events)
 
 **Area:** `src/features/characters_map/{export.ts,components/ExportModal*,routes/CharactersMapRoute.tsx,components/MapCanvas.tsx}`

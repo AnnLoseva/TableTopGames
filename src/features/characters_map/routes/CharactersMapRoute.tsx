@@ -21,13 +21,16 @@ import {
 import { CHARACTERS_MAP_OWNER_AUTH_USER_ID, createDefaultCharacterSheet } from '../constants'
 import { exportCharactersMapToText } from '../export'
 import { createCharactersMapClient } from '../supabase'
-import type { CharacterSheet, MapCharacter, MapRelationship, RelationshipKind } from '../types'
+import { collectTimelineMarks, computeTimelineBounds } from '../timeline'
+import type { CharacterSheet, MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
 import AddCharacterModal from '../components/AddCharacterModal'
 import AddRelationshipModal from '../components/AddRelationshipModal'
 import CharacterPanel from '../components/CharacterPanel'
+import CharacterRosterModal from '../components/CharacterRosterModal'
 import ExportModal from '../components/ExportModal'
 import MapCanvas from '../components/MapCanvas'
 import RelationshipPanel from '../components/RelationshipPanel'
+import TimelineControl from '../components/TimelineControl'
 import styles from './CharactersMapRoute.module.css'
 
 function randomSpawnPosition(index: number): { x: number; y: number } {
@@ -58,6 +61,8 @@ export default function CharactersMapRoute() {
   const [didReadInitialParams, setDidReadInitialParams] = useState(false)
   const [editModeOn, setEditModeOn] = useState(true)
   const [showExport, setShowExport] = useState(false)
+  const [showRoster, setShowRoster] = useState(false)
+  const [timelineYear, setTimelineYear] = useState<number | null>(null)
 
   const isOwner = authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID
   const isEditor = isOwner && editModeOn
@@ -197,6 +202,7 @@ export default function CharactersMapRoute() {
     description: string
     color: string
     kind: RelationshipKind
+    events: RelationshipEvent[]
   }) => {
     const updated = await updateRelationship(client, id, patch)
     setRelationships(previous => previous.map(relationship => (relationship.id === id ? updated : relationship)))
@@ -221,6 +227,15 @@ export default function CharactersMapRoute() {
     ? characters.find(character => character.id === selectedRelationship.toCharacterId)
     : null
   const exportText = useMemo(() => exportCharactersMapToText(characters, relationships), [characters, relationships])
+  const timelineBounds = useMemo(() => computeTimelineBounds(characters, relationships), [characters, relationships])
+  const timelineMarks = useMemo(() => collectTimelineMarks(characters, relationships), [characters, relationships])
+
+  // Once any timeline data exists, default the view to "present" (the latest known
+  // year) — everyone born so far, in their current state. Only fires while the
+  // year hasn't been touched yet, so it never fights a year the user picked.
+  useEffect(() => {
+    if (timelineYear === null && timelineBounds) setTimelineYear(timelineBounds.max)
+  }, [timelineBounds, timelineYear])
 
   return (
     <div className={styles.page}>
@@ -255,6 +270,14 @@ export default function CharactersMapRoute() {
                   >
                     + Связь
                   </button>
+                  <button
+                    type="button"
+                    className={styles.addButton}
+                    onClick={() => setShowRoster(true)}
+                    disabled={characters.length === 0}
+                  >
+                    Все персонажи
+                  </button>
                 </>
               )}
             </>
@@ -279,6 +302,7 @@ export default function CharactersMapRoute() {
           characters={characters}
           relationships={relationships}
           isEditor={isEditor}
+          timelineYear={timelineYear}
           selectedCharacterId={selectedCharacterId}
           selectedRelationshipId={selectedRelationshipId}
           onSelectCharacter={selectCharacter}
@@ -289,13 +313,22 @@ export default function CharactersMapRoute() {
         />
       )}
 
-      {!isLoading && characters.length > 0 && (
+      {!isLoading && characters.length > 0 && !timelineBounds && (
         <p className={styles.hint}>
           Колесо мыши или щипок двумя пальцами — масштаб, перетаскивание фона — панорама
           {isEditor
             ? ', перетаскивание персонажа — перемещение, правая кнопка мыши (или долгое нажатие) на персонаже — создать связь'
             : ''}.
         </p>
+      )}
+
+      {!isLoading && timelineBounds && timelineYear !== null && (
+        <TimelineControl
+          bounds={timelineBounds}
+          value={timelineYear}
+          marks={timelineMarks}
+          onChange={setTimelineYear}
+        />
       )}
 
       {selectedCharacter && (
@@ -344,6 +377,15 @@ export default function CharactersMapRoute() {
       )}
 
       {showExport && <ExportModal text={exportText} onClose={() => setShowExport(false)} />}
+
+      {showRoster && (
+        <CharacterRosterModal
+          characters={characters}
+          timelineYear={timelineYear}
+          onSelect={selectCharacter}
+          onClose={() => setShowRoster(false)}
+        />
+      )}
     </div>
   )
 }

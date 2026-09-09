@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { isCharacterBornAt, resolveCharacterState, resolveRelationshipState } from '../timeline'
 import type { MapCharacter, MapRelationship } from '../types'
 import styles from './MapCanvas.module.css'
 
@@ -189,6 +190,8 @@ type Props = {
   characters: MapCharacter[]
   relationships: MapRelationship[]
   isEditor: boolean
+  /** null = timeline untouched: show everyone's latest state, nobody hidden by birth year. */
+  timelineYear: number | null
   selectedCharacterId: string | null
   selectedRelationshipId: string | null
   onSelectCharacter: (id: string | null) => void
@@ -204,6 +207,7 @@ export default function MapCanvas({
   characters,
   relationships,
   isEditor,
+  timelineYear,
   selectedCharacterId,
   selectedRelationshipId,
   onSelectCharacter,
@@ -240,7 +244,38 @@ export default function MapCanvas({
     viewRef.current = view
   }, [view])
 
-  const edges = useMemo(() => buildEdges(characters, relationships), [characters, relationships])
+  // A null timelineYear means the timeline hasn't been touched: resolve every
+  // character/relationship at "the end of time" (every event applied, nobody
+  // hidden by birth year) — i.e. today's pre-timeline behavior, unchanged.
+  const resolveYear = timelineYear ?? Number.POSITIVE_INFINITY
+
+  const visibleCharacters = useMemo(
+    () => characters.filter(character => isCharacterBornAt(character, timelineYear)),
+    [characters, timelineYear],
+  )
+
+  const characterStates = useMemo(() => {
+    const map = new Map<string, ReturnType<typeof resolveCharacterState>>()
+    for (const character of visibleCharacters) map.set(character.id, resolveCharacterState(character, resolveYear))
+    return map
+  }, [visibleCharacters, resolveYear])
+
+  const visibleRelationships = useMemo(() => {
+    const visibleIds = new Set(visibleCharacters.map(character => character.id))
+    const result: MapRelationship[] = []
+    for (const relationship of relationships) {
+      if (!visibleIds.has(relationship.fromCharacterId) || !visibleIds.has(relationship.toCharacterId)) continue
+      const resolved = resolveRelationshipState(relationship, resolveYear)
+      if (!resolved.active) continue
+      result.push({ ...relationship, label: resolved.label, color: resolved.color, description: resolved.description })
+    }
+    return result
+  }, [relationships, visibleCharacters, resolveYear])
+
+  const edges = useMemo(
+    () => buildEdges(visibleCharacters, visibleRelationships),
+    [visibleCharacters, visibleRelationships],
+  )
 
   useEffect(() => {
     if (hasCenteredRef.current || characters.length === 0) return
@@ -656,16 +691,20 @@ export default function MapCanvas({
             />
           )}
 
-          {characters.map(character => {
+          {visibleCharacters.map(character => {
             const position = positionFor(character)
             const imageUrl = character.imagePath ? getImageUrl(character.imagePath) : null
             const clipId = `char-clip-${character.id}`
             const isSelected = character.id === selectedCharacterId
+            const state = characterStates.get(character.id)
+            const nameSuffix = state && !state.alive ? ' ✝' : ''
+            const labelText = `${character.name}${nameSuffix}`
             return (
               <g
                 key={character.id}
                 transform={`translate(${position.x} ${position.y})`}
                 className={`${styles.nodeGroup} ${isSelected ? styles.selected : ''}`}
+                style={state && state.kind === 'ghost' && state.alive ? { opacity: 0.62 } : undefined}
                 onPointerDown={event => handleNodePointerDown(character, event)}
                 onContextMenu={event => handleNodeContextMenu(character, event)}
               >
@@ -674,7 +713,14 @@ export default function MapCanvas({
                     <circle r={NODE_RADIUS} />
                   </clipPath>
                 </defs>
-                <circle r={NODE_RADIUS} className={styles.nodeCircle} />
+                {state && !state.alive && (
+                  <circle r={NODE_RADIUS + 3} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth={1.5} />
+                )}
+                <circle
+                  r={NODE_RADIUS}
+                  className={styles.nodeCircle}
+                  style={state ? { stroke: state.borderColor, strokeWidth: state.alive ? 3 : 4 } : undefined}
+                />
                 {imageUrl && (
                   <image
                     href={imageUrl}
@@ -692,14 +738,14 @@ export default function MapCanvas({
                   </text>
                 )}
                 <rect
-                  x={-(Math.max(40, character.name.length * 4) + 8) / 2}
+                  x={-(Math.max(40, labelText.length * 4) + 8) / 2}
                   y={NODE_RADIUS + 6}
-                  width={Math.max(40, character.name.length * 4) + 8}
+                  width={Math.max(40, labelText.length * 4) + 8}
                   height={20}
                   rx={5}
                   className={styles.nodeNameBg}
                 />
-                <text y={NODE_RADIUS + 20} className={styles.nodeName}>{character.name}</text>
+                <text y={NODE_RADIUS + 20} className={styles.nodeName}>{labelText}</text>
               </g>
             )
           })}

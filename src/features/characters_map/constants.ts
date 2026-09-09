@@ -1,4 +1,4 @@
-import type { AttributeKey, CharacterSheet, SkillKey } from './types'
+import type { AttributeKey, CharacterKind, CharacterSheet, SkillKey } from './types'
 
 export const CHARACTERS_MAP_CHARACTERS_TABLE = 'characters_map_characters'
 export const CHARACTERS_MAP_RELATIONSHIPS_TABLE = 'characters_map_relationships'
@@ -112,6 +112,10 @@ export function createDefaultCharacterSheet(): CharacterSheet {
     touchstones: '',
     merits: '',
     flaws: '',
+    birthYear: null,
+    birthDateLabel: '',
+    baseKind: 'human',
+    events: [],
   }
 }
 
@@ -132,5 +136,22 @@ export function withSheetDefaults(sheet: Partial<CharacterSheet> | null | undefi
       max: sheet.willpower?.max ?? defaults.willpower.max,
       boxes: Array.isArray(sheet.willpower?.boxes) ? sheet.willpower.boxes : defaults.willpower.boxes,
     },
+    birthYear: typeof sheet.birthYear === 'number' ? sheet.birthYear : null,
+    baseKind: sheet.baseKind === 'vampire' || sheet.baseKind === 'ghost' ? sheet.baseKind : 'human',
+    events: Array.isArray(sheet.events) ? sheet.events : defaults.events,
   }
 }
+
+export const CHARACTER_KIND_LABELS: Record<CharacterKind, string> = {
+  human: 'Человек',
+  vampire: 'Вампир',
+  ghost: 'Призрак',
+}
+
+export const CHARACTER_KIND_BORDER_COLORS: Record<CharacterKind, string> = {
+  human: '#f2f0f7',
+  vampire: '#c23b3b',
+  ghost: '#9aa0a6',
+}
+
+export const DEAD_BORDER_COLOR = '#0a0a0a'

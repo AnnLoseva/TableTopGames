@@ -52,6 +52,12 @@ alter table public.characters_map_characters
 alter table public.characters_map_characters
   add constraint characters_map_characters_sheet_check check (pg_column_size(sheet) <= 50000);
 
+-- Added 2026-09-10 (see DECISIONS.md): `sheet` also carries the timeline model —
+-- `birthYear`/`birthDateLabel` (null birth year = always shown, never gated),
+-- `baseKind` ('human'/'vampire'/'ghost', default human) and `events` (dated
+-- kind/alive changes). No new columns needed; reuses the existing flexible
+-- `sheet` JSON. See `CharacterSheet` in types.ts and `timeline.ts`.
+
 create index if not exists characters_map_characters_user_idx
   on public.characters_map_characters (user_id);
 
@@ -79,6 +85,19 @@ create index if not exists characters_map_relationships_from_idx
 
 create index if not exists characters_map_relationships_to_idx
   on public.characters_map_relationships (to_character_id);
+
+-- Added 2026-09-10 (see DECISIONS.md): a timeline of dated events that change
+-- how the relationship renders (appear/disappear via `active`, plus
+-- label/color/description overrides), folded chronologically at render time
+-- by `resolveRelationshipState` in src/features/characters_map/timeline.ts.
+-- A relationship with no events behaves exactly as before this feature.
+alter table public.characters_map_relationships
+  add column if not exists events jsonb not null default '[]'::jsonb;
+
+alter table public.characters_map_relationships
+  drop constraint if exists characters_map_relationships_events_check;
+alter table public.characters_map_relationships
+  add constraint characters_map_relationships_events_check check (pg_column_size(events) <= 20000);
 
 alter table public.characters_map_characters enable row level security;
 alter table public.characters_map_relationships enable row level security;

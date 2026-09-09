@@ -5,6 +5,7 @@ import type {
   MapCharacterRow,
   MapRelationship,
   MapRelationshipRow,
+  RelationshipEvent,
   RelationshipKind,
 } from './types'
 
@@ -36,6 +37,7 @@ export function mapRelationshipRow(row: MapRelationshipRow): MapRelationship {
     description: row.description,
     color: row.color,
     sortOrder: row.sort_order,
+    events: Array.isArray(row.events) ? row.events as RelationshipEvent[] : [],
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }

@@ -11,7 +11,14 @@
   are directed and non-symmetric (A→B and B→A can carry different labels) and
   a pair can carry several edges at once, including one `mutual` (undirected)
   edge. Owner-write/public-read against the same shared TableTopGames account
-  used by `/dnd/journal`; schema applied live. See `DECISIONS.md`.
+  used by `/dnd/journal`; schema applied live. Also has: a VTM-styled full
+  character sheet, arrow direction/label-collision/touch(tablet) fixes,
+  a plain-text export for pasting into an AI chat, and a **timeline**
+  (2026-09-10) — characters have a birth year (gates map visibility) and
+  dated events changing species (human/vampire/ghost, colored borders) and
+  alive/dead (dead stays on the map, marked, never removed); relationships
+  have dated events that can flip active/appear-disappear and override
+  label/color/description. See `DECISIONS.md` (2026-09-09/2026-09-10).
 - **D&D journal, new domain (2026-07-31)** — `/dnd/journal` (`src/games/dnd/journal/*`)
   is a new isolated game domain, live against Supabase (`dnd_journal_pages`,
   `dnd_journal_folders`, `dnd_journal_images`, public `dnd-journal-images`
