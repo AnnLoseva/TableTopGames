@@ -18,7 +18,10 @@
   dated events changing species (human/vampire/ghost, colored borders) and
   alive/dead (dead stays on the map, marked, never removed); relationships
   have dated events that can flip active/appear-disappear and override
-  label/color/description. See `DECISIONS.md` (2026-09-09/2026-09-10).
+  label/color/description. Also has a per-character **photo gallery**
+  (2026-09-09) — house/pet/event/other photos separate from the portrait,
+  stored in `sheet.gallery`, editing persists immediately (not staged behind
+  the sheet's Save/Cancel). See `DECISIONS.md` (2026-09-09/2026-09-10).
 - **D&D journal, new domain (2026-07-31)** — `/dnd/journal` (`src/games/dnd/journal/*`)
   is a new isolated game domain, live against Supabase (`dnd_journal_pages`,
   `dnd_journal_folders`, `dnd_journal_images`, public `dnd-journal-images`
@@ -148,8 +151,9 @@ _(none recorded — add temporary bugs here only while being worked, then remove
   experience plus folder create/rename/delete and an app↔site folder
   round-trip with production data (agents can't — no owner credentials).
 - Characters map: have the owner log in herself once and confirm the real
-  edit experience (add/edit/delete character, portrait upload, add/edit/delete
-  relationship, drag-to-reposition) — same credential limitation as above.
+  edit experience (add/edit/delete character, portrait upload, gallery photo
+  add/caption/category/remove, add/edit/delete relationship,
+  drag-to-reposition) — same credential limitation as above.
 
 ## Do not touch casually
 - `public/vampires/main.js`, `public/vampires/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.

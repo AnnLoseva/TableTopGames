@@ -22,7 +22,7 @@ import { CHARACTERS_MAP_OWNER_AUTH_USER_ID, createDefaultCharacterSheet } from '
 import { exportCharactersMapToText } from '../export'
 import { createCharactersMapClient } from '../supabase'
 import { collectTimelineMarks, computeTimelineBounds } from '../timeline'
-import type { CharacterSheet, MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
+import type { CharacterSheet, GalleryItem, MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
 import AddCharacterModal from '../components/AddCharacterModal'
 import AddRelationshipModal from '../components/AddRelationshipModal'
 import CharacterPanel from '../components/CharacterPanel'
@@ -174,6 +174,33 @@ export default function CharactersMapRoute() {
     const updated = await updateCharacter(client, character.id, { imagePath: newPath })
     setCharacters(previous => previous.map(item => (item.id === character.id ? updated : item)))
     if (character.imagePath) await removeCharacterImageFile(client, character.imagePath)
+  }, [client])
+
+  const handleAddGalleryItem = useCallback(async (character: MapCharacter, file: File) => {
+    const imagePath = await uploadCharacterImage(client, file)
+    const item: GalleryItem = { id: crypto.randomUUID(), imagePath, caption: '', category: 'other' }
+    const updated = await updateCharacter(client, character.id, {
+      sheet: { ...character.sheet, gallery: [...character.sheet.gallery, item] },
+    })
+    setCharacters(previous => previous.map(item2 => (item2.id === character.id ? updated : item2)))
+  }, [client])
+
+  const handleUpdateGalleryItem = useCallback(async (
+    character: MapCharacter,
+    itemId: string,
+    patch: Partial<Pick<GalleryItem, 'caption' | 'category'>>,
+  ) => {
+    const gallery = character.sheet.gallery.map(item => (item.id === itemId ? { ...item, ...patch } : item))
+    const updated = await updateCharacter(client, character.id, { sheet: { ...character.sheet, gallery } })
+    setCharacters(previous => previous.map(item => (item.id === character.id ? updated : item)))
+  }, [client])
+
+  const handleRemoveGalleryItem = useCallback(async (character: MapCharacter, itemId: string) => {
+    const removed = character.sheet.gallery.find(item => item.id === itemId)
+    const gallery = character.sheet.gallery.filter(item => item.id !== itemId)
+    const updated = await updateCharacter(client, character.id, { sheet: { ...character.sheet, gallery } })
+    setCharacters(previous => previous.map(item => (item.id === character.id ? updated : item)))
+    if (removed) await removeCharacterImageFile(client, removed.imagePath)
   }, [client])
 
   const handleDeleteCharacter = useCallback(async (character: MapCharacter) => {
@@ -343,6 +370,10 @@ export default function CharactersMapRoute() {
           })}
           onUploadImage={file => handleUploadCharacterImage(selectedCharacter, file)}
           onDelete={() => handleDeleteCharacter(selectedCharacter)}
+          getGalleryImageUrl={getImageUrl}
+          onAddGalleryItem={file => handleAddGalleryItem(selectedCharacter, file)}
+          onUpdateGalleryItem={(itemId, patch) => handleUpdateGalleryItem(selectedCharacter, itemId, patch)}
+          onRemoveGalleryItem={itemId => handleRemoveGalleryItem(selectedCharacter, itemId)}
         />
       )}
 

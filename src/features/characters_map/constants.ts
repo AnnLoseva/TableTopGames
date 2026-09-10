@@ -1,4 +1,4 @@
-import type { AttributeKey, CharacterKind, CharacterSheet, SkillKey } from './types'
+import type { AttributeKey, CharacterKind, CharacterSheet, GalleryCategory, SkillKey } from './types'
 
 export const CHARACTERS_MAP_CHARACTERS_TABLE = 'characters_map_characters'
 export const CHARACTERS_MAP_RELATIONSHIPS_TABLE = 'characters_map_relationships'
@@ -116,6 +116,7 @@ export function createDefaultCharacterSheet(): CharacterSheet {
     birthDateLabel: '',
     baseKind: 'human',
     events: [],
+    gallery: [],
   }
 }
 
@@ -139,7 +140,15 @@ export function withSheetDefaults(sheet: Partial<CharacterSheet> | null | undefi
     birthYear: typeof sheet.birthYear === 'number' ? sheet.birthYear : null,
     baseKind: sheet.baseKind === 'vampire' || sheet.baseKind === 'ghost' ? sheet.baseKind : 'human',
     events: Array.isArray(sheet.events) ? sheet.events : defaults.events,
+    gallery: Array.isArray(sheet.gallery) ? sheet.gallery : defaults.gallery,
   }
+}
+
+export const GALLERY_CATEGORY_LABELS: Record<GalleryCategory, string> = {
+  house: 'Дом',
+  pet: 'Питомец',
+  event: 'Событие',
+  other: 'Другое',
 }
 
 export const CHARACTER_KIND_LABELS: Record<CharacterKind, string> = {

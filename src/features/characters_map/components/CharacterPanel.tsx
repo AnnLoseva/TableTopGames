@@ -8,12 +8,13 @@ import {
   CHARACTER_KIND_LABELS,
   CHARACTER_NAME_MAX_LENGTH,
   DOT_MAX,
+  GALLERY_CATEGORY_LABELS,
   HUMANITY_MAX,
   SKILL_GROUPS,
   STAINS_MAX,
   withSheetDefaults,
 } from '../constants'
-import type { CharacterEvent, CharacterKind, CharacterSheet, Discipline, MapCharacter } from '../types'
+import type { CharacterEvent, CharacterKind, CharacterSheet, Discipline, GalleryCategory, GalleryItem, MapCharacter } from '../types'
 import DotRating from './DotRating'
 import TrackBoxes from './TrackBoxes'
 import styles from './CharacterSheetView.module.css'
@@ -28,6 +29,10 @@ type Props = {
   onSave: (patch: SavePatch) => Promise<void>
   onUploadImage: (file: File) => Promise<void>
   onDelete: () => Promise<void>
+  getGalleryImageUrl: (imagePath: string) => string
+  onAddGalleryItem: (file: File) => Promise<void>
+  onUpdateGalleryItem: (itemId: string, patch: Partial<Pick<GalleryItem, 'caption' | 'category'>>) => Promise<void>
+  onRemoveGalleryItem: (itemId: string) => Promise<void>
 }
 
 const META_FIELDS: { key: keyof CharacterSheet; label: string }[] = [
@@ -45,6 +50,10 @@ export default function CharacterPanel({
   onSave,
   onUploadImage,
   onDelete,
+  getGalleryImageUrl,
+  onAddGalleryItem,
+  onUpdateGalleryItem,
+  onRemoveGalleryItem,
 }: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(character.name)
@@ -52,7 +61,9 @@ export default function CharacterPanel({
   const [sheet, setSheet] = useState<CharacterSheet>(() => withSheetDefaults(character.sheet))
   const [isBusy, setIsBusy] = useState(false)
   const [error, setError] = useState('')
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const galleryFileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setName(character.name)
@@ -60,6 +71,7 @@ export default function CharacterPanel({
     setSheet(withSheetDefaults(character.sheet))
     setIsEditing(false)
     setError('')
+    setLightboxUrl(null)
   }, [character.id, character.name, character.description, character.sheet])
 
   useEffect(() => {
@@ -111,6 +123,33 @@ export default function CharacterPanel({
     }
   }
 
+  const handleGalleryFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+    setIsBusy(true)
+    setError('')
+    try {
+      await onAddGalleryItem(file)
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Не удалось загрузить фото.')
+    } finally {
+      setIsBusy(false)
+    }
+  }
+
+  const handleRemoveGalleryItem = async (itemId: string) => {
+    setIsBusy(true)
+    setError('')
+    try {
+      await onRemoveGalleryItem(itemId)
+    } catch (removeError) {
+      setError(removeError instanceof Error ? removeError.message : 'Не удалось удалить фото.')
+    } finally {
+      setIsBusy(false)
+    }
+  }
+
   const addDiscipline = () => {
     const discipline: Discipline = { id: crypto.randomUUID(), name: '', level: 1 }
     patchSheet({ disciplines: [...sheet.disciplines, discipline] })
@@ -139,6 +178,27 @@ export default function CharacterPanel({
 
   const removeEvent = (id: string) => {
     patchSheet({ events: sheet.events.filter(event => event.id !== id) })
+  }
+
+  const updateGalleryDraft = (id: string, patch: Partial<Pick<GalleryItem, 'caption' | 'category'>>) => {
+    patchSheet({ gallery: sheet.gallery.map(item => (item.id === id ? { ...item, ...patch } : item)) })
+  }
+
+  const commitGalleryCaption = async (item: GalleryItem) => {
+    try {
+      await onUpdateGalleryItem(item.id, { caption: item.caption })
+    } catch (updateError) {
+      setError(updateError instanceof Error ? updateError.message : 'Не удалось сохранить подпись.')
+    }
+  }
+
+  const handleGalleryCategoryChange = async (item: GalleryItem, category: GalleryCategory) => {
+    updateGalleryDraft(item.id, { category })
+    try {
+      await onUpdateGalleryItem(item.id, { category })
+    } catch (updateError) {
+      setError(updateError instanceof Error ? updateError.message : 'Не удалось сохранить категорию.')
+    }
   }
 
   return (
@@ -525,6 +585,85 @@ export default function CharacterPanel({
         </div>
 
         <div className={styles.section}>
+          <h3 className={styles.sectionTitle}>Галерея</h3>
+          {sheet.gallery.length === 0 && !isEditor && <p className={styles.emptyHint}>Фото не добавлены.</p>}
+          {sheet.gallery.length === 0 && isEditor && (
+            <p className={styles.emptyHint}>Дом, питомцы, интересные события — добавьте первое фото.</p>
+          )}
+          {sheet.gallery.length > 0 && (
+            <div className={styles.galleryGrid}>
+              {sheet.gallery.map(item => (
+                <div key={item.id} className={styles.galleryCard}>
+                  <button
+                    type="button"
+                    className={styles.galleryThumb}
+                    onClick={() => setLightboxUrl(getGalleryImageUrl(item.imagePath))}
+                  >
+                    <img src={getGalleryImageUrl(item.imagePath)} alt={item.caption || 'Фото из галереи'} />
+                  </button>
+                  {isEditor ? (
+                    <>
+                      <div className={styles.galleryCardRow}>
+                        <select
+                          className={styles.galleryCategorySelect}
+                          value={item.category}
+                          onChange={event => handleGalleryCategoryChange(item, event.target.value as GalleryCategory)}
+                        >
+                          {(Object.keys(GALLERY_CATEGORY_LABELS) as GalleryCategory[]).map(category => (
+                            <option key={category} value={category}>{GALLERY_CATEGORY_LABELS[category]}</option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          className={styles.removeButton}
+                          onClick={() => handleRemoveGalleryItem(item.id)}
+                          aria-label="Удалить фото"
+                          disabled={isBusy}
+                        >
+                          ×
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        className={styles.galleryCaptionInput}
+                        placeholder="Подпись"
+                        value={item.caption}
+                        onChange={event => updateGalleryDraft(item.id, { caption: event.target.value })}
+                        onBlur={() => commitGalleryCaption(item)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <span className={styles.galleryCategoryBadge}>{GALLERY_CATEGORY_LABELS[item.category]}</span>
+                      {item.caption && <p className={styles.galleryCaption}>{item.caption}</p>}
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+          {isEditor && (
+            <>
+              <input
+                ref={galleryFileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                hidden
+                onChange={handleGalleryFileChange}
+              />
+              <button
+                type="button"
+                className={styles.addButton}
+                onClick={() => galleryFileInputRef.current?.click()}
+                disabled={isBusy}
+              >
+                + Фото в галерею
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className={styles.section}>
           {error && <p className={styles.errorText}>{error}</p>}
           {isEditor && (
             <div className={styles.actions}>
@@ -561,6 +700,18 @@ export default function CharacterPanel({
           )}
         </div>
       </div>
+
+      {lightboxUrl && (
+        <div
+          className={styles.lightboxOverlay}
+          onClick={event => {
+            event.stopPropagation()
+            setLightboxUrl(null)
+          }}
+        >
+          <img src={lightboxUrl} alt="" className={styles.lightboxImage} />
+        </div>
+      )}
     </div>
   )
 }

@@ -60,6 +60,16 @@ export type DamageTrack = {
   boxes: number[] // 0 = empty, 1 = superficial, 2 = aggravated
 }
 
+export type GalleryCategory = 'house' | 'pet' | 'event' | 'other'
+
+/** One photo in a character's gallery — their home, pets, or a notable event. */
+export type GalleryItem = {
+  id: string
+  imagePath: string
+  caption: string
+  category: GalleryCategory
+}
+
 export type CharacterSheet = {
   concept: string
   clan: string
@@ -85,6 +95,8 @@ export type CharacterSheet = {
   /** Species/state before any `events` apply — everyone starts human by default. */
   baseKind: CharacterKind
   events: CharacterEvent[]
+  /** Photos of the character's home, pets, and notable events — separate from the portrait. */
+  gallery: GalleryItem[]
 }
 
 export type MapCharacter = {

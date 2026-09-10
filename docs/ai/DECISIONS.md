@@ -126,6 +126,42 @@ this surfaced during testing.
 
 **Status:** active
 
+## 2026-09-09 — `/characters_map`: per-character photo gallery (house, pets, events)
+
+**Area:** `src/features/characters_map/{types.ts,constants.ts,components/CharacterPanel.tsx,routes/CharactersMapRoute.tsx}`
+
+**Decision:** Added `CharacterSheet.gallery: GalleryItem[]` — a list of
+`{ id, imagePath, caption, category }` items (`category` is
+`house | pet | event | other`) shown as a grid in `CharacterPanel`, separate
+from the single portrait (`image_path`). Each item's image lives in the same
+`characters-map-images` storage bucket as the portrait, reusing
+`uploadCharacterImage`/`getCharacterImageUrl`/`removeCharacterImageFile` from
+`charactersApi.ts`. Add/remove/caption/category edits persist immediately
+(each calls `updateCharacter` right away) instead of being staged behind the
+sheet's "Редактировать" → "Сохранить"/"Отмена" flow — the same immediate-write
+pattern the portrait upload already uses, chosen so a removed photo's storage
+file can be deleted deterministically (no orphan risk from an abandoned edit
+session) and so "Отмена" on the rest of the sheet can't accidentally revert an
+intentional photo deletion.
+
+**Reason:** The owner wants a place to drop a character's home, pets, and
+memorable events as photos, distinct from the one portrait image.
+
+**Consequences:** `sheet.gallery` is untyped JSON like the rest of `sheet`
+(no DB migration needed — reuses the existing `sheet` jsonb column and image
+bucket/RLS). `withSheetDefaults` must keep defaulting/validating `gallery` as
+new sheet fields are added. Viewers (non-owner) see the gallery read-only with
+a lightbox; only the owner in edit mode sees add/remove/caption/category
+controls.
+
+**Affected files:** `src/features/characters_map/types.ts`,
+`src/features/characters_map/constants.ts`,
+`src/features/characters_map/components/{CharacterPanel.tsx,CharacterSheetView.module.css}`,
+`src/features/characters_map/routes/CharactersMapRoute.tsx`,
+`src/features/characters_map/supabase/characters_map.sql`
+
+**Status:** active
+
 ## 2026-09-09 — `/characters_map`: explicit edit/view mode toggle for the owner
 
 **Area:** `src/features/characters_map/routes/CharactersMapRoute.tsx`,

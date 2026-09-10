@@ -58,6 +58,13 @@ alter table public.characters_map_characters
 -- kind/alive changes). No new columns needed; reuses the existing flexible
 -- `sheet` JSON. See `CharacterSheet` in types.ts and `timeline.ts`.
 
+-- Added 2026-09-09 (see DECISIONS.md): `sheet.gallery` — a list of photos
+-- (house, pets, notable events) separate from the single portrait in
+-- `image_path`. Each item is `{ id, imagePath, caption, category }`, with the
+-- image stored in the same `characters-map-images` bucket as the portrait.
+-- No new columns/buckets needed; reuses the existing flexible `sheet` JSON
+-- and storage policies below. See `GalleryItem` in types.ts.
+
 create index if not exists characters_map_characters_user_idx
   on public.characters_map_characters (user_id);
 
