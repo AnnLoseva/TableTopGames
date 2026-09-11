@@ -153,6 +153,18 @@ export function exportCharactersMapToText(
       line += ` — ${cleanText(relationship.description)}`
     }
     lines.push(line)
+
+    if (relationship.events.length > 0) {
+      lines.push(`     ${s.timelineLabel}:`)
+      const sortedEvents = [...relationship.events].sort((a, b) => a.year - b.year)
+      for (const event of sortedEvents) {
+        let eventLine = `       ${event.year} — ${event.title || s.eventFallback}`
+        if (event.description?.trim()) eventLine += `: ${cleanText(event.description)}`
+        if (event.active === true) eventLine += s.appearsSuffix
+        else if (event.active === false) eventLine += s.disappearsSuffix
+        lines.push(eventLine)
+      }
+    }
   })
 
   return lines.join('\n')
