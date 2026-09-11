@@ -1,4 +1,5 @@
 import { CHARACTER_KIND_BORDER_COLORS, DEAD_BORDER_COLOR } from './constants'
+import { t, type MapLanguage } from './i18n'
 import type { CharacterKind, MapCharacter, MapRelationship, RelationshipKind } from './types'
 
 export type ResolvedCharacterState = {
@@ -82,8 +83,16 @@ export function computeTimelineBounds(characters: MapCharacter[], relationships:
 export type TimelineMark = { year: number; label: string }
 
 /** Distinct years worth stepping to with the timeline's prev/next buttons —
- * every birth and every event, deduplicated and sorted. */
-export function collectTimelineMarks(characters: MapCharacter[], relationships: MapRelationship[]): TimelineMark[] {
+ * every birth and every event, deduplicated and sorted. Callers should pass
+ * already-localized `characters`/`relationships` (see `localizeCharacter`/
+ * `localizeRelationship` in `i18n.ts`) — `language` here only controls the
+ * two connector words ("Birth:" / "event") baked into the labels below. */
+export function collectTimelineMarks(
+  characters: MapCharacter[],
+  relationships: MapRelationship[],
+  language: MapLanguage = 'ru',
+): TimelineMark[] {
+  const s = t(language).timelineMarks
   const byYear = new Map<number, string[]>()
   const add = (year: number, label: string) => {
     const existing = byYear.get(year)
@@ -91,11 +100,11 @@ export function collectTimelineMarks(characters: MapCharacter[], relationships: 
     else byYear.set(year, [label])
   }
   for (const character of characters) {
-    if (character.sheet.birthYear !== null) add(character.sheet.birthYear, `Рождение: ${character.name}`)
-    for (const event of character.sheet.events) add(event.year, `${character.name}: ${event.title || 'событие'}`)
+    if (character.sheet.birthYear !== null) add(character.sheet.birthYear, s.birthPrefix(character.name))
+    for (const event of character.sheet.events) add(event.year, s.characterEvent(character.name, event.title || s.eventFallback))
   }
   for (const relationship of relationships) {
-    for (const event of relationship.events) add(event.year, event.title || 'событие')
+    for (const event of relationship.events) add(event.year, event.title || s.eventFallback)
   }
   return Array.from(byYear.entries())
     .sort((a, b) => a[0] - b[0])

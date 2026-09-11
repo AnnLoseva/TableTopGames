@@ -1,5 +1,6 @@
 'use client'
 
+import { t, type MapLanguage } from '../i18n'
 import type { DamageTrack } from '../types'
 import styles from './TrackBoxes.module.css'
 
@@ -7,10 +8,11 @@ const MAX_TRACK_LENGTH = 20
 
 type Props = {
   track: DamageTrack
+  language: MapLanguage
   onChange?: (track: DamageTrack) => void
 }
 
-export default function TrackBoxes({ track, onChange }: Props) {
+export default function TrackBoxes({ track, language, onChange }: Props) {
   const editable = Boolean(onChange)
   const boxes = Array.from({ length: track.max }, (_, index) => track.boxes[index] ?? 0)
 
@@ -44,7 +46,7 @@ export default function TrackBoxes({ track, onChange }: Props) {
       </div>
       {editable && (
         <label className={styles.maxField}>
-          Максимум
+          {t(language).trackBoxes.max}
           <input
             type="number"
             min={1}

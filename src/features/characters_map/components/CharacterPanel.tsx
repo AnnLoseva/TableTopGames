@@ -14,6 +14,7 @@ import {
   STAINS_MAX,
   withSheetDefaults,
 } from '../constants'
+import { attributeLabel, characterKindLabel, galleryCategoryLabel, groupTitle, skillLabel, t, type MapLanguage } from '../i18n'
 import type { CharacterEvent, CharacterKind, CharacterSheet, Discipline, GalleryCategory, GalleryItem, MapCharacter } from '../types'
 import DotRating from './DotRating'
 import TrackBoxes from './TrackBoxes'
@@ -23,6 +24,8 @@ type SavePatch = { name: string; description: string; sheet: CharacterSheet }
 
 type Props = {
   character: MapCharacter
+  displayCharacter: MapCharacter
+  language: MapLanguage
   imageUrl: string | null
   isEditor: boolean
   onClose: () => void
@@ -35,15 +38,10 @@ type Props = {
   onRemoveGalleryItem: (itemId: string) => Promise<void>
 }
 
-const META_FIELDS: { key: keyof CharacterSheet; label: string }[] = [
-  { key: 'clan', label: 'Клан' },
-  { key: 'generation', label: 'Поколение' },
-  { key: 'predatorType', label: 'Хищник' },
-  { key: 'sire', label: 'Сир' },
-]
-
 export default function CharacterPanel({
   character,
+  displayCharacter,
+  language,
   imageUrl,
   isEditor,
   onClose,
@@ -55,6 +53,7 @@ export default function CharacterPanel({
   onUpdateGalleryItem,
   onRemoveGalleryItem,
 }: Props) {
+  const s = t(language).characterPanel
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(character.name)
   const [description, setDescription] = useState(character.description)
@@ -64,6 +63,12 @@ export default function CharacterPanel({
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const galleryFileInputRef = useRef<HTMLInputElement>(null)
+
+  // View-mode (non-editing) text always comes from `displayCharacter` — the
+  // localized version — while the edit form always seeds from `character`,
+  // the raw Russian source. Editing is never done in translated text; English
+  // is a derived read-only display layer, recomputed after the next edit.
+  const viewSheet = displayCharacter.sheet
 
   useEffect(() => {
     setName(character.name)
@@ -78,11 +83,18 @@ export default function CharacterPanel({
     if (!isEditor) setIsEditing(false)
   }, [isEditor])
 
+  const metaFields: { key: keyof CharacterSheet; label: string }[] = [
+    { key: 'clan', label: s.metaClan },
+    { key: 'generation', label: s.metaGeneration },
+    { key: 'predatorType', label: s.metaPredatorType },
+    { key: 'sire', label: s.metaSire },
+  ]
+
   const patchSheet = (patch: Partial<CharacterSheet>) => setSheet(previous => ({ ...previous, ...patch }))
 
   const handleSave = async () => {
     if (!name.trim()) {
-      setError('Введите имя персонажа.')
+      setError(s.errorNameRequired)
       return
     }
     setIsBusy(true)
@@ -91,7 +103,7 @@ export default function CharacterPanel({
       await onSave({ name: name.trim(), description, sheet })
       setIsEditing(false)
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Не удалось сохранить.')
+      setError(saveError instanceof Error ? saveError.message : s.errorSave)
     } finally {
       setIsBusy(false)
     }
@@ -106,19 +118,19 @@ export default function CharacterPanel({
     try {
       await onUploadImage(file)
     } catch (uploadError) {
-      setError(uploadError instanceof Error ? uploadError.message : 'Не удалось загрузить изображение.')
+      setError(uploadError instanceof Error ? uploadError.message : s.errorUploadImage)
     } finally {
       setIsBusy(false)
     }
   }
 
   const handleDelete = async () => {
-    if (!window.confirm(`Удалить персонажа «${character.name}»? Все связанные отношения тоже удалятся.`)) return
+    if (!window.confirm(s.confirmDelete(displayCharacter.name))) return
     setIsBusy(true)
     try {
       await onDelete()
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Не удалось удалить.')
+      setError(deleteError instanceof Error ? deleteError.message : s.errorDelete)
       setIsBusy(false)
     }
   }
@@ -132,7 +144,7 @@ export default function CharacterPanel({
     try {
       await onAddGalleryItem(file)
     } catch (uploadError) {
-      setError(uploadError instanceof Error ? uploadError.message : 'Не удалось загрузить фото.')
+      setError(uploadError instanceof Error ? uploadError.message : s.errorUploadGalleryPhoto)
     } finally {
       setIsBusy(false)
     }
@@ -144,7 +156,7 @@ export default function CharacterPanel({
     try {
       await onRemoveGalleryItem(itemId)
     } catch (removeError) {
-      setError(removeError instanceof Error ? removeError.message : 'Не удалось удалить фото.')
+      setError(removeError instanceof Error ? removeError.message : s.errorRemovePhoto)
     } finally {
       setIsBusy(false)
     }
@@ -188,7 +200,7 @@ export default function CharacterPanel({
     try {
       await onUpdateGalleryItem(item.id, { caption: item.caption })
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Не удалось сохранить подпись.')
+      setError(updateError instanceof Error ? updateError.message : s.errorSaveCaption)
     }
   }
 
@@ -197,7 +209,7 @@ export default function CharacterPanel({
     try {
       await onUpdateGalleryItem(item.id, { category })
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Не удалось сохранить категорию.')
+      setError(updateError instanceof Error ? updateError.message : s.errorSaveCategory)
     }
   }
 
@@ -205,12 +217,12 @@ export default function CharacterPanel({
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.sheet} onClick={event => event.stopPropagation()}>
         <div className={styles.topBar}>
-          <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрыть">×</button>
+          <button type="button" className={styles.closeButton} onClick={onClose} aria-label={s.ariaClose}>×</button>
         </div>
 
         <div className={styles.header}>
           <div className={styles.portraitWrap}>
-            {imageUrl ? <img src={imageUrl} alt={character.name} /> : (character.name.trim().slice(0, 1).toUpperCase() || '?')}
+            {imageUrl ? <img src={imageUrl} alt={displayCharacter.name} /> : (character.name.trim().slice(0, 1).toUpperCase() || '?')}
           </div>
           <div className={styles.headerInfo}>
             {isEditing ? (
@@ -222,24 +234,24 @@ export default function CharacterPanel({
                 onChange={event => setName(event.target.value)}
               />
             ) : (
-              <h2 className={styles.name}>{character.name}</h2>
+              <h2 className={styles.name}>{displayCharacter.name}</h2>
             )}
 
             {isEditing ? (
               <input
                 type="text"
-                placeholder="Концепция"
+                placeholder={s.conceptPlaceholder}
                 value={sheet.concept}
                 onChange={event => patchSheet({ concept: event.target.value })}
                 className={styles.nameInput}
                 style={{ fontSize: 14, fontWeight: 400, fontStyle: 'italic' }}
               />
             ) : (
-              sheet.concept && <p className={styles.concept}>{sheet.concept}</p>
+              viewSheet.concept && <p className={styles.concept}>{viewSheet.concept}</p>
             )}
 
             <div className={styles.metaGrid}>
-              {META_FIELDS.map(field => (
+              {metaFields.map(field => (
                 <div key={field.key} className={styles.metaItem}>
                   <span className={styles.metaLabel}>{field.label}</span>
                   {isEditing ? (
@@ -249,7 +261,7 @@ export default function CharacterPanel({
                       onChange={event => patchSheet({ [field.key]: event.target.value } as Partial<CharacterSheet>)}
                     />
                   ) : (
-                    <span className={styles.metaValue}>{sheet[field.key] as string}</span>
+                    <span className={styles.metaValue}>{viewSheet[field.key] as string}</span>
                   )}
                 </div>
               ))}
@@ -265,7 +277,7 @@ export default function CharacterPanel({
                   onChange={handleFileChange}
                 />
                 <button type="button" className={styles.fileButton} onClick={() => fileInputRef.current?.click()}>
-                  {imageUrl ? 'Заменить фото' : 'Загрузить фото'}
+                  {imageUrl ? s.replacePhoto : s.uploadPhoto}
                 </button>
               </>
             )}
@@ -273,155 +285,154 @@ export default function CharacterPanel({
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Линия времени</h3>
+          <h3 className={styles.sectionTitle}>{s.timelineHeading}</h3>
           <div className={styles.driveGrid}>
             <div className={styles.driveRow}>
-              <span className={styles.driveLabel}>Год рождения</span>
+              <span className={styles.driveLabel}>{s.birthYearLabel}</span>
               {isEditing ? (
                 <input
                   type="number"
                   value={sheet.birthYear ?? ''}
-                  placeholder="не указан"
+                  placeholder={s.birthYearUnset}
                   onChange={event => patchSheet({ birthYear: event.target.value === '' ? null : Number(event.target.value) })}
                 />
               ) : (
-                <span className={styles.driveValue}>{sheet.birthYear ?? 'не указан'}</span>
+                <span className={styles.driveValue}>{viewSheet.birthYear ?? s.birthYearUnset}</span>
               )}
             </div>
             <div className={styles.driveRow}>
-              <span className={styles.driveLabel}>Дата рождения (текстом)</span>
+              <span className={styles.driveLabel}>{s.birthDateLabelLabel}</span>
               {isEditing ? (
                 <input
                   type="text"
-                  placeholder="например: 12 апреля 1993"
+                  placeholder={s.birthDateLabelPlaceholder}
                   value={sheet.birthDateLabel}
                   onChange={event => patchSheet({ birthDateLabel: event.target.value })}
                 />
               ) : (
-                <span className={styles.driveValue}>{sheet.birthDateLabel || '—'}</span>
+                <span className={styles.driveValue}>{viewSheet.birthDateLabel || s.dash}</span>
               )}
             </div>
             <div className={styles.driveRow}>
-              <span className={styles.driveLabel}>Кем родился(-ась)</span>
+              <span className={styles.driveLabel}>{s.bornAsLabel}</span>
               {isEditing ? (
                 <select value={sheet.baseKind} onChange={event => patchSheet({ baseKind: event.target.value as CharacterKind })}>
                   {(Object.keys(CHARACTER_KIND_LABELS) as CharacterKind[]).map(kind => (
-                    <option key={kind} value={kind}>{CHARACTER_KIND_LABELS[kind]}</option>
+                    <option key={kind} value={kind}>{characterKindLabel(kind, language)}</option>
                   ))}
                 </select>
               ) : (
-                <span className={styles.driveValue}>{CHARACTER_KIND_LABELS[sheet.baseKind]}</span>
+                <span className={styles.driveValue}>{characterKindLabel(viewSheet.baseKind, language)}</span>
               )}
             </div>
           </div>
 
-          {sheet.events.length === 0 && !isEditing && <p className={styles.emptyHint}>Событий не добавлено.</p>}
-          {sheet.events.map(event => (
+          {sheet.events.length === 0 && !isEditing && <p className={styles.emptyHint}>{s.noEvents}</p>}
+          {isEditing && sheet.events.map(event => (
             <div key={event.id} className={styles.timelineEventRow}>
-              {isEditing ? (
-                <>
-                  <div className={styles.timelineEventFields}>
-                    <input
-                      type="number"
-                      className={styles.timelineYearInput}
-                      value={event.year}
-                      onChange={changeEvent => updateEvent(event.id, { year: Number(changeEvent.target.value) })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Что случилось"
-                      value={event.title}
-                      onChange={changeEvent => updateEvent(event.id, { title: changeEvent.target.value })}
-                    />
-                    <select
-                      value={event.kind ?? ''}
-                      onChange={changeEvent => updateEvent(event.id, {
-                        kind: changeEvent.target.value ? changeEvent.target.value as CharacterKind : undefined,
-                      })}
-                    >
-                      <option value="">Вид: не менять</option>
-                      {(Object.keys(CHARACTER_KIND_LABELS) as CharacterKind[]).map(kind => (
-                        <option key={kind} value={kind}>Стал(а): {CHARACTER_KIND_LABELS[kind]}</option>
-                      ))}
-                    </select>
-                    <select
-                      value={event.alive === undefined ? '' : String(event.alive)}
-                      onChange={changeEvent => updateEvent(event.id, {
-                        alive: changeEvent.target.value === '' ? undefined : changeEvent.target.value === 'true',
-                      })}
-                    >
-                      <option value="">Статус: не менять</option>
-                      <option value="false">Погиб(ла)</option>
-                      <option value="true">Жив(а) / воскрес(ла)</option>
-                    </select>
-                    <button
-                      type="button"
-                      className={styles.removeButton}
-                      onClick={() => removeEvent(event.id)}
-                      aria-label="Удалить событие"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <textarea
-                    rows={2}
-                    placeholder="Описание события"
-                    value={event.description}
-                    onChange={changeEvent => updateEvent(event.id, { description: changeEvent.target.value })}
-                  />
-                </>
-              ) : (
-                <div className={styles.timelineEventView}>
-                  <span className={styles.timelineYearBadge}>{event.year}</span>
-                  <div>
-                    <p className={styles.timelineEventTitle}>
-                      {event.title || 'Событие'}
-                      {event.kind && ` — стал(а) ${CHARACTER_KIND_LABELS[event.kind].toLowerCase()}`}
-                      {event.alive === false && ' — погиб(ла)'}
-                      {event.alive === true && ' — жив(а)'}
-                    </p>
-                    {event.description && <p className={styles.timelineEventDescription}>{event.description}</p>}
-                  </div>
+              <div className={styles.timelineEventFields}>
+                <input
+                  type="number"
+                  className={styles.timelineYearInput}
+                  value={event.year}
+                  onChange={changeEvent => updateEvent(event.id, { year: Number(changeEvent.target.value) })}
+                />
+                <input
+                  type="text"
+                  placeholder={s.eventWhatHappened}
+                  value={event.title}
+                  onChange={changeEvent => updateEvent(event.id, { title: changeEvent.target.value })}
+                />
+                <select
+                  value={event.kind ?? ''}
+                  onChange={changeEvent => updateEvent(event.id, {
+                    kind: changeEvent.target.value ? changeEvent.target.value as CharacterKind : undefined,
+                  })}
+                >
+                  <option value="">{s.eventKindNoChange}</option>
+                  {(Object.keys(CHARACTER_KIND_LABELS) as CharacterKind[]).map(kind => (
+                    <option key={kind} value={kind}>{s.eventBecame(characterKindLabel(kind, language))}</option>
+                  ))}
+                </select>
+                <select
+                  value={event.alive === undefined ? '' : String(event.alive)}
+                  onChange={changeEvent => updateEvent(event.id, {
+                    alive: changeEvent.target.value === '' ? undefined : changeEvent.target.value === 'true',
+                  })}
+                >
+                  <option value="">{s.eventStatusNoChange}</option>
+                  <option value="false">{s.eventDied}</option>
+                  <option value="true">{s.eventAliveAgain}</option>
+                </select>
+                <button
+                  type="button"
+                  className={styles.removeButton}
+                  onClick={() => removeEvent(event.id)}
+                  aria-label={s.ariaRemoveEvent}
+                >
+                  ×
+                </button>
+              </div>
+              <textarea
+                rows={2}
+                placeholder={s.eventDescriptionPlaceholder}
+                value={event.description}
+                onChange={changeEvent => updateEvent(event.id, { description: changeEvent.target.value })}
+              />
+            </div>
+          ))}
+          {!isEditing && viewSheet.events.map(event => (
+            <div key={event.id} className={styles.timelineEventRow}>
+              <div className={styles.timelineEventView}>
+                <span className={styles.timelineYearBadge}>{event.year}</span>
+                <div>
+                  <p className={styles.timelineEventTitle}>
+                    {event.title || s.eventFallbackTitle}
+                    {event.kind && s.eventBecameSuffix(characterKindLabel(event.kind, language))}
+                    {event.alive === false && s.eventDiedSuffix}
+                    {event.alive === true && s.eventAliveSuffix}
+                  </p>
+                  {event.description && <p className={styles.timelineEventDescription}>{event.description}</p>}
                 </div>
-              )}
+              </div>
             </div>
           ))}
           {isEditing && (
-            <button type="button" className={styles.addButton} onClick={addEvent}>+ Событие</button>
+            <button type="button" className={styles.addButton} onClick={addEvent}>{s.addEventButton}</button>
           )}
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Амбиция и Желание</h3>
+          <h3 className={styles.sectionTitle}>{s.ambitionDesireHeading}</h3>
           <div className={styles.driveGrid}>
             <div className={styles.driveRow}>
-              <span className={styles.driveLabel}>Амбиция</span>
+              <span className={styles.driveLabel}>{s.ambitionLabel}</span>
               {isEditing ? (
                 <input type="text" value={sheet.ambition} onChange={event => patchSheet({ ambition: event.target.value })} />
               ) : (
-                <span className={styles.driveValue}>{sheet.ambition || '—'}</span>
+                <span className={styles.driveValue}>{viewSheet.ambition || s.dash}</span>
               )}
             </div>
             <div className={styles.driveRow}>
-              <span className={styles.driveLabel}>Желание</span>
+              <span className={styles.driveLabel}>{s.desireLabel}</span>
               {isEditing ? (
                 <input type="text" value={sheet.desire} onChange={event => patchSheet({ desire: event.target.value })} />
               ) : (
-                <span className={styles.driveValue}>{sheet.desire || '—'}</span>
+                <span className={styles.driveValue}>{viewSheet.desire || s.dash}</span>
               )}
             </div>
           </div>
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Атрибуты</h3>
+          <h3 className={styles.sectionTitle}>{s.attributesHeading}</h3>
           <div className={styles.traitGrid}>
             {ATTRIBUTE_GROUPS.map(group => (
               <div key={group.title}>
-                <p className={styles.traitGroupTitle}>{group.title}</p>
+                <p className={styles.traitGroupTitle}>{groupTitle(group.title, language)}</p>
                 {group.keys.map(([key, label]) => (
                   <div key={key} className={styles.traitRow}>
-                    <span>{label}</span>
+                    <span>{attributeLabel(key, language, label)}</span>
                     <DotRating
                       value={sheet.attributes[key] ?? 0}
                       max={DOT_MAX}
@@ -435,14 +446,14 @@ export default function CharacterPanel({
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Навыки</h3>
+          <h3 className={styles.sectionTitle}>{s.skillsHeading}</h3>
           <div className={styles.traitGrid}>
             {SKILL_GROUPS.map(group => (
               <div key={group.title}>
-                <p className={styles.traitGroupTitle}>{group.title}</p>
+                <p className={styles.traitGroupTitle}>{groupTitle(group.title, language)}</p>
                 {group.keys.map(([key, label]) => (
                   <div key={key} className={styles.traitRow}>
-                    <span>{label}</span>
+                    <span>{skillLabel(key, language, label)}</span>
                     <DotRating
                       value={sheet.skills[key] ?? 0}
                       max={DOT_MAX}
@@ -457,63 +468,63 @@ export default function CharacterPanel({
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Дисциплины</h3>
-          {sheet.disciplines.length === 0 && !isEditing && <p className={styles.emptyHint}>Дисциплины не указаны.</p>}
-          {sheet.disciplines.map(discipline => (
+          <h3 className={styles.sectionTitle}>{s.disciplinesHeading}</h3>
+          {sheet.disciplines.length === 0 && !isEditing && <p className={styles.emptyHint}>{s.noDisciplines}</p>}
+          {isEditing && sheet.disciplines.map(discipline => (
             <div key={discipline.id} className={styles.disciplineRow}>
-              {isEditing ? (
-                <input
-                  type="text"
-                  className={styles.disciplineNameInput}
-                  placeholder="Название дисциплины"
-                  value={discipline.name}
-                  onChange={event => updateDiscipline(discipline.id, { name: event.target.value })}
-                />
-              ) : (
-                <span className={styles.disciplineName}>{discipline.name || '—'}</span>
-              )}
+              <input
+                type="text"
+                className={styles.disciplineNameInput}
+                placeholder={s.disciplineNamePlaceholder}
+                value={discipline.name}
+                onChange={event => updateDiscipline(discipline.id, { name: event.target.value })}
+              />
               <DotRating
                 value={discipline.level}
                 max={DOT_MAX}
-                onChange={isEditing ? value => updateDiscipline(discipline.id, { level: value }) : undefined}
+                onChange={value => updateDiscipline(discipline.id, { level: value })}
               />
-              {isEditing && (
-                <button
-                  type="button"
-                  className={styles.removeButton}
-                  onClick={() => removeDiscipline(discipline.id)}
-                  aria-label="Удалить дисциплину"
-                >
-                  ×
-                </button>
-              )}
+              <button
+                type="button"
+                className={styles.removeButton}
+                onClick={() => removeDiscipline(discipline.id)}
+                aria-label={s.ariaRemoveDiscipline}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+          {!isEditing && viewSheet.disciplines.map(discipline => (
+            <div key={discipline.id} className={styles.disciplineRow}>
+              <span className={styles.disciplineName}>{discipline.name || s.dash}</span>
+              <DotRating value={discipline.level} max={DOT_MAX} />
             </div>
           ))}
           {isEditing && (
-            <button type="button" className={styles.addButton} onClick={addDiscipline}>+ Дисциплина</button>
+            <button type="button" className={styles.addButton} onClick={addDiscipline}>{s.addDisciplineButton}</button>
           )}
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Трекеры</h3>
+          <h3 className={styles.sectionTitle}>{s.trackersHeading}</h3>
           <div className={styles.trackerGrid}>
             <div className={styles.trackerRow}>
-              <span className={styles.trackerLabel}>Здоровье</span>
-              <TrackBoxes track={sheet.health} onChange={isEditing ? value => patchSheet({ health: value }) : undefined} />
+              <span className={styles.trackerLabel}>{s.healthLabel}</span>
+              <TrackBoxes track={sheet.health} language={language} onChange={isEditing ? value => patchSheet({ health: value }) : undefined} />
             </div>
             <div className={styles.trackerRow}>
-              <span className={styles.trackerLabel}>Сила воли</span>
-              <TrackBoxes track={sheet.willpower} onChange={isEditing ? value => patchSheet({ willpower: value }) : undefined} />
+              <span className={styles.trackerLabel}>{s.willpowerLabel}</span>
+              <TrackBoxes track={sheet.willpower} language={language} onChange={isEditing ? value => patchSheet({ willpower: value }) : undefined} />
             </div>
             <div className={styles.trackerRow}>
-              <span className={styles.trackerLabel}>Человечность</span>
+              <span className={styles.trackerLabel}>{s.humanityLabel}</span>
               <DotRating
                 value={sheet.humanity}
                 max={HUMANITY_MAX}
                 onChange={isEditing ? value => patchSheet({ humanity: value }) : undefined}
               />
               <div className={styles.stainsRow}>
-                Пятна:
+                {s.stainsLabel}
                 <DotRating
                   value={sheet.stains}
                   max={STAINS_MAX}
@@ -523,7 +534,7 @@ export default function CharacterPanel({
               </div>
             </div>
             <div className={styles.trackerRow}>
-              <span className={styles.trackerLabel}>Потенция крови</span>
+              <span className={styles.trackerLabel}>{s.bloodPotencyLabel}</span>
               <DotRating
                 value={sheet.bloodPotency}
                 max={BLOOD_POTENCY_MAX}
@@ -534,7 +545,7 @@ export default function CharacterPanel({
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Точки опоры и убеждения</h3>
+          <h3 className={styles.sectionTitle}>{s.touchstonesHeading}</h3>
           {isEditing ? (
             <textarea
               rows={3}
@@ -544,33 +555,33 @@ export default function CharacterPanel({
               style={{ width: '100%' }}
             />
           ) : (
-            <p className={styles.longText}>{sheet.touchstones || '—'}</p>
+            <p className={styles.longText}>{viewSheet.touchstones || s.dash}</p>
           )}
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Достоинства и недостатки</h3>
+          <h3 className={styles.sectionTitle}>{s.meritsFlawsHeading}</h3>
           {isEditing ? (
             <>
               <div className={styles.field}>
-                <label>Достоинства</label>
+                <label>{s.meritsLabel}</label>
                 <textarea rows={3} value={sheet.merits} onChange={event => patchSheet({ merits: event.target.value })} />
               </div>
               <div className={styles.field}>
-                <label>Недостатки</label>
+                <label>{s.flawsLabel}</label>
                 <textarea rows={3} value={sheet.flaws} onChange={event => patchSheet({ flaws: event.target.value })} />
               </div>
             </>
           ) : (
             <>
-              <p className={styles.longText}>{sheet.merits || '—'}</p>
-              {sheet.flaws && <p className={styles.longText}>{sheet.flaws}</p>}
+              <p className={styles.longText}>{viewSheet.merits || s.dash}</p>
+              {viewSheet.flaws && <p className={styles.longText}>{viewSheet.flaws}</p>}
             </>
           )}
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Предыстория</h3>
+          <h3 className={styles.sectionTitle}>{s.backstoryHeading}</h3>
           {isEditing ? (
             <textarea
               rows={8}
@@ -580,17 +591,17 @@ export default function CharacterPanel({
               style={{ width: '100%' }}
             />
           ) : (
-            <p className={styles.longText}>{description || '—'}</p>
+            <p className={styles.longText}>{displayCharacter.description || s.dash}</p>
           )}
         </div>
 
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Галерея</h3>
-          {sheet.gallery.length === 0 && !isEditor && <p className={styles.emptyHint}>Фото не добавлены.</p>}
+          <h3 className={styles.sectionTitle}>{s.galleryHeading}</h3>
+          {sheet.gallery.length === 0 && !isEditor && <p className={styles.emptyHint}>{s.noPhotosViewer}</p>}
           {sheet.gallery.length === 0 && isEditor && (
-            <p className={styles.emptyHint}>Дом, питомцы, интересные события — добавьте первое фото.</p>
+            <p className={styles.emptyHint}>{s.noPhotosEditor}</p>
           )}
-          {sheet.gallery.length > 0 && (
+          {isEditor && sheet.gallery.length > 0 && (
             <div className={styles.galleryGrid}>
               {sheet.gallery.map(item => (
                 <div key={item.id} className={styles.galleryCard}>
@@ -599,45 +610,53 @@ export default function CharacterPanel({
                     className={styles.galleryThumb}
                     onClick={() => setLightboxUrl(getGalleryImageUrl(item.imagePath))}
                   >
-                    <img src={getGalleryImageUrl(item.imagePath)} alt={item.caption || 'Фото из галереи'} />
+                    <img src={getGalleryImageUrl(item.imagePath)} alt={item.caption || s.fallbackAlt} />
                   </button>
-                  {isEditor ? (
-                    <>
-                      <div className={styles.galleryCardRow}>
-                        <select
-                          className={styles.galleryCategorySelect}
-                          value={item.category}
-                          onChange={event => handleGalleryCategoryChange(item, event.target.value as GalleryCategory)}
-                        >
-                          {(Object.keys(GALLERY_CATEGORY_LABELS) as GalleryCategory[]).map(category => (
-                            <option key={category} value={category}>{GALLERY_CATEGORY_LABELS[category]}</option>
-                          ))}
-                        </select>
-                        <button
-                          type="button"
-                          className={styles.removeButton}
-                          onClick={() => handleRemoveGalleryItem(item.id)}
-                          aria-label="Удалить фото"
-                          disabled={isBusy}
-                        >
-                          ×
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        className={styles.galleryCaptionInput}
-                        placeholder="Подпись"
-                        value={item.caption}
-                        onChange={event => updateGalleryDraft(item.id, { caption: event.target.value })}
-                        onBlur={() => commitGalleryCaption(item)}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <span className={styles.galleryCategoryBadge}>{GALLERY_CATEGORY_LABELS[item.category]}</span>
-                      {item.caption && <p className={styles.galleryCaption}>{item.caption}</p>}
-                    </>
-                  )}
+                  <div className={styles.galleryCardRow}>
+                    <select
+                      className={styles.galleryCategorySelect}
+                      value={item.category}
+                      onChange={event => handleGalleryCategoryChange(item, event.target.value as GalleryCategory)}
+                    >
+                      {(Object.keys(GALLERY_CATEGORY_LABELS) as GalleryCategory[]).map(category => (
+                        <option key={category} value={category}>{galleryCategoryLabel(category, language)}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      className={styles.removeButton}
+                      onClick={() => handleRemoveGalleryItem(item.id)}
+                      aria-label={s.ariaRemovePhoto}
+                      disabled={isBusy}
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    className={styles.galleryCaptionInput}
+                    placeholder={s.captionPlaceholder}
+                    value={item.caption}
+                    onChange={event => updateGalleryDraft(item.id, { caption: event.target.value })}
+                    onBlur={() => commitGalleryCaption(item)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {!isEditor && viewSheet.gallery.length > 0 && (
+            <div className={styles.galleryGrid}>
+              {viewSheet.gallery.map(item => (
+                <div key={item.id} className={styles.galleryCard}>
+                  <button
+                    type="button"
+                    className={styles.galleryThumb}
+                    onClick={() => setLightboxUrl(getGalleryImageUrl(item.imagePath))}
+                  >
+                    <img src={getGalleryImageUrl(item.imagePath)} alt={item.caption || s.fallbackAlt} />
+                  </button>
+                  <span className={styles.galleryCategoryBadge}>{galleryCategoryLabel(item.category, language)}</span>
+                  {item.caption && <p className={styles.galleryCaption}>{item.caption}</p>}
                 </div>
               ))}
             </div>
@@ -657,7 +676,7 @@ export default function CharacterPanel({
                 onClick={() => galleryFileInputRef.current?.click()}
                 disabled={isBusy}
               >
-                + Фото в галерею
+                {s.addGalleryPhoto}
               </button>
             </>
           )}
@@ -670,7 +689,7 @@ export default function CharacterPanel({
               {isEditing ? (
                 <>
                   <button type="button" className={styles.primaryButton} onClick={handleSave} disabled={isBusy}>
-                    Сохранить
+                    {t(language).common.save}
                   </button>
                   <button
                     type="button"
@@ -683,16 +702,16 @@ export default function CharacterPanel({
                     }}
                     disabled={isBusy}
                   >
-                    Отмена
+                    {t(language).common.cancel}
                   </button>
                 </>
               ) : (
                 <>
                   <button type="button" className={styles.secondaryButton} onClick={() => setIsEditing(true)}>
-                    Редактировать
+                    {t(language).common.edit}
                   </button>
                   <button type="button" className={styles.dangerButton} onClick={handleDelete} disabled={isBusy}>
-                    Удалить
+                    {t(language).common.delete}
                   </button>
                 </>
               )}

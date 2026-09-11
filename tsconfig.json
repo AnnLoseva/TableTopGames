@@ -38,6 +38,7 @@
   ],
   "exclude": [
     "node_modules",
-    "src/games/vampires/supabase/functions"
+    "src/games/vampires/supabase/functions",
+    "src/features/characters_map/supabase/functions"
   ]
 }

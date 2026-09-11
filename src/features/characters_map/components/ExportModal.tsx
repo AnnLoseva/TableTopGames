@@ -1,17 +1,20 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { t, type MapLanguage } from '../i18n'
 import modalStyles from './Modal.module.css'
 import styles from './ExportModal.module.css'
 
 type Props = {
   text: string
+  language: MapLanguage
   onClose: () => void
 }
 
 type CopyStatus = 'idle' | 'copied' | 'failed'
 
-export default function ExportModal({ text, onClose }: Props) {
+export default function ExportModal({ text, language, onClose }: Props) {
+  const s = t(language).exportModal
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -43,28 +46,23 @@ export default function ExportModal({ text, onClose }: Props) {
   return (
     <div className={modalStyles.overlay} onClick={onClose}>
       <div className={`${modalStyles.modal} ${styles.modal}`} onClick={event => event.stopPropagation()}>
-        <h2 className={modalStyles.title}>Экспорт карты в текст</h2>
-        <p className={styles.hint}>
-          Скопируйте текст и вставьте его в чат с ИИ или куда угодно ещё — он не видит картинку,
-          но так поймёт, кто с кем как связан.
-        </p>
+        <h2 className={modalStyles.title}>{s.title}</h2>
+        <p className={styles.hint}>{s.hint}</p>
         <textarea ref={textareaRef} className={styles.textarea} readOnly value={text} onFocus={event => event.target.select()} />
         <div className={modalStyles.actions}>
           <button type="button" className={modalStyles.primaryButton} onClick={handleCopy}>
-            Скопировать
+            {s.copyButton}
           </button>
           <button type="button" className={modalStyles.secondaryButton} onClick={handleDownload}>
-            Скачать .txt
+            {s.downloadButton}
           </button>
           <button type="button" className={modalStyles.secondaryButton} onClick={onClose}>
-            Закрыть
+            {s.closeButton}
           </button>
         </div>
-        {copyStatus === 'copied' && <p className={styles.copiedNote}>Скопировано.</p>}
+        {copyStatus === 'copied' && <p className={styles.copiedNote}>{s.copiedNote}</p>}
         {copyStatus === 'failed' && (
-          <p className={styles.copyFailedNote}>
-            Не удалось скопировать автоматически — текст выделен, скопируйте его сочетанием клавиш.
-          </p>
+          <p className={styles.copyFailedNote}>{s.copyFailedNote}</p>
         )}
       </div>
     </div>

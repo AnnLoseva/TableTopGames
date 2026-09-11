@@ -201,3 +201,33 @@ create policy "Only the owner account can delete character map image files"
     bucket_id = 'characters-map-images'
     and (select auth.uid()) = '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid
   );
+
+-- Added 2026-09-11 (see DECISIONS.md): cached English machine translation of
+-- owner-authored free text, so the map can be viewed in English with zero
+-- live API calls for non-owner viewers. Nullable — a row with no cached
+-- translation (or a stale one, detected by a content hash, not `updated_at`
+-- — that timestamp also bumps on a plain canvas drag) just falls back to the
+-- original Russian for that field; see `localizeCharacter`/
+-- `localizeRelationship` in src/features/characters_map/i18n.ts. Populated
+-- only by the owner account, while in edit mode with the map set to
+-- English, via the `characters-map-translate` Edge Function
+-- (src/features/characters_map/supabase/functions/characters-map-translate).
+-- No RLS changes needed — this is just another column on rows already
+-- covered by the existing owner-only UPDATE policies above.
+alter table public.characters_map_characters
+  add column if not exists translation_en jsonb;
+
+alter table public.characters_map_characters
+  drop constraint if exists characters_map_characters_translation_en_check;
+alter table public.characters_map_characters
+  add constraint characters_map_characters_translation_en_check
+  check (translation_en is null or pg_column_size(translation_en) <= 50000);
+
+alter table public.characters_map_relationships
+  add column if not exists translation_en jsonb;
+
+alter table public.characters_map_relationships
+  drop constraint if exists characters_map_relationships_translation_en_check;
+alter table public.characters_map_relationships
+  add constraint characters_map_relationships_translation_en_check
+  check (translation_en is null or pg_column_size(translation_en) <= 20000);

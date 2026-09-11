@@ -5,7 +5,7 @@ import type { MapCharacter, MapCharacterInput, MapCharacterPatch, MapCharacterRo
 
 type MapClient = ReturnType<typeof createCharactersMapClient>
 
-const CHARACTER_COLUMNS = 'id, user_id, name, description, image_path, position_x, position_y, sheet, created_at, updated_at'
+const CHARACTER_COLUMNS = 'id, user_id, name, description, image_path, position_x, position_y, sheet, translation_en, created_at, updated_at'
 
 async function requireUserId(client: MapClient): Promise<string> {
   const { data, error } = await client.auth.getUser()
@@ -57,6 +57,7 @@ export async function updateCharacter(
   if (patch.positionX !== undefined) payload.position_x = patch.positionX
   if (patch.positionY !== undefined) payload.position_y = patch.positionY
   if (patch.sheet !== undefined) payload.sheet = patch.sheet
+  if (patch.translationEn !== undefined) payload.translation_en = patch.translationEn
 
   const { data, error } = await client
     .from(CHARACTERS_MAP_CHARACTERS_TABLE)

@@ -2,14 +2,17 @@
 
 import { useState } from 'react'
 import { CHARACTER_DESCRIPTION_MAX_LENGTH, CHARACTER_NAME_MAX_LENGTH } from '../constants'
+import { t, type MapLanguage } from '../i18n'
 import styles from './Modal.module.css'
 
 type Props = {
+  language: MapLanguage
   onClose: () => void
   onCreate: (input: { name: string; description: string; file: File | null }) => Promise<void>
 }
 
-export default function AddCharacterModal({ onClose, onCreate }: Props) {
+export default function AddCharacterModal({ language, onClose, onCreate }: Props) {
+  const s = t(language).addCharacterModal
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -19,7 +22,7 @@ export default function AddCharacterModal({ onClose, onCreate }: Props) {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     if (!name.trim()) {
-      setError('Введите имя персонажа.')
+      setError(s.errorNameRequired)
       return
     }
     setIsBusy(true)
@@ -28,7 +31,7 @@ export default function AddCharacterModal({ onClose, onCreate }: Props) {
       await onCreate({ name: name.trim(), description, file })
       onClose()
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Не удалось создать персонажа.')
+      setError(createError instanceof Error ? createError.message : s.errorCreateFailed)
       setIsBusy(false)
     }
   }
@@ -36,10 +39,10 @@ export default function AddCharacterModal({ onClose, onCreate }: Props) {
   return (
     <div className={styles.overlay} onClick={onClose}>
       <form className={styles.modal} onClick={event => event.stopPropagation()} onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Новый персонаж</h2>
+        <h2 className={styles.title}>{s.title}</h2>
 
         <div className={styles.field}>
-          <label htmlFor="new-character-name">Имя</label>
+          <label htmlFor="new-character-name">{s.nameLabel}</label>
           <input
             id="new-character-name"
             type="text"
@@ -51,7 +54,7 @@ export default function AddCharacterModal({ onClose, onCreate }: Props) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="new-character-description">Описание</label>
+          <label htmlFor="new-character-description">{s.descriptionLabel}</label>
           <textarea
             id="new-character-description"
             rows={5}
@@ -62,7 +65,7 @@ export default function AddCharacterModal({ onClose, onCreate }: Props) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="new-character-image">Фото (необязательно)</label>
+          <label htmlFor="new-character-image">{s.imageLabel}</label>
           <input
             id="new-character-image"
             type="file"
@@ -75,10 +78,10 @@ export default function AddCharacterModal({ onClose, onCreate }: Props) {
 
         <div className={styles.actions}>
           <button type="submit" className={styles.primaryButton} disabled={isBusy}>
-            {isBusy ? 'Создаю…' : 'Создать'}
+            {isBusy ? s.creating : s.create}
           </button>
           <button type="button" className={styles.secondaryButton} onClick={onClose} disabled={isBusy}>
-            Отмена
+            {s.cancel}
           </button>
         </div>
       </form>

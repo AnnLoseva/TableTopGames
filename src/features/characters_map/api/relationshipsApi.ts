@@ -5,7 +5,7 @@ import type { MapRelationship, MapRelationshipInput, MapRelationshipPatch, MapRe
 
 type MapClient = ReturnType<typeof createCharactersMapClient>
 
-const RELATIONSHIP_COLUMNS = 'id, user_id, from_character_id, to_character_id, kind, label, description, color, sort_order, events, created_at, updated_at'
+const RELATIONSHIP_COLUMNS = 'id, user_id, from_character_id, to_character_id, kind, label, description, color, sort_order, events, translation_en, created_at, updated_at'
 
 async function requireUserId(client: MapClient): Promise<string> {
   const { data, error } = await client.auth.getUser()
@@ -58,6 +58,7 @@ export async function updateRelationship(
   if (patch.description !== undefined) payload.description = patch.description
   if (patch.color !== undefined) payload.color = patch.color
   if (patch.events !== undefined) payload.events = patch.events
+  if (patch.translationEn !== undefined) payload.translation_en = patch.translationEn
 
   const { data, error } = await client
     .from(CHARACTERS_MAP_RELATIONSHIPS_TABLE)

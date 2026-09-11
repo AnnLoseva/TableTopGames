@@ -21,7 +21,19 @@
   label/color/description. Also has a per-character **photo gallery**
   (2026-09-09) — house/pet/event/other photos separate from the portrait,
   stored in `sheet.gallery`, editing persists immediately (not staged behind
-  the sheet's Save/Cancel). See `DECISIONS.md` (2026-09-09/2026-09-10).
+  the sheet's Save/Cancel). And a **RU/EN language toggle** (2026-09-11,
+  own `?lang=en`-linkable state, self-contained — does not share the VTM
+  domain's i18n) — static UI chrome from a typed dictionary in the new
+  `i18n.ts`; owner-authored content (names, sheets, events, gallery
+  captions, relationship text) is translated by a new
+  `characters-map-translate` Edge Function (DeepSeek) only when the owner
+  is editing in English, cached in `translation_en` on both tables
+  (staleness via a content hash, not `updated_at` — that also bumps on a
+  plain canvas drag), with per-field fallback to Russian when uncached. The
+  plain-text export now dumps the full character sheet (attributes/skills/
+  disciplines/trackers/timeline/gallery), not just a one-line summary, and
+  follows the selected language. See `DECISIONS.md`
+  (2026-09-09/2026-09-10/2026-09-11).
 - **D&D journal, new domain (2026-07-31)** — `/dnd/journal` (`src/games/dnd/journal/*`)
   is a new isolated game domain, live against Supabase (`dnd_journal_pages`,
   `dnd_journal_folders`, `dnd_journal_images`, public `dnd-journal-images`
@@ -154,6 +166,12 @@ _(none recorded — add temporary bugs here only while being worked, then remove
   edit experience (add/edit/delete character, portrait upload, gallery photo
   add/caption/category/remove, add/edit/delete relationship,
   drag-to-reposition) — same credential limitation as above.
+- Characters map: have the owner switch to English while in edit mode and
+  confirm the real translate-and-persist round trip (a live DeepSeek call
+  populating `translation_en`, and that editing a field afterward correctly
+  re-triggers translation next time) — same credential limitation; the
+  static RU/EN chrome and the cached/fallback display paths were verified
+  without her login (see the 2026-09-11 DECISIONS.md entry).
 
 ## Do not touch casually
 - `public/vampires/main.js`, `public/vampires/old-sheet.html` — read `workflows/legacy-edit-protocol.md`.

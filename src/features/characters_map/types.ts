@@ -99,6 +99,37 @@ export type CharacterSheet = {
   gallery: GalleryItem[]
 }
 
+/**
+ * Cached English machine translation of a character's owner-authored free
+ * text, keyed by discipline/event/gallery-item id so it survives reordering.
+ * `sourceHash` is a content hash of the fields below (not `updatedAt` —
+ * that timestamp also bumps on a plain canvas drag) used to detect when the
+ * Russian source has changed since this was generated. Any field the
+ * translator didn't return is simply absent/empty, so display code should
+ * fall back to the Russian original per-field rather than assume this is
+ * complete. See `localizeCharacter` in `i18n.ts`.
+ */
+export type CharacterTranslation = {
+  name: string
+  description: string
+  concept: string
+  clan: string
+  generation: string
+  predatorType: string
+  sire: string
+  ambition: string
+  desire: string
+  touchstones: string
+  merits: string
+  flaws: string
+  birthDateLabel: string
+  disciplines: Record<string, string>
+  events: Record<string, { title: string; description: string }>
+  gallery: Record<string, string>
+  sourceHash: string
+  translatedAt: string
+}
+
 export type MapCharacter = {
   id: string
   name: string
@@ -107,6 +138,7 @@ export type MapCharacter = {
   positionX: number
   positionY: number
   sheet: CharacterSheet
+  translationEn: CharacterTranslation | null
   createdAt: string
   updatedAt: string
 }
@@ -120,6 +152,7 @@ export type MapCharacterRow = {
   position_x: number
   position_y: number
   sheet: unknown
+  translation_en: unknown
   created_at: string
   updated_at: string
 }
@@ -133,7 +166,20 @@ export type MapCharacterInput = {
   sheet?: CharacterSheet
 }
 
-export type MapCharacterPatch = Partial<MapCharacterInput>
+export type MapCharacterPatch = Partial<MapCharacterInput> & {
+  translationEn?: CharacterTranslation | null
+}
+
+/** Cached English translation of a relationship's label/description and its
+ * event overrides (by event id, only for whichever of title/label/description
+ * that event itself sets). See `CharacterTranslation` for the staleness model. */
+export type RelationshipTranslation = {
+  label: string
+  description: string
+  events: Record<string, { title?: string; label?: string; description?: string }>
+  sourceHash: string
+  translatedAt: string
+}
 
 export type MapRelationship = {
   id: string
@@ -145,6 +191,7 @@ export type MapRelationship = {
   color: string | null
   sortOrder: number
   events: RelationshipEvent[]
+  translationEn: RelationshipTranslation | null
   createdAt: string
   updatedAt: string
 }
@@ -160,6 +207,7 @@ export type MapRelationshipRow = {
   color: string | null
   sort_order: number
   events: unknown
+  translation_en: unknown
   created_at: string
   updated_at: string
 }
@@ -175,4 +223,5 @@ export type MapRelationshipInput = {
 
 export type MapRelationshipPatch = Partial<Omit<MapRelationshipInput, 'fromCharacterId' | 'toCharacterId'>> & {
   events?: RelationshipEvent[]
+  translationEn?: RelationshipTranslation | null
 }

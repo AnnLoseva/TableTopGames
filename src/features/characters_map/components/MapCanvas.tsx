@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { t, type MapLanguage } from '../i18n'
 import { isCharacterBornAt, resolveCharacterState, resolveRelationshipState } from '../timeline'
 import type { MapCharacter, MapRelationship } from '../types'
 import styles from './MapCanvas.module.css'
@@ -190,6 +191,7 @@ type Props = {
   characters: MapCharacter[]
   relationships: MapRelationship[]
   isEditor: boolean
+  language: MapLanguage
   /** null = timeline untouched: show everyone's latest state, nobody hidden by birth year. */
   timelineYear: number | null
   selectedCharacterId: string | null
@@ -207,6 +209,7 @@ export default function MapCanvas({
   characters,
   relationships,
   isEditor,
+  language,
   timelineYear,
   selectedCharacterId,
   selectedRelationshipId,
@@ -216,6 +219,7 @@ export default function MapCanvas({
   onCreateRelationshipRequest,
   getImageUrl,
 }: Props) {
+  const s = t(language).mapCanvas
   const containerRef = useRef<HTMLDivElement>(null)
   const [view, setView] = useState<View>({ x: 0, y: 0, scale: 1 })
   const hasCenteredRef = useRef(false)
@@ -608,7 +612,7 @@ export default function MapCanvas({
       onPointerMove={handleContainerPointerMove}
     >
       {connectFromCharacter && (
-        <p className={styles.connectHint}>Нажмите на персонажа, к которому ведёт связь. Esc — отмена.</p>
+        <p className={styles.connectHint}>{s.connectHint}</p>
       )}
       {contextMenu && (
         <div
@@ -621,7 +625,7 @@ export default function MapCanvas({
             className={styles.contextMenuButton}
             onClick={() => handleStartConnect(contextMenu.characterId)}
           >
-            Создать связь
+            {s.createRelationshipButton}
           </button>
         </div>
       )}

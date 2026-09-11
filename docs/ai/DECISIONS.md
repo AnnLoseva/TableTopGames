@@ -1,5 +1,91 @@
 # Decisions
 
+## 2026-09-11 — `/characters_map`: RU/EN language toggle with owner-triggered, cached DeepSeek translation; full-sheet plain-text export
+
+**Area:** `src/features/characters_map/{i18n.ts (new),types.ts,export.ts,timeline.ts,mappers.ts,api/{charactersApi,relationshipsApi,translateApi (new)}.ts,routes/CharactersMapRoute.tsx,components/*}`, new Edge Function `characters-map-translate`, Supabase schema
+
+**Decision:** Added a self-contained RU/EN toggle to this domain, independent
+of the VTM domain's own `LanguageProvider` — this feature stays
+architecturally isolated from `src/games/vampires/*`, per the 2026-09-09
+domain-isolation decision, so no i18n code is shared. All static UI chrome
+(buttons/labels/headings/placeholders/errors) comes from a typed `MAP_STRINGS`
+dictionary in the new `i18n.ts`, keyed by `MapLanguage = 'ru' | 'en'`; fixed
+sheet vocabulary (attribute/skill/species/gallery-category names) gets a
+hand-translated EN counterpart there too, reusing the RU key order already in
+`constants.ts`.
+
+Dynamic, owner-authored content (names, descriptions, every free-text sheet
+field, discipline names, timeline event text, gallery captions, relationship
+labels/descriptions and their event overrides) is translated on demand by a
+new Edge Function (`characters-map-translate`, DeepSeek, mirrors
+`personal-chronicle-processor`'s `deepSeekCompletion` pattern and reuses its
+already-configured `DEEPSEEK_API_KEY`/`DEEPSEEK_MODEL` secrets — no new
+secrets needed) and cached in a new nullable `translation_en jsonb` column on
+both tables. The function itself checks the caller is the map's own owner
+(`CHARACTERS_MAP_OWNER_AUTH_USER_ID`, hardcoded, mirroring the RLS policies)
+before spending any DeepSeek credits — `verify_jwt` alone isn't enough, since
+the public anon key is itself a validly-signed JWT.
+
+Translation only ever runs client-side when the caller is the owner, in edit
+mode, viewing in English (`isEditor && language === 'en'`) — sequentially,
+one DeepSeek call per stale character/relationship (never in parallel) — and
+only for items whose cached translation is missing or stale. Staleness is a
+content hash (FNV-1a) of just the translatable fields, **not**
+`updatedAt`: `updateCharacter`/`updateRelationship` bump `updated_at` on
+every patch, including a plain canvas drag, which would otherwise mark every
+translation stale on every drag. Every other viewer only ever reads the
+cache, with per-field fallback to the original Russian when nothing is
+cached yet — no live API call, no cost, for anyone but the owner.
+
+`localizeCharacter`/`localizeRelationship` in `i18n.ts` return the same
+`MapCharacter`/`MapRelationship` shape with text leaves swapped, so
+`resolveCharacterState`/`resolveRelationshipState`/`isCharacterBornAt` in
+`timeline.ts` needed **no changes** — they only ever read year/kind/alive/
+color, never match on text. Only `collectTimelineMarks` gained a `language`
+parameter, since it bakes small RU scaffold words ("Рождение:", "событие")
+directly into the labels it returns.
+
+Also extended `export.ts`'s plain-text export from a one-line character
+summary to a full sheet dump (attributes/skills grouped and nonzero-only via
+the existing `ATTRIBUTE_GROUPS`/`SKILL_GROUPS`, disciplines, health/willpower/
+humanity/stains/blood potency, touchstones/merits/flaws, birth + timeline
+events, a caption-only gallery summary — no image URLs), language-aware via
+the same dictionary; the route now passes it already-localized character/
+relationship arrays so its output matches whichever language is selected.
+
+**Reason:** The owner wants to show the map to a psychologist who doesn't
+read Russian, via a shareable English link (`?lang=en`), while continuing to
+author everything in Russian herself, at no ongoing translation cost for
+other viewers.
+
+**Consequences:** `charactersApi.ts`/`relationshipsApi.ts`'s own internal
+error strings (`requireUserId()`, generic create/update/delete-failed
+fallbacks) were deliberately left Russian-only — these are rare, owner-only
+failure paths reachable only if a write is attempted while not actually
+authenticated, and localizing them would mean threading `language` through
+every API call site for negligible benefit. Any new per-character or
+per-relationship free-text field must be added to (a)
+`CharacterTranslation`/`RelationshipTranslation` in `types.ts`, (b)
+`translateApi.ts`'s item-building, and (c) `localizeCharacter`/
+`localizeRelationship`'s hashing and swapping, or it will silently never get
+translated or invalidated. `CHARACTERS_MAP_OWNER_AUTH_USER_ID` is duplicated
+(by necessity) inside the new Edge Function, same as the existing RLS
+policies — keep all three in sync.
+
+**Affected files:** `src/features/characters_map/i18n.ts` (new),
+`src/features/characters_map/types.ts`, `src/features/characters_map/export.ts`,
+`src/features/characters_map/timeline.ts`,
+`src/features/characters_map/mappers.ts`,
+`src/features/characters_map/api/{charactersApi.ts,relationshipsApi.ts,translateApi.ts (new)}`,
+`src/features/characters_map/routes/{CharactersMapRoute.tsx,CharactersMapRoute.module.css}`,
+`src/features/characters_map/components/*.tsx`,
+`src/features/characters_map/supabase/characters_map.sql`,
+`src/features/characters_map/supabase/functions/characters-map-translate/index.ts` (new),
+`tsconfig.json` (excludes the new Edge Function directory, matching the
+existing `src/games/vampires/supabase/functions` exclusion)
+
+**Status:** active
+
 ## 2026-09-10 — `/characters_map`: timeline — dated events change character species/alive state and relationship visibility/color/description
 
 **Area:** `src/features/characters_map/{types.ts,timeline.ts,constants.ts,mappers.ts,api/relationshipsApi.ts,components/{CharacterPanel,RelationshipPanel,MapCanvas,TimelineControl,CharacterRosterModal}.tsx,routes/CharactersMapRoute.tsx}`, Supabase schema

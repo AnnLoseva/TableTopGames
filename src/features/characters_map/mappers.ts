@@ -1,12 +1,14 @@
 import { withSheetDefaults } from './constants'
 import type {
   CharacterSheet,
+  CharacterTranslation,
   MapCharacter,
   MapCharacterRow,
   MapRelationship,
   MapRelationshipRow,
   RelationshipEvent,
   RelationshipKind,
+  RelationshipTranslation,
 } from './types'
 
 export function mapCharacterRow(row: MapCharacterRow): MapCharacter {
@@ -18,6 +20,7 @@ export function mapCharacterRow(row: MapCharacterRow): MapCharacter {
     positionX: row.position_x,
     positionY: row.position_y,
     sheet: withSheetDefaults(row.sheet as Partial<CharacterSheet> | null | undefined),
+    translationEn: (row.translation_en as CharacterTranslation | null) ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }
@@ -38,6 +41,7 @@ export function mapRelationshipRow(row: MapRelationshipRow): MapRelationship {
     color: row.color,
     sortOrder: row.sort_order,
     events: Array.isArray(row.events) ? row.events as RelationshipEvent[] : [],
+    translationEn: (row.translation_en as RelationshipTranslation | null) ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }

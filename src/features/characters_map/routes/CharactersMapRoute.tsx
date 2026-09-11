@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAccount } from '@/platform/account/AccountProvider'
 import {
@@ -18,8 +18,17 @@ import {
   listRelationships,
   updateRelationship,
 } from '../api/relationshipsApi'
+import { translateCharacterToEnglish, translateRelationshipToEnglish } from '../api/translateApi'
 import { CHARACTERS_MAP_OWNER_AUTH_USER_ID, createDefaultCharacterSheet } from '../constants'
 import { exportCharactersMapToText } from '../export'
+import {
+  isCharacterTranslationStale,
+  isRelationshipTranslationStale,
+  localizeCharacter,
+  localizeRelationship,
+  t,
+  type MapLanguage,
+} from '../i18n'
 import { createCharactersMapClient } from '../supabase'
 import { collectTimelineMarks, computeTimelineBounds } from '../timeline'
 import type { CharacterSheet, GalleryItem, MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
@@ -41,6 +50,7 @@ function randomSpawnPosition(index: number): { x: number; y: number } {
 }
 
 const EDIT_MODE_STORAGE_KEY = 'characters-map-edit-mode'
+const LANGUAGE_STORAGE_KEY = 'characters-map-language'
 
 export default function CharactersMapRoute() {
   const { isReady: isAccountReady } = useAccount()
@@ -63,9 +73,12 @@ export default function CharactersMapRoute() {
   const [showExport, setShowExport] = useState(false)
   const [showRoster, setShowRoster] = useState(false)
   const [timelineYear, setTimelineYear] = useState<number | null>(null)
+  const [language, setLanguage] = useState<MapLanguage>('ru')
+  const [translationStatus, setTranslationStatus] = useState<{ done: number; total: number } | null>(null)
 
   const isOwner = authUserId === CHARACTERS_MAP_OWNER_AUTH_USER_ID
   const isEditor = isOwner && editModeOn
+  const s = t(language)
 
   useEffect(() => {
     let cancelled = false
@@ -88,6 +101,22 @@ export default function CharactersMapRoute() {
     })
   }, [])
 
+  // A `?lang=en` link (shared with, say, a non-Russian-reading viewer) wins on
+  // first load and is also remembered, so a reload without the query param
+  // stays in English; otherwise fall back to whatever was last chosen.
+  useEffect(() => {
+    const fromUrl = searchParams.get('lang')
+    if (fromUrl === 'en' || fromUrl === 'ru') {
+      setLanguage(fromUrl)
+      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, fromUrl)
+      return
+    }
+    const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
+    if (stored === 'en') setLanguage('en')
+    // Only ever read once on mount — afterward the toggle button is the only writer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     let cancelled = false
     setIsLoading(true)
@@ -101,7 +130,7 @@ export default function CharactersMapRoute() {
       .catch(error => {
         if (cancelled) return
         console.error('Не удалось загрузить карту персонажей:', error)
-        setLoadError('Не удалось загрузить карту. Попробуйте обновить страницу.')
+        setLoadError(t('ru').loading.loadFailed)
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false)
@@ -118,10 +147,11 @@ export default function CharactersMapRoute() {
     setDidReadInitialParams(true)
   }, [didReadInitialParams, isLoading, searchParams])
 
-  const updateUrl = useCallback((characterId: string | null, relationshipId: string | null) => {
+  const updateUrl = useCallback((characterId: string | null, relationshipId: string | null, lang: MapLanguage) => {
     const params = new URLSearchParams()
     if (characterId) params.set('char', characterId)
     else if (relationshipId) params.set('rel', relationshipId)
+    if (lang === 'en') params.set('lang', 'en')
     const query = params.toString()
     router.replace(query ? `/characters_map?${query}` : '/characters_map', { scroll: false })
   }, [router])
@@ -129,14 +159,20 @@ export default function CharactersMapRoute() {
   const selectCharacter = useCallback((id: string | null) => {
     setSelectedCharacterId(id)
     if (id) setSelectedRelationshipId(null)
-    updateUrl(id, null)
-  }, [updateUrl])
+    updateUrl(id, null, language)
+  }, [updateUrl, language])
 
   const selectRelationship = useCallback((id: string | null) => {
     setSelectedRelationshipId(id)
     if (id) setSelectedCharacterId(null)
-    updateUrl(null, id)
-  }, [updateUrl])
+    updateUrl(null, id, language)
+  }, [updateUrl, language])
+
+  const changeLanguage = useCallback((next: MapLanguage) => {
+    setLanguage(next)
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next)
+    updateUrl(selectedCharacterId, selectedRelationshipId, next)
+  }, [updateUrl, selectedCharacterId, selectedRelationshipId])
 
   const getImageUrl = useCallback((imagePath: string) => getCharacterImageUrl(client, imagePath), [client])
 
@@ -245,6 +281,70 @@ export default function CharactersMapRoute() {
     selectRelationship(null)
   }, [client, selectRelationship])
 
+  // Owner-triggered, cached translation: runs only while the owner is both
+  // authenticated and in edit mode, viewing in English — everyone else only
+  // ever reads whatever is already cached in `translationEn`. Sequential
+  // (never parallel) so it doesn't hammer the translation API, with a
+  // re-entrancy guard since both the effect below and a post-save nudge can
+  // ask for a scan at close to the same time.
+  const charactersRef = useRef(characters)
+  const relationshipsRef = useRef(relationships)
+  useEffect(() => { charactersRef.current = characters }, [characters])
+  useEffect(() => { relationshipsRef.current = relationships }, [relationships])
+  const isScanningRef = useRef(false)
+  const rerunRequestedRef = useRef(false)
+
+  const runTranslationScan = useCallback(async () => {
+    if (isScanningRef.current) {
+      rerunRequestedRef.current = true
+      return
+    }
+    isScanningRef.current = true
+    try {
+      const staleCharacters = charactersRef.current.filter(isCharacterTranslationStale)
+      const staleRelationships = relationshipsRef.current.filter(isRelationshipTranslationStale)
+      const total = staleCharacters.length + staleRelationships.length
+      if (total === 0) return
+      let done = 0
+      setTranslationStatus({ done, total })
+      for (const character of staleCharacters) {
+        try {
+          const translationEn = await translateCharacterToEnglish(client, character)
+          const updated = await updateCharacter(client, character.id, { translationEn })
+          setCharacters(previous => previous.map(item => (item.id === character.id ? updated : item)))
+        } catch (error) {
+          console.error('Character translation failed:', character.id, error)
+        } finally {
+          done += 1
+          setTranslationStatus({ done, total })
+        }
+      }
+      for (const relationship of staleRelationships) {
+        try {
+          const translationEn = await translateRelationshipToEnglish(client, relationship)
+          const updated = await updateRelationship(client, relationship.id, { translationEn })
+          setRelationships(previous => previous.map(item => (item.id === relationship.id ? updated : item)))
+        } catch (error) {
+          console.error('Relationship translation failed:', relationship.id, error)
+        } finally {
+          done += 1
+          setTranslationStatus({ done, total })
+        }
+      }
+    } finally {
+      isScanningRef.current = false
+      setTranslationStatus(null)
+      if (rerunRequestedRef.current) {
+        rerunRequestedRef.current = false
+        runTranslationScan()
+      }
+    }
+  }, [client])
+
+  useEffect(() => {
+    if (isEditor && language === 'en') runTranslationScan()
+  }, [isEditor, language, runTranslationScan])
+
   const selectedCharacter = characters.find(character => character.id === selectedCharacterId) ?? null
   const selectedRelationship = relationships.find(relationship => relationship.id === selectedRelationshipId) ?? null
   const relationshipFrom = selectedRelationship
@@ -253,9 +353,37 @@ export default function CharactersMapRoute() {
   const relationshipTo = selectedRelationship
     ? characters.find(character => character.id === selectedRelationship.toCharacterId)
     : null
-  const exportText = useMemo(() => exportCharactersMapToText(characters, relationships), [characters, relationships])
+
+  const localizedCharacters = useMemo(
+    () => characters.map(character => localizeCharacter(character, language)),
+    [characters, language],
+  )
+  const localizedRelationships = useMemo(
+    () => relationships.map(relationship => localizeRelationship(relationship, language)),
+    [relationships, language],
+  )
+  const displayCharacter = selectedCharacter
+    ? localizedCharacters.find(character => character.id === selectedCharacter.id) ?? selectedCharacter
+    : null
+  const displayRelationship = selectedRelationship
+    ? localizedRelationships.find(relationship => relationship.id === selectedRelationship.id) ?? selectedRelationship
+    : null
+  const displayRelationshipFrom = relationshipFrom
+    ? localizedCharacters.find(character => character.id === relationshipFrom.id) ?? relationshipFrom
+    : null
+  const displayRelationshipTo = relationshipTo
+    ? localizedCharacters.find(character => character.id === relationshipTo.id) ?? relationshipTo
+    : null
+
+  const exportText = useMemo(
+    () => exportCharactersMapToText(localizedCharacters, localizedRelationships, language),
+    [localizedCharacters, localizedRelationships, language],
+  )
   const timelineBounds = useMemo(() => computeTimelineBounds(characters, relationships), [characters, relationships])
-  const timelineMarks = useMemo(() => collectTimelineMarks(characters, relationships), [characters, relationships])
+  const timelineMarks = useMemo(
+    () => collectTimelineMarks(localizedCharacters, localizedRelationships, language),
+    [localizedCharacters, localizedRelationships, language],
+  )
 
   // Once any timeline data exists, default the view to "present" (the latest known
   // year) — everyone born so far, in their current state. Only fires while the
@@ -268,26 +396,36 @@ export default function CharactersMapRoute() {
     <div className={styles.page}>
       <div className={styles.topBar}>
         <div className={styles.titleGroup}>
-          <h1 className={styles.title}>Карта персонажей</h1>
+          <h1 className={styles.title}>{s.topBar.title}</h1>
           <p className={styles.subtitle}>
-            {isEditor ? 'Режим редактирования' : !isAccountReady ? 'Проверяю аккаунт…' : 'Режим просмотра'}
+            {isEditor ? s.topBar.subtitleEditor : !isAccountReady ? s.topBar.subtitleChecking : s.topBar.subtitleViewer}
           </p>
         </div>
         <div className={styles.actions}>
+          {translationStatus && (
+            <span className={styles.subtitle}>{s.topBar.translating(translationStatus.done, translationStatus.total)}</span>
+          )}
+          <button
+            type="button"
+            className={styles.addButton}
+            onClick={() => changeLanguage(language === 'en' ? 'ru' : 'en')}
+          >
+            {s.topBar.languageButton}
+          </button>
           {characters.length > 0 && (
             <button type="button" className={styles.addButton} onClick={() => setShowExport(true)}>
-              Экспорт
+              {s.topBar.exportButton}
             </button>
           )}
           {isOwner && (
             <>
               <button type="button" className={styles.addButton} onClick={toggleEditMode}>
-                {isEditor ? 'Режим просмотра' : 'Режим редактирования'}
+                {isEditor ? s.topBar.toViewModeButton : s.topBar.toEditModeButton}
               </button>
               {isEditor && (
                 <>
                   <button type="button" className={styles.addButton} onClick={() => setShowAddCharacter(true)}>
-                    + Персонаж
+                    {s.topBar.addCharacterButton}
                   </button>
                   <button
                     type="button"
@@ -295,7 +433,7 @@ export default function CharactersMapRoute() {
                     onClick={() => setRelationshipDraft({ fromId: selectedCharacterId, toId: null })}
                     disabled={characters.length < 2}
                   >
-                    + Связь
+                    {s.topBar.addRelationshipButton}
                   </button>
                   <button
                     type="button"
@@ -303,7 +441,7 @@ export default function CharactersMapRoute() {
                     onClick={() => setShowRoster(true)}
                     disabled={characters.length === 0}
                   >
-                    Все персонажи
+                    {s.topBar.rosterButton}
                   </button>
                 </>
               )}
@@ -314,21 +452,20 @@ export default function CharactersMapRoute() {
 
       {actionError && <div className={styles.errorBanner}>{actionError}</div>}
 
-      {isLoading && <div className={styles.centerMessage}>Загружаю карту…</div>}
+      {isLoading && <div className={styles.centerMessage}>{s.loading.loadingMap}</div>}
       {!isLoading && loadError && <div className={styles.centerMessage}>{loadError}</div>}
       {!isLoading && !loadError && characters.length === 0 && (
         <div className={styles.centerMessage}>
-          {isEditor
-            ? 'Персонажей пока нет. Нажмите «+ Персонаж», чтобы добавить первого.'
-            : 'На карте пока нет персонажей.'}
+          {isEditor ? s.loading.emptyEditor : s.loading.emptyViewer}
         </div>
       )}
 
       {!isLoading && !loadError && characters.length > 0 && (
         <MapCanvas
-          characters={characters}
-          relationships={relationships}
+          characters={localizedCharacters}
+          relationships={localizedRelationships}
           isEditor={isEditor}
+          language={language}
           timelineYear={timelineYear}
           selectedCharacterId={selectedCharacterId}
           selectedRelationshipId={selectedRelationshipId}
@@ -342,10 +479,8 @@ export default function CharactersMapRoute() {
 
       {!isLoading && characters.length > 0 && !timelineBounds && (
         <p className={styles.hint}>
-          Колесо мыши или щипок двумя пальцами — масштаб, перетаскивание фона — панорама
-          {isEditor
-            ? ', перетаскивание персонажа — перемещение, правая кнопка мыши (или долгое нажатие) на персонаже — создать связь'
-            : ''}.
+          {s.hint.base}
+          {isEditor ? s.hint.editorSuffix : ''}.
         </p>
       )}
 
@@ -354,18 +489,23 @@ export default function CharactersMapRoute() {
           bounds={timelineBounds}
           value={timelineYear}
           marks={timelineMarks}
+          language={language}
           onChange={setTimelineYear}
         />
       )}
 
-      {selectedCharacter && (
+      {selectedCharacter && displayCharacter && (
         <CharacterPanel
           character={selectedCharacter}
+          displayCharacter={displayCharacter}
+          language={language}
           imageUrl={selectedCharacter.imagePath ? getImageUrl(selectedCharacter.imagePath) : null}
           isEditor={isEditor}
           onClose={() => selectCharacter(null)}
-          onSave={patch => handleSaveCharacter(selectedCharacter.id, patch).catch(error => {
-            setActionError(error instanceof Error ? error.message : 'Не удалось сохранить.')
+          onSave={patch => handleSaveCharacter(selectedCharacter.id, patch).then(() => {
+            runTranslationScan()
+          }).catch(error => {
+            setActionError(error instanceof Error ? error.message : s.characterPanel.errorSave)
             throw error
           })}
           onUploadImage={file => handleUploadCharacterImage(selectedCharacter, file)}
@@ -377,14 +517,18 @@ export default function CharactersMapRoute() {
         />
       )}
 
-      {selectedRelationship && relationshipFrom && relationshipTo && (
+      {selectedRelationship && displayRelationship && relationshipFrom && relationshipTo && displayRelationshipFrom && displayRelationshipTo && (
         <RelationshipPanel
           relationship={selectedRelationship}
-          from={relationshipFrom}
-          to={relationshipTo}
+          displayRelationship={displayRelationship}
+          language={language}
+          from={displayRelationshipFrom}
+          to={displayRelationshipTo}
           isEditor={isEditor}
           onClose={() => selectRelationship(null)}
-          onSave={patch => handleSaveRelationship(selectedRelationship.id, patch)}
+          onSave={patch => handleSaveRelationship(selectedRelationship.id, patch).then(() => {
+            runTranslationScan()
+          })}
           onDelete={() => handleDeleteRelationship(selectedRelationship.id)}
           onSelectCharacter={selectCharacter}
         />
@@ -392,6 +536,7 @@ export default function CharactersMapRoute() {
 
       {showAddCharacter && (
         <AddCharacterModal
+          language={language}
           onClose={() => setShowAddCharacter(false)}
           onCreate={handleCreateCharacter}
         />
@@ -399,7 +544,8 @@ export default function CharactersMapRoute() {
 
       {relationshipDraft && (
         <AddRelationshipModal
-          characters={characters}
+          language={language}
+          characters={localizedCharacters}
           initialFromId={relationshipDraft.fromId}
           initialToId={relationshipDraft.toId}
           onClose={() => setRelationshipDraft(null)}
@@ -407,11 +553,12 @@ export default function CharactersMapRoute() {
         />
       )}
 
-      {showExport && <ExportModal text={exportText} onClose={() => setShowExport(false)} />}
+      {showExport && <ExportModal text={exportText} language={language} onClose={() => setShowExport(false)} />}
 
       {showRoster && (
         <CharacterRosterModal
-          characters={characters}
+          characters={localizedCharacters}
+          language={language}
           timelineYear={timelineYear}
           onSelect={selectCharacter}
           onClose={() => setShowRoster(false)}

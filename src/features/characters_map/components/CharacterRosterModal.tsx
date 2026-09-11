@@ -1,28 +1,28 @@
 'use client'
 
 import { isCharacterBornAt } from '../timeline'
+import { t, type MapLanguage } from '../i18n'
 import type { MapCharacter } from '../types'
 import modalStyles from './Modal.module.css'
 import styles from './CharacterRosterModal.module.css'
 
 type Props = {
   characters: MapCharacter[]
+  language: MapLanguage
   timelineYear: number | null
   onSelect: (id: string) => void
   onClose: () => void
 }
 
-export default function CharacterRosterModal({ characters, timelineYear, onSelect, onClose }: Props) {
-  const sorted = [...characters].sort((a, b) => a.name.localeCompare(b.name, 'ru'))
+export default function CharacterRosterModal({ characters, language, timelineYear, onSelect, onClose }: Props) {
+  const s = t(language).characterRosterModal
+  const sorted = [...characters].sort((a, b) => a.name.localeCompare(b.name, language === 'en' ? 'en' : 'ru'))
 
   return (
     <div className={modalStyles.overlay} onClick={onClose}>
       <div className={modalStyles.modal} onClick={event => event.stopPropagation()}>
-        <h2 className={modalStyles.title}>Все персонажи</h2>
-        <p className={styles.hint}>
-          Персонажи, ещё не рождённые на текущий год шкалы времени, не видны на карте —
-          откройте их отсюда, например, чтобы задать дату рождения.
-        </p>
+        <h2 className={modalStyles.title}>{s.title}</h2>
+        <p className={styles.hint}>{s.hint}</p>
         <div className={styles.list}>
           {sorted.map(character => {
             const visible = isCharacterBornAt(character, timelineYear)
@@ -34,13 +34,13 @@ export default function CharacterRosterModal({ characters, timelineYear, onSelec
                 onClick={() => { onSelect(character.id); onClose() }}
               >
                 <span>{character.name}</span>
-                {!visible && <span className={styles.hiddenTag}>не рождён(а) ещё</span>}
+                {!visible && <span className={styles.hiddenTag}>{s.notBornYetTag}</span>}
               </button>
             )
           })}
         </div>
         <div className={modalStyles.actions}>
-          <button type="button" className={modalStyles.secondaryButton} onClick={onClose}>Закрыть</button>
+          <button type="button" className={modalStyles.secondaryButton} onClick={onClose}>{s.close}</button>
         </div>
       </div>
     </div>

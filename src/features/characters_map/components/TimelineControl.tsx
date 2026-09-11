@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { t, type MapLanguage } from '../i18n'
 import type { TimelineBounds, TimelineMark } from '../timeline'
 import styles from './TimelineControl.module.css'
 
@@ -8,10 +9,12 @@ type Props = {
   bounds: TimelineBounds
   value: number
   marks: TimelineMark[]
+  language: MapLanguage
   onChange: (year: number) => void
 }
 
-export default function TimelineControl({ bounds, value, marks, onChange }: Props) {
+export default function TimelineControl({ bounds, value, marks, language, onChange }: Props) {
+  const s = t(language).timelineControl
   const min = Math.min(bounds.min, value) - 1
   const max = Math.max(bounds.max, value) + 1
   const isAtPresent = value >= bounds.max
@@ -32,7 +35,7 @@ export default function TimelineControl({ bounds, value, marks, onChange }: Prop
 
   return (
     <div className={styles.bar}>
-      <button type="button" className={styles.stepButton} onClick={() => stepTo(-1)} disabled={!years.some(year => year < value)} title="Предыдущее событие">
+      <button type="button" className={styles.stepButton} onClick={() => stepTo(-1)} disabled={!years.some(year => year < value)} title={s.prevEventTitle}>
         ‹
       </button>
       <div className={styles.trackWrap}>
@@ -50,11 +53,11 @@ export default function TimelineControl({ bounds, value, marks, onChange }: Prop
           ))}
         </div>
       </div>
-      <button type="button" className={styles.stepButton} onClick={() => stepTo(1)} disabled={!years.some(year => year > value)} title="Следующее событие">
+      <button type="button" className={styles.stepButton} onClick={() => stepTo(1)} disabled={!years.some(year => year > value)} title={s.nextEventTitle}>
         ›
       </button>
       <label className={styles.yearField}>
-        Год
+        {s.yearLabel}
         <input
           type="number"
           className={styles.yearInput}
@@ -70,7 +73,7 @@ export default function TimelineControl({ bounds, value, marks, onChange }: Prop
         className={`${styles.presentButton} ${isAtPresent ? styles.atPresent : ''}`}
         onClick={() => onChange(bounds.max)}
       >
-        Настоящее время
+        {s.presentButton}
       </button>
     </div>
   )

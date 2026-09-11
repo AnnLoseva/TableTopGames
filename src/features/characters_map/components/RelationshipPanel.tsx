@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import type { MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
 import { DEFAULT_RELATIONSHIP_COLOR, RELATIONSHIP_DESCRIPTION_MAX_LENGTH, RELATIONSHIP_LABEL_MAX_LENGTH } from '../constants'
+import { t, type MapLanguage } from '../i18n'
 import styles from './SidePanel.module.css'
 import timelineStyles from './CharacterSheetView.module.css'
 
@@ -16,6 +17,8 @@ type SavePatch = {
 
 type Props = {
   relationship: MapRelationship
+  displayRelationship: MapRelationship
+  language: MapLanguage
   from: MapCharacter
   to: MapCharacter
   isEditor: boolean
@@ -27,6 +30,8 @@ type Props = {
 
 export default function RelationshipPanel({
   relationship,
+  displayRelationship,
+  language,
   from,
   to,
   isEditor,
@@ -35,6 +40,7 @@ export default function RelationshipPanel({
   onDelete,
   onSelectCharacter,
 }: Props) {
+  const s = t(language).relationshipPanel
   const [isEditing, setIsEditing] = useState(false)
   const [label, setLabel] = useState(relationship.label)
   const [description, setDescription] = useState(relationship.description)
@@ -60,7 +66,7 @@ export default function RelationshipPanel({
 
   const handleSave = async () => {
     if (!label.trim()) {
-      setError('Введите название отношения.')
+      setError(s.errorLabelRequired)
       return
     }
     setIsBusy(true)
@@ -69,7 +75,7 @@ export default function RelationshipPanel({
       await onSave({ label: label.trim(), description, color, kind, events })
       setIsEditing(false)
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Не удалось сохранить.')
+      setError(saveError instanceof Error ? saveError.message : s.errorSave)
     } finally {
       setIsBusy(false)
     }
@@ -89,12 +95,12 @@ export default function RelationshipPanel({
   }
 
   const handleDelete = async () => {
-    if (!window.confirm(`Удалить связь «${relationship.label}»?`)) return
+    if (!window.confirm(s.confirmDelete(displayRelationship.label))) return
     setIsBusy(true)
     try {
       await onDelete()
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Не удалось удалить.')
+      setError(deleteError instanceof Error ? deleteError.message : s.errorDelete)
       setIsBusy(false)
     }
   }
@@ -103,7 +109,7 @@ export default function RelationshipPanel({
     <aside className={styles.panel}>
       <div className={styles.header}>
         <span />
-        <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрыть">×</button>
+        <button type="button" className={styles.closeButton} onClick={onClose} aria-label={s.ariaClose}>×</button>
       </div>
       <div className={styles.body}>
         <div className={styles.relLine}>
@@ -120,24 +126,24 @@ export default function RelationshipPanel({
           <>
             <h2 className={styles.name}>
               <span className={styles.colorSwatch} style={{ background: relationship.color || DEFAULT_RELATIONSHIP_COLOR }} />
-              {relationship.label}
+              {displayRelationship.label}
             </h2>
             <p className={styles.description} style={{ textAlign: 'center' }}>
-              {relationship.kind === 'mutual' ? 'Взаимное отношение (в обе стороны)' : `${from.name} → ${to.name}`}
+              {relationship.kind === 'mutual' ? s.mutualLabel : s.directedLabel(from.name, to.name)}
             </p>
-            {relationship.description && <p className={styles.description}>{relationship.description}</p>}
+            {displayRelationship.description && <p className={styles.description}>{displayRelationship.description}</p>}
 
-            {relationship.events.length > 0 && (
+            {displayRelationship.events.length > 0 && (
               <div style={{ marginTop: 12 }}>
-                <h3 className={timelineStyles.sectionTitle} style={{ textAlign: 'left' }}>История</h3>
-                {[...relationship.events].sort((a, b) => a.year - b.year).map(event => (
+                <h3 className={timelineStyles.sectionTitle} style={{ textAlign: 'left' }}>{s.historyHeading}</h3>
+                {[...displayRelationship.events].sort((a, b) => a.year - b.year).map(event => (
                   <div key={event.id} className={timelineStyles.timelineEventView} style={{ marginBottom: 8 }}>
                     <span className={timelineStyles.timelineYearBadge}>{event.year}</span>
                     <div>
                       <p className={timelineStyles.timelineEventTitle}>
-                        {event.title || 'Событие'}
-                        {event.active === false && ' — исчезает'}
-                        {event.active === true && ' — появляется'}
+                        {event.title || s.eventFallbackTitle}
+                        {event.active === false && s.disappearsSuffix}
+                        {event.active === true && s.appearsSuffix}
                       </p>
                       {event.description && <p className={timelineStyles.timelineEventDescription}>{event.description}</p>}
                     </div>
@@ -149,10 +155,10 @@ export default function RelationshipPanel({
             {isEditor && (
               <div className={styles.actions}>
                 <button type="button" className={styles.secondaryButton} onClick={() => setIsEditing(true)}>
-                  Редактировать
+                  {t(language).common.edit}
                 </button>
                 <button type="button" className={styles.dangerButton} onClick={handleDelete} disabled={isBusy}>
-                  Удалить
+                  {t(language).common.delete}
                 </button>
               </div>
             )}
@@ -162,14 +168,14 @@ export default function RelationshipPanel({
         {isEditing && (
           <>
             <div className={styles.field}>
-              <label htmlFor="rel-kind">Тип связи</label>
+              <label htmlFor="rel-kind">{s.kindLabel}</label>
               <select id="rel-kind" value={kind} onChange={event => setKind(event.target.value as RelationshipKind)}>
-                <option value="directed">Направленная ({from.name} → {to.name})</option>
-                <option value="mutual">Взаимная (в обе стороны)</option>
+                <option value="directed">{s.directedOption(from.name, to.name)}</option>
+                <option value="mutual">{s.mutualOption}</option>
               </select>
             </div>
             <div className={styles.field}>
-              <label htmlFor="rel-label">Название</label>
+              <label htmlFor="rel-label">{s.labelLabel}</label>
               <input
                 id="rel-label"
                 type="text"
@@ -179,11 +185,11 @@ export default function RelationshipPanel({
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="rel-color">Цвет</label>
+              <label htmlFor="rel-color">{s.colorLabel}</label>
               <input id="rel-color" type="color" value={color} onChange={event => setColor(event.target.value)} />
             </div>
             <div className={styles.field}>
-              <label htmlFor="rel-description">Описание</label>
+              <label htmlFor="rel-description">{s.descriptionLabel}</label>
               <textarea
                 id="rel-description"
                 rows={6}
@@ -193,7 +199,7 @@ export default function RelationshipPanel({
               />
             </div>
 
-            <h3 className={timelineStyles.sectionTitle} style={{ textAlign: 'left', marginTop: 4 }}>История</h3>
+            <h3 className={timelineStyles.sectionTitle} style={{ textAlign: 'left', marginTop: 4 }}>{s.historyHeading}</h3>
             {events.map(event => (
               <div key={event.id} className={timelineStyles.timelineEventRow}>
                 <div className={timelineStyles.timelineEventFields}>
@@ -205,7 +211,7 @@ export default function RelationshipPanel({
                   />
                   <input
                     type="text"
-                    placeholder="Что случилось"
+                    placeholder={s.eventWhatHappened}
                     value={event.title}
                     onChange={changeEvent => updateEvent(event.id, { title: changeEvent.target.value })}
                   />
@@ -215,43 +221,43 @@ export default function RelationshipPanel({
                       active: changeEvent.target.value === '' ? undefined : changeEvent.target.value === 'true',
                     })}
                   >
-                    <option value="">Появление: не менять</option>
-                    <option value="true">Появляется</option>
-                    <option value="false">Исчезает</option>
+                    <option value="">{s.appearanceNoChange}</option>
+                    <option value="true">{s.appearsOption}</option>
+                    <option value="false">{s.disappearsOption}</option>
                   </select>
                   <button
                     type="button"
                     className={timelineStyles.removeButton}
                     onClick={() => removeEvent(event.id)}
-                    aria-label="Удалить событие"
+                    aria-label={s.ariaRemoveEvent}
                   >
                     ×
                   </button>
                 </div>
                 <input
                   type="text"
-                  placeholder="Новое название с этого момента (необязательно)"
+                  placeholder={s.newLabelPlaceholder}
                   value={event.label ?? ''}
                   onChange={changeEvent => updateEvent(event.id, { label: changeEvent.target.value || undefined })}
                   style={{ marginBottom: 6 }}
                 />
                 <textarea
                   rows={2}
-                  placeholder="Новое описание с этого момента (необязательно)"
+                  placeholder={s.newDescriptionPlaceholder}
                   value={event.description ?? ''}
                   onChange={changeEvent => updateEvent(event.id, { description: changeEvent.target.value || undefined })}
                 />
               </div>
             ))}
-            <button type="button" className={timelineStyles.addButton} onClick={addEvent}>+ Событие</button>
+            <button type="button" className={timelineStyles.addButton} onClick={addEvent}>{s.addEventButton}</button>
 
             {error && <p className={styles.errorText}>{error}</p>}
             <div className={styles.actions}>
               <button type="button" className={styles.primaryButton} onClick={handleSave} disabled={isBusy}>
-                Сохранить
+                {t(language).common.save}
               </button>
               <button type="button" className={styles.secondaryButton} onClick={() => setIsEditing(false)} disabled={isBusy}>
-                Отмена
+                {t(language).common.cancel}
               </button>
             </div>
           </>

@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import type { MapCharacter, RelationshipKind } from '../types'
 import { DEFAULT_RELATIONSHIP_COLOR, RELATIONSHIP_DESCRIPTION_MAX_LENGTH, RELATIONSHIP_LABEL_MAX_LENGTH } from '../constants'
+import { t, type MapLanguage } from '../i18n'
 import styles from './Modal.module.css'
 
 type Props = {
+  language: MapLanguage
   characters: MapCharacter[]
   initialFromId?: string | null
   initialToId?: string | null
@@ -20,7 +22,8 @@ type Props = {
   }) => Promise<void>
 }
 
-export default function AddRelationshipModal({ characters, initialFromId, initialToId, onClose, onCreate }: Props) {
+export default function AddRelationshipModal({ language, characters, initialFromId, initialToId, onClose, onCreate }: Props) {
+  const s = t(language).addRelationshipModal
   const [fromId, setFromId] = useState(initialFromId || characters[0]?.id || '')
   const [toId, setToId] = useState(
     initialToId || characters.find(c => c.id !== (initialFromId || characters[0]?.id))?.id || '',
@@ -35,15 +38,15 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     if (!fromId || !toId) {
-      setError('Выберите обоих персонажей.')
+      setError(s.errorBothRequired)
       return
     }
     if (fromId === toId) {
-      setError('Персонажи должны быть разными.')
+      setError(s.errorSameCharacter)
       return
     }
     if (!label.trim()) {
-      setError('Введите название отношения.')
+      setError(s.errorLabelRequired)
       return
     }
     setIsBusy(true)
@@ -59,7 +62,7 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
       })
       onClose()
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Не удалось создать связь.')
+      setError(createError instanceof Error ? createError.message : s.errorCreateFailed)
       setIsBusy(false)
     }
   }
@@ -70,10 +73,10 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
   return (
     <div className={styles.overlay} onClick={onClose}>
       <form className={styles.modal} onClick={event => event.stopPropagation()} onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Новая связь</h2>
+        <h2 className={styles.title}>{s.title}</h2>
 
         <div className={styles.field}>
-          <label htmlFor="rel-from">От кого</label>
+          <label htmlFor="rel-from">{s.fromLabel}</label>
           <select id="rel-from" value={fromId} onChange={event => setFromId(event.target.value)}>
             {characters.map(character => (
               <option key={character.id} value={character.id}>{character.name}</option>
@@ -82,7 +85,7 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="rel-to">К кому</label>
+          <label htmlFor="rel-to">{s.toLabel}</label>
           <select id="rel-to" value={toId} onChange={event => setToId(event.target.value)}>
             {characters.map(character => (
               <option key={character.id} value={character.id}>{character.name}</option>
@@ -91,22 +94,22 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="rel-kind">Тип связи</label>
+          <label htmlFor="rel-kind">{s.kindLabel}</label>
           <select id="rel-kind" value={kind} onChange={event => setKind(event.target.value as RelationshipKind)}>
             <option value="directed">
-              Направленная{fromCharacter && toCharacter ? ` (${fromCharacter.name} → ${toCharacter.name})` : ''}
+              {s.directedOption(fromCharacter?.name ?? '', toCharacter?.name ?? '')}
             </option>
-            <option value="mutual">Взаимная — одинаковая в обе стороны (команда, брак и т.п.)</option>
+            <option value="mutual">{s.mutualOption}</option>
           </select>
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="rel-label">Название</label>
+          <label htmlFor="rel-label">{s.labelLabel}</label>
           <input
             id="rel-label"
             type="text"
             autoFocus
-            placeholder="Например: любит, боится, командир"
+            placeholder={s.labelPlaceholder}
             value={label}
             maxLength={RELATIONSHIP_LABEL_MAX_LENGTH}
             onChange={event => setLabel(event.target.value)}
@@ -114,12 +117,12 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="rel-color">Цвет стрелки</label>
+          <label htmlFor="rel-color">{s.colorLabel}</label>
           <input id="rel-color" type="color" value={color} onChange={event => setColor(event.target.value)} />
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="rel-description">Описание</label>
+          <label htmlFor="rel-description">{s.descriptionLabel}</label>
           <textarea
             id="rel-description"
             rows={4}
@@ -133,13 +136,13 @@ export default function AddRelationshipModal({ characters, initialFromId, initia
 
         <div className={styles.actions}>
           <button type="submit" className={styles.primaryButton} disabled={isBusy || characters.length < 2}>
-            {isBusy ? 'Создаю…' : 'Создать'}
+            {isBusy ? s.creating : s.create}
           </button>
           <button type="button" className={styles.secondaryButton} onClick={onClose} disabled={isBusy}>
-            Отмена
+            {s.cancel}
           </button>
         </div>
-        {characters.length < 2 && <p className={styles.errorText}>Сначала добавьте хотя бы двух персонажей.</p>}
+        {characters.length < 2 && <p className={styles.errorText}>{s.needTwoCharacters}</p>}
       </form>
     </div>
   )
