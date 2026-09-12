@@ -269,6 +269,83 @@
   font-size: 13px;
 }
 
+.timelineMonthSelect {
+  flex: 0 0 auto;
+  width: 116px;
+}
+
+.timelineDayInput {
+  width: 58px;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #f2f0f7;
+  font-size: 13px;
+}
+
+.timelineDayInput:disabled {
+  opacity: 0.4;
+}
+
+/* Relationship lines attached to a character event (event ↔ relationship link). */
+.eventRelationships {
+  margin: 8px 0 0 12px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(217, 180, 92, 0.35);
+}
+
+.eventRelationshipsTitle {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 247, 0.5);
+}
+
+.eventRelationshipRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.eventRelationshipRow select,
+.eventRelationshipRow input[type='text'] {
+  flex: 1 1 130px;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #f2f0f7;
+  font-size: 13px;
+}
+
+.eventRelationshipRow input[type='color'] {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+}
+
+.eventRelationshipNote {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: rgba(242, 240, 247, 0.45);
+}
+
+.eventRelationshipView {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: rgba(242, 240, 247, 0.75);
+}
+
 .timelineEventRow > input[type='text'] {
   display: block;
   width: 100%;
@@ -592,4 +669,20 @@
   max-height: 100%;
   border-radius: 8px;
   object-fit: contain;
+}
+
+/* Inline navigation to a relationship line listed under a character event. */
+.linkButton {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--map-accent, #d9b45c);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
 }

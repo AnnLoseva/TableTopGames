@@ -57,6 +57,11 @@ alter table public.characters_map_characters
 -- `baseKind` ('human'/'vampire'/'ghost', default human) and `events` (dated
 -- kind/alive changes). No new columns needed; reuses the existing flexible
 -- `sheet` JSON. See `CharacterSheet` in types.ts and `timeline.ts`.
+-- Extended 2026-09-12 (see DECISIONS.md): each event may carry an optional
+-- `month` (1-12) and `day` (1-31) refining its `year`, plus `relationshipIds`
+-- — the relationship lines that start at that event. Still no new columns;
+-- rows written before this simply have no month/day and are read as
+-- year-only by `normalizeCharacterEvent` in constants.ts.
 
 -- Added 2026-09-09 (see DECISIONS.md): `sheet.gallery` — a list of photos
 -- (house, pets, notable events) separate from the single portrait in
@@ -94,10 +99,17 @@ create index if not exists characters_map_relationships_to_idx
   on public.characters_map_relationships (to_character_id);
 
 -- Added 2026-09-10 (see DECISIONS.md): a timeline of dated events that change
--- how the relationship renders (appear/disappear via `active`, plus
--- label/color/description overrides), folded chronologically at render time
--- by `resolveRelationshipState` in src/features/characters_map/timeline.ts.
+-- how the relationship renders, folded chronologically at render time by
+-- `resolveRelationshipState` in src/features/characters_map/timeline.ts.
 -- A relationship with no events behaves exactly as before this feature.
+-- Revised 2026-09-12 (see DECISIONS.md): events carry optional `month`/`day`
+-- refining `year`, and the old `active` flag is gone — a relationship only
+-- ever *appears* (`appears: true`, optionally linked back to the character
+-- event that created it via `sourceCharacterId`/`sourceEventId`), and is
+-- simply not drawn before that moment. No appearance event at all = the line
+-- is always on the map. Stored rows are migrated on read by
+-- `normalizeRelationshipEvent` in constants.ts (`active: true` → `appears`,
+-- `active: false` → dropped), and rewritten in the new shape on the next save.
 alter table public.characters_map_relationships
   add column if not exists events jsonb not null default '[]'::jsonb;
 

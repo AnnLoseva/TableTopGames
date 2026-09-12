@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { t, type MapLanguage } from '../i18n'
-import { isCharacterBornAt, resolveCharacterState, resolveRelationshipState } from '../timeline'
+import { isCharacterBornAt, makeMoment, resolveCharacterState, resolveRelationshipState, type TimelineMoment } from '../timeline'
 import type { MapCharacter, MapRelationship } from '../types'
 import styles from './MapCanvas.module.css'
 
@@ -193,7 +193,7 @@ type Props = {
   isEditor: boolean
   language: MapLanguage
   /** null = timeline untouched: show everyone's latest state, nobody hidden by birth year. */
-  timelineYear: number | null
+  timelineMoment: TimelineMoment | null
   selectedCharacterId: string | null
   selectedRelationshipId: string | null
   onSelectCharacter: (id: string | null) => void
@@ -210,7 +210,7 @@ export default function MapCanvas({
   relationships,
   isEditor,
   language,
-  timelineYear,
+  timelineMoment,
   selectedCharacterId,
   selectedRelationshipId,
   onSelectCharacter,
@@ -248,33 +248,37 @@ export default function MapCanvas({
     viewRef.current = view
   }, [view])
 
-  // A null timelineYear means the timeline hasn't been touched: resolve every
+  // A null timelineMoment means the timeline hasn't been touched: resolve every
   // character/relationship at "the end of time" (every event applied, nobody
   // hidden by birth year) — i.e. today's pre-timeline behavior, unchanged.
-  const resolveYear = timelineYear ?? Number.POSITIVE_INFINITY
+  const resolveMoment = useMemo(
+    () => timelineMoment ?? makeMoment(Number.POSITIVE_INFINITY),
+    [timelineMoment],
+  )
 
   const visibleCharacters = useMemo(
-    () => characters.filter(character => isCharacterBornAt(character, timelineYear)),
-    [characters, timelineYear],
+    () => characters.filter(character => isCharacterBornAt(character, timelineMoment)),
+    [characters, timelineMoment],
   )
 
   const characterStates = useMemo(() => {
     const map = new Map<string, ReturnType<typeof resolveCharacterState>>()
-    for (const character of visibleCharacters) map.set(character.id, resolveCharacterState(character, resolveYear))
+    for (const character of visibleCharacters) map.set(character.id, resolveCharacterState(character, resolveMoment))
     return map
-  }, [visibleCharacters, resolveYear])
+  }, [visibleCharacters, resolveMoment])
 
   const visibleRelationships = useMemo(() => {
     const visibleIds = new Set(visibleCharacters.map(character => character.id))
     const result: MapRelationship[] = []
     for (const relationship of relationships) {
       if (!visibleIds.has(relationship.fromCharacterId) || !visibleIds.has(relationship.toCharacterId)) continue
-      const resolved = resolveRelationshipState(relationship, resolveYear)
-      if (!resolved.active) continue
+      const resolved = resolveRelationshipState(relationship, resolveMoment)
+      // Before its appearance event the line simply doesn't exist yet.
+      if (!resolved.visible) continue
       result.push({ ...relationship, label: resolved.label, color: resolved.color, description: resolved.description })
     }
     return result
-  }, [relationships, visibleCharacters, resolveYear])
+  }, [relationships, visibleCharacters, resolveMoment])
 
   const edges = useMemo(
     () => buildEdges(visibleCharacters, visibleRelationships),

@@ -1,6 +1,6 @@
 'use client'
 
-import { isCharacterBornAt } from '../timeline'
+import { isCharacterBornAt, type TimelineMoment } from '../timeline'
 import { t, type MapLanguage } from '../i18n'
 import type { MapCharacter } from '../types'
 import modalStyles from './Modal.module.css'
@@ -9,12 +9,12 @@ import styles from './CharacterRosterModal.module.css'
 type Props = {
   characters: MapCharacter[]
   language: MapLanguage
-  timelineYear: number | null
+  timelineMoment: TimelineMoment | null
   onSelect: (id: string) => void
   onClose: () => void
 }
 
-export default function CharacterRosterModal({ characters, language, timelineYear, onSelect, onClose }: Props) {
+export default function CharacterRosterModal({ characters, language, timelineMoment, onSelect, onClose }: Props) {
   const s = t(language).characterRosterModal
   const sorted = [...characters].sort((a, b) => a.name.localeCompare(b.name, language === 'en' ? 'en' : 'ru'))
 
@@ -25,7 +25,7 @@ export default function CharacterRosterModal({ characters, language, timelineYea
         <p className={styles.hint}>{s.hint}</p>
         <div className={styles.list}>
           {sorted.map(character => {
-            const visible = isCharacterBornAt(character, timelineYear)
+            const visible = isCharacterBornAt(character, timelineMoment)
             return (
               <button
                 key={character.id}

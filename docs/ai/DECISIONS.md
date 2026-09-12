@@ -1,5 +1,84 @@
 # Decisions
 
+## 2026-09-12 — `/characters_map` timeline: optional dates inside a year, appearance-only relationship lines, event↔relationship link
+
+**Area:** `src/features/characters_map/{types.ts,constants.ts,mappers.ts,timeline.ts,i18n.ts,export.ts,api/relationshipsApi.ts,routes/CharactersMapRoute.tsx,components/*}`, `supabase/characters_map.sql` (comments only)
+
+**Decision:** Three connected changes to the timeline model, all inside the
+existing `sheet`/`events` JSON — **no schema migration**.
+
+1. **Dates are an optional refinement of the year.** Every `CharacterEvent`
+   and `RelationshipEvent` now carries `month: number | null` and
+   `day: number | null` alongside its required `year`. Ordering everywhere
+   goes through `eventOrdinal` (`YYYYMMDD`-style key) in `timeline.ts`, where
+   a year-only event sorts at the *start* of its year — "sometime in 2026" is
+   in force from 1 January 2026, so the coarse entries never hide behind the
+   dated ones written later in the same year. A day without a month is
+   dropped on read, since it can't be ordered.
+
+2. **The timeline cursor is a day, not a year.** `TimelineMoment =
+   { year, month, day }` replaces the bare `number` the route and canvas
+   passed around. The year slider parks the cursor on 31 December of the
+   chosen year, which is exactly how the year-only timeline behaved (every
+   event of that year applied); the prev/next stepper parks it on an event's
+   own date, and a chip in the timeline bar shows that date and clears back
+   to the whole year.
+
+3. **Relationships only ever appear.** The old `RelationshipEvent.active`
+   flag (which could both show and hide a line) is replaced by
+   `appears?: true`, marking the one moment a line starts existing;
+   `resolveRelationshipState` returns `visible` instead of `active`. A
+   relationship with **no** appearance event is deliberately always on the
+   map — "the line is wanted, the date just isn't decided yet". Stored rows
+   are migrated on read by `normalizeRelationshipEvent`
+   (`active: true` → `appears`, `active: false` → flag dropped, event kept
+   for its text) and rewritten in the new shape on the owner's next save.
+
+4. **Event↔relationship link.** A character event can now build relationship
+   lines directly: `EventRelationshipDraft` rows in `CharacterPanel` (UI in
+   the new `EventRelationshipsEditor.tsx`) are applied by the route's
+   `handleSaveCharacter`, which creates/patches each relationship and stamps
+   its appearance event with the source event's date plus
+   `sourceCharacterId`/`sourceEventId`. That back-pointer is the
+   authoritative binding (the sheet's `event.relationshipIds` is a
+   convenience index); it's also what lets the panel re-derive its drafts
+   from the map on every open. `MapRelationshipPatch` gained
+   `fromCharacterId`/`toCharacterId` so flipping a line's direction keeps its
+   id and history instead of deleting and recreating it.
+
+**Reason:** The chronicle's late stretch (2020 onward) piles dozens of events
+into a single year, where a year-only timeline can't order or step through
+them. Relationships needed the same precision, and the owner wants to write a
+relationship *while* writing the event that creates it, rather than as a
+separate pass. The show/hide flag was only ever used as a placeholder for "I
+haven't decided when this starts", which appearance-only + "no date = always
+visible" expresses directly.
+
+**Consequences:**
+- `timeline.ts` stays the only place that folds events; anything comparing or
+  sorting event dates must use `eventOrdinal`/`compareDated`/`sortDated`, never
+  `a.year - b.year`.
+- Event rows coming from the database must pass through
+  `normalizeCharacterEvent`/`normalizeRelationshipEvent` (they do, via
+  `withSheetDefaults` and `mapRelationshipRow`) — the rest of the feature
+  assumes `month`/`day` are always present.
+- Deleting a character event also deletes the relationship lines that were
+  born from it (confirmed in the panel first).
+- Fixed in passing: `characterKindLabel`/`galleryCategoryLabel` in `i18n.ts`
+  returned the raw enum key in Russian ("human", "event") instead of the
+  Russian labels that already existed in `constants.ts`.
+
+**Affected files:** `src/features/characters_map/types.ts`,
+`constants.ts`, `mappers.ts`, `timeline.ts`, `i18n.ts`, `export.ts`,
+`api/relationshipsApi.ts`, `routes/CharactersMapRoute.tsx`,
+`components/{CharacterPanel,RelationshipPanel,TimelineControl,MapCanvas,CharacterRosterModal}.tsx`,
+new `components/{EventDateFields,EventRelationshipsEditor}.tsx`,
+`components/{CharacterSheetView,SidePanel,TimelineControl}.module.css`,
+`supabase/characters_map.sql` (documentation only)
+
+**Status:** active — supersedes the appear/disappear half of the 2026-09-10
+timeline decision.
+
 ## 2026-09-11 — `/characters_map`: RU/EN language toggle with owner-triggered, cached DeepSeek translation; full-sheet plain-text export
 
 **Area:** `src/features/characters_map/{i18n.ts (new),types.ts,export.ts,timeline.ts,mappers.ts,api/{charactersApi,relationshipsApi,translateApi (new)}.ts,routes/CharactersMapRoute.tsx,components/*}`, new Edge Function `characters-map-translate`, Supabase schema

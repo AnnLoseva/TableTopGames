@@ -1,4 +1,12 @@
-import type { AttributeKey, CharacterKind, CharacterSheet, GalleryCategory, SkillKey } from './types'
+import type {
+  AttributeKey,
+  CharacterEvent,
+  CharacterKind,
+  CharacterSheet,
+  GalleryCategory,
+  RelationshipEvent,
+  SkillKey,
+} from './types'
 
 export const CHARACTERS_MAP_CHARACTERS_TABLE = 'characters_map_characters'
 export const CHARACTERS_MAP_RELATIONSHIPS_TABLE = 'characters_map_relationships'
@@ -139,9 +147,64 @@ export function withSheetDefaults(sheet: Partial<CharacterSheet> | null | undefi
     },
     birthYear: typeof sheet.birthYear === 'number' ? sheet.birthYear : null,
     baseKind: sheet.baseKind === 'vampire' || sheet.baseKind === 'ghost' ? sheet.baseKind : 'human',
-    events: Array.isArray(sheet.events) ? sheet.events : defaults.events,
+    events: Array.isArray(sheet.events) ? sheet.events.map(normalizeCharacterEvent) : defaults.events,
     gallery: Array.isArray(sheet.gallery) ? sheet.gallery : defaults.gallery,
   }
+}
+
+/** Month/day are a later addition, and rows written before it simply lack
+ * them — every event coming out of the database goes through one of the two
+ * normalizers below so the rest of the feature can treat the date fields as
+ * always present (`null` = "only the year is known"). */
+function normalizeMonth(value: unknown): number | null {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return null
+  const month = Math.trunc(value)
+  return month >= 1 && month <= 12 ? month : null
+}
+
+function normalizeDay(value: unknown): number | null {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return null
+  const day = Math.trunc(value)
+  return day >= 1 && day <= 31 ? day : null
+}
+
+export function normalizeCharacterEvent(raw: CharacterEvent): CharacterEvent {
+  const month = normalizeMonth(raw.month)
+  return {
+    ...raw,
+    month,
+    // A day without a month is meaningless — drop it rather than sort on it.
+    day: month === null ? null : normalizeDay(raw.day),
+    dateLabel: raw.dateLabel ?? '',
+    relationshipIds: Array.isArray(raw.relationshipIds) ? raw.relationshipIds : undefined,
+  }
+}
+
+/**
+ * Same normalization for relationship events, plus the one-way migration of
+ * the old `active` flag: `active: true` became `appears: true`, and
+ * `active: false` ("the line disappears here") is dropped entirely — a
+ * relationship now only ever appears. The event itself is kept, since its
+ * title/description are still part of the history.
+ */
+export function normalizeRelationshipEvent(raw: RelationshipEvent & { active?: boolean }): RelationshipEvent {
+  const month = normalizeMonth(raw.month)
+  const { active, ...rest } = raw
+  return {
+    ...rest,
+    month,
+    day: month === null ? null : normalizeDay(raw.day),
+    dateLabel: raw.dateLabel ?? '',
+    appears: raw.appears === true || active === true ? true : undefined,
+  }
+}
+
+export function createCharacterEvent(year: number): CharacterEvent {
+  return { id: crypto.randomUUID(), year, month: null, day: null, dateLabel: '', title: '', description: '' }
+}
+
+export function createRelationshipEvent(year: number): RelationshipEvent {
+  return { id: crypto.randomUUID(), year, month: null, day: null, dateLabel: '', title: '' }
 }
 
 export const GALLERY_CATEGORY_LABELS: Record<GalleryCategory, string> = {

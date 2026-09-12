@@ -1,3 +1,4 @@
+import { CHARACTER_KIND_LABELS, GALLERY_CATEGORY_LABELS } from './constants'
 import type {
   AttributeKey,
   CharacterKind,
@@ -81,6 +82,23 @@ const RU = {
     eventDiedSuffix: ' — погиб(ла)',
     eventAliveSuffix: ' — жив(а)',
     addEventButton: '+ Событие',
+    eventDateHint: 'Месяц и день — необязательное уточнение к году.',
+    eventRelationshipsHeading: 'Отношения, которые появляются здесь',
+    eventRelationshipsViewLabel: 'Отношения:',
+    addEventRelationshipButton: '+ Линия отношений',
+    eventRelDirectionOut: 'Этот персонаж → выбранный',
+    eventRelDirectionIn: 'Выбранный → этот персонаж',
+    eventRelDirectionMutual: 'Взаимное ↔',
+    eventRelTargetPlaceholder: 'С кем',
+    eventRelLabelPlaceholder: 'Название отношения',
+    eventRelDescriptionPlaceholder: 'Описание отношения (необязательно)',
+    eventRelNoTargets: 'Нужен хотя бы ещё один персонаж на карте.',
+    eventRelAppearsNote: (date: string) => `Линия появится: ${date}`,
+    eventRelUndatedNote: 'Год события не задан — линия будет видна всегда.',
+    ariaRemoveEventRelationship: 'Удалить линию отношений',
+    confirmRemoveEventRelationship: (label: string) => `Удалить линию отношений «${label}»? Она полностью исчезнет с карты.`,
+    errorRelationshipTargetRequired: 'Выберите персонажа для линии отношений.',
+    errorRelationshipLabelRequired: 'Введите название линии отношений.',
     ambitionDesireHeading: 'Амбиция и Желание',
     ambitionLabel: 'Амбиция',
     desireLabel: 'Желание',
@@ -124,8 +142,10 @@ const RU = {
     directedLabel: (from: string, to: string) => `${from} → ${to}`,
     historyHeading: 'История',
     eventFallbackTitle: 'Событие',
-    disappearsSuffix: ' — исчезает',
-    appearsSuffix: ' — появляется',
+    appearsSuffix: ' — здесь линия появляется',
+    startsLabel: 'Появляется',
+    alwaysVisible: 'всегда на карте (дата появления не задана)',
+    fromCharacterEvent: (name: string) => `из события персонажа: ${name}`,
     kindLabel: 'Тип связи',
     directedOption: (from: string, to: string) => `Направленная (${from} → ${to})`,
     mutualOption: 'Взаимная (в обе стороны)',
@@ -133,9 +153,8 @@ const RU = {
     colorLabel: 'Цвет',
     descriptionLabel: 'Описание',
     eventWhatHappened: 'Что случилось',
-    appearanceNoChange: 'Появление: не менять',
-    appearsOption: 'Появляется',
-    disappearsOption: 'Исчезает',
+    appearanceNoChange: 'Появление: не отмечать',
+    appearsOption: 'Здесь линия появляется',
     newLabelPlaceholder: 'Новое название с этого момента (необязательно)',
     newDescriptionPlaceholder: 'Новое описание с этого момента (необязательно)',
     addEventButton: '+ Событие',
@@ -195,6 +214,7 @@ const RU = {
     nextEventTitle: 'Следующее событие',
     yearLabel: 'Год',
     presentButton: 'Настоящее время',
+    clearDateTitle: 'Показать весь год целиком',
   },
   trackBoxes: {
     max: 'Максимум',
@@ -234,8 +254,9 @@ const RU = {
     unknownBirth: 'дата неизвестна',
     timelineLabel: 'Хронология',
     eventFallback: 'Событие',
-    appearsSuffix: ' — появляется',
-    disappearsSuffix: ' — исчезает',
+    appearsSuffix: ' — здесь линия появляется',
+    startsLabel: 'Появляется',
+    alwaysWord: 'всегда (дата появления не задана)',
     noEvents: 'нет',
     becameSpecies: (kind: string) => `стал(а) — ${kind}`,
     diedWord: 'погиб(ла)',
@@ -247,6 +268,12 @@ const RU = {
     birthPrefix: (name: string) => `Рождение: ${name}`,
     characterEvent: (name: string, title: string) => `${name}: ${title}`,
     eventFallback: 'событие',
+  },
+  dates: {
+    monthNone: 'месяц —',
+    dayPlaceholder: 'дд',
+    ariaMonth: 'Месяц',
+    ariaDay: 'День',
   },
 }
 
@@ -314,6 +341,23 @@ const EN: typeof RU = {
     eventDiedSuffix: ' — died',
     eventAliveSuffix: ' — alive',
     addEventButton: '+ Event',
+    eventDateHint: 'Month and day are an optional refinement of the year.',
+    eventRelationshipsHeading: 'Relationships that start here',
+    eventRelationshipsViewLabel: 'Relationships:',
+    addEventRelationshipButton: '+ Relationship line',
+    eventRelDirectionOut: 'This character → the chosen one',
+    eventRelDirectionIn: 'The chosen one → this character',
+    eventRelDirectionMutual: 'Mutual ↔',
+    eventRelTargetPlaceholder: 'With whom',
+    eventRelLabelPlaceholder: 'Relationship name',
+    eventRelDescriptionPlaceholder: 'Relationship description (optional)',
+    eventRelNoTargets: 'You need at least one more character on the map.',
+    eventRelAppearsNote: (date: string) => `The line appears: ${date}`,
+    eventRelUndatedNote: "The event has no year yet — the line will always be visible.",
+    ariaRemoveEventRelationship: 'Remove relationship line',
+    confirmRemoveEventRelationship: (label: string) => `Delete the relationship line "${label}"? It will disappear from the map entirely.`,
+    errorRelationshipTargetRequired: 'Choose a character for the relationship line.',
+    errorRelationshipLabelRequired: 'Enter a name for the relationship line.',
     ambitionDesireHeading: 'Ambition and Desire',
     ambitionLabel: 'Ambition',
     desireLabel: 'Desire',
@@ -357,8 +401,10 @@ const EN: typeof RU = {
     directedLabel: (from: string, to: string) => `${from} → ${to}`,
     historyHeading: 'History',
     eventFallbackTitle: 'Event',
-    disappearsSuffix: ' — disappears',
-    appearsSuffix: ' — appears',
+    appearsSuffix: ' — the line appears here',
+    startsLabel: 'Appears',
+    alwaysVisible: 'always on the map (no appearance date set)',
+    fromCharacterEvent: (name: string) => `from a character event: ${name}`,
     kindLabel: 'Relationship type',
     directedOption: (from: string, to: string) => `Directed (${from} → ${to})`,
     mutualOption: 'Mutual (both ways)',
@@ -366,9 +412,8 @@ const EN: typeof RU = {
     colorLabel: 'Color',
     descriptionLabel: 'Description',
     eventWhatHappened: 'What happened',
-    appearanceNoChange: "Appearance: don't change",
-    appearsOption: 'Appears',
-    disappearsOption: 'Disappears',
+    appearanceNoChange: "Appearance: don't mark",
+    appearsOption: 'The line appears here',
     newLabelPlaceholder: 'New name from this point on (optional)',
     newDescriptionPlaceholder: 'New description from this point on (optional)',
     addEventButton: '+ Event',
@@ -428,6 +473,7 @@ const EN: typeof RU = {
     nextEventTitle: 'Next event',
     yearLabel: 'Year',
     presentButton: 'Present day',
+    clearDateTitle: 'Show the whole year',
   },
   trackBoxes: {
     max: 'Max',
@@ -467,8 +513,9 @@ const EN: typeof RU = {
     unknownBirth: 'date unknown',
     timelineLabel: 'Timeline',
     eventFallback: 'Event',
-    appearsSuffix: ' — appears',
-    disappearsSuffix: ' — disappears',
+    appearsSuffix: ' — the line appears here',
+    startsLabel: 'Appears',
+    alwaysWord: 'always (no appearance date set)',
     noEvents: 'none',
     becameSpecies: (kind: string) => `became — ${kind}`,
     diedWord: 'died',
@@ -480,6 +527,12 @@ const EN: typeof RU = {
     birthPrefix: (name: string) => `Birth: ${name}`,
     characterEvent: (name: string, title: string) => `${name}: ${title}`,
     eventFallback: 'event',
+  },
+  dates: {
+    monthNone: 'month —',
+    dayPlaceholder: 'dd',
+    ariaMonth: 'Month',
+    ariaDay: 'Day',
   },
 }
 
@@ -559,6 +612,37 @@ const GALLERY_CATEGORY_LABELS_EN: Record<GalleryCategory, string> = {
   other: 'Other',
 }
 
+// Month names for the optional date on a timeline event. Russian needs two
+// cases: nominative for "март 2026" (month + year) and genitive for
+// "12 марта 2026" (day + month + year); English uses one list for both.
+const MONTHS_RU_NOMINATIVE = [
+  'январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
+  'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь',
+]
+
+const MONTHS_RU_GENITIVE = [
+  'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+  'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+]
+
+const MONTHS_EN = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+]
+
+/** `month` is 1-based, as stored on events. Out-of-range input returns ''. */
+export function monthName(month: number, language: MapLanguage, form: 'nominative' | 'genitive' = 'nominative'): string {
+  const index = month - 1
+  if (index < 0 || index > 11) return ''
+  if (language === 'en') return MONTHS_EN[index]
+  return form === 'genitive' ? MONTHS_RU_GENITIVE[index] : MONTHS_RU_NOMINATIVE[index]
+}
+
+/** Every month, for the month `<select>` in the event editors. */
+export function monthOptions(language: MapLanguage): { value: number; label: string }[] {
+  return Array.from({ length: 12 }, (_, index) => ({ value: index + 1, label: monthName(index + 1, language) }))
+}
+
 export function attributeLabel(key: AttributeKey, language: MapLanguage, ruLabel: string): string {
   return language === 'en' ? ATTRIBUTE_LABELS_EN[key] : ruLabel
 }
@@ -572,11 +656,11 @@ export function groupTitle(ruTitle: string, language: MapLanguage): string {
 }
 
 export function characterKindLabel(kind: CharacterKind, language: MapLanguage): string {
-  return language === 'en' ? CHARACTER_KIND_LABELS_EN[kind] : kind
+  return language === 'en' ? CHARACTER_KIND_LABELS_EN[kind] : CHARACTER_KIND_LABELS[kind]
 }
 
 export function galleryCategoryLabel(category: GalleryCategory, language: MapLanguage): string {
-  return language === 'en' ? GALLERY_CATEGORY_LABELS_EN[category] : category
+  return language === 'en' ? GALLERY_CATEGORY_LABELS_EN[category] : GALLERY_CATEGORY_LABELS[category]
 }
 
 // ---------------------------------------------------------------------------

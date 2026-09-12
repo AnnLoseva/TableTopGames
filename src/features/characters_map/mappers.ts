@@ -1,4 +1,4 @@
-import { withSheetDefaults } from './constants'
+import { normalizeRelationshipEvent, withSheetDefaults } from './constants'
 import type {
   CharacterSheet,
   CharacterTranslation,
@@ -40,7 +40,7 @@ export function mapRelationshipRow(row: MapRelationshipRow): MapRelationship {
     description: row.description,
     color: row.color,
     sortOrder: row.sort_order,
-    events: Array.isArray(row.events) ? row.events as RelationshipEvent[] : [],
+    events: Array.isArray(row.events) ? (row.events as RelationshipEvent[]).map(normalizeRelationshipEvent) : [],
     translationEn: (row.translation_en as RelationshipTranslation | null) ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,

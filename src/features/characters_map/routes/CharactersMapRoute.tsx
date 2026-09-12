@@ -30,8 +30,16 @@ import {
   type MapLanguage,
 } from '../i18n'
 import { createCharactersMapClient } from '../supabase'
-import { collectTimelineMarks, computeTimelineBounds } from '../timeline'
-import type { CharacterSheet, GalleryItem, MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
+import { collectTimelineMarks, computeTimelineBounds, yearMoment, type TimelineMoment } from '../timeline'
+import type {
+  CharacterSheet,
+  EventRelationshipDraft,
+  GalleryItem,
+  MapCharacter,
+  MapRelationship,
+  RelationshipEvent,
+  RelationshipKind,
+} from '../types'
 import AddCharacterModal from '../components/AddCharacterModal'
 import AddRelationshipModal from '../components/AddRelationshipModal'
 import CharacterPanel from '../components/CharacterPanel'
@@ -72,7 +80,7 @@ export default function CharactersMapRoute() {
   const [editModeOn, setEditModeOn] = useState(true)
   const [showExport, setShowExport] = useState(false)
   const [showRoster, setShowRoster] = useState(false)
-  const [timelineYear, setTimelineYear] = useState<number | null>(null)
+  const [timelineMoment, setTimelineMoment] = useState<TimelineMoment | null>(null)
   const [language, setLanguage] = useState<MapLanguage>('ru')
   const [translationStatus, setTranslationStatus] = useState<{ done: number; total: number } | null>(null)
 
@@ -200,10 +208,103 @@ export default function CharactersMapRoute() {
     })
   }, [client])
 
-  const handleSaveCharacter = useCallback(async (id: string, patch: { name: string; description: string; sheet: CharacterSheet }) => {
-    const updated = await updateCharacter(client, id, patch)
-    setCharacters(previous => previous.map(character => (character.id === id ? updated : character)))
-  }, [client])
+  /**
+   * Saves a character sheet *and* the relationship lines its events carry (the
+   * event↔relationship link). Relationship work happens first, so the sheet we
+   * finally write already knows the ids of the lines its events produced:
+   *
+   *  1. delete the lines the owner removed while editing,
+   *  2. create/patch each draft, stamping its appearance event with the source
+   *     event's date — that date is what makes the line show up on the map at
+   *     the right moment and stay invisible before it,
+   *  3. write the sheet with `relationshipIds` refreshed per event.
+   */
+  const handleSaveCharacter = useCallback(async (character: MapCharacter, patch: {
+    name: string
+    description: string
+    sheet: CharacterSheet
+    eventRelationships: EventRelationshipDraft[]
+    removedRelationshipIds: string[]
+  }) => {
+    const removedIds = new Set(patch.removedRelationshipIds)
+    for (const relationshipId of patch.removedRelationshipIds) {
+      await deleteRelationship(client, relationshipId)
+    }
+
+    const touched: MapRelationship[] = []
+    const createdIds = new Set<string>()
+    const idsByEvent = new Map<string, string[]>()
+
+    for (const draft of patch.eventRelationships) {
+      const sourceEvent = patch.sheet.events.find(event => event.id === draft.eventId)
+      if (!sourceEvent || !draft.targetCharacterId || !draft.label.trim()) continue
+      const fromCharacterId = draft.direction === 'in' ? draft.targetCharacterId : character.id
+      const toCharacterId = draft.direction === 'in' ? character.id : draft.targetCharacterId
+      const kind: RelationshipKind = draft.direction === 'mutual' ? 'mutual' : 'directed'
+      const existing = draft.id ? relationships.find(item => item.id === draft.id) ?? null : null
+
+      const appearance: RelationshipEvent = {
+        id: existing?.events.find(event => event.sourceEventId === draft.eventId)?.id ?? crypto.randomUUID(),
+        year: sourceEvent.year,
+        month: sourceEvent.month,
+        day: sourceEvent.day,
+        dateLabel: '',
+        title: sourceEvent.title || draft.label,
+        appears: true,
+        sourceCharacterId: character.id,
+        sourceEventId: draft.eventId,
+      }
+
+      let saved: MapRelationship
+      if (existing) {
+        saved = await updateRelationship(client, existing.id, {
+          fromCharacterId,
+          toCharacterId,
+          kind,
+          label: draft.label,
+          description: draft.description,
+          color: draft.color,
+          events: [...existing.events.filter(event => event.sourceEventId !== draft.eventId), appearance],
+        })
+      } else {
+        const created = await createRelationship(client, {
+          fromCharacterId,
+          toCharacterId,
+          kind,
+          label: draft.label,
+          description: draft.description,
+          color: draft.color,
+        }, relationships.length + touched.length)
+        saved = await updateRelationship(client, created.id, { events: [appearance] })
+        createdIds.add(saved.id)
+      }
+      touched.push(saved)
+      idsByEvent.set(draft.eventId, [...(idsByEvent.get(draft.eventId) ?? []), saved.id])
+    }
+
+    const sheet: CharacterSheet = {
+      ...patch.sheet,
+      events: patch.sheet.events.map(event => {
+        const ids = idsByEvent.get(event.id)
+        if (ids && ids.length > 0) return { ...event, relationshipIds: ids }
+        return event.relationshipIds ? { ...event, relationshipIds: undefined } : event
+      }),
+    }
+
+    const updated = await updateCharacter(client, character.id, {
+      name: patch.name,
+      description: patch.description,
+      sheet,
+    })
+    setCharacters(previous => previous.map(item => (item.id === character.id ? updated : item)))
+    if (removedIds.size > 0 || touched.length > 0) {
+      const byId = new Map(touched.map(item => [item.id, item]))
+      setRelationships(previous => [
+        ...previous.filter(item => !removedIds.has(item.id)).map(item => byId.get(item.id) ?? item),
+        ...touched.filter(item => createdIds.has(item.id)),
+      ])
+    }
+  }, [client, relationships])
 
   const handleUploadCharacterImage = useCallback(async (character: MapCharacter, file: File) => {
     const newPath = await uploadCharacterImage(client, file)
@@ -385,12 +486,13 @@ export default function CharactersMapRoute() {
     [localizedCharacters, localizedRelationships, language],
   )
 
-  // Once any timeline data exists, default the view to "present" (the latest known
-  // year) — everyone born so far, in their current state. Only fires while the
-  // year hasn't been touched yet, so it never fights a year the user picked.
+  // Once any timeline data exists, default the view to "present" (the end of
+  // the latest known year) — everyone born so far, in their current state.
+  // Only fires while the cursor hasn't been touched yet, so it never fights a
+  // moment the user picked.
   useEffect(() => {
-    if (timelineYear === null && timelineBounds) setTimelineYear(timelineBounds.max)
-  }, [timelineBounds, timelineYear])
+    if (timelineMoment === null && timelineBounds) setTimelineMoment(yearMoment(timelineBounds.max))
+  }, [timelineBounds, timelineMoment])
 
   return (
     <div className={styles.page}>
@@ -466,7 +568,7 @@ export default function CharactersMapRoute() {
           relationships={localizedRelationships}
           isEditor={isEditor}
           language={language}
-          timelineYear={timelineYear}
+          timelineMoment={timelineMoment}
           selectedCharacterId={selectedCharacterId}
           selectedRelationshipId={selectedRelationshipId}
           onSelectCharacter={selectCharacter}
@@ -484,13 +586,13 @@ export default function CharactersMapRoute() {
         </p>
       )}
 
-      {!isLoading && timelineBounds && timelineYear !== null && (
+      {!isLoading && timelineBounds && timelineMoment !== null && (
         <TimelineControl
           bounds={timelineBounds}
-          value={timelineYear}
+          value={timelineMoment}
           marks={timelineMarks}
           language={language}
-          onChange={setTimelineYear}
+          onChange={setTimelineMoment}
         />
       )}
 
@@ -498,16 +600,20 @@ export default function CharactersMapRoute() {
         <CharacterPanel
           character={selectedCharacter}
           displayCharacter={displayCharacter}
+          characters={localizedCharacters}
+          relationships={relationships}
+          displayRelationships={localizedRelationships}
           language={language}
           imageUrl={selectedCharacter.imagePath ? getImageUrl(selectedCharacter.imagePath) : null}
           isEditor={isEditor}
           onClose={() => selectCharacter(null)}
-          onSave={patch => handleSaveCharacter(selectedCharacter.id, patch).then(() => {
+          onSave={patch => handleSaveCharacter(selectedCharacter, patch).then(() => {
             runTranslationScan()
           }).catch(error => {
             setActionError(error instanceof Error ? error.message : s.characterPanel.errorSave)
             throw error
           })}
+          onSelectRelationship={selectRelationship}
           onUploadImage={file => handleUploadCharacterImage(selectedCharacter, file)}
           onDelete={() => handleDeleteCharacter(selectedCharacter)}
           getGalleryImageUrl={getImageUrl}
@@ -559,7 +665,7 @@ export default function CharactersMapRoute() {
         <CharacterRosterModal
           characters={localizedCharacters}
           language={language}
-          timelineYear={timelineYear}
+          timelineMoment={timelineMoment}
           onSelect={selectCharacter}
           onClose={() => setShowRoster(false)}
         />

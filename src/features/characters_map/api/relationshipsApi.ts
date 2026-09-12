@@ -53,6 +53,10 @@ export async function updateRelationship(
   patch: MapRelationshipPatch,
 ): Promise<MapRelationship> {
   const payload: Record<string, unknown> = { updated_at: new Date().toISOString() }
+  // Endpoints are patchable so a line built from a character event can be
+  // flipped between "A → B" and "B → A" without losing its id and history.
+  if (patch.fromCharacterId !== undefined) payload.from_character_id = patch.fromCharacterId
+  if (patch.toCharacterId !== undefined) payload.to_character_id = patch.toCharacterId
   if (patch.kind !== undefined) payload.kind = patch.kind
   if (patch.label !== undefined) payload.label = patch.label
   if (patch.description !== undefined) payload.description = patch.description

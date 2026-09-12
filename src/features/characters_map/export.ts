@@ -1,5 +1,6 @@
 import { ATTRIBUTE_GROUPS, SKILL_GROUPS } from './constants'
 import { attributeLabel, characterKindLabel, galleryCategoryLabel, groupTitle, skillLabel, t, type MapLanguage } from './i18n'
+import { formatEventDate, relationshipStart, sortDated } from './timeline'
 import type { CharacterSheet, DamageTrack, MapCharacter, MapRelationship } from './types'
 
 function cleanText(value: string): string {
@@ -82,9 +83,9 @@ function characterSheetLines(character: MapCharacter, language: MapLanguage): st
 
   if (sheet.events.length > 0) {
     lines.push(`   ${s.timelineLabel}:`)
-    const sortedEvents = [...sheet.events].sort((a, b) => a.year - b.year)
+    const sortedEvents = sortDated(sheet.events)
     for (const event of sortedEvents) {
-      let line = `     ${event.year} — ${event.title || s.eventFallback}`
+      let line = `     ${formatEventDate(event, language)} — ${event.title || s.eventFallback}`
       if (event.description.trim()) line += `: ${cleanText(event.description)}`
       if (event.kind) line += ` (${s.becameSpecies(characterKindLabel(event.kind, language))})`
       if (event.alive === false) line += ` (${s.diedWord})`
@@ -154,14 +155,15 @@ export function exportCharactersMapToText(
     }
     lines.push(line)
 
+    const start = relationshipStart(relationship)
+    lines.push(`     ${s.startsLabel}: ${start ? formatEventDate(start, language) : s.alwaysWord}`)
+
     if (relationship.events.length > 0) {
       lines.push(`     ${s.timelineLabel}:`)
-      const sortedEvents = [...relationship.events].sort((a, b) => a.year - b.year)
-      for (const event of sortedEvents) {
-        let eventLine = `       ${event.year} — ${event.title || s.eventFallback}`
+      for (const event of sortDated(relationship.events)) {
+        let eventLine = `       ${formatEventDate(event, language)} — ${event.title || s.eventFallback}`
         if (event.description?.trim()) eventLine += `: ${cleanText(event.description)}`
-        if (event.active === true) eventLine += s.appearsSuffix
-        else if (event.active === false) eventLine += s.disappearsSuffix
+        if (event.appears) eventLine += s.appearsSuffix
         lines.push(eventLine)
       }
     }

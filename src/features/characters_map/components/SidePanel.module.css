@@ -3,6 +3,9 @@
   top: 0;
   right: 0;
   bottom: 0;
+  /* Above the map's top bar (z-index 10) — otherwise its action buttons sit on
+     top of this panel's own close button and swallow the clicks. */
+  z-index: 20;
   width: min(380px, 100vw);
   background: rgba(14, 14, 20, 0.94);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -14,26 +17,46 @@
   overflow-y: auto;
 }
 
+/* Sticky so the close button stays reachable however far the panel scrolls. */
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
-  padding: 18px 20px 0;
+  padding: 10px 12px 8px;
+  background: linear-gradient(180deg, rgba(14, 14, 20, 0.98) 70%, rgba(14, 14, 20, 0));
 }
 
 .closeButton {
-  border: none;
-  background: transparent;
-  color: rgba(242, 240, 247, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(20, 20, 28, 0.9);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(242, 240, 247, 0.7);
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
 }
 
 .closeButton:hover {
   color: #f2f0f7;
+  border-color: var(--map-accent, #d9b45c);
+}
+
+@media (pointer: coarse) {
+  .closeButton {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
 }
 
 .body {

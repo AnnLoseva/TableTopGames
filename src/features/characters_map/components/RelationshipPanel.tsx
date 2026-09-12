@@ -2,8 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import type { MapCharacter, MapRelationship, RelationshipEvent, RelationshipKind } from '../types'
-import { DEFAULT_RELATIONSHIP_COLOR, RELATIONSHIP_DESCRIPTION_MAX_LENGTH, RELATIONSHIP_LABEL_MAX_LENGTH } from '../constants'
+import {
+  DEFAULT_RELATIONSHIP_COLOR,
+  RELATIONSHIP_DESCRIPTION_MAX_LENGTH,
+  RELATIONSHIP_LABEL_MAX_LENGTH,
+  createRelationshipEvent,
+} from '../constants'
 import { t, type MapLanguage } from '../i18n'
+import { formatEventDate, relationshipStart, sortDated } from '../timeline'
+import EventDateFields from './EventDateFields'
 import styles from './SidePanel.module.css'
 import timelineStyles from './CharacterSheetView.module.css'
 
@@ -50,6 +57,10 @@ export default function RelationshipPanel({
   const [isBusy, setIsBusy] = useState(false)
   const [error, setError] = useState('')
 
+  // Where the line starts existing — `null` means "always on the map", i.e.
+  // the owner wants the line but hasn't decided when it began.
+  const startEvent = relationshipStart(displayRelationship)
+
   useEffect(() => {
     setLabel(relationship.label)
     setDescription(relationship.description)
@@ -82,8 +93,7 @@ export default function RelationshipPanel({
   }
 
   const addEvent = () => {
-    const event: RelationshipEvent = { id: crypto.randomUUID(), year: new Date().getFullYear(), dateLabel: '', title: '' }
-    setEvents(previous => [...previous, event])
+    setEvents(previous => [...previous, createRelationshipEvent(new Date().getFullYear())])
   }
 
   const updateEvent = (id: string, patch: Partial<RelationshipEvent>) => {
@@ -108,7 +118,6 @@ export default function RelationshipPanel({
   return (
     <aside className={styles.panel}>
       <div className={styles.header}>
-        <span />
         <button type="button" className={styles.closeButton} onClick={onClose} aria-label={s.ariaClose}>×</button>
       </div>
       <div className={styles.body}>
@@ -133,17 +142,20 @@ export default function RelationshipPanel({
             </p>
             {displayRelationship.description && <p className={styles.description}>{displayRelationship.description}</p>}
 
+            <p className={styles.description} style={{ textAlign: 'center' }}>
+              {s.startsLabel}: {startEvent ? formatEventDate(startEvent, language) : s.alwaysVisible}
+            </p>
+
             {displayRelationship.events.length > 0 && (
               <div style={{ marginTop: 12 }}>
                 <h3 className={timelineStyles.sectionTitle} style={{ textAlign: 'left' }}>{s.historyHeading}</h3>
-                {[...displayRelationship.events].sort((a, b) => a.year - b.year).map(event => (
+                {sortDated(displayRelationship.events).map(event => (
                   <div key={event.id} className={timelineStyles.timelineEventView} style={{ marginBottom: 8 }}>
-                    <span className={timelineStyles.timelineYearBadge}>{event.year}</span>
+                    <span className={timelineStyles.timelineYearBadge}>{formatEventDate(event, language)}</span>
                     <div>
                       <p className={timelineStyles.timelineEventTitle}>
                         {event.title || s.eventFallbackTitle}
-                        {event.active === false && s.disappearsSuffix}
-                        {event.active === true && s.appearsSuffix}
+                        {event.appears && s.appearsSuffix}
                       </p>
                       {event.description && <p className={timelineStyles.timelineEventDescription}>{event.description}</p>}
                     </div>
@@ -203,11 +215,10 @@ export default function RelationshipPanel({
             {events.map(event => (
               <div key={event.id} className={timelineStyles.timelineEventRow}>
                 <div className={timelineStyles.timelineEventFields}>
-                  <input
-                    type="number"
-                    className={timelineStyles.timelineYearInput}
-                    value={event.year}
-                    onChange={changeEvent => updateEvent(event.id, { year: Number(changeEvent.target.value) })}
+                  <EventDateFields
+                    value={event}
+                    language={language}
+                    onChange={patch => updateEvent(event.id, patch)}
                   />
                   <input
                     type="text"
@@ -216,14 +227,13 @@ export default function RelationshipPanel({
                     onChange={changeEvent => updateEvent(event.id, { title: changeEvent.target.value })}
                   />
                   <select
-                    value={event.active === undefined ? '' : String(event.active)}
+                    value={event.appears ? 'true' : ''}
                     onChange={changeEvent => updateEvent(event.id, {
-                      active: changeEvent.target.value === '' ? undefined : changeEvent.target.value === 'true',
+                      appears: changeEvent.target.value === 'true' ? true : undefined,
                     })}
                   >
                     <option value="">{s.appearanceNoChange}</option>
                     <option value="true">{s.appearsOption}</option>
-                    <option value="false">{s.disappearsOption}</option>
                   </select>
                   <button
                     type="button"

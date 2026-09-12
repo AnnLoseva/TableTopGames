@@ -14,11 +14,16 @@
   used by `/dnd/journal`; schema applied live. Also has: a VTM-styled full
   character sheet, arrow direction/label-collision/touch(tablet) fixes,
   a plain-text export for pasting into an AI chat, and a **timeline**
-  (2026-09-10) — characters have a birth year (gates map visibility) and
-  dated events changing species (human/vampire/ghost, colored borders) and
-  alive/dead (dead stays on the map, marked, never removed); relationships
-  have dated events that can flip active/appear-disappear and override
-  label/color/description. Also has a per-character **photo gallery**
+  (2026-09-10, extended 2026-09-12) — characters have a birth year (gates map
+  visibility) and dated events changing species (human/vampire/ghost, colored
+  borders) and alive/dead (dead stays on the map, marked, never removed);
+  relationships have dated events overriding label/color/description. Events
+  now take an **optional month/day** on top of the required year (a year-only
+  event sorts at the start of its year), the timeline cursor is a day
+  (`TimelineMoment`; the slider means "end of that year"), relationships only
+  ever **appear** — no appearance date at all = always on the map — and a
+  character event can build relationship lines itself (event↔relationship
+  link, `sourceEventId` on the appearance event). Also has a per-character **photo gallery**
   (2026-09-09) — house/pet/event/other photos separate from the portrait,
   stored in `sheet.gallery`, editing persists immediately (not staged behind
   the sheet's Save/Cancel). And a **RU/EN language toggle** (2026-09-11,
