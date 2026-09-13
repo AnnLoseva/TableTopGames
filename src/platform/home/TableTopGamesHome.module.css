@@ -255,6 +255,45 @@
   font: inherit;
 }
 
+/* Личный архив: хроника и её инструменты — не игры, поэтому отдельной полосой
+   под игровой сеткой, теми же карточками, но ниже и в три колонки. */
+.personal {
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 8px 0 28px;
+}
+
+.personalGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.personalCard {
+  min-height: 220px;
+}
+
+.personalCard .cardCopy {
+  margin-bottom: 16px;
+}
+
+.personalCard .cardCopy h2 {
+  font-size: clamp(26px, 2.2vw, 38px);
+}
+
+.chronicleCard {
+  --accent: #8d3a48;
+}
+
+.studioCard {
+  --accent: #7d6ba0;
+}
+
+.mapCard {
+  --accent: #c9a961;
+}
+
 .cardNumber {
   color: color-mix(in srgb, var(--accent) 88%, white);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -487,10 +526,18 @@
   .gameGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .personalGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 940px) {
   .gameGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .personalGrid {
     grid-template-columns: 1fr;
   }
 

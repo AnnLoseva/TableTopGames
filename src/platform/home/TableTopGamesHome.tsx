@@ -253,6 +253,50 @@ export default function TableTopGamesHome() {
         </div>
       </section>
 
+      <section className={styles.personal}>
+        <p className={styles.eyebrow}>Личный архив</p>
+        <div className={styles.personalGrid}>
+          <Link href="/chronicle" className={`${styles.gameCard} ${styles.personalCard} ${styles.chronicleCard}`}>
+            <div className={styles.cardNumber}>04</div>
+            <div className={styles.cardCopy}>
+              <p>Авторский фанфик</p>
+              <h2>Хроника</h2>
+              <span>Читать главы</span>
+            </div>
+            <div className={styles.cardAction}>
+              Открыть сайт хроники
+              <ArrowIcon />
+            </div>
+          </Link>
+
+          <Link href="/chronicle/admin" className={`${styles.gameCard} ${styles.personalCard} ${styles.studioCard}`}>
+            <div className={styles.cardNumber}>05</div>
+            <div className={styles.cardCopy}>
+              <p>Только для автора</p>
+              <h2>Кабинет</h2>
+              <span>Писать и публиковать</span>
+            </div>
+            <div className={styles.cardAction}>
+              Перейти к главам
+              <ArrowIcon />
+            </div>
+          </Link>
+
+          <Link href="/characters_map" className={`${styles.gameCard} ${styles.personalCard} ${styles.mapCard}`}>
+            <div className={styles.cardNumber}>06</div>
+            <div className={styles.cardCopy}>
+              <p>Только для автора</p>
+              <h2>Карта</h2>
+              <span>Персонажи во времени</span>
+            </div>
+            <div className={styles.cardAction}>
+              Открыть карту отношений
+              <ArrowIcon />
+            </div>
+          </Link>
+        </div>
+      </section>
+
       <footer className={styles.footer}>
         <span>TableTopGames · 2026</span>
         <span>Один аккаунт · несколько игровых миров</span>
