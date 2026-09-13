@@ -110,8 +110,17 @@ export function relationshipStart(relationship: MapRelationship): RelationshipEv
   return appearances[0] ?? null
 }
 
+/**
+ * The moment the line stops being drawn — the earliest event marked `ends`
+ * (a death, a final break). `null` = it never goes away.
+ */
+export function relationshipEnd(relationship: MapRelationship): RelationshipEvent | null {
+  const endings = relationship.events.filter(event => event.ends).sort(compareDated)
+  return endings[0] ?? null
+}
+
 export type ResolvedRelationshipState = {
-  /** `false` only before the relationship's appearance event. */
+  /** `false` before the relationship's appearance event and after its ending. */
   visible: boolean
   label: string
   description: string
@@ -120,11 +129,16 @@ export type ResolvedRelationshipState = {
 }
 
 /** Folds a relationship's `events` (up to and including `moment`) onto its base
- * label/color/description, and decides whether the line exists yet. A
- * relationship with no appearance event is visible at every moment. */
+ * label/color/description, and decides whether the line exists at that moment.
+ * Each event flips visibility — `appears` on, `ends` off — and the state
+ * *before* the first such event is read off that event itself: a line whose
+ * first flag is an appearance didn't exist before it, while one that only ever
+ * ends (the common case: a line that was always there until a death) was there
+ * all along. A relationship with neither flag is visible at every moment. */
 export function resolveRelationshipState(relationship: MapRelationship, moment: TimelineMoment): ResolvedRelationshipState {
   const cursor = momentOrdinal(moment)
-  const start = relationshipStart(relationship)
+  const firstFlagged = sortDated(relationship.events.filter(event => event.appears || event.ends))[0]
+  let visible = !firstFlagged?.appears
   let label = relationship.label
   let description = relationship.description
   let color = relationship.color
@@ -132,17 +146,13 @@ export function resolveRelationshipState(relationship: MapRelationship, moment: 
     .filter(event => eventOrdinal(event) <= cursor)
     .sort(compareDated)
   for (const event of relevant) {
+    if (event.appears) visible = true
+    if (event.ends) visible = false
     if (event.label !== undefined) label = event.label
     if (event.color !== undefined) color = event.color
     if (event.description !== undefined) description = event.description
   }
-  return {
-    visible: start === null || eventOrdinal(start) <= cursor,
-    label,
-    description,
-    color,
-    kind: relationship.kind,
-  }
+  return { visible, label, description, color, kind: relationship.kind }
 }
 
 export type TimelineBounds = { min: number; max: number }

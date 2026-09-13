@@ -30,6 +30,8 @@ This is the catalog of the project's AI context. Every agent starts here after
 | Fix dice / rolls | `subsystems/dice-and-rolls` → `subsystems/vtm-mechanics` → relevant workflow |
 | Add a feature to the game table | `subsystems/game-table` → `workflows/react-table-edit-protocol` |
 | Add / change the Pathfinder 2 sheet | `subsystems/pathfinder2-sheet` → `workflows/before-any-change` |
+| Work on the fanfic (chapters, reader, editor) | `CURRENT-STATE` → `DECISIONS` (2026-09-13) → `FILE-MAP` (chronicle rows) → `workflows/supabase-edit-protocol` if the schema is involved |
+| Work on the relationship map / timeline | `DECISIONS` (2026-09-10…13) → `FILE-MAP` (characters map rows) → `src/features/characters_map/timeline.ts` first |
 | Check / change Supabase saving | `subsystems/supabase-persistence` → `workflows/supabase-edit-protocol` |
 | Update rules.json / rules_eng.json | `subsystems/rules-data` → `subsystems/i18n` (RU/EN drift) |
 | Clean up / reduce a monolith | `DECISIONS` → the file's subsystem → its workflow (needs an explicit task) |

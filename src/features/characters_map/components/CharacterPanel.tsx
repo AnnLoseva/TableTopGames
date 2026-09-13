@@ -24,6 +24,7 @@ import type {
   CharacterSheet,
   Discipline,
   EventRelationshipDraft,
+  EventRelationshipEnding,
   GalleryCategory,
   GalleryItem,
   MapCharacter,
@@ -43,8 +44,29 @@ type SavePatch = {
    * `handleSaveCharacter`, which creates/patches them and stamps each one's
    * appearance with its source event's date. */
   eventRelationships: EventRelationshipDraft[]
+  /** Existing lines the owner marked as ending at one of this character's
+   * events — written as an `ends` event carrying that event's date. */
+  eventRelationshipEndings: EventRelationshipEnding[]
   /** Lines the owner removed while editing; deleted outright on save. */
   removedRelationshipIds: string[]
+}
+
+/** The endings currently stored on the map: an `ends` event this character's
+ * own timeline put on some relationship. Mirrors `deriveEventRelationshipDrafts`. */
+function deriveEventRelationshipEndings(
+  character: MapCharacter,
+  relationships: MapRelationship[],
+): EventRelationshipEnding[] {
+  const eventIds = new Set(character.sheet.events.map(event => event.id))
+  const endings: EventRelationshipEnding[] = []
+  for (const relationship of relationships) {
+    for (const event of relationship.events) {
+      if (!event.ends || event.sourceCharacterId !== character.id) continue
+      if (!event.sourceEventId || !eventIds.has(event.sourceEventId)) continue
+      endings.push({ eventId: event.sourceEventId, relationshipId: relationship.id })
+    }
+  }
+  return endings
 }
 
 /** Rebuilds the panel's relationship drafts from what's actually on the map:
@@ -124,6 +146,9 @@ export default function CharacterPanel({
   const [eventRelationships, setEventRelationships] = useState<EventRelationshipDraft[]>(
     () => deriveEventRelationshipDrafts(character, relationships),
   )
+  const [eventRelationshipEndings, setEventRelationshipEndings] = useState<EventRelationshipEnding[]>(
+    () => deriveEventRelationshipEndings(character, relationships),
+  )
   const [removedRelationshipIds, setRemovedRelationshipIds] = useState<string[]>([])
   const [isBusy, setIsBusy] = useState(false)
   const [error, setError] = useState('')
@@ -153,6 +178,7 @@ export default function CharacterPanel({
   useEffect(() => {
     if (isEditing) return
     setEventRelationships(deriveEventRelationshipDrafts(character, relationships))
+    setEventRelationshipEndings(deriveEventRelationshipEndings(character, relationships))
   }, [character, relationships, isEditing])
 
   useEffect(() => {
@@ -189,6 +215,7 @@ export default function CharacterPanel({
         description,
         sheet,
         eventRelationships: eventRelationships.map(draft => ({ ...draft, label: draft.label.trim() })),
+        eventRelationshipEndings,
         removedRelationshipIds,
       })
       setIsEditing(false)
@@ -284,6 +311,7 @@ export default function CharacterPanel({
       return
     }
     setEventRelationships(previous => previous.filter(draft => draft.eventId !== id))
+    setEventRelationshipEndings(previous => previous.filter(ending => ending.eventId !== id))
     setRemovedRelationshipIds(previous => [
       ...previous,
       ...orphaned.map(draft => draft.id).filter((relationshipId): relationshipId is string => relationshipId !== null),
@@ -314,8 +342,34 @@ export default function CharacterPanel({
     if (draft.id) setRemovedRelationshipIds(previous => [...previous, draft.id as string])
   }
 
+  const toggleEventEnding = (eventId: string, relationshipId: string, ends: boolean) => {
+    setEventRelationshipEndings(previous => (ends
+      ? [...previous, { eventId, relationshipId }]
+      : previous.filter(ending => !(ending.eventId === eventId && ending.relationshipId === relationshipId))))
+  }
+
+  const toggleAllEventEndings = (eventId: string, relationshipIds: string[], ends: boolean) => {
+    setEventRelationshipEndings(previous => {
+      const rest = previous.filter(ending => ending.eventId !== eventId || !relationshipIds.includes(ending.relationshipId))
+      return ends ? [...rest, ...relationshipIds.map(relationshipId => ({ eventId, relationshipId }))] : rest
+    })
+  }
+
   // Everyone but this character can be the other end of an event's line.
   const relationshipTargets = characters.filter(item => item.id !== character.id)
+
+  /** "→ Мария — наставница", from this character's point of view. */
+  const relationshipLineLabel = (relationship: MapRelationship): string => {
+    const isOutgoing = relationship.fromCharacterId === character.id
+    const other = characters.find(item => item.id === (isOutgoing ? relationship.toCharacterId : relationship.fromCharacterId))
+    const arrow = relationship.kind === 'mutual' ? '↔' : isOutgoing ? '→' : '←'
+    return `${arrow} ${other?.name ?? s.dash} — ${relationship.label}`
+  }
+
+  // Every line this character is part of — the pool an event can end.
+  const characterLines = displayRelationships.filter(relationship => (
+    relationship.fromCharacterId === character.id || relationship.toCharacterId === character.id
+  ))
 
   const updateGalleryDraft = (id: string, patch: Partial<Pick<GalleryItem, 'caption' | 'category'>>) => {
     patchSheet({ gallery: sheet.gallery.map(item => (item.id === id ? { ...item, ...patch } : item)) })
@@ -454,7 +508,14 @@ export default function CharacterPanel({
 
           {sheet.events.length === 0 && !isEditing && <p className={styles.emptyHint}>{s.noEvents}</p>}
           {isEditing && <p className={styles.eventRelationshipNote}>{s.eventDateHint}</p>}
-          {isEditing && sheet.events.map(event => (
+          {isEditing && sheet.events.map(event => {
+            // A line born at this very event can't also end at it.
+            const endableLines = characterLines
+              .filter(relationship => !eventRelationships.some(
+                draft => draft.eventId === event.id && draft.id === relationship.id,
+              ))
+              .map(relationship => ({ id: relationship.id, label: relationshipLineLabel(relationship) }))
+            return (
             <div key={event.id} className={styles.timelineEventRow}>
               <div className={styles.timelineEventFields}>
                 <EventDateFields
@@ -508,16 +569,26 @@ export default function CharacterPanel({
                 event={event}
                 targets={relationshipTargets}
                 drafts={eventRelationships.filter(draft => draft.eventId === event.id)}
+                endableLines={endableLines}
+                endings={eventRelationshipEndings
+                  .filter(ending => ending.eventId === event.id)
+                  .map(ending => ending.relationshipId)}
                 language={language}
                 onAdd={() => addEventRelationship(event.id)}
                 onChange={updateEventRelationship}
                 onRemove={removeEventRelationship}
+                onToggleEnding={(relationshipId, ends) => toggleEventEnding(event.id, relationshipId, ends)}
+                onToggleAllEndings={ends => toggleAllEventEndings(event.id, endableLines.map(line => line.id), ends)}
               />
             </div>
-          ))}
+            )
+          })}
           {!isEditing && sortDated(viewSheet.events).map(event => {
             const eventLines = displayRelationships.filter(relationship => relationship.events.some(
-              relationshipEvent => relationshipEvent.sourceEventId === event.id,
+              relationshipEvent => relationshipEvent.appears && relationshipEvent.sourceEventId === event.id,
+            ))
+            const endedLines = displayRelationships.filter(relationship => relationship.events.some(
+              relationshipEvent => relationshipEvent.ends && relationshipEvent.sourceEventId === event.id,
             ))
             return (
               <div key={event.id} className={styles.timelineEventRow}>
@@ -554,6 +625,23 @@ export default function CharacterPanel({
                             </span>
                           )
                         })}
+                      </p>
+                    )}
+                    {endedLines.length > 0 && (
+                      <p className={styles.eventRelationshipView}>
+                        {s.eventEndingsViewLabel}{' '}
+                        {endedLines.map((relationship, index) => (
+                          <span key={relationship.id}>
+                            {index > 0 && ', '}
+                            <button
+                              type="button"
+                              className={styles.linkButton}
+                              onClick={() => onSelectRelationship(relationship.id)}
+                            >
+                              {relationshipLineLabel(relationship)}
+                            </button>
+                          </span>
+                        ))}
                       </p>
                     )}
                   </div>

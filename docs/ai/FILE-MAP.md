@@ -70,6 +70,25 @@ code. See `docs/ai/DECISIONS.md` (2026-09-06).
 | `src/features/votes/api/pollsApi.ts` | Supabase CRUD for polls/responses | medium | supabase-edit-protocol | Anonymous insert/select only, no update/delete |
 | `src/features/votes/supabase/votes.sql` | `votes_polls`/`votes_responses` schema, RLS, allocation check constraint | **critical** | supabase-edit-protocol | **Applied** live; fully open RLS, no owner concept |
 
+## Chronicle domain (`src/features/chronicle/*`)
+
+The fanfic: a public reader and an author-only editor at `/chronicle`. Reuses
+the characters map as its relationship timeline — it never redefines
+characters or relationships. Dependency direction is `chronicle` →
+`characters_map` only. See `docs/ai/DECISIONS.md` (2026-09-13).
+
+| Path | Role | Risk | Edit protocol | Notes |
+|---|---|---|---|---|
+| `src/features/chronicle/supabase/chronicle.sql` | `chronicle_chapters`/`chronicle_snapshots`/`chronicle_settings` schema, RLS, the public view | **critical** | supabase-edit-protocol | **Applied** live. `anon` has NO grant on the chapters table; the reader sees only `chronicle_published_chapters` (SECURITY DEFINER view, published rows, public columns). Do not add an anon grant to the base table — that would expose drafts and `author_notes` |
+| `src/features/chronicle/server/{client,auth,reader,settings}.ts` | Server-only Supabase client, `requireAuthor()`, reader queries | **critical** | before-any-change | `server-only` on purpose: reader queries must stay on the server and go through the view. `requireAuthor` redirects, RLS enforces |
+| `src/features/chronicle/api/{chaptersApi,snapshotsApi,settingsApi}.ts` | Author-side CRUD (browser client) | high | supabase-edit-protocol | Writes are owner-only at the database level; publishing without a year is refused by a CHECK constraint |
+| `src/features/chronicle/{types,constants,mappers,moment}.ts` | Row↔app contract, slugs, word counts, chapter-moment formatting | high | before-any-change | `moment.ts` reuses the map's pure date formatter so both agree on what a date is |
+| `src/features/chronicle/routes/ChapterEditorRoute.tsx` | The writing screen: autosave, timeline panel, publish, map hand-off | medium | before-any-change | Autosave reads the form through a ref; `status` is only ever sent by an explicit Publish/Unpublish, never by autosave |
+| `src/features/chronicle/routes/{AdminChaptersRoute,NewChapterRoute,SnapshotsRoute,SettingsRoute,LoginRoute}.tsx` | Chapter list, creation, snapshots, public-site settings, sign-in | low | before-any-change | All client components behind the admin layout's auth gate |
+| `src/features/chronicle/components/ChapterContent.tsx` | Renders a stored TipTap document as React | medium | before-any-change | A walker, not `dangerouslySetInnerHTML`; non-http(s) links and images are dropped |
+| `src/features/chronicle/components/{ReaderHome,ChapterPage,ChapterEditor,AdminNav}.tsx` | Reader and editor UI | low | before-any-change | Design tokens live in `chronicle.css`, scoped under `.chronicle` |
+| `src/app/chronicle/**` | Routes: reader pages, `/chronicle/admin/*` behind `requireAuthor()`, login | high | before-any-change | Admin pages are `force-dynamic`; reader pages render per request |
+
 ## Characters map domain (`src/features/characters_map/*`)
 
 Universal character-relationship map at `/characters_map`: click a portrait for
@@ -80,21 +99,21 @@ account writes ("Anna"), public read — same shape as `/dnd/journal`. See
 
 | Path | Role | Risk | Edit protocol | Notes |
 |---|---|---|---|---|
-| `src/app/characters_map/page.tsx` | `/characters_map` route | low | before-any-change | Thin wrapper, wraps route in `Suspense` for `useSearchParams` |
+| `src/app/characters_map/page.tsx` | `/characters_map` route | medium | before-any-change | Wraps the route in `Suspense` for `useSearchParams`, and composes the chronicle's chapter markers (author-only) to hand the map as a prop — this is the only place the two domains meet |
 | `src/features/characters_map/routes/CharactersMapRoute.tsx` | Data loading, `isEditor` gate, selection/URL sync, timeline cursor, all mutation handlers | medium | before-any-change | `isEditor` mirrors `DndJournalRoute`'s pattern against `CHARACTERS_MAP_OWNER_AUTH_USER_ID`; `handleSaveCharacter` also applies the relationship lines a character's events carry |
 | `src/features/characters_map/components/MapCanvas.tsx` | Pannable/zoomable SVG canvas: character nodes, grouped/offset relationship curves, drag-to-reposition | medium | before-any-change | Groups edges by unordered character pair so multiple/opposite-direction edges render as separate curves |
 | `src/features/characters_map/components/CharacterPanel.tsx` | Full-page VTM-styled character sheet (concept/clan/generation/predator/sire, attributes, skills, disciplines, health/willpower/humanity/blood potency trackers, touchstones/merits/flaws) | medium | before-any-change | Edit affordances hidden unless `isEditor`; sheet shape is UI-only, not VTM rules |
 | `src/features/characters_map/components/{DotRating,TrackBoxes}.tsx` | Reusable dot-rating and damage-track box widgets | low | before-any-change | Used by `CharacterPanel` |
-| `src/features/characters_map/components/{RelationshipPanel,AddCharacterModal,AddRelationshipModal}.tsx` | View/edit UI for a selected edge and creation forms | low | before-any-change | Edit affordances hidden unless `isEditor`; a relationship event can only mark an *appearance*, never a disappearance |
+| `src/features/characters_map/components/{RelationshipPanel,AddCharacterModal,AddRelationshipModal}.tsx` | View/edit UI for a selected edge and creation forms | low | before-any-change | Edit affordances hidden unless `isEditor`; a relationship event can mark an *appearance* or an *ending* (folded chronologically by `resolveRelationshipState`) |
 | `src/features/characters_map/components/EventDateFields.tsx` | Year + optional month/day inputs, shared by both event editors | low | before-any-change | Clearing the month clears the day — a day alone can't be ordered |
-| `src/features/characters_map/components/EventRelationshipsEditor.tsx` | Relationship lines attached to one character event (event↔relationship link) | medium | before-any-change | Produces `EventRelationshipDraft`s only; the route's `handleSaveCharacter` is what actually creates/patches/deletes the relationships |
+| `src/features/characters_map/components/EventRelationshipsEditor.tsx` | Relationship lines that start at one character event, and existing lines that end at it (event↔relationship link) | medium | before-any-change | Produces `EventRelationshipDraft`/`EventRelationshipEnding` drafts only; the route's `handleSaveCharacter` is what actually creates/patches/ends/deletes the relationships |
 | `src/features/characters_map/export.ts` + `components/ExportModal.tsx` | Plain-text dump of characters/relationships (for pasting into an AI chat), copy/download modal | low | before-any-change | Visible to everyone, not gated by `isEditor` |
 | `src/features/characters_map/timeline.ts` | Pure timeline resolution: date ordinals (`eventOrdinal`/`compareDated`), date formatting, character kind/alive and relationship visible/label/color/description at a given `TimelineMoment`, plus timeline bounds/marks | high | before-any-change | The only place that folds `events` chronologically — UI must go through it, never read `events` directly, and never sort by `year` alone (events carry an optional month/day) |
 | `src/features/characters_map/components/TimelineControl.tsx` | Bottom timeline bar: year slider, prev/next-event stepper, "present" snap | low | before-any-change | Shown once `computeTimelineBounds` is non-null; visible to everyone |
 | `src/features/characters_map/components/CharacterRosterModal.tsx` | Editor-only list of every character regardless of timeline visibility | low | before-any-change | Needed because a not-yet-born character can't otherwise be opened to set its own birth year |
 | `src/features/characters_map/api/{charactersApi,relationshipsApi}.ts` | Supabase CRUD + portrait upload | high | supabase-edit-protocol | Hard delete (single writer, no offline sync) |
 | `src/features/characters_map/{types,constants,mappers,supabase}.ts` | Row↔app contract, table/bucket names, owner auth id | high | supabase-edit-protocol | `CHARACTERS_MAP_OWNER_AUTH_USER_ID` must match the RLS literal in the SQL below; `CharacterKind`/border colors and `CharacterEvent`/`RelationshipEvent` shapes live here |
-| `src/features/characters_map/supabase/characters_map.sql` | `characters_map_characters`/`characters_map_relationships` schema, RLS, `characters-map-images` bucket | **critical** | supabase-edit-protocol | **Applied** live; public reads, owner-only writes, `kind in ('directed','mutual')` |
+| `src/features/characters_map/supabase/characters_map.sql` | `characters_map_characters`/`characters_map_relationships` schema, RLS, `characters-map-images` bucket | **critical** | supabase-edit-protocol | **Applied** live; **owner-only reads and writes since 2026-09-13** (the map is an author tool), `kind in ('directed','mutual')`. The images bucket is still public by direct URL |
 
 ## Home module (`src/games/vampires/modules/home/*`)
 | Path | Role | Risk | Edit protocol | Notes |

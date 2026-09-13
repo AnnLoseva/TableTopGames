@@ -1,0 +1,62 @@
+/*
+ * Chronicle design tokens. Scoped under `.chronicle` rather than :root so this
+ * domain's dark-editorial palette never leaks into the VTM/Pathfinder/D&D
+ * routes that share the same app shell.
+ *
+ * Palette: near-black grounds, warm grays, off-white type, and three accents
+ * used sparingly — burgundy for the author's own marks, gold for the timeline,
+ * violet for structure. Hairlines, not borders. Air, not cards.
+ */
+.chronicle {
+  --ch-bg: #08080a;
+  --ch-bg-raised: #0e0e11;
+  --ch-bg-sunken: #050506;
+  --ch-ink: #ece7df;
+  --ch-ink-soft: rgba(236, 231, 223, 0.68);
+  --ch-ink-faint: rgba(236, 231, 223, 0.42);
+  --ch-ink-ghost: rgba(236, 231, 223, 0.22);
+  --ch-line: rgba(236, 231, 223, 0.12);
+  --ch-line-soft: rgba(236, 231, 223, 0.06);
+
+  --ch-burgundy: #8d3a48;
+  --ch-gold: #c9a961;
+  --ch-violet: #7d6ba0;
+  --ch-cyan: #6aa9b0;
+
+  --ch-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Times New Roman', serif;
+  --ch-sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --ch-measure: 34rem;
+
+  min-height: 100vh;
+  background: var(--ch-bg);
+  color: var(--ch-ink);
+  font-family: var(--ch-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.chronicle *,
+.chronicle *::before,
+.chronicle *::after {
+  box-sizing: border-box;
+}
+
+.chronicle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* A single hairline rule used throughout, never a boxed card. */
+.chronicle hr {
+  border: none;
+  border-top: 1px solid var(--ch-line-soft);
+  margin: 0;
+}
+
+/* Small caps label: the one piece of UI chrome this design leans on. */
+.chronicle .ch-kicker {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ch-ink-faint);
+}

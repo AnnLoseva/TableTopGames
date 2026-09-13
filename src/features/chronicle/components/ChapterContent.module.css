@@ -1,0 +1,117 @@
+/* Reading typography. One column, generous measure, serif prose. */
+.prose {
+  font-family: var(--ch-serif);
+  font-size: 19px;
+  line-height: 1.78;
+  color: var(--ch-ink);
+  letter-spacing: 0.002em;
+}
+
+.prose p {
+  margin: 0 0 1.35em;
+  text-wrap: pretty;
+}
+
+/* Classic prose indent: the first paragraph of a section flush, the rest
+   indented — no vertical gap games. */
+.prose p + p {
+  margin-top: -0.45em;
+  text-indent: 1.4em;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--ch-sans);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ch-ink);
+  margin: 2.4em 0 0.9em;
+  line-height: 1.3;
+}
+
+.prose h1 { font-size: 26px; }
+.prose h2 { font-size: 21px; }
+.prose h3 { font-size: 18px; }
+.prose h4 { font-size: 16px; color: var(--ch-ink-soft); }
+
+.prose blockquote {
+  margin: 1.8em 0;
+  padding-left: 1.4em;
+  border-left: 1px solid var(--ch-burgundy);
+  color: var(--ch-ink-soft);
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 1.35em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-bottom: 0.4em;
+}
+
+.prose a {
+  color: var(--ch-ink);
+  border-bottom: 1px solid var(--ch-gold);
+  padding-bottom: 1px;
+}
+
+.prose a:hover {
+  color: var(--ch-gold);
+}
+
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86em;
+  background: rgba(236, 231, 223, 0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+.prose pre {
+  margin: 1.6em 0;
+  padding: 16px 18px;
+  background: var(--ch-bg-sunken);
+  border: 1px solid var(--ch-line-soft);
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+/* A section break, not a ruler: three centred marks. */
+.divider {
+  border: none;
+  margin: 2.6em 0;
+  text-align: center;
+  overflow: visible;
+}
+
+.divider::after {
+  content: '⁂';
+  color: var(--ch-ink-ghost);
+  font-size: 16px;
+  letter-spacing: 0.4em;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2em 0;
+}
+
+@media (max-width: 640px) {
+  .prose {
+    font-size: 17.5px;
+    line-height: 1.75;
+  }
+}

@@ -60,11 +60,15 @@ export type CharacterEvent = {
  * optional: an event can, say, only rename the relationship without touching
  * its color.
  *
- * Relationships only ever *appear*: `appears` marks the moment the line
- * starts existing, and before it the edge is not drawn at all. A relationship
- * with no `appears` event anywhere is simply always on the map (the date
- * hasn't been decided yet). There is deliberately no "disappears" — a legacy
- * `active: false` flag is dropped on read by `normalizeRelationshipEvent`.
+ * A line's lifetime is driven by two flags: `appears` marks the moment it
+ * starts existing (before it the edge is not drawn at all) and `ends` the
+ * moment it stops — a death, a final break. A relationship with no `appears`
+ * event anywhere is simply always on the map from the start (the date hasn't
+ * been decided yet); one with no `ends` event never goes away. Both are
+ * folded chronologically, so a line can, if the owner really wants it, come
+ * back after an ending. The legacy `active: false` flag is *not* migrated to
+ * `ends` — those were placeholders and are dropped on read by
+ * `normalizeRelationshipEvent`.
  */
 export type RelationshipEvent = {
   id: string
@@ -77,7 +81,9 @@ export type RelationshipEvent = {
   title: string
   /** `true` on the event where this relationship starts existing. */
   appears?: boolean
-  /** Set when this appearance was built from a character's timeline event. */
+  /** `true` on the event where it stops being drawn (e.g. a character died). */
+  ends?: boolean
+  /** Set when this appearance/ending was built from a character's timeline event. */
   sourceCharacterId?: string
   sourceEventId?: string
   label?: string
@@ -92,6 +98,17 @@ export type RelationshipEvent = {
  * otherwise it patches the existing one, and either way the relationship's
  * appearance event is stamped with the character event's date and id.
  */
+/**
+ * The other half of the event↔relationship link: an existing line the owner
+ * marked as *ending* at a character event ("she died here, these lines stop").
+ * Applied by `CharactersMapRoute`'s `handleSaveCharacter`, which writes an
+ * `ends` event onto that relationship carrying the source event's date.
+ */
+export type EventRelationshipEnding = {
+  eventId: string
+  relationshipId: string
+}
+
 export type EventRelationshipDraft = {
   /** Stable React key — a relationship id once saved, a local uuid before that. */
   key: string
@@ -276,4 +293,18 @@ export type MapRelationshipInput = {
 export type MapRelationshipPatch = Partial<MapRelationshipInput> & {
   events?: RelationshipEvent[]
   translationEn?: RelationshipTranslation | null
+}
+
+/**
+ * A chapter of the chronicle, placed on this map's timeline. The map only ever
+ * receives these as a prop (see `src/app/characters_map/page.tsx`) — this
+ * domain has no dependency on the chronicle.
+ */
+export type ChapterMark = {
+  id: string
+  title: string
+  number: number
+  year: number
+  month: number | null
+  day: number | null
 }

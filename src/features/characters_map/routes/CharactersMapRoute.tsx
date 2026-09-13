@@ -30,10 +30,19 @@ import {
   type MapLanguage,
 } from '../i18n'
 import { createCharactersMapClient } from '../supabase'
-import { collectTimelineMarks, computeTimelineBounds, yearMoment, type TimelineMoment } from '../timeline'
+import {
+  collectTimelineMarks,
+  computeTimelineBounds,
+  makeMoment,
+  momentForDate,
+  yearMoment,
+  type TimelineMoment,
+} from '../timeline'
 import type {
+  ChapterMark,
   CharacterSheet,
   EventRelationshipDraft,
+  EventRelationshipEnding,
   GalleryItem,
   MapCharacter,
   MapRelationship,
@@ -60,13 +69,14 @@ function randomSpawnPosition(index: number): { x: number; y: number } {
 const EDIT_MODE_STORAGE_KEY = 'characters-map-edit-mode'
 const LANGUAGE_STORAGE_KEY = 'characters-map-language'
 
-export default function CharactersMapRoute() {
+export default function CharactersMapRoute({ chapterMarks = [] }: { chapterMarks?: ChapterMark[] }) {
   const { isReady: isAccountReady } = useAccount()
   const client = useMemo(() => createCharactersMapClient(), [])
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const [authUserId, setAuthUserId] = useState<string | null>(null)
+  const [isAuthChecked, setIsAuthChecked] = useState(false)
   const [characters, setCharacters] = useState<MapCharacter[]>([])
   const [relationships, setRelationships] = useState<MapRelationship[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -91,7 +101,9 @@ export default function CharactersMapRoute() {
   useEffect(() => {
     let cancelled = false
     client.auth.getUser().then(({ data }) => {
-      if (!cancelled) setAuthUserId(data.user?.id ?? null)
+      if (cancelled) return
+      setAuthUserId(data.user?.id ?? null)
+      setIsAuthChecked(true)
     })
     return () => { cancelled = true }
   }, [client, isAccountReady])
@@ -152,8 +164,27 @@ export default function CharactersMapRoute() {
     const relParam = searchParams.get('rel')
     if (charParam) setSelectedCharacterId(charParam)
     else if (relParam) setSelectedRelationshipId(relParam)
+    // Arriving from a chapter: `?year=1931&month=3&day=12` parks the timeline
+    // on that chapter's moment instead of the default "present".
+    const yearParam = Number(searchParams.get('year'))
+    if (Number.isFinite(yearParam) && searchParams.get('year')) {
+      const month = Number(searchParams.get('month'))
+      const day = Number(searchParams.get('day'))
+      setTimelineMoment(momentForDate({
+        year: yearParam,
+        month: Number.isFinite(month) && searchParams.get('month') ? month : null,
+        day: Number.isFinite(day) && searchParams.get('day') ? day : null,
+      }))
+    }
     setDidReadInitialParams(true)
   }, [didReadInitialParams, isLoading, searchParams])
+
+  // Set while the map was opened from a chapter, so the author can go back to
+  // exactly the text they came from.
+  const fromChapterId = searchParams.get('chapter')
+  const fromChapter = fromChapterId
+    ? chapterMarks.find(mark => mark.id === fromChapterId) ?? null
+    : null
 
   const updateUrl = useCallback((characterId: string | null, relationshipId: string | null, lang: MapLanguage) => {
     const params = new URLSearchParams()
@@ -217,13 +248,21 @@ export default function CharactersMapRoute() {
    *  2. create/patch each draft, stamping its appearance event with the source
    *     event's date — that date is what makes the line show up on the map at
    *     the right moment and stay invisible before it,
-   *  3. write the sheet with `relationshipIds` refreshed per event.
+   *  3. rewrite the `ends` events this character's timeline owns, so lines the
+   *     owner checked stop being drawn from that event's date (a death, say)
+   *     and unchecked ones come back,
+   *  4. write the sheet with `relationshipIds` refreshed per event.
+   *
+   * Relationships are kept in a `working` map as we go, so a line that is both
+   * patched and ended in the same save is written on top of its own latest
+   * version rather than a stale one.
    */
   const handleSaveCharacter = useCallback(async (character: MapCharacter, patch: {
     name: string
     description: string
     sheet: CharacterSheet
     eventRelationships: EventRelationshipDraft[]
+    eventRelationshipEndings: EventRelationshipEnding[]
     removedRelationshipIds: string[]
   }) => {
     const removedIds = new Set(patch.removedRelationshipIds)
@@ -234,6 +273,11 @@ export default function CharactersMapRoute() {
     const touched: MapRelationship[] = []
     const createdIds = new Set<string>()
     const idsByEvent = new Map<string, string[]>()
+    const working = new Map(relationships.filter(item => !removedIds.has(item.id)).map(item => [item.id, item]))
+    const remember = (item: MapRelationship) => {
+      working.set(item.id, item)
+      touched.push(item)
+    }
 
     for (const draft of patch.eventRelationships) {
       const sourceEvent = patch.sheet.events.find(event => event.id === draft.eventId)
@@ -241,7 +285,7 @@ export default function CharactersMapRoute() {
       const fromCharacterId = draft.direction === 'in' ? draft.targetCharacterId : character.id
       const toCharacterId = draft.direction === 'in' ? character.id : draft.targetCharacterId
       const kind: RelationshipKind = draft.direction === 'mutual' ? 'mutual' : 'directed'
-      const existing = draft.id ? relationships.find(item => item.id === draft.id) ?? null : null
+      const existing = draft.id ? working.get(draft.id) ?? null : null
 
       const appearance: RelationshipEvent = {
         id: existing?.events.find(event => event.sourceEventId === draft.eventId)?.id ?? crypto.randomUUID(),
@@ -278,8 +322,51 @@ export default function CharactersMapRoute() {
         saved = await updateRelationship(client, created.id, { events: [appearance] })
         createdIds.add(saved.id)
       }
-      touched.push(saved)
+      remember(saved)
       idsByEvent.set(draft.eventId, [...(idsByEvent.get(draft.eventId) ?? []), saved.id])
+    }
+
+    // Endings this character's timeline owns are rewritten wholesale: drop
+    // every `ends` event it previously wrote (including ones whose source
+    // event has since been deleted, which would otherwise hide a line with no
+    // way to bring it back) and re-add exactly the ones still checked.
+    const eventById = new Map(patch.sheet.events.map(event => [event.id, event]))
+    const endingsByRelationship = new Map<string, string[]>()
+    for (const ending of patch.eventRelationshipEndings) {
+      if (!eventById.has(ending.eventId)) continue
+      endingsByRelationship.set(ending.relationshipId, [
+        ...(endingsByRelationship.get(ending.relationshipId) ?? []),
+        ending.eventId,
+      ])
+    }
+    const ownsAnEnding = (item: MapRelationship) => item.events.some(
+      event => event.ends && event.sourceCharacterId === character.id,
+    )
+    for (const relationship of Array.from(working.values())) {
+      const wanted = endingsByRelationship.get(relationship.id) ?? []
+      if (wanted.length === 0 && !ownsAnEnding(relationship)) continue
+      const events: RelationshipEvent[] = [
+        ...relationship.events.filter(event => !(event.ends && event.sourceCharacterId === character.id)),
+        ...wanted.map(eventId => {
+          const sourceEvent = eventById.get(eventId)!
+          const previous = relationship.events.find(
+            event => event.ends && event.sourceCharacterId === character.id && event.sourceEventId === eventId,
+          )
+          return {
+            id: previous?.id ?? crypto.randomUUID(),
+            year: sourceEvent.year,
+            month: sourceEvent.month,
+            day: sourceEvent.day,
+            dateLabel: '',
+            title: sourceEvent.title || relationship.label,
+            ends: true as const,
+            sourceCharacterId: character.id,
+            sourceEventId: eventId,
+          }
+        }),
+      ]
+      if (JSON.stringify(events) === JSON.stringify(relationship.events)) continue
+      remember(await updateRelationship(client, relationship.id, { events }))
     }
 
     const sheet: CharacterSheet = {
@@ -298,10 +385,11 @@ export default function CharactersMapRoute() {
     })
     setCharacters(previous => previous.map(item => (item.id === character.id ? updated : item)))
     if (removedIds.size > 0 || touched.length > 0) {
+      // Later entries win — a line patched and then ended was remembered twice.
       const byId = new Map(touched.map(item => [item.id, item]))
       setRelationships(previous => [
         ...previous.filter(item => !removedIds.has(item.id)).map(item => byId.get(item.id) ?? item),
-        ...touched.filter(item => createdIds.has(item.id)),
+        ...Array.from(byId.values()).filter(item => createdIds.has(item.id)),
       ])
     }
   }, [client, relationships])
@@ -480,7 +568,14 @@ export default function CharactersMapRoute() {
     () => exportCharactersMapToText(localizedCharacters, localizedRelationships, language),
     [localizedCharacters, localizedRelationships, language],
   )
-  const timelineBounds = useMemo(() => computeTimelineBounds(characters, relationships), [characters, relationships])
+  const timelineBounds = useMemo(() => {
+    const base = computeTimelineBounds(characters, relationships)
+    if (chapterMarks.length === 0) return base
+    const years = chapterMarks.map(mark => mark.year)
+    const min = Math.min(...years, base?.min ?? Number.POSITIVE_INFINITY)
+    const max = Math.max(...years, base?.max ?? Number.NEGATIVE_INFINITY)
+    return { min, max: min === max ? max + 1 : max }
+  }, [characters, relationships, chapterMarks])
   const timelineMarks = useMemo(
     () => collectTimelineMarks(localizedCharacters, localizedRelationships, language),
     [localizedCharacters, localizedRelationships, language],
@@ -491,8 +586,31 @@ export default function CharactersMapRoute() {
   // Only fires while the cursor hasn't been touched yet, so it never fights a
   // moment the user picked.
   useEffect(() => {
+    if (!didReadInitialParams) return
     if (timelineMoment === null && timelineBounds) setTimelineMoment(yearMoment(timelineBounds.max))
-  }, [timelineBounds, timelineMoment])
+  }, [didReadInitialParams, timelineBounds, timelineMoment])
+
+  // The map is an author tool: its rows are owner-only at the database level,
+  // so a signed-out visitor would just see an empty canvas. Say so instead.
+  if (isAuthChecked && authUserId !== CHARACTERS_MAP_OWNER_AUTH_USER_ID) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.centerMessage}>
+          <div>
+            <p>{s.loading.authorOnly}</p>
+            <p style={{ marginTop: 16 }}>
+              <a className={styles.addButton} href="/chronicle/login?next=%2Fcharacters_map">
+                {s.loading.signIn}
+              </a>
+            </p>
+            <p style={{ marginTop: 16 }}>
+              <a className={styles.subtitle} href="/chronicle">{s.loading.toReader}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -504,6 +622,11 @@ export default function CharactersMapRoute() {
           </p>
         </div>
         <div className={styles.actions}>
+          {fromChapter && (
+            <a className={styles.addButton} href={`/chronicle/admin/chapters/${fromChapter.id}`}>
+              ← {s.topBar.backToChapter(fromChapter.number)}
+            </a>
+          )}
           {translationStatus && (
             <span className={styles.subtitle}>{s.topBar.translating(translationStatus.done, translationStatus.total)}</span>
           )}
@@ -591,6 +714,7 @@ export default function CharactersMapRoute() {
           bounds={timelineBounds}
           value={timelineMoment}
           marks={timelineMarks}
+          chapterMarks={chapterMarks}
           language={language}
           onChange={setTimelineMoment}
         />

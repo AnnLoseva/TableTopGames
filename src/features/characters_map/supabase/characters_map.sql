@@ -102,14 +102,16 @@ create index if not exists characters_map_relationships_to_idx
 -- how the relationship renders, folded chronologically at render time by
 -- `resolveRelationshipState` in src/features/characters_map/timeline.ts.
 -- A relationship with no events behaves exactly as before this feature.
--- Revised 2026-09-12 (see DECISIONS.md): events carry optional `month`/`day`
--- refining `year`, and the old `active` flag is gone — a relationship only
--- ever *appears* (`appears: true`, optionally linked back to the character
--- event that created it via `sourceCharacterId`/`sourceEventId`), and is
--- simply not drawn before that moment. No appearance event at all = the line
--- is always on the map. Stored rows are migrated on read by
+-- Revised 2026-09-12/2026-09-13 (see DECISIONS.md): events carry optional
+-- `month`/`day` refining `year`, and the old `active` flag is replaced by two
+-- explicit ones — `appears: true` (the line starts existing) and `ends: true`
+-- (it stops: a death, a final break), either optionally linked back to the
+-- character event that wrote it via `sourceCharacterId`/`sourceEventId`.
+-- No appearance event = the line is on the map from the start; no ending
+-- event = it never goes away. Stored rows are migrated on read by
 -- `normalizeRelationshipEvent` in constants.ts (`active: true` → `appears`,
--- `active: false` → dropped), and rewritten in the new shape on the next save.
+-- `active: false` → dropped as a placeholder, never turned into `ends`), and
+-- rewritten in the new shape on the next save.
 alter table public.characters_map_relationships
   add column if not exists events jsonb not null default '[]'::jsonb;
 
@@ -125,14 +127,23 @@ alter table public.characters_map_relationships enable row level security;
 -- Supabase projects where newly-created public tables are no longer exposed
 -- automatically (see dnd_journal.sql for the same note). RLS below still
 -- decides which rows/actions each caller gets.
-grant select on public.characters_map_characters, public.characters_map_relationships to anon;
+-- Changed 2026-09-13 (see DECISIONS.md): the map stopped being public. It is
+-- now an author-only tool behind the chronicle's reader site, so `anon` has no
+-- read access at all and every policy below is owner-only. To make it public
+-- again, restore `grant select ... to anon` plus the two `for select to public
+-- using (true)` policies this migration replaced.
+-- NOTE: portraits and gallery photos live in the still-public
+-- `characters-map-images` bucket — a direct file URL that someone already has
+-- keeps working; the bucket is just not listable and the map data itself is
+-- closed. Switching those to signed URLs is a separate task.
 grant select, insert, update, delete on public.characters_map_characters, public.characters_map_relationships to authenticated;
 
 drop policy if exists "Anyone can read map characters" on public.characters_map_characters;
-create policy "Anyone can read map characters"
+drop policy if exists "Only the owner account can read map characters" on public.characters_map_characters;
+create policy "Only the owner account can read map characters"
   on public.characters_map_characters for select
-  to public
-  using (true);
+  to authenticated
+  using ((select auth.uid()) = '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid);
 
 drop policy if exists "Only the owner account can insert map characters" on public.characters_map_characters;
 create policy "Only the owner account can insert map characters"
@@ -154,10 +165,11 @@ create policy "Only the owner account can delete map characters"
   using ((select auth.uid()) = '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid);
 
 drop policy if exists "Anyone can read map relationships" on public.characters_map_relationships;
-create policy "Anyone can read map relationships"
+drop policy if exists "Only the owner account can read map relationships" on public.characters_map_relationships;
+create policy "Only the owner account can read map relationships"
   on public.characters_map_relationships for select
-  to public
-  using (true);
+  to authenticated
+  using ((select auth.uid()) = '44153f98-aaf2-4935-b7b2-45fe3155edc6'::uuid);
 
 drop policy if exists "Only the owner account can insert map relationships" on public.characters_map_relationships;
 create policy "Only the owner account can insert map relationships"

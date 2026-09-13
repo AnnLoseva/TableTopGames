@@ -183,9 +183,11 @@ export function normalizeCharacterEvent(raw: CharacterEvent): CharacterEvent {
 /**
  * Same normalization for relationship events, plus the one-way migration of
  * the old `active` flag: `active: true` became `appears: true`, and
- * `active: false` ("the line disappears here") is dropped entirely — a
- * relationship now only ever appears. The event itself is kept, since its
- * title/description are still part of the history.
+ * `active: false` is dropped entirely — those were placeholder
+ * "disappears then appears again" entries the owner asked to clean up, and
+ * are deliberately *not* turned into today's `ends` flag (which is written
+ * explicitly, for a real ending like a death). The event itself is kept,
+ * since its title/description are still part of the history.
  */
 export function normalizeRelationshipEvent(raw: RelationshipEvent & { active?: boolean }): RelationshipEvent {
   const month = normalizeMonth(raw.month)
@@ -196,6 +198,7 @@ export function normalizeRelationshipEvent(raw: RelationshipEvent & { active?: b
     day: month === null ? null : normalizeDay(raw.day),
     dateLabel: raw.dateLabel ?? '',
     appears: raw.appears === true || active === true ? true : undefined,
+    ends: raw.ends === true ? true : undefined,
   }
 }
 

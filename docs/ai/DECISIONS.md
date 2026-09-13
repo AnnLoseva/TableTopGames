@@ -1,5 +1,132 @@
 # Decisions
 
+## 2026-09-13 — `/chronicle`: the fanfic site (reader + author's editor), and the relationship map becomes author-only
+
+**Area:** new `src/features/chronicle/*`, new routes `src/app/chronicle/*`, `src/app/characters_map/page.tsx`, `src/features/characters_map/{routes/CharactersMapRoute,components/TimelineControl,types,i18n}`, Supabase schema
+
+**Decision:** The fanfic gets its own domain rather than a new application.
+Chapters, the writing editor, the reader site and named timeline snapshots are
+new; **characters, relationships and the relationship timeline are reused
+as-is** from `characters_map`, which already holds the real cast, their
+portraits, their saved positions and their dated relationship states. No
+`characters` / `relationships` / `relationship_states` tables were created —
+duplicating them would have split the author's actual data in two.
+
+Two new tables plus one settings row: `chronicle_chapters`,
+`chronicle_snapshots`, `chronicle_settings`. A chapter carries its reading
+order (`chapter_number`) *and*, separately, its place in the story's world
+(`timeline_year` + optional `timeline_month`/`timeline_day`, the same
+optional-precision date model the map uses). Those two orders deliberately do
+not agree: the reader goes 1 → 2 → 3 while the world jumps 1931 → 1800 → 2026.
+
+**Authorization is a database fact, not a UI state.** The author is one auth
+uid (the same account that owns the map), written into every RLS policy. The
+new wrinkle is that a chapter row holds data the reader must never receive —
+drafts and `author_notes` — and RLS filters rows, not columns. So `anon` has
+**no grant at all** on `chronicle_chapters`; the public site reads
+`chronicle_published_chapters`, a SECURITY DEFINER view exposing published
+rows and public columns only. Verified from outside with the anon key:
+selecting the table is `permission denied`, the view returns only the
+published chapter and has no `author_notes`/`status` column at all, the
+draft's slug returns `[]`, and an anon insert is refused. Admin pages are React
+Server Components behind `requireAuthor()`, so unpublished text never reaches
+a client bundle.
+
+**The map is now author-only** (the owner's explicit choice): `anon` lost its
+select grant on both `characters_map_*` tables and the two "anyone can read"
+policies were replaced with owner-only ones. `/characters_map` shows a
+sign-in gate instead of an empty canvas. Portraits in the still-public
+`characters-map-images` bucket remain reachable by direct URL — closing that
+needs signed URLs and is a separate task.
+
+**Chapter ↔ timeline** is navigational only, in both directions: the editor's
+"Открыть карту отношений" saves and jumps to
+`/characters_map?year=…&month=…&day=…&chapter=<id>`, the map parks its cursor
+on that moment and offers "К главе N" back; chapter markers ride the map's
+timeline (click to jump, a chip links into the editor). Editing the map never
+touches a chapter's text.
+
+**Dependency direction:** `chronicle` → `characters_map` (it reuses the pure
+date model), never the reverse. Chapter markers are composed in the app layer
+(`src/app/characters_map/page.tsx`) and handed to the map as a plain prop, so
+the map still knows nothing about the chronicle.
+
+**Reason:** The story is linear for the reader and temporal for the author —
+the point of the product is to step out of a chapter and ask "what was between
+these two in 1931?". That question was already answered by the existing map;
+what was missing was the writing surface and the public reader.
+
+**Consequences:**
+- Styling follows the repository's CSS Modules convention (no Tailwind), with
+  the chronicle's dark-editorial tokens scoped under `.chronicle` so they can't
+  leak into the VTM/Pathfinder/D&D routes.
+- The editor is TipTap (already a dependency); the reader renders the stored
+  document with a React walker, never `dangerouslySetInnerHTML`.
+- Reader pages are server-rendered per request (they read cookies), so a
+  publish is visible immediately.
+- Rolling the map back to public means restoring the two `select` grants and
+  policies named in `characters_map.sql`.
+
+**Affected files:** `src/features/chronicle/**` (new), `src/app/chronicle/**`
+(new), `src/app/characters_map/page.tsx`,
+`src/features/characters_map/{routes/CharactersMapRoute.tsx,components/TimelineControl.tsx,components/TimelineControl.module.css,types.ts,i18n.ts,supabase/characters_map.sql}`,
+`src/platform/account/{config.ts (new),supabase.ts}`
+
+**Status:** active
+
+## 2026-09-13 — `/characters_map`: relationship lines can end (death, final break)
+
+**Area:** `src/features/characters_map/{types.ts,constants.ts,timeline.ts,i18n.ts,export.ts,routes/CharactersMapRoute.tsx,components/{RelationshipPanel,CharacterPanel,EventRelationshipsEditor}.tsx}`
+
+**Decision:** `RelationshipEvent` gained an `ends?: boolean` flag next to
+`appears`. `resolveRelationshipState` now folds both chronologically —
+`appears` turns the line on, `ends` turns it off — and derives the state
+*before* the first flagged event from that event itself: a line whose first
+flag is an appearance did not exist before it, while a line that only ever
+ends (the common case: it was always there until someone died) was there all
+along. A relationship with neither flag stays visible at every moment.
+
+Two ways to write an ending:
+- **Relationship panel** — the per-event select now offers "here the line
+  ends" alongside "here the line appears", and the header summarises both
+  ("Появляется: … · Заканчивается: …").
+- **Character event** — `EventRelationshipsEditor` grew a second half listing
+  every line that character is part of, with a checkbox per line plus a
+  "check all" shortcut, so a death event can retire all of that character's
+  edges in one pass (`EventRelationshipEnding` drafts, applied by
+  `handleSaveCharacter`).
+
+Endings written from a character's timeline are **owned** by that character:
+on save the route drops every `ends` event carrying that character's
+`sourceCharacterId` and re-adds exactly the checked ones. That is what lets an
+ending be unchecked, and it also cleans up endings whose source event was
+deleted — otherwise a line would stay hidden with no UI left to bring it back.
+Relationships are held in a `working` map during the save so a line that is
+both patched and ended in the same pass is written on top of its own latest
+version.
+
+The legacy `active: false` events are still **not** migrated into `ends` (see
+the 2026-09-12 entry) — those were placeholders the owner asked to clear, and
+an ending is now written deliberately.
+
+**Reason:** Appearance-only could not express a line that stops — most often
+because a character died, and dead characters stay on the map by design, so
+their edges stayed with them.
+
+**Consequences:**
+- Anything asking "is this line on the map right now" must go through
+  `resolveRelationshipState(...).visible`; `relationshipStart`/`relationshipEnd`
+  are for display only (they report the earliest flag of each kind, while
+  visibility is the folded result).
+- Deleting a character event also drops the endings bound to it, so the
+  affected lines come back on the next save.
+
+**Affected files:** as listed under **Area**, plus
+`components/CharacterSheetView.module.css` (checkbox row) and
+`supabase/characters_map.sql` (documentation only)
+
+**Status:** active — extends the 2026-09-12 timeline decision.
+
 ## 2026-09-12 — `/characters_map` timeline: optional dates inside a year, appearance-only relationship lines, event↔relationship link
 
 **Area:** `src/features/characters_map/{types.ts,constants.ts,mappers.ts,timeline.ts,i18n.ts,export.ts,api/relationshipsApi.ts,routes/CharactersMapRoute.tsx,components/*}`, `supabase/characters_map.sql` (comments only)

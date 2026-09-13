@@ -11,28 +11,40 @@ type Props = {
   /** Everyone else on the map, already localized, for the "with whom" picker. */
   targets: MapCharacter[]
   drafts: EventRelationshipDraft[]
+  /** The character's other lines, already labelled ("→ Мария — наставница"). */
+  endableLines: { id: string; label: string }[]
+  /** Ids of the lines marked as ending at this event. */
+  endings: string[]
   language: MapLanguage
   onAdd: () => void
   onChange: (key: string, patch: Partial<EventRelationshipDraft>) => void
   onRemove: (draft: EventRelationshipDraft) => void
+  onToggleEnding: (relationshipId: string, ends: boolean) => void
+  onToggleAllEndings: (ends: boolean) => void
 }
 
 /**
- * The event↔relationship link, editor side: relationship lines that start at
- * one character event. Each line is created (or updated) by the route on save
- * and gets an appearance event stamped with this event's date — so the line is
- * drawn on the map from that moment on, and not before.
+ * The event↔relationship link, editor side, in two halves: lines that *start*
+ * at this character event (created/updated by the route on save, stamped with
+ * an appearance event carrying this event's date) and existing lines that
+ * *end* here — the death case, where the edges around a character should stop
+ * being drawn from that date on.
  */
 export default function EventRelationshipsEditor({
   event,
   targets,
   drafts,
+  endableLines,
+  endings,
   language,
   onAdd,
   onChange,
   onRemove,
+  onToggleEnding,
+  onToggleAllEndings,
 }: Props) {
   const s = t(language).characterPanel
+  const allEnded = endableLines.length > 0 && endings.length === endableLines.length
 
   return (
     <div className={styles.eventRelationships}>
@@ -94,6 +106,27 @@ export default function EventRelationshipsEditor({
         <button type="button" className={styles.addButton} onClick={onAdd}>
           {s.addEventRelationshipButton}
         </button>
+      )}
+
+      <p className={styles.eventRelationshipsTitle} style={{ marginTop: 10 }}>{s.eventEndingsHeading}</p>
+      {endableLines.length === 0 && <p className={styles.eventRelationshipNote}>{s.eventNoLinesToEnd}</p>}
+      {endableLines.length > 0 && (
+        <>
+          <p className={styles.eventRelationshipNote}>{s.eventEndingsHint}</p>
+          {endableLines.map(line => (
+            <label key={line.id} className={styles.eventEndingRow}>
+              <input
+                type="checkbox"
+                checked={endings.includes(line.id)}
+                onChange={changeEvent => onToggleEnding(line.id, changeEvent.target.checked)}
+              />
+              <span>{line.label}</span>
+            </label>
+          ))}
+          <button type="button" className={styles.addButton} onClick={() => onToggleAllEndings(!allEnded)}>
+            {allEnded ? s.eventEndNoneButton : s.eventEndAllButton}
+          </button>
+        </>
       )}
     </div>
   )

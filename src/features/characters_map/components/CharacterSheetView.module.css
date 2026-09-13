@@ -686,3 +686,21 @@
 .linkButton:hover {
   text-decoration: underline;
 }
+
+/* One "this line ends here" checkbox under a character event. */
+.eventEndingRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: rgba(242, 240, 247, 0.75);
+  cursor: pointer;
+}
+
+.eventEndingRow input[type='checkbox'] {
+  accent-color: var(--map-accent, #d9b45c);
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+}

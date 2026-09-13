@@ -1,6 +1,6 @@
 import { ATTRIBUTE_GROUPS, SKILL_GROUPS } from './constants'
 import { attributeLabel, characterKindLabel, galleryCategoryLabel, groupTitle, skillLabel, t, type MapLanguage } from './i18n'
-import { formatEventDate, relationshipStart, sortDated } from './timeline'
+import { formatEventDate, relationshipEnd, relationshipStart, sortDated } from './timeline'
 import type { CharacterSheet, DamageTrack, MapCharacter, MapRelationship } from './types'
 
 function cleanText(value: string): string {
@@ -156,7 +156,11 @@ export function exportCharactersMapToText(
     lines.push(line)
 
     const start = relationshipStart(relationship)
-    lines.push(`     ${s.startsLabel}: ${start ? formatEventDate(start, language) : s.alwaysWord}`)
+    const end = relationshipEnd(relationship)
+    lines.push(
+      `     ${s.startsLabel}: ${start ? formatEventDate(start, language) : s.alwaysWord}`
+      + ` | ${s.endsLabel}: ${end ? formatEventDate(end, language) : s.neverEndsWord}`,
+    )
 
     if (relationship.events.length > 0) {
       lines.push(`     ${s.timelineLabel}:`)
@@ -164,6 +168,7 @@ export function exportCharactersMapToText(
         let eventLine = `       ${formatEventDate(event, language)} — ${event.title || s.eventFallback}`
         if (event.description?.trim()) eventLine += `: ${cleanText(event.description)}`
         if (event.appears) eventLine += s.appearsSuffix
+        if (event.ends) eventLine += s.endsSuffix
         lines.push(eventLine)
       }
     }

@@ -4,6 +4,20 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
+- **Chronicle, new domain (2026-09-13)** — `/chronicle` (`src/features/chronicle/*`)
+  is the fanfic itself: a public reader (home, chapter list, chapter page) and
+  an author-only editor (`/chronicle/admin/*`, TipTap, autosave, publish,
+  named timeline snapshots, site settings). A chapter has a reading order and,
+  separately, a place in the story's world (year + optional month/day) — the
+  two deliberately disagree. **Security is the load-bearing part:** `anon` has
+  no grant on `chronicle_chapters` at all and reads only the
+  `chronicle_published_chapters` view (published rows, public columns), so
+  drafts and `author_notes` are unreachable, not merely hidden; admin pages are
+  RSC behind `requireAuthor()`. **The relationship map is now author-only** —
+  `/characters_map` lost its public read and shows a sign-in gate; it is the
+  chronicle's timeline view, reachable from a chapter
+  (`?year=…&chapter=…`) and back. Characters/relationships were NOT duplicated:
+  the chronicle reuses `characters_map_*`. See `DECISIONS.md` (2026-09-13).
 - **Characters map, new domain (2026-09-09)** — `/characters_map`
   (`src/features/characters_map/*`) is a new universal, game-agnostic
   character-relationship map: pan/zoom SVG canvas, click a portrait for that
@@ -20,10 +34,11 @@
   relationships have dated events overriding label/color/description. Events
   now take an **optional month/day** on top of the required year (a year-only
   event sorts at the start of its year), the timeline cursor is a day
-  (`TimelineMoment`; the slider means "end of that year"), relationships only
-  ever **appear** — no appearance date at all = always on the map — and a
-  character event can build relationship lines itself (event↔relationship
-  link, `sourceEventId` on the appearance event). Also has a per-character **photo gallery**
+  (`TimelineMoment`; the slider means "end of that year"), relationship lines
+  **appear** and **end** on dated events (no appearance date at all = on the
+  map from the start; no ending = never goes away), and a character event can
+  both build new lines and retire existing ones — the death case
+  (event↔relationship link via `sourceCharacterId`/`sourceEventId`). Also has a per-character **photo gallery**
   (2026-09-09) — house/pet/event/other photos separate from the portrait,
   stored in `sheet.gallery`, editing persists immediately (not staged behind
   the sheet's Save/Cancel). And a **RU/EN language toggle** (2026-09-11,

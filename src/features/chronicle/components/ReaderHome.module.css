@@ -1,0 +1,177 @@
+.page {
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 12vh 6vw 12vh;
+}
+
+.hero {
+  padding-bottom: 10vh;
+  border-bottom: 1px solid var(--ch-line-soft);
+}
+
+.title {
+  margin: 18px 0 0;
+  font-family: var(--ch-serif);
+  font-size: clamp(40px, 7vw, 76px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.subtitle {
+  margin: 20px 0 0;
+  font-family: var(--ch-serif);
+  font-size: clamp(18px, 2.2vw, 23px);
+  font-style: italic;
+  color: var(--ch-ink-soft);
+  max-width: 34rem;
+}
+
+.intro {
+  margin: 28px 0 0;
+  max-width: 32rem;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ch-ink-faint);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-top: 44px;
+}
+
+.readButton {
+  display: inline-block;
+  padding: 13px 34px;
+  border: 1px solid var(--ch-ink-ghost);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ch-ink);
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+.readButton:hover {
+  border-color: var(--ch-gold);
+  color: var(--ch-gold);
+}
+
+.textLink {
+  font-size: 13px;
+  color: var(--ch-ink-faint);
+  border-bottom: 1px solid transparent;
+}
+
+.textLink:hover {
+  color: var(--ch-ink);
+  border-bottom-color: var(--ch-line);
+}
+
+.list {
+  margin-top: 9vh;
+}
+
+.listHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 14px;
+}
+
+.count {
+  font-size: 12px;
+  color: var(--ch-ink-ghost);
+}
+
+.empty {
+  padding: 40px 0;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ch-ink-faint);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr auto;
+  align-items: baseline;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--ch-line-soft);
+  transition: opacity 140ms ease;
+}
+
+.row:hover {
+  opacity: 1;
+}
+
+.list:hover .row {
+  opacity: 0.55;
+}
+
+.list:hover .row:hover {
+  opacity: 1;
+}
+
+.rowNumber {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ch-ink-ghost);
+  font-variant-numeric: tabular-nums;
+}
+
+.rowBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-family: var(--ch-serif);
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.rowLabel {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ch-ink-faint);
+}
+
+.rowMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  white-space: nowrap;
+}
+
+.rowYear {
+  font-size: 13px;
+  color: var(--ch-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.rowMinutes {
+  font-size: 12px;
+  color: var(--ch-ink-ghost);
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 8vh 6vw 10vh;
+  }
+
+  .row {
+    grid-template-columns: 2.4rem 1fr;
+    gap: 14px;
+  }
+
+  .rowMeta {
+    grid-column: 2;
+    gap: 14px;
+  }
+}

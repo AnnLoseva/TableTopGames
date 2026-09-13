@@ -9,7 +9,7 @@ import {
   createRelationshipEvent,
 } from '../constants'
 import { t, type MapLanguage } from '../i18n'
-import { formatEventDate, relationshipStart, sortDated } from '../timeline'
+import { formatEventDate, relationshipEnd, relationshipStart, sortDated } from '../timeline'
 import EventDateFields from './EventDateFields'
 import styles from './SidePanel.module.css'
 import timelineStyles from './CharacterSheetView.module.css'
@@ -58,8 +58,10 @@ export default function RelationshipPanel({
   const [error, setError] = useState('')
 
   // Where the line starts existing — `null` means "always on the map", i.e.
-  // the owner wants the line but hasn't decided when it began.
+  // the owner wants the line but hasn't decided when it began — and where it
+  // stops, if it ever does (a death, a final break).
   const startEvent = relationshipStart(displayRelationship)
+  const endEvent = relationshipEnd(displayRelationship)
 
   useEffect(() => {
     setLabel(relationship.label)
@@ -144,6 +146,8 @@ export default function RelationshipPanel({
 
             <p className={styles.description} style={{ textAlign: 'center' }}>
               {s.startsLabel}: {startEvent ? formatEventDate(startEvent, language) : s.alwaysVisible}
+              {' · '}
+              {s.endsLabel}: {endEvent ? formatEventDate(endEvent, language) : s.neverEnds}
             </p>
 
             {displayRelationship.events.length > 0 && (
@@ -156,6 +160,7 @@ export default function RelationshipPanel({
                       <p className={timelineStyles.timelineEventTitle}>
                         {event.title || s.eventFallbackTitle}
                         {event.appears && s.appearsSuffix}
+                        {event.ends && s.endsSuffix}
                       </p>
                       {event.description && <p className={timelineStyles.timelineEventDescription}>{event.description}</p>}
                     </div>
@@ -227,13 +232,15 @@ export default function RelationshipPanel({
                     onChange={changeEvent => updateEvent(event.id, { title: changeEvent.target.value })}
                   />
                   <select
-                    value={event.appears ? 'true' : ''}
+                    value={event.appears ? 'appears' : event.ends ? 'ends' : ''}
                     onChange={changeEvent => updateEvent(event.id, {
-                      appears: changeEvent.target.value === 'true' ? true : undefined,
+                      appears: changeEvent.target.value === 'appears' ? true : undefined,
+                      ends: changeEvent.target.value === 'ends' ? true : undefined,
                     })}
                   >
                     <option value="">{s.appearanceNoChange}</option>
-                    <option value="true">{s.appearsOption}</option>
+                    <option value="appears">{s.appearsOption}</option>
+                    <option value="ends">{s.endsOption}</option>
                   </select>
                   <button
                     type="button"
