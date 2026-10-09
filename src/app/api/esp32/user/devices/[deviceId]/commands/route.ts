@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { isCommandType, isSlot, safeNumber } from '@/features/esp32-oled/lib/validation'
+import { cleanName, isCommandType, isSlot, safeNumber } from '@/features/esp32-oled/lib/validation'
 import { queueCommand } from '@/features/esp32-oled/server/devices'
 import { jsonError, readJson, toHttpError } from '@/features/esp32-oled/server/http'
 import { requireEsp32User } from '@/features/esp32-oled/server/supabase'
@@ -11,11 +11,18 @@ function validatePayload(type: string, value: unknown) {
   if (['delete_asset', 'rename_asset', 'set_active'].includes(type) && !isSlot(payload.slot)) {
     throw new Error('INVALID_SLOT')
   }
-  if (type === 'rename_asset') payload.name = String(payload.name || '').trim().slice(0, 48)
+  if (type === 'rename_asset') payload.name = cleanName(payload.name, `Слот ${payload.slot}`)
   if (type === 'set_settings') {
     if (Object.hasOwn(payload, 'brightness')) payload.brightness = Math.round(safeNumber(payload.brightness, 0, 255, 128))
     if (Object.hasOwn(payload, 'speedMultiplier')) payload.speedMultiplier = safeNumber(payload.speedMultiplier, 0.25, 4, 1)
     if (Object.hasOwn(payload, 'slot') && !isSlot(payload.slot)) throw new Error('INVALID_SLOT')
+    if (payload.buttonAction && typeof payload.buttonAction === 'object') {
+      const action = { ...payload.buttonAction as Record<string, unknown> }
+      if (!['next', 'restart', 'alternate', 'toggle_pause', 'custom'].includes(String(action.type))) throw new Error('INVALID_ACTION')
+      if (action.type === 'alternate' && !isSlot(action.alternateSlot)) throw new Error('INVALID_ACTION')
+      if (action.type === 'custom' && (typeof action.eventName !== 'string' || !/^[a-zA-Z0-9_.:-]{1,64}$/.test(action.eventName))) throw new Error('INVALID_ACTION')
+      payload.buttonAction = action
+    }
   }
   return payload
 }
@@ -33,7 +40,7 @@ export async function POST(request: NextRequest, context: Context) {
   } catch (error) {
     if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Устройство не найдено.', 404)
     if (error instanceof Error && error.message === 'INVALID_SLOT') return jsonError('Выбран неверный слот.', 422)
+    if (error instanceof Error && error.message === 'INVALID_ACTION') return jsonError('Действие кнопки настроено неверно.', 422)
     return toHttpError(error)
   }
 }
-

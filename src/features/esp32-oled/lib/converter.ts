@@ -1,6 +1,5 @@
 'use client'
 
-import { decompressFrames, parseGIF } from 'gifuct-js'
 import { encodeOledAsset, OLED_FRAME_BYTES } from './format'
 import type { ConversionOptions, OledAsset, OledFrame } from '../types'
 
@@ -82,6 +81,7 @@ async function stillFrame(file: File, options: ConversionOptions) {
 }
 
 async function gifFrames(file: File, options: ConversionOptions) {
+  const { decompressFrames, parseGIF } = await import('gifuct-js')
   const parsed = parseGIF(await file.arrayBuffer())
   const frames = decompressFrames(parsed, true)
   if (!frames.length) throw new Error('В GIF нет кадров.')
@@ -98,7 +98,9 @@ async function gifFrames(file: File, options: ConversionOptions) {
     const nextRestore = frame.disposalType === 3
       ? source.context.getImageData(0, 0, source.element.width, source.element.height)
       : null
-    source.context.putImageData(new ImageData(frame.patch, frame.dims.width, frame.dims.height), frame.dims.left, frame.dims.top)
+    const patch = new ImageData(frame.dims.width, frame.dims.height)
+    patch.data.set(frame.patch)
+    source.context.putImageData(patch, frame.dims.left, frame.dims.top)
     if (index % step === 0) {
       output.push({
         durationMs: Math.max(20, Math.round((frame.delay || 100) * step / options.speed)),
@@ -151,4 +153,3 @@ export function base64ToFrame(value: string) {
   const binary = window.atob(value)
   return Uint8Array.from(binary, character => character.charCodeAt(0))
 }
-

@@ -70,6 +70,21 @@ code. See `docs/ai/DECISIONS.md` (2026-09-06).
 | `src/features/votes/api/pollsApi.ts` | Supabase CRUD for polls/responses | medium | supabase-edit-protocol | Anonymous insert/select only, no update/delete |
 | `src/features/votes/supabase/votes.sql` | `votes_polls`/`votes_responses` schema, RLS, allocation check constraint | **critical** | supabase-edit-protocol | **Applied** live; fully open RLS, no owner concept |
 
+## ESP32 OLED domain (`src/features/esp32-oled/*`, `firmware/esp32-oled/*`)
+
+Authenticated hardware control at `/esp-32-oled`. Isolated from every tabletop
+domain; it only reuses the shared Supabase Auth session and project.
+
+| Path | Role | Risk | Edit protocol | Notes |
+|---|---|---|---|---|
+| `src/app/esp-32-oled/page.tsx` | `/esp-32-oled` route | low | before-any-change | Thin wrapper |
+| `src/features/esp32-oled/components/*` | responsive device library, OLED converter/preview and controls | medium | before-any-change | GIF decoder is lazy-loaded; never claim upload success before device ACK |
+| `src/features/esp32-oled/lib/{format,converter,validation,client}.ts` | OLED1/RLE format, browser conversion, validation, API client | high | before-any-change | `format.ts` must stay byte-compatible with `AnimationEngine.cpp` |
+| `src/features/esp32-oled/server/*`, `src/app/api/esp32/**` | server-only user/device auth, command queue, private range transfer | **critical** | supabase-edit-protocol | Service role and HMAC secret must never enter client code; every device route authenticates token |
+| `src/features/esp32-oled/supabase/esp32_oled.sql` | five private tables, pairing RPCs, RLS/grants, private bucket | **critical** | supabase-edit-protocol | Four-digit collision refuses all candidates; DB-backed rate limit; migration status in DECISIONS |
+| `firmware/esp32-oled/*` | reproducible ESP32-C3 PlatformIO firmware | high | before-any-change | TLS verification is mandatory; keep OLED1 compatible; GPIO2 strapping caveat documented |
+| `docs/esp32-oled/README.md` | wiring, Mac flashing, first pair and deploy runbook | low | before-any-change | Update when env, pins, CA or operator steps change |
+
 ## Chronicle domain (`src/features/chronicle/*`)
 
 The fanfic: a public reader and an author-only editor at `/chronicle`. Reuses

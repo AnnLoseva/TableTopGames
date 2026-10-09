@@ -46,6 +46,7 @@ once). Owner-write/public-read like `/dnd/journal`, backed by its own
 | `/votes` | `src/features/votes/routes/CreatePollRoute` | React + Supabase, anonymous, unrelated to tabletop games |
 | `/votes/[slug]` | `src/features/votes/routes/PollRoute` | React + Supabase, anonymous, unrelated to tabletop games |
 | `/characters_map` | `src/features/characters_map/routes/CharactersMapRoute` | React + Supabase, owner-write/public-read, unrelated to tabletop games |
+| `/esp-32-oled` | `src/features/esp32-oled/components/Esp32OledRoute` | React + Next API + Supabase command queue + ESP32 HTTPS polling |
 
 VTM route files live in `src/app/(vampires)/vampires/` and import their entries directly from
 `src/games/vampires/modules/*`. Parentheses create an App Router route group, so the
@@ -129,6 +130,22 @@ physical boundary does not add a URL segment.
  → dnd-journal-images storage bucket (public bucket, getPublicUrl; same owner-write rule)
  → realtime postgres_changes on pages + folders from either allowed writer
 ```
+
+## Flow: ESP32 OLED
+
+```text
+/esp-32-oled → browser converter (PNG/JPG/GIF → OLED1/RLE)
+ → authenticated same-origin /api/esp32/user/*
+ → server-only esp32_* tables + private esp32-oled-assets bucket
+ → ESP32 outgoing HTTPS poll / range download / ACK
+ → LittleFS temporary file → SHA-256 → atomic slot replace → SSD1306
+```
+
+The browser never contacts a LAN IP. Device tokens and pairing PINs are HMACed
+with a server-only secret; a four-digit PIN is accepted only while its physical
+120-second challenge is active and only when exactly one online unowned device
+matches. The firmware is isolated in `firmware/esp32-oled` and does not share
+runtime code with the tabletop domains.
 
 Read is fully public (no account, no login — anyone with the link); write is
 single-editor on the site, enforced by RLS against the owner plus the dedicated
@@ -217,7 +234,9 @@ maps display names ↔ stable identifiers.
   `personal_chronicle_jobs`, `personal_chronicle_job_chunks`,
   `personal_chronicle_documents`, `personal_chronicle_document_chunks`.
 - Buckets: `table-images`, a music bucket, `character-portraits`,
-  `rules-vampires` and `rules-pathfinder2`.
+  `rules-vampires`, `rules-pathfinder2` and private `esp32-oled-assets`.
+- ESP32 control plane tables: `esp32_devices`, `esp32_pairing_challenges`,
+  `esp32_pairing_attempts`, `esp32_device_commands`, `esp32_device_events`.
 - Table names centralized in `src/games/vampires/modules/table/constants.ts`.
 - Schema/policies live in `src/games/vampires/supabase/*.sql`.
 - Separate, unrelated to the above: the D&D journal domain owns

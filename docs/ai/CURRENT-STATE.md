@@ -4,6 +4,14 @@
 > Delete stale lines. Long-term decisions go to `DECISIONS.md`, not here.
 
 ## Current development focus
+- **ESP32-C3 OLED control plane (2026-10-09)** — `/esp-32-oled` adds an
+  authenticated device library, PIN pairing, browser PNG/JPG/GIF → OLED1/RLE
+  conversion, queued/acknowledged commands and private chunked transfers via
+  Supabase. PlatformIO firmware under `firmware/esp32-oled` covers captive
+  Wi-Fi provisioning, NVS, TLS polling, LittleFS atomic slots, SSD1306 playback
+  and debounced button actions. Schema still needs the production migration
+  status kept in sync with `DECISIONS.md`; end-to-end hardware verification is
+  owner-required.
 - **Chronicle, new domain (2026-09-13)** — `/chronicle` (`src/features/chronicle/*`)
   is the fanfic itself: a public reader (home, chapter list, chapter page) and
   an author-only editor (`/chronicle/admin/*`, TipTap, autosave, publish,

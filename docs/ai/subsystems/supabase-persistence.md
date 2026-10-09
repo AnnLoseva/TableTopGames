@@ -18,6 +18,14 @@ the section root. Public readers see active rows; only the owner and dedicated
 iPad device identity may write. Its canonical schema is
 `src/games/dnd/journal/supabase/dnd_journal.sql`.
 
+The isolated ESP32 OLED control plane is server-mediated: `/esp-32-oled` and
+the firmware never access tables directly. Next.js API handlers authenticate a
+Supabase user cookie or an HMACed device token, then use the server-only service
+role against `esp32_devices`, pairing challenges, DB-backed pairing rate limits,
+acknowledged commands and device events. Binary transfers use the private
+`esp32-oled-assets` bucket and are removed after ACK. Its canonical schema is
+`src/features/esp32-oled/supabase/esp32_oled.sql`.
+
 ## Main files
 - `src/games/vampires/lib/supabase.ts` — the React/Next Supabase client.
 - `public/vampires/supabase.js` — the legacy client + `characters` CRUD (create/update/
@@ -74,6 +82,11 @@ Tables (from `src/games/vampires/modules/table/constants.ts` and `src/games/vamp
 | `master_action_log` | master console | Append-only master action history |
 | `chronicle_actors` | actors | Chronicle actor metadata, compact stat blocks and character links |
 | `chronicle_actor_private` | actors | Physically separate GM-only actor fields |
+| `esp32_devices` | ESP32 OLED | Device identity, ownership, capacity/manifest state; token stored only as HMAC |
+| `esp32_pairing_challenges` | ESP32 OLED | 120-second, one-time, device-scoped pairing PIN hashes |
+| `esp32_pairing_attempts` | ESP32 OLED | Database-backed user/IP pairing rate limit |
+| `esp32_device_commands` | ESP32 OLED | Durable idempotent command queue, retry and ACK state |
+| `esp32_device_events` | ESP32 OLED | Custom physical-button events from devices |
 
 Storage buckets: `table-images` (constant `TABLE_IMAGE_BUCKET`), a music bucket,
 and `character-portraits` (portraits + touchstone images; see
@@ -86,6 +99,11 @@ referenced by a short-lived manifest. RLS/permissions live in the relevant
 `src/games/vampires/supabase/*.sql` files. Pathfinder accepts a remote manifest
 only when its release matches the generated manifest shipped with the current
 build; otherwise it loads that build's verified local chunks.
+
+`esp32-oled-assets` is private and server-only. An authenticated owner uploads
+an optimized OLED1 binary through Next.js; the device downloads only the object
+referenced by its own queued upload command through a bounded range proxy.
+Neither a signed Storage URL nor the service key reaches the device.
 
 **Images are never embedded as base64 in rows.** Portraits/touchstone images go
 through `uploadPortraitDataUrl` (`public/vampires/supabase.js`) into `character-portraits`;

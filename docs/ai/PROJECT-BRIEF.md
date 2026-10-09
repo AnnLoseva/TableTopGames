@@ -39,6 +39,9 @@ Single app, two roles, driven by a `role` (`master` | `player`) parameter.
 8. **D&D journal** — `/dnd/journal`, pages + images synced through Supabase
    with the RenaCompanion iPad app (separate repo); public to read (no login),
    editable only by the owner account.
+9. **ESP32 OLED** — `/esp-32-oled`, authenticated management of ESP32-C3
+   SSD1306 devices: pairing, browser-side media conversion, queued commands,
+   file transfer and device diagnostics.
 
 Typical flow: **main screen → pick/create character → open room → jump between
 sheet and table**, carrying `room`, `role`, `characterId`.
@@ -61,6 +64,7 @@ sheet and table**, carrying `room`, `role`, `characterId`.
 | `/vampires/library/chronicles` | `ChronicleLibraryRoute` | Official Chronicle reader, Storyteller upload and owner-only player transcript processing |
 | `/vampires/master?room=<room-id>` | `MasterConsoleRoute` → `MasterConsoleShell` | Desktop Storyteller workspace shell; room is required |
 | `/pathfinder2/sheet` | `src/games/pathfinder2/sheet/Pathfinder2SheetRoute` | Unlisted local Pathfinder 2 character creator |
+| `/esp-32-oled` | `src/features/esp32-oled/components/Esp32OledRoute` | Authenticated ESP32-C3/OLED manager |
 | `/vampires/old` | redirect | Legacy redirect → `/vampires/character-sheet` |
 
 ## Main data sources
@@ -74,6 +78,8 @@ sheet and table**, carrying `room`, `role`, `characterId`.
   source chunks and final documents.
 - **Supabase storage buckets** — `table-images` and a music bucket for uploaded
   table/media assets.
+- **ESP32 control plane** — server-only `esp32_*` tables plus the private
+  `esp32-oled-assets` transfer bucket; devices poll same-origin HTTPS API.
 - **D&D journal (separate, non-VTM)** — `dnd_journal_pages`, `dnd_journal_images`
   and the public `dnd-journal-images` bucket; single hardcoded-owner write,
   fully public read (no login); shared with the RenaCompanion iPad app (separate

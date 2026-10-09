@@ -1,12 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useAccount } from '@/platform/account/AccountProvider'
 import { fetchDevices, pairDevice, renameDevice, sendCommand, unpairDevice, waitForCommand } from '../lib/client'
-import type { ButtonActionType, Esp32CommandType, Esp32Device } from '../types'
-import ConverterPanel from './ConverterPanel'
+import type { Esp32CommandType } from '../constants'
+import type { ButtonActionType, Esp32Device } from '../types'
 import OledPreview from './OledPreview'
 import styles from './esp32.module.css'
+
+const ConverterPanel = dynamic(() => import('./ConverterPanel'), {
+  loading: () => <div className={styles.loading}>Загружаю конвертер…</div>,
+})
 
 function formatBytes(value: number) {
   if (!value) return 'неизвестно'
@@ -137,10 +142,21 @@ function DeviceControl({ device, refresh, onRemoved }: { device: Esp32Device; re
                     if (window.confirm(`Удалить «${item.name}» с устройства?`)) void execute('delete_asset', { slot })
                   }}>Удалить</button>
                   <label className={styles.compactSelect}>Кнопка
-                    <select value={item.buttonAction?.type || 'next'} onChange={event => void execute('set_settings', {
-                      slot,
-                      buttonAction: { type: event.target.value as ButtonActionType },
-                    })}>
+                    <select value={item.buttonAction?.type || 'next'} onChange={event => {
+                      const type = event.target.value as ButtonActionType
+                      const buttonAction: { type: ButtonActionType; alternateSlot?: number; eventName?: string } = { type }
+                      if (type === 'alternate') {
+                        const target = Number(window.prompt('Какой слот проиграть один раз?', String(item.buttonAction?.alternateSlot ?? 0)))
+                        if (!Number.isInteger(target) || target < 0 || target > 9) { setError('Для альтернативной анимации нужен слот 0–9.'); return }
+                        buttonAction.alternateSlot = target
+                      }
+                      if (type === 'custom') {
+                        const eventName = window.prompt('Имя события (латиницей)', item.buttonAction?.eventName || 'character.action')?.trim()
+                        if (!eventName || !/^[a-zA-Z0-9_.:-]{1,64}$/.test(eventName)) { setError('Имя события может содержать латинские буквы, цифры, точку, двоеточие, _ и -.'); return }
+                        buttonAction.eventName = eventName
+                      }
+                      void execute('set_settings', { slot, buttonAction })
+                    }}>
                       <option value="next">Следующая</option><option value="restart">Перезапуск</option><option value="alternate">Альтернативная</option><option value="toggle_pause">Пауза</option><option value="custom">Событие</option>
                     </select>
                   </label>
@@ -196,7 +212,7 @@ export default function Esp32OledRoute() {
     const timer = window.setInterval(() => void refresh(), 10_000)
     return () => window.clearInterval(timer)
   }, [refresh])
-  const selected = useMemo(() => devices.find(device => device.id === selectedId) || null, [devices, selectedId])
+  const selected = devices.find(device => device.id === selectedId) || null
 
   if (!isReady) return <main className={styles.page}><div className={styles.loading}>Подключаемся…</div></main>
   if (!account) return <main className={styles.page}><SignIn /></main>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jsonError, readJson, toHttpError } from '@/features/esp32-oled/server/http'
+import { safeNumber } from '@/features/esp32-oled/lib/validation'
 import { hashEsp32Secret } from '@/features/esp32-oled/server/security'
 import { getEsp32ServiceClient } from '@/features/esp32-oled/server/supabase'
 
@@ -24,14 +25,15 @@ export async function POST(request: NextRequest) {
     if (existing && existing.token_hash !== tokenHash) return jsonError('Устройство не авторизовано.', 401, 'DEVICE_UNAUTHORIZED')
     if (existing?.revoked_at) return jsonError('Токен устройства отозван.', 401, 'DEVICE_REVOKED')
 
+    const fsTotal = Math.max(0, Math.round(safeNumber(body.fsTotal, 0, Number.MAX_SAFE_INTEGER, 0)))
     const patch = {
       device_uid: body.deviceId,
       token_hash: tokenHash,
       firmware_version: typeof body.firmwareVersion === 'string' ? body.firmwareVersion.slice(0, 32) : null,
       hardware: body.hardware && typeof body.hardware === 'object' ? body.hardware : {},
-      flash_size: Math.max(0, Number(body.flashSize || 0)),
-      fs_total: Math.max(0, Number(body.fsTotal || 0)),
-      fs_used: Math.max(0, Number(body.fsUsed || 0)),
+      flash_size: Math.max(0, Math.round(safeNumber(body.flashSize, 0, Number.MAX_SAFE_INTEGER, 0))),
+      fs_total: fsTotal,
+      fs_used: Math.max(0, Math.min(fsTotal, Math.round(safeNumber(body.fsUsed, 0, Number.MAX_SAFE_INTEGER, 0)))),
       last_seen_at: new Date().toISOString(),
     }
     const query = existing
@@ -44,4 +46,3 @@ export async function POST(request: NextRequest) {
     return toHttpError(error)
   }
 }
-

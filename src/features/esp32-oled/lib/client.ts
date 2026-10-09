@@ -1,6 +1,7 @@
 'use client'
 
-import type { Esp32Command, Esp32CommandType, Esp32Device } from '../types'
+import type { Esp32CommandType } from '../constants'
+import type { Esp32Command, Esp32Device } from '../types'
 
 async function parse(response: Response) {
   const body = await response.json().catch(() => ({})) as { error?: string }
@@ -87,4 +88,3 @@ export async function waitForCommand(commandId: string, timeoutMs = 180_000) {
   }
   throw new Error('ESP32 не подтвердила команду за 3 минуты. Она выполнится после восстановления связи.')
 }
-
