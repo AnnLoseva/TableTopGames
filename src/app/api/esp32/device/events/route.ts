@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const device = await authenticateEsp32(request)
     const body = await readJson(request)
     if (typeof body.type !== 'string' || !/^[a-zA-Z0-9_.:-]{1,64}$/.test(body.type)) {
-      return jsonError('Некорректный тип события.', 422)
+      return jsonError('Invalid event type.', 422)
     }
     const { error } = await getEsp32ServiceClient().from('esp32_device_events').insert({
       device_id: device.id,

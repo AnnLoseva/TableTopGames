@@ -11,7 +11,7 @@ type Props = {
   label?: string
 }
 
-export default function OledPreview({ asset, previewBase64, label = 'Предпросмотр OLED' }: Props) {
+export default function OledPreview({ asset, previewBase64, label = 'OLED preview' }: Props) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {

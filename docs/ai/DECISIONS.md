@@ -35,6 +35,18 @@ portal. OLED SCL remains on requested GPIO2; because it is a C3 strapping pin,
 the deployment runbook requires repeated cold-boot verification and forbids a
 module that holds it LOW at reset.
 
+Because ESP32-C3 is single-core, firmware 1.1.0 separates work by priority
+rather than pretending that pinning creates another CPU: the Arduino loop is a
+priority-2 render/input task, while all blocking TLS/HTTP, polling, event/ACK
+delivery and chunk downloads run in one priority-1 task. Fixed-copy FreeRTOS
+queues carry commands, network jobs and results. OLED access remains exclusive
+to the render task. LittleFS operations share a recursive mutex, downloads only
+write slot `.tmp` files, and the render task closes an active slot before the
+verified atomic swap. Frame deadlines advance from the previous deadline (with
+bounded catch-up) so a late iteration does not permanently shift every later
+frame. Measured FPS and the maximum rendered-frame gap are reported in Serial
+and the device's `hardware.performance` JSON.
+
 **Migration:** `src/features/esp32-oled/supabase/esp32_oled.sql`; migration
 name `esp32_oled_control_plane`. Update this entry if live application status
 changes.

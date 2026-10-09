@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const user = await requireEsp32User()
     const body = await readJson(request)
-    if (!isFourDigitPin(body.pin)) return jsonError('Введите четыре цифры PIN.', 422, 'INVALID_PIN')
+    if (!isFourDigitPin(body.pin)) return jsonError('Enter the four-digit PIN.', 422, 'INVALID_PIN')
     const client = getEsp32ServiceClient()
     const { data: deviceId, error } = await client.rpc('esp32_claim_device', {
       p_pin_hash: hashEsp32Secret('pairing-pin', body.pin),
@@ -18,9 +18,9 @@ export async function POST(request: NextRequest) {
       p_name: cleanName(body.name),
     })
     if (error) {
-      if (error.message.includes('RATE_LIMITED')) return jsonError('Слишком много попыток. Подождите 15 минут.', 429, 'RATE_LIMITED')
-      if (error.message.includes('PAIRING_AMBIGUOUS')) return jsonError('Такой PIN показали несколько устройств. Создайте новый PIN на одном из них.', 409, 'PAIRING_AMBIGUOUS')
-      if (error.message.includes('PAIRING_NOT_FOUND')) return jsonError('PIN истёк, устройство offline или код неверен.', 404, 'PAIRING_NOT_FOUND')
+      if (error.message.includes('RATE_LIMITED')) return jsonError('Too many attempts. Wait 15 minutes.', 429, 'RATE_LIMITED')
+      if (error.message.includes('PAIRING_AMBIGUOUS')) return jsonError('Several devices showed this PIN. Generate a new PIN on just one device.', 409, 'PAIRING_AMBIGUOUS')
+      if (error.message.includes('PAIRING_NOT_FOUND')) return jsonError('The PIN expired, the device is offline, or the code is incorrect.', 404, 'PAIRING_NOT_FOUND')
       throw error
     }
     const { data, error: readError } = await client.from('esp32_devices').select('*').eq('id', deviceId).single()

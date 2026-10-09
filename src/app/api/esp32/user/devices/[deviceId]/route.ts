@@ -14,7 +14,7 @@ export async function PATCH(request: NextRequest, context: Context) {
     const { deviceId } = await context.params
     await findOwnedDevice(user.id, deviceId)
     const body = await readJson(request)
-    if (!Object.hasOwn(body, 'name')) return jsonError('Нет данных для изменения.', 422)
+    if (!Object.hasOwn(body, 'name')) return jsonError('No changes were provided.', 422)
     const { data, error } = await getEsp32ServiceClient()
       .from('esp32_devices')
       .update({ name: cleanName(body.name) })
@@ -25,7 +25,7 @@ export async function PATCH(request: NextRequest, context: Context) {
     if (error) throw error
     return NextResponse.json({ device: mapDevice(data) })
   } catch (error) {
-    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Устройство не найдено.', 404)
+    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Device not found.', 404)
     return toHttpError(error)
   }
 }
@@ -39,7 +39,7 @@ export async function DELETE(_request: NextRequest, context: Context) {
 
     const { error: revokeError } = await client
       .from('esp32_devices')
-      .update({ owner_auth_user_id: null, name: 'Мой OLED' })
+      .update({ owner_auth_user_id: null, name: 'My OLED' })
       .eq('id', deviceId)
       .eq('owner_auth_user_id', user.id)
     if (revokeError) throw revokeError
@@ -53,7 +53,7 @@ export async function DELETE(_request: NextRequest, context: Context) {
     }
     return new NextResponse(null, { status: 204 })
   } catch (error) {
-    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Устройство не найдено.', 404)
+    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Device not found.', 404)
     return toHttpError(error)
   }
 }

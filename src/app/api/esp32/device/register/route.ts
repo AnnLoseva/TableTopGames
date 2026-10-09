@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await readJson(request)
     if (!validDeviceUid(body.deviceId) || typeof body.token !== 'string' || body.token.length < 32) {
-      return jsonError('Некорректные данные устройства.', 422, 'INVALID_DEVICE')
+      return jsonError('Invalid device details.', 422, 'INVALID_DEVICE')
     }
     const client = getEsp32ServiceClient()
     const { data: allowed, error: rateError } = await client.rpc('esp32_consume_rate_limit', {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       p_block_seconds: 3600,
     })
     if (rateError) throw rateError
-    if (!allowed) return jsonError('Слишком много регистраций с этого адреса.', 429, 'RATE_LIMITED')
+    if (!allowed) return jsonError('Too many registrations from this address.', 429, 'RATE_LIMITED')
     const tokenHash = hashEsp32Secret('device-token', body.token)
     const { data: existing, error: readError } = await client
       .from('esp32_devices')
@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
       .eq('device_uid', body.deviceId)
       .maybeSingle()
     if (readError) throw readError
-    if (existing && existing.token_hash !== tokenHash) return jsonError('Устройство не авторизовано.', 401, 'DEVICE_UNAUTHORIZED')
-    if (existing?.revoked_at) return jsonError('Токен устройства отозван.', 401, 'DEVICE_REVOKED')
+    if (existing && existing.token_hash !== tokenHash) return jsonError('The device is not authorized.', 401, 'DEVICE_UNAUTHORIZED')
+    if (existing?.revoked_at) return jsonError('The device token has been revoked.', 401, 'DEVICE_REVOKED')
 
     const fsTotal = Math.max(0, Math.round(safeNumber(body.fsTotal, 0, Number.MAX_SAFE_INTEGER, 0)))
     const patch = {

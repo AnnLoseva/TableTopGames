@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, context: Context) {
     const { commandId } = await context.params
     const offset = Math.max(0, Number(request.nextUrl.searchParams.get('offset') || 0))
     const length = Math.max(1, Math.min(16_384, Number(request.nextUrl.searchParams.get('length') || 4096)))
-    if (!Number.isInteger(offset) || !Number.isInteger(length)) return jsonError('Некорректный диапазон.', 416)
+    if (!Number.isInteger(offset) || !Number.isInteger(length)) return jsonError('Invalid range.', 416)
     const client = getEsp32ServiceClient()
     const { data: command, error } = await client
       .from('esp32_device_commands')
@@ -27,12 +27,12 @@ export async function GET(request: NextRequest, context: Context) {
       .maybeSingle()
     if (error) throw error
     if (!command || command.command_type !== 'upload_asset' || !['queued', 'in_progress'].includes(command.status)) {
-      return jsonError('Файл команды недоступен.', 404)
+      return jsonError('The command file is not available.', 404)
     }
     const payload = command.payload as Record<string, unknown>
     const objectPath = typeof payload.objectPath === 'string' ? payload.objectPath : ''
     const totalSize = Number(payload.size || 0)
-    if (!objectPath || offset >= totalSize) return jsonError('Диапазон вне файла.', 416)
+    if (!objectPath || offset >= totalSize) return jsonError('The range is outside the file.', 416)
     const end = Math.min(totalSize - 1, offset + length - 1)
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!serviceKey) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not configured.')

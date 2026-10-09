@@ -8,7 +8,7 @@ export function isCommandType(value: unknown): value is Esp32CommandType {
   return typeof value === 'string' && ESP32_COMMAND_TYPES.includes(value as Esp32CommandType)
 }
 
-export function cleanName(value: unknown, fallback = 'Мой OLED') {
+export function cleanName(value: unknown, fallback = 'My OLED') {
   if (typeof value !== 'string') return fallback
   const result = value.trim().replace(/[\u0000-\u001f\u007f]/g, '').slice(0, 48)
   return result || fallback

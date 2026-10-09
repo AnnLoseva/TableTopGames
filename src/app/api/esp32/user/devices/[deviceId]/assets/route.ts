@@ -17,13 +17,13 @@ export async function POST(request: NextRequest, context: Context) {
     const form = await request.formData()
     const file = form.get('file')
     const slotValue = Number(form.get('slot'))
-    if (!(file instanceof File)) return jsonError('Выберите подготовленный OLED-файл.', 422, 'FILE_REQUIRED')
-    if (!isSlot(slotValue)) return jsonError('Выберите слот от 0 до 9.', 422, 'INVALID_SLOT')
+    if (!(file instanceof File)) return jsonError('Choose a prepared OLED file.', 422, 'FILE_REQUIRED')
+    if (!isSlot(slotValue)) return jsonError('Choose a slot from 0 to 9.', 422, 'INVALID_SLOT')
     if (file.size < 16 || file.size > ESP32_MAX_ASSET_BYTES) {
-      return jsonError('Файл превышает лимит 2 МБ.', 413, 'FILE_TOO_LARGE')
+      return jsonError('The file exceeds the 2 MB limit.', 413, 'FILE_TOO_LARGE')
     }
     if (device.fsTotal > 0 && device.fsTotal - device.fsUsed < file.size + 4096) {
-      return jsonError('На устройстве недостаточно свободного места для безопасной замены.', 409, 'NOT_ENOUGH_SPACE')
+      return jsonError('The device does not have enough free space for a safe replacement.', 409, 'NOT_ENOUGH_SPACE')
     }
 
     const bytes = new Uint8Array(await file.arrayBuffer())
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest, context: Context) {
     try {
       metadata = inspectOledAsset(bytes)
     } catch (error) {
-      return jsonError(error instanceof Error ? error.message : 'OLED-файл повреждён.', 422, 'INVALID_OLED_FILE')
+      return jsonError(error instanceof Error ? error.message : 'The OLED file is corrupted.', 422, 'INVALID_OLED_FILE')
     }
     const sha256 = createHash('sha256').update(bytes).digest('hex')
     const previewCandidate = form.get('previewBase64')
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest, context: Context) {
     try {
       const command = await queueCommand(user.id, deviceId, 'upload_asset', {
         slot: slotValue,
-        name: cleanName(form.get('name'), `Слот ${slotValue}`),
+        name: cleanName(form.get('name'), `Slot ${slotValue}`),
         objectPath,
         size: bytes.byteLength,
         sha256,
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest, context: Context) {
       throw error
     }
   } catch (error) {
-    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Устройство не найдено.', 404)
+    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Device not found.', 404)
     return toHttpError(error)
   }
 }

@@ -27,6 +27,7 @@ void ApiClient::addState(JsonObject object) {
   object["firmwareVersion"] = AppConfig::FirmwareVersion; object["flashSize"] = ESP.getFlashChipSize();
   object["fsTotal"] = store_->totalBytes(); object["fsUsed"] = store_->usedBytes(); object["activeSlot"] = animation_->currentSlot();
   object["brightness"] = settings_->brightness(); object["speedMultiplier"] = settings_->speedMultiplier();
+  object["actualFps"] = animation_->actualFps(); object["maxFrameGapMs"] = animation_->maxFrameGapMs();
   store_->addManifest(object["manifest"].to<JsonArray>());
 }
 

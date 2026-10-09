@@ -36,40 +36,40 @@ export default function ConverterPanel({ deviceId, defaultSlot, onComplete }: Pr
 
   const convert = async () => {
     if (!file) return
-    setBusy(true); setError(''); setStatus('Преобразую изображение в 1-bit…')
+    setBusy(true); setError(''); setStatus('Converting the image to 1-bit…')
     try {
       const result = await convertImage(file, options)
-      if (result.bytes.byteLength > ESP32_MAX_ASSET_BYTES) throw new Error('Анимация больше 2 МБ. Уменьшите GIF или ускорьте его.')
+      if (result.bytes.byteLength > ESP32_MAX_ASSET_BYTES) throw new Error('The animation is larger than 2 MB. Shorten the GIF or increase its speed.')
       setAsset(result.asset); setBytes(result.bytes)
-      setStatus(`Готово: ${result.asset.frames.length} кадр., ${(result.bytes.byteLength / 1024).toFixed(1)} КБ`)
+      setStatus(`Ready: ${result.asset.frames.length} frames, ${(result.bytes.byteLength / 1024).toFixed(1)} KB`)
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Не удалось обработать файл.')
+      setError(caught instanceof Error ? caught.message : 'Could not process the file.')
       setAsset(null); setBytes(null); setStatus('')
     } finally { setBusy(false) }
   }
 
   const upload = async () => {
     if (!asset || !bytes) return
-    setBusy(true); setError(''); setProgress(0); setStatus('Передаю файл на сервер…')
+    setBusy(true); setError(''); setProgress(0); setStatus('Uploading the file to the server…')
     try {
       const command = await uploadAsset(deviceId, {
-        bytes, slot, name: name.trim() || file?.name.replace(/\.[^.]+$/, '') || `Слот ${slot}`,
+        bytes, slot, name: name.trim() || file?.name.replace(/\.[^.]+$/, '') || `Slot ${slot}`,
         previewBase64: frameToBase64(asset.frames[0].pixels),
       }, setProgress)
-      setStatus('Файл на сервере. Жду подтверждение ESP32…')
+      setStatus('File uploaded. Waiting for the ESP32…')
       await waitForCommand(command.id)
-      setProgress(100); setStatus('ESP32 проверила и сохранила файл.')
+      setProgress(100); setStatus('The ESP32 verified and saved the file.')
       await onComplete()
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Загрузка не завершена.')
+      setError(caught instanceof Error ? caught.message : 'The upload did not finish.')
     } finally { setBusy(false) }
   }
 
   return (
     <section className={styles.panel}>
       <div className={styles.sectionHeading}>
-        <div><span className={styles.eyebrow}>Конвертер</span><h2>Новое изображение</h2></div>
-        {asset && <span className={styles.meta}>{asset.frames.length} кадр. · {(duration / 1000).toFixed(1)} с</span>}
+        <div><span className={styles.eyebrow}>Converter</span><h2>New image</h2></div>
+        {asset && <span className={styles.meta}>{asset.frames.length} frames · {(duration / 1000).toFixed(1)} s</span>}
       </div>
       <div className={styles.converterGrid}>
         <div className={styles.controls}>
@@ -78,40 +78,40 @@ export default function ConverterPanel({ deviceId, defaultSlot, onComplete }: Pr
               const next = event.target.files?.[0] || null
               setFile(next); setName(next?.name.replace(/\.[^.]+$/, '') || ''); setAsset(null); setBytes(null)
             }} />
-            <span>{file ? file.name : 'Выбрать PNG, JPG или GIF'}</span>
+            <span>{file ? file.name : 'Choose a PNG, JPG, WebP, or GIF'}</span>
           </label>
           <div className={styles.fieldRow}>
-            <label>Слот<select value={slot} onChange={event => setSlot(Number(event.target.value))}>{Array.from({ length: 10 }, (_, index) => <option key={index}>{index}</option>)}</select></label>
-            <label>Название<input value={name} maxLength={48} onChange={event => setName(event.target.value)} /></label>
+            <label>Slot<select value={slot} onChange={event => setSlot(Number(event.target.value))}>{Array.from({ length: 10 }, (_, index) => <option key={index}>{index}</option>)}</select></label>
+            <label>Name<input value={name} maxLength={48} onChange={event => setName(event.target.value)} /></label>
           </div>
           <div className={styles.fieldRow}>
-            <label>Масштаб<select value={options.fit} onChange={event => setOptions(current => ({ ...current, fit: event.target.value as ConversionOptions['fit'] }))}>
-              <option value="contain">Вместить</option><option value="cover">Заполнить</option><option value="stretch">Растянуть</option>
+            <label>Fit<select value={options.fit} onChange={event => setOptions(current => ({ ...current, fit: event.target.value as ConversionOptions['fit'] }))}>
+              <option value="contain">Contain</option><option value="cover">Cover</option><option value="stretch">Stretch</option>
             </select></label>
-            <label>Скорость GIF<select value={options.speed} onChange={event => setOptions(current => ({ ...current, speed: Number(event.target.value) }))}>
+            <label>GIF speed<select value={options.speed} onChange={event => setOptions(current => ({ ...current, speed: Number(event.target.value) }))}>
               <option value={0.5}>0.5×</option><option value={1}>1×</option><option value={1.5}>1.5×</option><option value={2}>2×</option>
             </select></label>
           </div>
           {(['brightness', 'contrast', 'threshold'] as const).map(key => (
             <label className={styles.range} key={key}>
-              <span>{key === 'brightness' ? 'Яркость' : key === 'contrast' ? 'Контраст' : 'Порог'} <b>{options[key]}</b></span>
+              <span>{key === 'brightness' ? 'Brightness' : key === 'contrast' ? 'Contrast' : 'Threshold'} <b>{options[key]}</b></span>
               <input type="range" min={key === 'threshold' ? 0 : -100} max={key === 'threshold' ? 255 : 100} value={options[key]} onChange={event => setOptions(current => ({ ...current, [key]: Number(event.target.value) }))} />
             </label>
           ))}
           <div className={styles.checks}>
-            <label><input type="checkbox" checked={options.dither} onChange={event => setOptions(current => ({ ...current, dither: event.target.checked }))} /> Дизеринг</label>
-            <label><input type="checkbox" checked={options.invert} onChange={event => setOptions(current => ({ ...current, invert: event.target.checked }))} /> Инверсия</label>
-            <label><input type="checkbox" checked={options.loop} onChange={event => setOptions(current => ({ ...current, loop: event.target.checked }))} /> Зацикливать</label>
+            <label><input type="checkbox" checked={options.dither} onChange={event => setOptions(current => ({ ...current, dither: event.target.checked }))} /> Dithering</label>
+            <label><input type="checkbox" checked={options.invert} onChange={event => setOptions(current => ({ ...current, invert: event.target.checked }))} /> Invert</label>
+            <label><input type="checkbox" checked={options.loop} onChange={event => setOptions(current => ({ ...current, loop: event.target.checked }))} /> Loop</label>
           </div>
           <div className={styles.actions}>
-            <button className={styles.secondaryButton} disabled={!file || busy} onClick={() => void convert()}>Обновить предпросмотр</button>
-            <button className={styles.primaryButton} disabled={!bytes || busy} onClick={() => void upload()}>Загрузить в ESP32</button>
+            <button className={styles.secondaryButton} disabled={!file || busy} onClick={() => void convert()}>Update preview</button>
+            <button className={styles.primaryButton} disabled={!bytes || busy} onClick={() => void upload()}>Upload to ESP32</button>
           </div>
           {(busy || progress > 0) && <div className={styles.progress}><span style={{ width: `${progress}%` }} /></div>}
           {status && <p className={styles.success}>{status}</p>}
           {error && <p className={styles.error}>{error}</p>}
         </div>
-        <OledPreview asset={asset} label={asset ? 'Результат конвертации' : 'Здесь появится результат'} />
+        <OledPreview asset={asset} label={asset ? 'Conversion result' : 'Your result will appear here'} />
       </div>
     </section>
   )

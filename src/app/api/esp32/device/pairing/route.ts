@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const device = await authenticateEsp32(request)
     const body = await readJson(request)
-    if (!isFourDigitPin(body.pin)) return jsonError('PIN должен содержать четыре цифры.', 422, 'INVALID_PIN')
+    if (!isFourDigitPin(body.pin)) return jsonError('The PIN must contain four digits.', 422, 'INVALID_PIN')
     const client = getEsp32ServiceClient()
     const now = new Date()
     const expiresAt = new Date(now.getTime() + ESP32_PAIRING_TTL_SECONDS * 1000)

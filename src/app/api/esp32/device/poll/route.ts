@@ -27,6 +27,13 @@ export async function POST(request: NextRequest) {
       fs_used: fsUsed,
       brightness: Math.round(safeNumber(body.brightness, 0, 255, 128)),
       speed_multiplier: safeNumber(body.speedMultiplier, 0.25, 4, 1),
+      hardware: {
+        ...(device.hardware || {}),
+        performance: {
+          actualFps: safeNumber(body.actualFps, 0, 240, 0),
+          maxFrameGapMs: Math.round(safeNumber(body.maxFrameGapMs, 0, Number.MAX_SAFE_INTEGER, 0)),
+        },
+      },
     }).eq('id', device.id)
     if (updateError) throw updateError
 

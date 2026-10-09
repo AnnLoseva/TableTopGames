@@ -25,23 +25,23 @@ export function rleDecode(input: Uint8Array, expectedLength = OLED_FRAME_BYTES) 
     const count = input[offset]
     const value = input[offset + 1]
     if (count === 0 || writeOffset + count > expectedLength) {
-      throw new Error('Повреждённый RLE-кадр.')
+      throw new Error('The RLE frame is corrupted.')
     }
     output.fill(value, writeOffset, writeOffset + count)
     writeOffset += count
   }
-  if (writeOffset !== expectedLength) throw new Error('Неполный RLE-кадр.')
+  if (writeOffset !== expectedLength) throw new Error('The RLE frame is incomplete.')
   return output
 }
 
 export function encodeOledAsset(asset: OledAsset) {
-  if (asset.width !== 128 || asset.height !== 64) throw new Error('Поддерживается только OLED 128×64.')
-  if (asset.frames.length < 1 || asset.frames.length > 2048) throw new Error('Недопустимое количество кадров.')
+  if (asset.width !== 128 || asset.height !== 64) throw new Error('Only 128×64 OLED displays are supported.')
+  if (asset.frames.length < 1 || asset.frames.length > 2048) throw new Error('Invalid frame count.')
 
   const encoded = asset.frames.map(frame => {
-    if (frame.pixels.byteLength !== OLED_FRAME_BYTES) throw new Error('Кадр должен занимать 1024 байта.')
+    if (frame.pixels.byteLength !== OLED_FRAME_BYTES) throw new Error('A frame must contain exactly 1024 bytes.')
     const compressed = rleEncode(frame.pixels)
-    if (compressed.byteLength > 0xffff) throw new Error('Кадр слишком велик.')
+    if (compressed.byteLength > 0xffff) throw new Error('The frame is too large.')
     return { frame, compressed }
   })
   const byteLength = HEADER_BYTES + encoded.reduce((sum, item) => sum + 4 + item.compressed.byteLength, 0)
@@ -65,24 +65,24 @@ export function encodeOledAsset(asset: OledAsset) {
 
 export function decodeOledAsset(bytes: Uint8Array): OledAsset {
   if (bytes.byteLength < HEADER_BYTES || MAGIC.some((value, index) => bytes[index] !== value)) {
-    throw new Error('Это не файл OLED1.')
+    throw new Error('This is not an OLED1 file.')
   }
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
-  if (view.getUint8(5) !== 1 || view.getUint8(7) !== 1) throw new Error('Версия OLED-файла не поддерживается.')
+  if (view.getUint8(5) !== 1 || view.getUint8(7) !== 1) throw new Error('This OLED file version is not supported.')
   const frameCount = view.getUint16(8, true)
-  if (frameCount < 1 || frameCount > 2048) throw new Error('Некорректное количество кадров.')
+  if (frameCount < 1 || frameCount > 2048) throw new Error('Invalid frame count.')
   const frames: OledFrame[] = []
   let offset = HEADER_BYTES
   for (let index = 0; index < frameCount; index += 1) {
-    if (offset + 4 > bytes.byteLength) throw new Error('Оборван заголовок кадра.')
+    if (offset + 4 > bytes.byteLength) throw new Error('The frame header is truncated.')
     const durationMs = view.getUint16(offset, true)
     const length = view.getUint16(offset + 2, true)
     offset += 4
-    if (offset + length > bytes.byteLength) throw new Error('Оборваны данные кадра.')
+    if (offset + length > bytes.byteLength) throw new Error('The frame data is truncated.')
     frames.push({ durationMs, pixels: rleDecode(bytes.subarray(offset, offset + length)) })
     offset += length
   }
-  if (offset !== bytes.byteLength) throw new Error('В OLED-файле есть лишние данные.')
+  if (offset !== bytes.byteLength) throw new Error('The OLED file contains trailing data.')
   return { width: 128, height: 64, loop: Boolean(view.getUint8(6) & 1), frames }
 }
 

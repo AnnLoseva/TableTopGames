@@ -28,7 +28,7 @@ assert.equal(isFourDigitPin('0042'), true)
 assert.equal(isFourDigitPin('42'), false)
 assert.equal(isCommandType('set_active'), true)
 assert.equal(isCommandType('drop_database'), false)
-assert.equal(cleanName('  Жабка\u0000  '), 'Жабка')
+assert.equal(cleanName('  Desk display\u0000  '), 'Desk display')
 
 const sql = readFileSync(resolve(process.cwd(), 'src/features/esp32-oled/supabase/esp32_oled.sql'), 'utf8')
 for (const table of ['esp32_devices', 'esp32_pairing_challenges', 'esp32_pairing_attempts', 'esp32_device_commands', 'esp32_device_events']) {
@@ -37,7 +37,15 @@ for (const table of ['esp32_devices', 'esp32_pairing_challenges', 'esp32_pairing
 }
 assert.match(sql, /PAIRING_AMBIGUOUS/)
 assert.match(sql, /attempts \+ 1 > 5/)
-assert.doesNotMatch(readFileSync(resolve(process.cwd(), 'firmware/esp32-oled/src/ApiClient.cpp'), 'utf8'), /setInsecure\s*\(/)
+const apiClient = readFileSync(resolve(process.cwd(), 'firmware/esp32-oled/src/ApiClient.cpp'), 'utf8')
+const firmwareMain = readFileSync(resolve(process.cwd(), 'firmware/esp32-oled/src/main.cpp'), 'utf8')
+const commandProcessor = readFileSync(resolve(process.cwd(), 'firmware/esp32-oled/src/CommandProcessor.cpp'), 'utf8')
+const animationEngine = readFileSync(resolve(process.cwd(), 'firmware/esp32-oled/src/AnimationEngine.cpp'), 'utf8')
+assert.doesNotMatch(apiClient, /setInsecure\s*\(/)
+assert.match(firmwareMain, /xTaskCreatePinnedToCore\(networkTask/)
+assert.doesNotMatch(firmwareMain, /void loop\(\)[\s\S]*api\.(?:registerDevice|createPairing|poll|acknowledge|sendEvent|downloadChunk)\s*\(/)
+assert.match(commandProcessor, /xQueueCreate/)
+assert.match(animationEngine, /followingFrameAt = nextFrameAt_ \+ duration/)
 
-console.log('ESP32 OLED format, validation, rate-limit and security checks passed.')
+console.log('ESP32 OLED format, validation, network isolation, scheduling, rate-limit and security checks passed.')
 

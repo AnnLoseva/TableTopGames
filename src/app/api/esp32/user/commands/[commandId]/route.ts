@@ -16,7 +16,7 @@ export async function GET(_request: NextRequest, context: Context) {
       .eq('owner_auth_user_id', user.id)
       .maybeSingle()
     if (error) throw error
-    if (!data) return jsonError('Команда не найдена.', 404)
+    if (!data) return jsonError('Command not found.', 404)
     return NextResponse.json({ command: mapCommand(data) })
   } catch (error) {
     return toHttpError(error)

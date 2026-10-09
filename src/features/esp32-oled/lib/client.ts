@@ -5,7 +5,7 @@ import type { Esp32Command, Esp32Device } from '../types'
 
 async function parse(response: Response) {
   const body = await response.json().catch(() => ({})) as { error?: string }
-  if (!response.ok) throw new Error(body.error || `Ошибка HTTP ${response.status}`)
+  if (!response.ok) throw new Error(body.error || `HTTP error ${response.status}`)
   return body as Record<string, unknown>
 }
 
@@ -62,11 +62,11 @@ export function uploadAsset(
     request.upload.onprogress = event => {
       if (event.lengthComputable) onProgress(Math.round(event.loaded / event.total * 100))
     }
-    request.onerror = () => reject(new Error('Соединение прервано во время загрузки.'))
+    request.onerror = () => reject(new Error('The connection was interrupted during upload.'))
     request.onload = () => {
       const body = JSON.parse(request.responseText || '{}') as { command?: Esp32Command; error?: string }
       if (request.status < 200 || request.status >= 300 || !body.command) {
-        reject(new Error(body.error || `Ошибка HTTP ${request.status}`))
+        reject(new Error(body.error || `HTTP error ${request.status}`))
         return
       }
       resolve(body.command)
@@ -82,9 +82,9 @@ export async function waitForCommand(commandId: string, timeoutMs = 180_000) {
     const command = body.command as Esp32Command
     if (command.status === 'succeeded') return command
     if (command.status === 'failed' || command.status === 'cancelled') {
-      throw new Error(command.errorMessage || 'ESP32 не выполнила команду.')
+      throw new Error(command.errorMessage || 'The ESP32 did not complete the command.')
     }
     await new Promise(resolve => window.setTimeout(resolve, 1500))
   }
-  throw new Error('ESP32 не подтвердила команду за 3 минуты. Она выполнится после восстановления связи.')
+  throw new Error('The ESP32 did not confirm the command within 3 minutes. It will run after the connection is restored.')
 }

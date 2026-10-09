@@ -11,7 +11,7 @@ function validatePayload(type: string, value: unknown) {
   if (['delete_asset', 'rename_asset', 'set_active'].includes(type) && !isSlot(payload.slot)) {
     throw new Error('INVALID_SLOT')
   }
-  if (type === 'rename_asset') payload.name = cleanName(payload.name, `Слот ${payload.slot}`)
+  if (type === 'rename_asset') payload.name = cleanName(payload.name, `Slot ${payload.slot}`)
   if (type === 'set_settings') {
     if (Object.hasOwn(payload, 'brightness')) payload.brightness = Math.round(safeNumber(payload.brightness, 0, 255, 128))
     if (Object.hasOwn(payload, 'speedMultiplier')) payload.speedMultiplier = safeNumber(payload.speedMultiplier, 0.25, 4, 1)
@@ -33,14 +33,14 @@ export async function POST(request: NextRequest, context: Context) {
     const { deviceId } = await context.params
     const body = await readJson(request)
     if (!isCommandType(body.type) || body.type === 'upload_asset') {
-      return jsonError('Команда не поддерживается.', 422, 'INVALID_COMMAND')
+      return jsonError('This command is not supported.', 422, 'INVALID_COMMAND')
     }
     const command = await queueCommand(user.id, deviceId, body.type, validatePayload(body.type, body.payload))
     return NextResponse.json({ command }, { status: 202 })
   } catch (error) {
-    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Устройство не найдено.', 404)
-    if (error instanceof Error && error.message === 'INVALID_SLOT') return jsonError('Выбран неверный слот.', 422)
-    if (error instanceof Error && error.message === 'INVALID_ACTION') return jsonError('Действие кнопки настроено неверно.', 422)
+    if (error instanceof Error && error.message === 'DEVICE_NOT_FOUND') return jsonError('Device not found.', 404)
+    if (error instanceof Error && error.message === 'INVALID_SLOT') return jsonError('Invalid slot.', 422)
+    if (error instanceof Error && error.message === 'INVALID_ACTION') return jsonError('Invalid button action.', 422)
     return toHttpError(error)
   }
 }

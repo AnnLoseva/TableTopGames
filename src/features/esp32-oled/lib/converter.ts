@@ -12,7 +12,7 @@ function canvas(width: number, height: number) {
   element.width = width
   element.height = height
   const context = element.getContext('2d', { willReadFrequently: true })
-  if (!context) throw new Error('Canvas недоступен в этом браузере.')
+  if (!context) throw new Error('Canvas is not available in this browser.')
   return { element, context }
 }
 
@@ -84,7 +84,7 @@ async function gifFrames(file: File, options: ConversionOptions) {
   const { decompressFrames, parseGIF } = await import('gifuct-js')
   const parsed = parseGIF(await file.arrayBuffer())
   const frames = decompressFrames(parsed, true)
-  if (!frames.length) throw new Error('В GIF нет кадров.')
+  if (!frames.length) throw new Error('The GIF has no frames.')
   const source = canvas(parsed.lsd.width, parsed.lsd.height)
   let previousDisposal = 0
   let previousDims = frames[0].dims
@@ -117,7 +117,7 @@ async function gifFrames(file: File, options: ConversionOptions) {
 export async function convertImage(file: File, options: ConversionOptions) {
   const isGif = file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif')
   if (!isGif && !['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
-    throw new Error('Поддерживаются PNG, JPG, WebP и GIF.')
+    throw new Error('PNG, JPG, WebP, and GIF files are supported.')
   }
   const frames = isGif ? await gifFrames(file, options) : await stillFrame(file, options)
   const asset: OledAsset = { width: WIDTH, height: HEIGHT, loop: options.loop, frames }

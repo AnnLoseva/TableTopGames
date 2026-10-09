@@ -6,7 +6,7 @@ create table if not exists public.esp32_devices (
   device_uid text not null unique check (char_length(device_uid) between 8 and 80),
   token_hash text not null check (char_length(token_hash) = 64),
   owner_auth_user_id uuid references auth.users(id) on delete set null,
-  name text not null default 'Мой OLED' check (char_length(name) between 1 and 48),
+  name text not null default 'My OLED' check (char_length(name) between 1 and 48),
   firmware_version text,
   hardware jsonb not null default '{}'::jsonb,
   manifest jsonb not null default '[]'::jsonb,
@@ -24,6 +24,8 @@ create table if not exists public.esp32_devices (
 
 create index if not exists esp32_devices_owner_idx
   on public.esp32_devices(owner_auth_user_id) where owner_auth_user_id is not null and revoked_at is null;
+create index if not exists esp32_devices_owner_auth_user_idx
+  on public.esp32_devices(owner_auth_user_id);
 
 create table if not exists public.esp32_pairing_challenges (
   id uuid primary key default gen_random_uuid(),
@@ -37,6 +39,8 @@ create table if not exists public.esp32_pairing_challenges (
 create index if not exists esp32_pairing_active_idx
   on public.esp32_pairing_challenges(pin_hash, expires_at)
   where consumed_at is null;
+create index if not exists esp32_pairing_challenges_device_idx
+  on public.esp32_pairing_challenges(device_id);
 
 create table if not exists public.esp32_pairing_attempts (
   rate_key_hash text primary key check (char_length(rate_key_hash) = 64),
@@ -101,7 +105,7 @@ create or replace function public.esp32_claim_device(
   p_pin_hash text,
   p_owner uuid,
   p_rate_key_hash text,
-  p_name text default 'Мой OLED'
+  p_name text default 'My OLED'
 ) returns uuid
 language plpgsql
 security invoker
@@ -162,7 +166,7 @@ begin
 
   update public.esp32_devices
     set owner_auth_user_id = p_owner,
-        name = left(coalesce(nullif(trim(p_name), ''), 'Мой OLED'), 48)
+        name = left(coalesce(nullif(trim(p_name), ''), 'My OLED'), 48)
     where id = v_device_id and owner_auth_user_id is null;
   if not found then raise exception 'DEVICE_ALREADY_CLAIMED'; end if;
 

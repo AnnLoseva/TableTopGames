@@ -38,6 +38,8 @@ export type Esp32Device = {
   fsUsed: number
   brightness: number
   speedMultiplier: number
+  actualFps: number
+  maxFrameGapMs: number
   manifest: DeviceSlot[]
   createdAt: string
 }

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest, context: Context) {
     const { commandId } = await context.params
     const body = await readJson(request)
     const status = body.status === 'succeeded' ? 'succeeded' : body.status === 'failed' ? 'failed' : null
-    if (!status) return jsonError('Статус подтверждения не поддерживается.', 422, 'INVALID_STATUS')
+    if (!status) return jsonError('This acknowledgement status is not supported.', 422, 'INVALID_STATUS')
     const client = getEsp32ServiceClient()
     const { data: command, error: readError } = await client
       .from('esp32_device_commands')
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest, context: Context) {
       .eq('device_id', device.id)
       .maybeSingle()
     if (readError) throw readError
-    if (!command) return jsonError('Команда не найдена.', 404)
+    if (!command) return jsonError('Command not found.', 404)
     if (command.status === 'succeeded' || command.status === 'failed') {
       return NextResponse.json({ acknowledged: true, duplicate: true })
     }
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest, context: Context) {
     const { error: updateError } = await client.from('esp32_device_commands').update({
       status,
       acknowledged_at: new Date().toISOString(),
-      error_message: status === 'failed' ? String(body.error || 'Ошибка устройства').slice(0, 500) : null,
+      error_message: status === 'failed' ? String(body.error || 'Device error').slice(0, 500) : null,
     }).eq('id', commandId).eq('device_id', device.id)
     if (updateError) throw updateError
 
@@ -45,6 +45,13 @@ export async function POST(request: NextRequest, context: Context) {
         fs_used: Math.max(0, Math.min(fsTotal, Number(state.fsUsed || 0))),
         brightness: Number.isFinite(Number(state.brightness)) ? Math.max(0, Math.min(255, Number(state.brightness))) : undefined,
         speed_multiplier: Number.isFinite(Number(state.speedMultiplier)) ? Math.max(0.25, Math.min(4, Number(state.speedMultiplier))) : undefined,
+        hardware: {
+          ...(device.hardware || {}),
+          performance: {
+            actualFps: Number.isFinite(Number(state.actualFps)) ? Math.max(0, Math.min(240, Number(state.actualFps))) : 0,
+            maxFrameGapMs: Number.isFinite(Number(state.maxFrameGapMs)) ? Math.max(0, Math.round(Number(state.maxFrameGapMs))) : 0,
+          },
+        },
       }).eq('id', device.id)
     }
 

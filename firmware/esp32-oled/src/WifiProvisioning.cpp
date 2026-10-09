@@ -3,10 +3,10 @@
 #include <WiFi.h>
 
 static const char PORTAL_HTML[] PROGMEM = R"HTML(
-<!doctype html><html lang="ru"><meta name="viewport" content="width=device-width,initial-scale=1"><meta charset="utf-8">
+<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><meta charset="utf-8">
 <style>body{font:16px system-ui;background:#eef4ec;color:#26362e;margin:0;padding:24px}.card{max-width:440px;margin:8vh auto;background:#fff;padding:26px;border-radius:24px;box-shadow:0 20px 60px #49604b22}h1{font-family:Georgia;font-weight:500}label{display:grid;gap:7px;margin:14px 0}input,select,button{font:inherit;padding:12px;border-radius:12px;border:1px solid #bdcdbf;width:100%;box-sizing:border-box}button{background:#365746;color:#fff;border:0;font-weight:700}</style>
-<div class="card"><h1>Настройка OLED</h1><p>Выберите домашнюю сеть. Пароль сохранится только в NVS этой ESP32.</p><form method="post" action="/save"><label>Wi-Fi<select name="ssid" id="net"><option>Ищу сети…</option></select></label><label>Пароль<input name="password" type="password" autocomplete="new-password"></label><button>Подключить</button></form></div>
-<script>fetch('/scan').then(r=>r.json()).then(xs=>{net.innerHTML='';xs.forEach(x=>{const o=document.createElement('option');o.value=o.textContent=x.ssid+' ('+x.rssi+' dBm)';o.value=x.ssid;net.append(o)})}).catch(()=>net.innerHTML='<option>Введите сеть после перезагрузки</option>')</script></html>
+<div class="card"><h1>OLED setup</h1><p>Choose your home network. The password is stored only in this ESP32's NVS.</p><form method="post" action="/save"><label>Wi-Fi<select name="ssid" id="net"><option>Scanning for networks…</option></select></label><label>Password<input name="password" type="password" autocomplete="new-password"></label><button>Connect</button></form></div>
+<script>fetch('/scan').then(r=>r.json()).then(xs=>{net.innerHTML='';xs.forEach(x=>{const o=document.createElement('option');o.value=o.textContent=x.ssid+' ('+x.rssi+' dBm)';o.value=x.ssid;net.append(o)})}).catch(()=>net.innerHTML='<option>Enter the network after restarting</option>')</script></html>
 )HTML";
 
 void WifiProvisioning::begin(Settings& settings, bool forcePortal) {
@@ -30,9 +30,9 @@ void WifiProvisioning::configureRoutes() {
   });
   server_.on("/save", HTTP_POST, [this]() {
     String ssid = server_.arg("ssid"); String password = server_.arg("password");
-    if (ssid.isEmpty() || ssid.length() > 32 || password.length() > 63) { server_.send(422, "text/plain; charset=utf-8", "Некорректные данные Wi-Fi"); return; }
+    if (ssid.isEmpty() || ssid.length() > 32 || password.length() > 63) { server_.send(422, "text/plain; charset=utf-8", "Invalid Wi-Fi details"); return; }
     settings_->saveWifi(ssid, password);
-    server_.send(200, "text/html; charset=utf-8", "<meta charset=utf-8><p>Сохранено. ESP32 подключается; эту страницу можно закрыть.</p>");
+    server_.send(200, "text/html; charset=utf-8", "<meta charset=utf-8><p>Saved. The ESP32 is connecting; you can close this page.</p>");
     stopPortal(); connectStation();
   });
   server_.onNotFound([this]() { server_.sendHeader("Location", "http://192.168.4.1/"); server_.send(302, "text/plain", ""); });

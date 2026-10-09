@@ -29,6 +29,7 @@ export type AuthenticatedEsp32 = {
   device_uid: string
   owner_auth_user_id: string | null
   revoked_at: string | null
+  hardware: Record<string, unknown>
 }
 
 export async function authenticateEsp32(request: NextRequest): Promise<AuthenticatedEsp32> {
@@ -40,7 +41,7 @@ export async function authenticateEsp32(request: NextRequest): Promise<Authentic
   const client = getEsp32ServiceClient()
   const { data, error } = await client
     .from('esp32_devices')
-    .select('id, device_uid, token_hash, owner_auth_user_id, revoked_at')
+    .select('id, device_uid, token_hash, owner_auth_user_id, revoked_at, hardware')
     .eq('device_uid', deviceUid)
     .maybeSingle()
   if (error || !data || data.revoked_at) throw new Error('DEVICE_UNAUTHORIZED')
