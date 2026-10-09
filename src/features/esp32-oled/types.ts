@@ -40,8 +40,30 @@ export type Esp32Device = {
   speedMultiplier: number
   actualFps: number
   maxFrameGapMs: number
+  connectionState: 'wifi_unset' | 'connecting' | 'wifi_connected' | 'no_internet' | 'tls_error' | 'server_unavailable' | 'registration_error' | 'registered' | 'waiting_gift_acceptance' | 'ready'
+  lastHttpStatus: number | null
+  setupApSsid: string | null
+  setupApPassword: string | null
   manifest: DeviceSlot[]
   createdAt: string
+}
+
+export type Esp32GiftStatus = 'pending' | 'wifi_reset_sent' | 'ready' | 'cancelled'
+
+export type Esp32GiftInvite = {
+  id: string
+  deviceId: string
+  deviceName: string
+  senderUserId: string
+  recipientUserId: string
+  recipientUsername: string
+  status: Esp32GiftStatus
+  expiresAt: string
+  acceptedAt: string | null
+  completedAt: string | null
+  createdAt: string
+  setupApSsid: string | null
+  setupApPassword: string | null
 }
 
 export type CommandStatus = 'queued' | 'in_progress' | 'succeeded' | 'failed' | 'cancelled'

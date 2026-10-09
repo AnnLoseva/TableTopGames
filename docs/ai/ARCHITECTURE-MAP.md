@@ -139,6 +139,10 @@ physical boundary does not add a URL segment.
  → server-only esp32_* tables + private esp32-oled-assets bucket
  → ESP32 outgoing HTTPS poll / range download / ACK
  → LittleFS temporary file → SHA-256 → atomic slot replace → SSD1306
+
+Gift: owner wizard → service-role gift invitation → recipient confirms
+ → atomic owner transfer + recipient-owned reset_wifi command
+ → device ACK → unique WPA2 captive portal → recipient home Wi-Fi
 ```
 
 The browser never contacts a LAN IP. Device tokens and pairing PINs are HMACed
@@ -236,7 +240,8 @@ maps display names ↔ stable identifiers.
 - Buckets: `table-images`, a music bucket, `character-portraits`,
   `rules-vampires`, `rules-pathfinder2` and private `esp32-oled-assets`.
 - ESP32 control plane tables: `esp32_devices`, `esp32_pairing_challenges`,
-  `esp32_pairing_attempts`, `esp32_device_commands`, `esp32_device_events`.
+  `esp32_pairing_attempts`, `esp32_device_commands`, `esp32_device_events`,
+  `esp32_gift_invites`.
 - Table names centralized in `src/games/vampires/modules/table/constants.ts`.
 - Schema/policies live in `src/games/vampires/supabase/*.sql`.
 - Separate, unrelated to the above: the D&D journal domain owns

@@ -29,6 +29,10 @@ export async function POST(request: NextRequest) {
       speed_multiplier: safeNumber(body.speedMultiplier, 0.25, 4, 1),
       hardware: {
         ...(device.hardware || {}),
+        connectivity: {
+          state: typeof body.connectionState === 'string' ? body.connectionState.slice(0, 40) : 'registered',
+          lastHttpStatus: Number.isInteger(body.lastHttpStatus) ? Number(body.lastHttpStatus) : null,
+        },
         performance: {
           actualFps: safeNumber(body.actualFps, 0, 240, 0),
           maxFrameGapMs: Math.round(safeNumber(body.maxFrameGapMs, 0, Number.MAX_SAFE_INTEGER, 0)),
@@ -39,7 +43,8 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await client.rpc('esp32_claim_next_command', { p_device_id: device.id })
     if (error) throw error
-    return NextResponse.json({ paired: Boolean(device.owner_auth_user_id), command: data ? mapCommand(data) : null })
+    const { data: gift } = await client.from('esp32_gift_invites').select('status').eq('device_id', device.id).in('status', ['pending', 'wifi_reset_sent']).maybeSingle()
+    return NextResponse.json({ paired: Boolean(device.owner_auth_user_id), giftStatus: gift?.status || null, command: data ? mapCommand(data) : null })
   } catch (error) {
     return toHttpError(error)
   }

@@ -9,7 +9,7 @@ Supabase schema and private Storage
 not browser-to-LAN HTTP and not a permanent WebSocket process on Vercel. The
 same-origin Next.js API authenticates either the existing Supabase user session
 or a per-device 256-bit token (stored in Postgres only as server-keyed HMAC),
-and mediates five private `esp32_*` tables plus the private
+and mediates six private `esp32_*` tables plus the private
 `esp32-oled-assets` bucket. No `anon`/`authenticated` table grants exist.
 
 Pairing is a physical, one-time 120-second challenge. Only a currently online,
@@ -27,15 +27,25 @@ LittleFS, resumes from the `.tmp` size, checks SHA-256, then installs with a
 `.bak` rollback. The UI reports success only after device ACK. Command IDs are
 persisted in NVS to prevent replay after reboot.
 
+Gift transfer uses `esp32_gift_invites` and service-role-only transactional
+RPCs. The sender can invite only an existing `public.users.username` backed by
+Supabase Auth; the recipient must confirm while authenticated. Acceptance
+atomically changes `esp32_devices.owner_auth_user_id`, cancels old-owner queued
+commands and enqueues a recipient-owned Wi-Fi-only reset. Device identity,
+token, LittleFS assets and OLED settings are not reset. The ordinary physical
+PIN flow remains available for non-gift devices.
+
 The firmware uses the official GTS Root R4 trust anchor matching the production
 domain's current WE1 chain, never `setInsecure()`. Wi-Fi credentials and the
-device token live in NVS, not source. Runtime long press (5 s) starts pairing;
-holding the button for 8 s during boot clears Wi-Fi and reopens the captive
-portal. OLED SCL remains on requested GPIO2; because it is a C3 strapping pin,
+device token live in NVS, not source. Firmware 1.2.0 decides long-hold actions
+only on release: 5–9 seconds publishes a pairing PIN and 10+ seconds clears
+only Wi-Fi and reopens the captive portal. Each device derives a unique WPA2
+setup password from its private token and reports the setup SSID/password over
+authenticated TLS for the owner-only gift card. OLED SCL remains on requested GPIO2; because it is a C3 strapping pin,
 the deployment runbook requires repeated cold-boot verification and forbids a
 module that holds it LOW at reset.
 
-Because ESP32-C3 is single-core, firmware 1.1.0 separates work by priority
+Because ESP32-C3 is single-core, firmware 1.2.0 separates work by priority
 rather than pretending that pinning creates another CPU: the Arduino loop is a
 priority-2 render/input task, while all blocking TLS/HTTP, polling, event/ACK
 delivery and chunk downloads run in one priority-1 task. Fixed-copy FreeRTOS
@@ -48,8 +58,8 @@ frame. Measured FPS and the maximum rendered-frame gap are reported in Serial
 and the device's `hardware.performance` JSON.
 
 **Migration:** `src/features/esp32-oled/supabase/esp32_oled.sql`; migration
-name `esp32_oled_control_plane`. Update this entry if live application status
-changes.
+name `esp32_oled_control_plane`, extended with `esp32_gift_invites` and setup AP
+credentials. Update this entry if live application status changes.
 
 **Consequences:** `SUPABASE_SERVICE_ROLE_KEY` and a new
 `ESP32_API_HMAC_SECRET` (32+ chars) are required only in the server environment.

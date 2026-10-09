@@ -135,6 +135,29 @@
 .modal { display: grid; gap: 14px; }
 .pinLabel input { font-family: ui-monospace, monospace; font-size: 2.2rem; letter-spacing: .5em; text-align: center; padding-left: .5em; }
 
+.giftInbox { margin: 0 0 28px; padding: 24px; border: 1px solid #bdd1c0; border-radius: 26px; background: linear-gradient(135deg, #edf5e9, #fffdf6); box-shadow: 0 16px 50px rgba(64, 82, 69, .08); }
+.giftInbox article { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 10px; }
+.giftInbox h2 { margin: 5px 0; font: 500 2rem Georgia, serif; }.giftInbox p { margin: 0; color: var(--muted); line-height: 1.55; }
+.waitingBadge { flex: 0 0 auto; padding: 10px 14px; border-radius: 99px; color: #5c6f62; background: #e1eadf; font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.preparedGifts { margin-top: 34px; }.preparedGifts > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin-top: 12px; }
+.preparedGifts button { display: grid; gap: 5px; padding: 17px; text-align: left; color: var(--ink); background: rgba(255,255,252,.8); border: 1px solid var(--line); border-radius: 18px; cursor: pointer; }
+.preparedGifts button span { color: var(--muted); font-size: .82rem; text-transform: capitalize; }
+
+.giftWizard { width: min(820px, calc(100% - 24px)); max-height: calc(100vh - 32px); overflow: auto; }
+.wizardTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }.wizardTop h2 { margin-top: 7px; }
+.iconButton { width: 42px; height: 42px; flex: 0 0 auto; border: 0; border-radius: 50%; color: var(--moss-dark); background: var(--leaf); font-size: 1.7rem; cursor: pointer; }
+.steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 8px 0 20px; padding: 0; list-style: none; }
+.steps li { display: grid; justify-items: center; gap: 5px; color: #87978e; font-size: .68rem; font-weight: 700; }.steps li span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #edf1eb; }
+.steps .currentStep, .steps .doneStep { color: var(--moss-dark); }.steps .currentStep span { color: #fff; background: var(--moss-dark); }.steps .doneStep span { background: var(--leaf); }
+.wizardBody { display: grid; gap: 15px; padding: 22px; border-radius: 22px; background: #f8faf5; }.wizardBody h3 { margin: 0; font: 500 1.8rem Georgia, serif; }.wizardBody > p { margin: 0; color: var(--muted); line-height: 1.55; }
+.wizardActions { display: flex; justify-content: flex-end; gap: 10px; }
+.giftSummary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: var(--line); }.giftSummary div { padding: 13px; background: #fff; }.giftSummary dt { color: var(--muted); font-size: .7rem; }.giftSummary dd { margin: 4px 0 0; font-weight: 750; }
+.checkList { display: grid; gap: 8px; }.checkList > div { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; }.checkList > div span { width: 24px; height: 24px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; font-weight: 900; }.checkOk { color: #315f45; background: #e4efe3; }.checkOk span { background: #cce3cd; }.checkMissing { color: #814842; background: #f6e7e3; }.checkMissing span { background: #efd0ca; }
+.animationCheck { display: grid; gap: 7px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; }.animationCheck strong { font: 500 1.5rem Georgia, serif; }.animationCheck span { color: var(--muted); }
+.transferStatus { display: flex; gap: 16px; align-items: flex-start; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }.transferStatus p { margin: 6px 0 0; color: var(--muted); line-height: 1.5; }
+.statusOrb { width: 16px; height: 16px; margin-top: 3px; flex: 0 0 auto; border-radius: 50%; background: #d3a65e; box-shadow: 0 0 0 7px #f4ead6; }.statusOrb[data-status='ready'] { background: #4c8a62; box-shadow: 0 0 0 7px #dcecdf; }
+.printCard { width: min(100%, 560px); margin: 0 auto; padding: 36px; display: grid; justify-items: center; gap: 15px; color: #23342d; text-align: center; border: 2px solid #89a78d; border-radius: 30px; background: radial-gradient(circle at top, #edf5e8, #fffdf5 58%); }.printCard h4 { margin: 0; font: 500 2.2rem Georgia, serif; }.printCard img { width: min(280px, 72vw); height: auto; border-radius: 15px; }.printCard ol { margin: 0; padding-left: 1.4em; text-align: left; line-height: 1.65; }.printCard small { overflow-wrap: anywhere; color: #5b6e62; }.cardKicker { text-transform: uppercase; letter-spacing: .15em; font-size: .67rem; font-weight: 800; color: #5e7e66; }
+
 @media (max-width: 760px) {
   .topbar { padding: 0 16px; }.topbar span:nth-child(2) { display: none; }
   .intro { padding-top: 48px; }.heroPanel { flex-direction: column; align-items: flex-start; }
@@ -142,6 +165,18 @@
   .diagnostics { grid-column: auto; }.fieldRow { grid-template-columns: 1fr; }
   .oledCanvas { width: min(256px, 68vw); height: auto; aspect-ratio: 2; }
   .sectionHeading { align-items: start; flex-direction: column; }
+  .giftInbox article { align-items: flex-start; flex-direction: column; }.giftSummary { grid-template-columns: repeat(2, 1fr); }.steps li { font-size: 0; }.steps li span { font-size: .75rem; }
+}
+
+@media print {
+  .page { min-height: auto; padding: 0; background: #fff; }
+  .page > :not(.modalBackdrop) { display: none !important; }
+  .modalBackdrop { position: static; display: block; padding: 0; background: #fff; backdrop-filter: none; }
+  .giftWizard { width: 100%; max-height: none; padding: 0; border: 0; box-shadow: none; background: #fff; }
+  .giftWizard > :not(.wizardBody) { display: none !important; }
+  .wizardBody { padding: 0; background: #fff; }
+  .wizardBody > :not(.printCard) { display: none !important; }
+  .printCard { width: 148mm; min-height: 190mm; padding: 18mm; border-radius: 8mm; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
 
 @media (prefers-reduced-motion: reduce) {

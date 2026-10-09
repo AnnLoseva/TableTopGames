@@ -5,6 +5,7 @@ export function mapDevice(row: Record<string, unknown>): Esp32Device {
   const lastSeenAt = typeof row.last_seen_at === 'string' ? row.last_seen_at : null
   const hardware = row.hardware && typeof row.hardware === 'object' ? row.hardware as Record<string, unknown> : {}
   const performance = hardware.performance && typeof hardware.performance === 'object' ? hardware.performance as Record<string, unknown> : {}
+  const connectivity = hardware.connectivity && typeof hardware.connectivity === 'object' ? hardware.connectivity as Record<string, unknown> : {}
   return {
     id: String(row.id),
     deviceUid: String(row.device_uid),
@@ -20,6 +21,10 @@ export function mapDevice(row: Record<string, unknown>): Esp32Device {
     speedMultiplier: Number(row.speed_multiplier ?? 1),
     actualFps: Number(performance.actualFps || 0),
     maxFrameGapMs: Number(performance.maxFrameGapMs || 0),
+    connectionState: typeof connectivity.state === 'string' ? connectivity.state as Esp32Device['connectionState'] : (lastSeenAt ? 'registered' : 'wifi_unset'),
+    lastHttpStatus: typeof connectivity.lastHttpStatus === 'number' ? connectivity.lastHttpStatus : null,
+    setupApSsid: typeof row.setup_ap_ssid === 'string' ? row.setup_ap_ssid : null,
+    setupApPassword: typeof row.setup_ap_password === 'string' ? row.setup_ap_password : null,
     manifest: Array.isArray(row.manifest) ? row.manifest as DeviceSlot[] : [],
     createdAt: String(row.created_at),
   }

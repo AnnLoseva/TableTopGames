@@ -1,6 +1,7 @@
 #include "DeviceIdentity.hpp"
 #include <Preferences.h>
 #include <esp_system.h>
+#include <mbedtls/sha256.h>
 
 static String randomHex(size_t bytes) {
   static const char hex[] = "0123456789abcdef";
@@ -19,6 +20,9 @@ void DeviceIdentity::begin() {
   char id[32];
   snprintf(id, sizeof(id), "esp32c3-%04X%08X", static_cast<uint16_t>(mac >> 32), static_cast<uint32_t>(mac));
   deviceId_ = id;
+  char setupSsid[24];
+  snprintf(setupSsid, sizeof(setupSsid), "OLED-Setup-%04X", static_cast<uint16_t>(mac));
+  setupSsid_ = setupSsid;
   Preferences preferences;
   preferences.begin("oled-id", false);
   token_ = preferences.getString("token", "");
@@ -27,5 +31,11 @@ void DeviceIdentity::begin() {
     preferences.putString("token", token_);
   }
   preferences.end();
+
+  uint8_t digest[32];
+  mbedtls_sha256(reinterpret_cast<const unsigned char*>(token_.c_str()), token_.length(), digest, 0);
+  char setupPassword[16];
+  snprintf(setupPassword, sizeof(setupPassword), "Oled-%02X%02X%02X%02X%02X", digest[0], digest[1], digest[2], digest[3], digest[4]);
+  setupPassword_ = setupPassword;
 }
 

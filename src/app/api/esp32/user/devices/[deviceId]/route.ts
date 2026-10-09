@@ -37,6 +37,8 @@ export async function DELETE(_request: NextRequest, context: Context) {
     await findOwnedDevice(user.id, deviceId)
     const client = getEsp32ServiceClient()
 
+    await client.from('esp32_gift_invites').update({ status: 'cancelled' }).eq('device_id', deviceId).eq('sender_auth_user_id', user.id).eq('status', 'pending')
+
     const { error: revokeError } = await client
       .from('esp32_devices')
       .update({ owner_auth_user_id: null, name: 'My OLED' })

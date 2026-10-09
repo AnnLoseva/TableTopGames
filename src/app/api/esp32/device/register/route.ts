@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
     const patch = {
       device_uid: body.deviceId,
       token_hash: tokenHash,
+      setup_ap_ssid: typeof body.setupApSsid === 'string' && /^OLED-Setup-[0-9A-F]{4}$/.test(body.setupApSsid) ? body.setupApSsid : undefined,
+      setup_ap_password: typeof body.setupApPassword === 'string' && body.setupApPassword.length >= 8 && body.setupApPassword.length <= 63 ? body.setupApPassword : undefined,
       firmware_version: typeof body.firmwareVersion === 'string' ? body.firmwareVersion.slice(0, 32) : null,
       hardware: body.hardware && typeof body.hardware === 'object' ? body.hardware : {},
       flash_size: Math.max(0, Math.round(safeNumber(body.flashSize, 0, Number.MAX_SAFE_INTEGER, 0))),
@@ -49,7 +51,8 @@ export async function POST(request: NextRequest) {
       : client.from('esp32_devices').insert(patch)
     const { data, error } = await query.select('id, owner_auth_user_id').single()
     if (error) throw error
-    return NextResponse.json({ registered: true, deviceRecordId: data.id, paired: Boolean(data.owner_auth_user_id) })
+    const { data: gift } = await client.from('esp32_gift_invites').select('status').eq('device_id', data.id).in('status', ['pending', 'wifi_reset_sent']).maybeSingle()
+    return NextResponse.json({ registered: true, deviceRecordId: data.id, paired: Boolean(data.owner_auth_user_id), giftStatus: gift?.status || null })
   } catch (error) {
     return toHttpError(error)
   }

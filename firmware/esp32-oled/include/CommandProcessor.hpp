@@ -21,7 +21,7 @@ class CommandProcessor {
   void tick();
  private:
   enum class NetworkJobType : uint8_t { Acknowledge, Download, Pairing, Event };
-  enum class ResultType : uint8_t { Download, Pairing, Event };
+  enum class ResultType : uint8_t { Acknowledge, Download, Pairing, Event };
   struct QueuedCommand { char json[4096]; };
   struct NetworkJob {
     NetworkJobType type;
@@ -57,5 +57,6 @@ class CommandProcessor {
   uint8_t chunk_[AppConfig::DownloadChunkBytes];
   uint32_t rebootAt_ = 0;
   bool clearWifiOnReboot_ = false;
+  String pendingRebootCommandId_;
 };
 

@@ -22,7 +22,9 @@ The isolated ESP32 OLED control plane is server-mediated: `/esp-32-oled` and
 the firmware never access tables directly. Next.js API handlers authenticate a
 Supabase user cookie or an HMACed device token, then use the server-only service
 role against `esp32_devices`, pairing challenges, DB-backed pairing rate limits,
-acknowledged commands and device events. Binary transfers use the private
+acknowledged commands, device events and recipient-confirmed gift invitations.
+Gift acceptance atomically transfers ownership and queues a Wi-Fi-only reset.
+Binary transfers use the private
 `esp32-oled-assets` bucket and are removed after ACK. Its canonical schema is
 `src/features/esp32-oled/supabase/esp32_oled.sql`.
 
@@ -87,6 +89,7 @@ Tables (from `src/games/vampires/modules/table/constants.ts` and `src/games/vamp
 | `esp32_pairing_attempts` | ESP32 OLED | Database-backed user/IP pairing rate limit |
 | `esp32_device_commands` | ESP32 OLED | Durable idempotent command queue, retry and ACK state |
 | `esp32_device_events` | ESP32 OLED | Custom physical-button events from devices |
+| `esp32_gift_invites` | ESP32 OLED | Authenticated sender/recipient ownership transfer and Wi-Fi-reset lifecycle |
 
 Storage buckets: `table-images` (constant `TABLE_IMAGE_BUCKET`), a music bucket,
 and `character-portraits` (portraits + touchstone images; see

@@ -60,8 +60,8 @@ void CommandProcessor::execute(JsonObject command) {
     if (payload["speedMultiplier"].is<float>()) { float speed = constrain(payload["speedMultiplier"].as<float>(), .25f, 4.0f); settings_->setSpeedMultiplier(speed); animation_->setSpeed(speed); }
     if (slot >= 0 && payload["buttonAction"].is<JsonObject>()) { JsonObject action = payload["buttonAction"]; ok = store_->updateButton(slot, String(action["type"] | "next"), action["alternateSlot"] | -1, String(action["eventName"] | "button.press")); }
   } else if (type == "request_manifest") {}
-  else if (type == "reboot") rebootAt_ = millis() + 1000;
-  else if (type == "reset_wifi") { clearWifiOnReboot_ = true; rebootAt_ = millis() + 1000; }
+  else if (type == "reboot") pendingRebootCommandId_ = commandId_;
+  else if (type == "reset_wifi") { clearWifiOnReboot_ = true; pendingRebootCommandId_ = commandId_; }
   else ok = false;
   finish(ok, ok ? "" : "command rejected");
 }
@@ -87,7 +87,9 @@ void CommandProcessor::tick() {
   if (rebootAt_ && static_cast<int32_t>(millis() - rebootAt_) >= 0) { if (clearWifiOnReboot_) settings_->clearWifi(); ESP.restart(); }
   NetworkResult result = {};
   while (resultQueue_ && xQueueReceive(resultQueue_, &result, 0) == pdTRUE) {
-    if (result.type == ResultType::Pairing) { pairingQueued_ = false; pairingPublished_ = result.success; }
+    if (result.type == ResultType::Acknowledge) {
+      if (pendingRebootCommandId_ == result.value) { rebootAt_ = millis() + (result.success ? 250 : 2000); pendingRebootCommandId_ = ""; }
+    } else if (result.type == ResultType::Pairing) { pairingQueued_ = false; pairingPublished_ = result.success; }
     else if (result.type == ResultType::Event) {
       eventQueued_ = false;
       if (result.success && settings_->pendingEvent() == result.value) settings_->setPendingEvent("");
@@ -149,7 +151,13 @@ bool CommandProcessor::processNetworkJob() {
   NetworkJob job = {};
   if (xQueueReceive(networkQueue_, &job, 0) != pdTRUE) return false;
   if (job.type == NetworkJobType::Acknowledge) {
-    api_->acknowledge(job.commandId, job.success, job.value); return true;
+    bool acknowledged = false;
+    for (uint8_t attempt = 0; attempt < 3 && !acknowledged; ++attempt) {
+      acknowledged = api_->acknowledge(job.commandId, job.success, job.value);
+      if (!acknowledged) vTaskDelay(pdMS_TO_TICKS(250));
+    }
+    NetworkResult result = {}; result.type = ResultType::Acknowledge; result.success = acknowledged; snprintf(result.value, sizeof(result.value), "%s", job.commandId);
+    xQueueSend(resultQueue_, &result, portMAX_DELAY); return true;
   }
   NetworkResult result = {};
   if (job.type == NetworkJobType::Download) {

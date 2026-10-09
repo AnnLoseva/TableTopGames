@@ -9,10 +9,13 @@
   conversion, queued/acknowledged commands and private chunked transfers via
   Supabase. PlatformIO firmware under `firmware/esp32-oled` covers captive
   Wi-Fi provisioning, NVS, TLS polling, LittleFS atomic slots, SSD1306 playback
-  and debounced button actions. Firmware 1.1.0 keeps OLED/button work in the
+  and release-duration button actions. Firmware 1.2.0 keeps OLED/button work in the
   priority render loop and moves all blocking HTTPS/download/ACK work to a
   lower-priority queued task, with serialized LittleFS access and live FPS/gap
-  telemetry. Schema still needs the production migration
+  telemetry. A recipient-confirmed gift flow transfers ownership, preserves
+  LittleFS/settings and resets only Wi-Fi through the command ACK lifecycle;
+  the captive portal uses a per-device WPA2 password and backend-confirmed
+  status. Schema still needs the production migration
   status kept in sync with `DECISIONS.md`; end-to-end hardware verification is
   owner-required.
 - **Chronicle, new domain (2026-09-13)** — `/chronicle` (`src/features/chronicle/*`)

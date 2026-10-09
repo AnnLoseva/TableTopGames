@@ -47,6 +47,10 @@ export async function POST(request: NextRequest, context: Context) {
         speed_multiplier: Number.isFinite(Number(state.speedMultiplier)) ? Math.max(0.25, Math.min(4, Number(state.speedMultiplier))) : undefined,
         hardware: {
           ...(device.hardware || {}),
+          connectivity: {
+            state: typeof state.connectionState === 'string' ? state.connectionState.slice(0, 40) : 'ready',
+            lastHttpStatus: Number.isInteger(state.lastHttpStatus) ? Number(state.lastHttpStatus) : null,
+          },
           performance: {
             actualFps: Number.isFinite(Number(state.actualFps)) ? Math.max(0, Math.min(240, Number(state.actualFps))) : 0,
             maxFrameGapMs: Number.isFinite(Number(state.maxFrameGapMs)) ? Math.max(0, Math.round(Number(state.maxFrameGapMs))) : 0,
@@ -60,6 +64,9 @@ export async function POST(request: NextRequest, context: Context) {
         ? (command.payload as Record<string, unknown>).objectPath
         : null
       if (typeof objectPath === 'string') await client.storage.from(ESP32_ASSET_BUCKET).remove([objectPath])
+    }
+    if (command.command_type === 'reset_wifi' && status === 'succeeded' && command.payload && typeof command.payload === 'object' && (command.payload as Record<string, unknown>).reason === 'gift_transfer') {
+      await client.from('esp32_gift_invites').update({ status: 'ready', completed_at: new Date().toISOString() }).eq('reset_command_id', commandId).eq('status', 'wifi_reset_sent')
     }
     return NextResponse.json({ acknowledged: true })
   } catch (error) {

@@ -1,7 +1,7 @@
 'use client'
 
 import type { Esp32CommandType } from '../constants'
-import type { Esp32Command, Esp32Device } from '../types'
+import type { Esp32Command, Esp32Device, Esp32GiftInvite } from '../types'
 
 async function parse(response: Response) {
   const body = await response.json().catch(() => ({})) as { error?: string }
@@ -12,6 +12,33 @@ async function parse(response: Response) {
 export async function fetchDevices() {
   const body = await parse(await fetch('/api/esp32/user/devices', { cache: 'no-store' }))
   return body.devices as Esp32Device[]
+}
+
+export async function fetchServiceDiagnostics() {
+  return await parse(await fetch('/api/esp32/user/diagnostics', { cache: 'no-store' })) as unknown as { ready: boolean }
+}
+
+export async function fetchGifts() {
+  const body = await parse(await fetch('/api/esp32/user/gifts', { cache: 'no-store' }))
+  return { incoming: body.incoming as Esp32GiftInvite[], outgoing: body.outgoing as Esp32GiftInvite[] }
+}
+
+export async function findGiftRecipient(username: string) {
+  const body = await parse(await fetch(`/api/esp32/user/recipients?username=${encodeURIComponent(username)}`, { cache: 'no-store' }))
+  return body.recipient as { username: string }
+}
+
+export async function createGift(deviceId: string, recipientUsername: string) {
+  const body = await parse(await fetch('/api/esp32/user/gifts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ deviceId, recipientUsername }),
+  }))
+  return body.gift as Esp32GiftInvite
+}
+
+export async function updateGift(inviteId: string, action: 'accept' | 'cancel') {
+  return parse(await fetch('/api/esp32/user/gifts', {
+    method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ inviteId, action }),
+  }))
 }
 
 export async function pairDevice(pin: string, name: string) {

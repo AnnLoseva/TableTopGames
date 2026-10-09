@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useAccount } from '@/platform/account/AccountProvider'
-import { fetchDevices, pairDevice, renameDevice, sendCommand, unpairDevice, waitForCommand } from '../lib/client'
+import { fetchDevices, fetchGifts, fetchServiceDiagnostics, pairDevice, renameDevice, sendCommand, unpairDevice, waitForCommand } from '../lib/client'
 import type { Esp32CommandType } from '../constants'
-import type { ButtonActionType, Esp32Device } from '../types'
+import type { ButtonActionType, Esp32Device, Esp32GiftInvite } from '../types'
+import GiftInbox from './GiftInbox'
+import GiftWizard from './GiftWizard'
 import OledPreview from './OledPreview'
 import styles from './esp32.module.css'
 
@@ -17,6 +19,20 @@ function formatBytes(value: number) {
   if (!value) return 'unknown'
   if (value < 1024 * 1024) return `${(value / 1024).toFixed(0)} KB`
   return `${(value / 1024 / 1024).toFixed(1)} MB`
+}
+
+function englishAccountError(caught: unknown) {
+  const message = caught instanceof Error ? caught.message : ''
+  const translations: Record<string, string> = {
+    'Имя пользователя — минимум 3 символа.': 'Username must contain at least 3 characters.',
+    'Пароль — минимум 6 символов.': 'Password must contain at least 6 characters.',
+    'Такой пользователь уже существует.': 'That username already exists.',
+    'Не удалось создать аккаунт.': 'Could not create the account.',
+    'Аккаунт создан, но вход не выполнен. Попробуйте войти.': 'The account was created, but sign-in failed. Try signing in.',
+    'Неверный логин или пароль.': 'The username or password is incorrect.',
+    'Не удалось загрузить профиль аккаунта.': 'Could not load the account profile.',
+  }
+  return translations[message] || message || 'Could not sign in.'
 }
 
 function SignIn() {
@@ -35,7 +51,7 @@ function SignIn() {
       {error && <p className={styles.error}>{error}</p>}
       <button className={styles.primaryButton} disabled={isBusy} onClick={() => {
         setError('')
-        void authenticate(mode, username, password).catch(caught => setError(caught instanceof Error ? caught.message : 'Could not sign in.'))
+        void authenticate(mode, username, password).catch(caught => setError(englishAccountError(caught)))
       }}>{mode === 'login' ? 'Sign in' : 'Create account'}</button>
       <button className={styles.textButton} onClick={() => setMode(current => current === 'login' ? 'register' : 'login')}>
         {mode === 'login' ? 'No account? Create one' : 'Already have an account? Sign in'}
@@ -54,7 +70,7 @@ function PairForm({ onPaired, onCancel }: { onPaired: (device: Esp32Device) => v
       <section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="pair-title">
         <span className={styles.eyebrow}>Physical confirmation</span>
         <h2 id="pair-title">Add an ESP32</h2>
-        <p>Hold the button for 5 seconds, then enter the PIN shown on the OLED. The code is valid for 120 seconds.</p>
+        <p>Hold the button for 5–9 seconds and release it. The OLED shows a PIN only after the server confirms it. The code is valid for 120 seconds.</p>
         <label className={styles.pinLabel}>PIN
           <input autoFocus inputMode="numeric" autoComplete="one-time-code" maxLength={4} value={pin} onChange={event => setPin(event.target.value.replace(/\D/g, '').slice(0, 4))} placeholder="0000" />
         </label>
@@ -88,7 +104,7 @@ function DeviceCard({ device, selected, onSelect }: { device: Esp32Device; selec
   )
 }
 
-function DeviceControl({ device, refresh, onRemoved }: { device: Esp32Device; refresh: () => Promise<void>; onRemoved: () => void }) {
+function DeviceControl({ device, refresh, onRemoved, onPrepareGift }: { device: Esp32Device; refresh: () => Promise<void>; onRemoved: () => void; onPrepareGift: () => void }) {
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -179,10 +195,12 @@ function DeviceControl({ device, refresh, onRemoved }: { device: Esp32Device; re
             <div><dt>Device ID</dt><dd>{device.deviceUid}</dd></div><div><dt>Firmware</dt><dd>{device.firmwareVersion || '—'}</dd></div>
             <div><dt>Flash</dt><dd>{formatBytes(device.flashSize)}</dd></div><div><dt>LittleFS available</dt><dd>{formatBytes(Math.max(0, device.fsTotal - device.fsUsed))}</dd></div>
             <div><dt>Measured FPS</dt><dd>{device.actualFps ? device.actualFps.toFixed(1) : '—'}</dd></div><div><dt>Maximum frame gap</dt><dd>{device.maxFrameGapMs ? `${device.maxFrameGapMs} ms` : '—'}</dd></div>
+            <div><dt>Connection state</dt><dd>{device.connectionState.replaceAll('_', ' ')}</dd></div><div><dt>Last backend status</dt><dd>{device.lastHttpStatus || 'OK'}</dd></div>
             <div><dt>Last seen</dt><dd>{device.lastSeenAt ? new Date(device.lastSeenAt).toLocaleString('en-US') : 'never'}</dd></div>
           </dl>
         </div>
         <div className={styles.actions}>
+          <button className={styles.primaryButton} disabled={busy} onClick={onPrepareGift}>Prepare as a gift</button>
           <button className={styles.secondaryButton} disabled={busy} onClick={() => { if (window.confirm('Restart the ESP32?')) void execute('reboot') }}>Restart</button>
           <button className={styles.secondaryButton} disabled={busy} onClick={() => { if (window.confirm('Reset Wi-Fi? The device will open its setup network.')) void execute('reset_wifi') }}>Set up Wi-Fi again</button>
           <button className={styles.dangerButton} disabled={busy} onClick={() => {
@@ -200,36 +218,59 @@ function DeviceControl({ device, refresh, onRemoved }: { device: Esp32Device; re
 export default function Esp32OledRoute() {
   const { account, isReady } = useAccount()
   const [devices, setDevices] = useState<Esp32Device[]>([])
+  const [incomingGifts, setIncomingGifts] = useState<Esp32GiftInvite[]>([])
+  const [outgoingGifts, setOutgoingGifts] = useState<Esp32GiftInvite[]>([])
+  const [giftDevice, setGiftDevice] = useState<Esp32Device | null>(null)
+  const [giftInvite, setGiftInvite] = useState<Esp32GiftInvite | undefined>()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [pairing, setPairing] = useState(false)
   const [error, setError] = useState('')
+  const [configurationError, setConfigurationError] = useState('')
   const refresh = useCallback(async () => {
     if (!account) return
-    try { setDevices(await fetchDevices()); setError('') }
+    try {
+      const [nextDevices, gifts] = await Promise.all([fetchDevices(), fetchGifts()])
+      setDevices(nextDevices); setIncomingGifts(gifts.incoming); setOutgoingGifts(gifts.outgoing); setError('')
+    }
     catch (caught) { setError(caught instanceof Error ? caught.message : 'Could not load devices.') }
   }, [account])
   useEffect(() => {
     void refresh()
+    if (account) void fetchServiceDiagnostics().then(() => setConfigurationError('')).catch(caught => setConfigurationError(caught instanceof Error ? caught.message : 'The device service is not configured.'))
     const timer = window.setInterval(() => void refresh(), 10_000)
     return () => window.clearInterval(timer)
   }, [refresh])
   const selected = devices.find(device => device.id === selectedId) || null
+  const openExistingGift = (gift: Esp32GiftInvite) => {
+    const owned = devices.find(device => device.id === gift.deviceId)
+    setGiftInvite(gift)
+    setGiftDevice(owned || {
+      id: gift.deviceId, deviceUid: '', name: gift.deviceName, firmwareVersion: null, lastSeenAt: null, online: false,
+      activeSlot: null, flashSize: 0, fsTotal: 0, fsUsed: 0, brightness: 128, speedMultiplier: 1,
+      actualFps: 0, maxFrameGapMs: 0, connectionState: 'wifi_unset', lastHttpStatus: null,
+      setupApSsid: gift.setupApSsid, setupApPassword: gift.setupApPassword, manifest: [], createdAt: gift.createdAt,
+    })
+  }
 
   if (!isReady) return <main className={styles.page}><div className={styles.loading}>Connecting…</div></main>
   if (!account) return <main className={styles.page}><SignIn /></main>
   return (
     <main className={styles.page}>
       <header className={styles.topbar}><a href="/">TableTopGames</a><span>OLED garden</span><span>{account.username}</span></header>
-      {selected ? <DeviceControl device={selected} refresh={refresh} onRemoved={() => { setSelectedId(null); void refresh() }} /> : (
+      {selected ? <DeviceControl device={selected} refresh={refresh} onPrepareGift={() => { setGiftInvite(outgoingGifts.find(gift => gift.deviceId === selected.id && gift.status !== 'cancelled')); setGiftDevice(selected) }} onRemoved={() => { setSelectedId(null); void refresh() }} /> : (
         <div className={styles.dashboard}>
           <section className={styles.intro}><span className={styles.eyebrow}>Quiet little displays</span><h1>My ESP32 devices</h1><p>Upload pixel scenes, manage slots, and let each device keep playing even when the internet goes away.</p><button className={styles.primaryButton} onClick={() => setPairing(true)}>＋ Add ESP32</button></section>
+          {configurationError && <p className={styles.error}><b>Administrator action required.</b> {configurationError}</p>}
+          <GiftInbox gifts={incomingGifts} onChanged={refresh} />
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.deviceGrid}>{devices.map(device => <DeviceCard key={device.id} device={device} selected={false} onSelect={() => setSelectedId(device.id)} />)}
             {!devices.length && <div className={styles.empty}><span>◌</span><h2>Nothing here yet</h2><p>Connect your first ESP32 using the PIN shown on its display.</p></div>}
           </div>
+          {outgoingGifts.some(gift => gift.status !== 'cancelled') && <section className={styles.preparedGifts}><span className={styles.eyebrow}>Prepared gifts</span><div>{outgoingGifts.filter(gift => gift.status !== 'cancelled').map(gift => <button key={gift.id} onClick={() => openExistingGift(gift)}><strong>{gift.deviceName}</strong><span>For @{gift.recipientUsername} · {gift.status.replaceAll('_', ' ')}</span></button>)}</div></section>}
         </div>
       )}
       {pairing && <PairForm onCancel={() => setPairing(false)} onPaired={device => { setPairing(false); setDevices(current => [...current, device]); setSelectedId(device.id) }} />}
+      {giftDevice && <GiftWizard device={giftDevice} initialGift={giftInvite} onChanged={refresh} onClose={() => { setGiftDevice(null); setGiftInvite(undefined) }} />}
     </main>
   )
 }

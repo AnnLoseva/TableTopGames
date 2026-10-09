@@ -13,7 +13,10 @@ export async function findOwnedDevice(userId: string, deviceId: string) {
     .eq('owner_auth_user_id', userId)
     .is('revoked_at', null)
     .maybeSingle()
-  if (error) throw error
+  if (error) {
+    if (error.message.includes('DEVICE_NOT_FOUND')) throw new Error('DEVICE_NOT_FOUND')
+    throw error
+  }
   if (!data) throw new Error('DEVICE_NOT_FOUND')
   return { row: data, device: mapDevice(data) }
 }
@@ -24,20 +27,18 @@ export async function queueCommand(
   type: Esp32CommandType,
   payload: Record<string, unknown>,
 ) {
-  await findOwnedDevice(userId, deviceId)
   const client = getEsp32ServiceClient()
-  const { data, error } = await client
-    .from('esp32_device_commands')
-    .insert({
-      device_id: deviceId,
-      owner_auth_user_id: userId,
-      command_type: type,
-      payload,
-      idempotency_key: randomUUID(),
-    })
-    .select('*')
-    .single()
-  if (error) throw error
-  return mapCommand(data)
+  const { data, error } = await client.rpc('esp32_queue_owned_command', {
+    p_owner: userId,
+    p_device_id: deviceId,
+    p_command_type: type,
+    p_payload: payload,
+    p_idempotency_key: randomUUID(),
+  })
+  if (error) {
+    if (error.message.includes('DEVICE_NOT_FOUND')) throw new Error('DEVICE_NOT_FOUND')
+    throw error
+  }
+  return mapCommand(data as Record<string, unknown>)
 }
 
