@@ -14,7 +14,7 @@ ESP32 сама делает исходящие HTTPS-запросы к `annlosev
 | SDA | GPIO0 |
 | SCL | GPIO2 |
 
-Кнопка: `GPIO3 → кнопка → GND`. В прошивке включён `INPUT_PULLUP`.
+Кнопка: `GPIO5 → кнопка → GND`. В прошивке включён `INPUT_PULLUP`.
 
 GPIO2 — strapping pin ESP32-C3. Обычный SSD1306 использует open-drain I²C и
 подтягивает SCL к 3,3 В — это совместимо с загрузкой. Перед постоянным монтажом
@@ -45,6 +45,24 @@ ESP32_API_HMAC_SECRET              случайная строка миниму�
 перестанут проходить проверку; это нужно планировать как миграцию.
 
 ## Прошивка с Mac
+
+### Через Arduino IDE
+
+1. Открыть `firmware/esp32-oled/arduino/esp32_oled/esp32_oled.ino`.
+2. В Boards Manager установить `esp32 by Espressif Systems`, затем выбрать
+   `ESP32C3 Dev Module`. В Tools выбрать Flash Size `4MB`, Flash Mode `DIO`,
+   USB CDC On Boot `Enabled` и Partition Scheme `Custom`.
+3. В Library Manager установить `ArduinoJson`, `Adafruit GFX Library` и
+   `Adafruit SSD1306`.
+4. Подключить плату, выбрать её USB-порт и нажать Upload. Для самой первой
+   прошивки можно один раз включить Erase All Flash Before Sketch Upload.
+   Локальный `partitions.csv` будет использован автоматически.
+
+Скетч подключает канонические модули из `firmware/esp32-oled/src` и `include`,
+поэтому Arduino IDE и PlatformIO собирают одну и ту же прошивку. Кнопка версии
+1.0.1 подключается между `GPIO5` и `GND`.
+
+### Через PlatformIO
 
 1. Подключить ESP32-C3 качественным data-кабелем USB-C.
 2. Установить PlatformIO 6.1.18 в виртуальное окружение:
@@ -136,4 +154,3 @@ SQL и компиляция PlatformIO. Без физического желез
 на конкретной версии iOS и полный TLS/download/ACK цикл. OTA пока нет: новую
 прошивку загружают по USB. При смене CA домена trust anchor `TlsRoot.hpp` нужно
 обновить и выпустить новую прошивку.
-

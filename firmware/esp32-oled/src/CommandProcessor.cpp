@@ -1,4 +1,5 @@
 #include "CommandProcessor.hpp"
+#include <esp_idf_version.h>
 #include <mbedtls/sha256.h>
 #include "AppConfig.hpp"
 
@@ -45,9 +46,17 @@ void CommandProcessor::execute(JsonObject command) {
 
 bool CommandProcessor::verifyTemp() {
   File file = LittleFS.open(store_->tempPath(targetSlot_), "r"); if (!file || file.size() != expectedSize_) return false;
-  mbedtls_sha256_context context; mbedtls_sha256_init(&context); mbedtls_sha256_starts_ret(&context, 0);
+  mbedtls_sha256_context context; mbedtls_sha256_init(&context);
+#if ESP_IDF_VERSION_MAJOR >= 5
+  mbedtls_sha256_starts(&context, 0);
+  while (file.available()) { size_t count = file.read(chunk_, sizeof(chunk_)); if (!count) break; mbedtls_sha256_update(&context, chunk_, count); }
+  uint8_t digest[32]; mbedtls_sha256_finish(&context, digest);
+#else
+  mbedtls_sha256_starts_ret(&context, 0);
   while (file.available()) { size_t count = file.read(chunk_, sizeof(chunk_)); if (!count) break; mbedtls_sha256_update_ret(&context, chunk_, count); }
-  uint8_t digest[32]; mbedtls_sha256_finish_ret(&context, digest); mbedtls_sha256_free(&context); file.close();
+  uint8_t digest[32]; mbedtls_sha256_finish_ret(&context, digest);
+#endif
+  mbedtls_sha256_free(&context); file.close();
   char hex[65]; for (int index = 0; index < 32; ++index) snprintf(hex + index * 2, 3, "%02x", digest[index]); hex[64] = 0;
   return expectedSha_.equalsIgnoreCase(hex);
 }
@@ -75,4 +84,3 @@ void CommandProcessor::finish(bool success, const String& error) {
   if (success) settings_->setLastCommandId(commandId_);
   api_->acknowledge(commandId_, success, error);
 }
-

@@ -1,0 +1,12 @@
+// Arduino IDE entry point. The implementation remains canonical in ../../src.
+#include "../../src/Settings.cpp"
+#include "../../src/DeviceIdentity.cpp"
+#include "../../src/OledRenderer.cpp"
+#include "../../src/FileStore.cpp"
+#include "../../src/AnimationEngine.cpp"
+#include "../../src/WifiProvisioning.cpp"
+#include "../../src/ApiClient.cpp"
+#include "../../src/CommandProcessor.cpp"
+#include "../../src/ButtonHandler.cpp"
+#include "../../src/Diagnostics.cpp"
+#include "../../src/main.cpp"

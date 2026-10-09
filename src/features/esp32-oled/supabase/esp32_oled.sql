@@ -174,6 +174,38 @@ begin
 end;
 $$;
 
+create or replace function public.esp32_consume_rate_limit(
+  p_rate_key_hash text,
+  p_limit integer,
+  p_window_seconds integer,
+  p_block_seconds integer
+) returns boolean
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_rate public.esp32_pairing_attempts%rowtype;
+begin
+  if p_limit < 1 or p_window_seconds < 1 or p_block_seconds < 1 then return false; end if;
+  insert into public.esp32_pairing_attempts(rate_key_hash, attempts)
+  values (p_rate_key_hash, 0)
+  on conflict (rate_key_hash) do nothing;
+  select * into v_rate from public.esp32_pairing_attempts where rate_key_hash = p_rate_key_hash for update;
+  if v_rate.blocked_until is not null and v_rate.blocked_until > now() then return false; end if;
+  if v_rate.window_started_at < now() - make_interval(secs => p_window_seconds) then
+    update public.esp32_pairing_attempts set window_started_at = now(), attempts = 1, blocked_until = null where rate_key_hash = p_rate_key_hash;
+    return true;
+  end if;
+  update public.esp32_pairing_attempts
+    set attempts = attempts + 1,
+        blocked_until = case when attempts + 1 > p_limit then now() + make_interval(secs => p_block_seconds) else blocked_until end
+    where rate_key_hash = p_rate_key_hash
+    returning * into v_rate;
+  return v_rate.attempts <= p_limit;
+end;
+$$;
+
 create or replace function public.esp32_claim_next_command(p_device_id uuid)
 returns jsonb
 language plpgsql
@@ -183,6 +215,11 @@ as $$
 declare
   v_row public.esp32_device_commands%rowtype;
 begin
+  update public.esp32_device_commands
+    set status = 'failed', acknowledged_at = now(), error_message = 'delivery retry limit exceeded'
+    where device_id = p_device_id and status = 'in_progress' and attempts >= 5
+      and claimed_at < now() - interval '30 seconds';
+
   select * into v_row
   from public.esp32_device_commands
   where device_id = p_device_id
@@ -225,8 +262,10 @@ grant all on table public.esp32_device_events to service_role;
 grant usage, select on sequence public.esp32_device_events_id_seq to service_role;
 
 revoke all on function public.esp32_claim_device(text, uuid, text, text) from public, anon, authenticated;
+revoke all on function public.esp32_consume_rate_limit(text, integer, integer, integer) from public, anon, authenticated;
 revoke all on function public.esp32_claim_next_command(uuid) from public, anon, authenticated;
 grant execute on function public.esp32_claim_device(text, uuid, text, text) to service_role;
+grant execute on function public.esp32_consume_rate_limit(text, integer, integer, integer) to service_role;
 grant execute on function public.esp32_claim_next_command(uuid) to service_role;
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -235,4 +274,3 @@ on conflict (id) do update set
   public = false,
   file_size_limit = excluded.file_size_limit,
   allowed_mime_types = excluded.allowed_mime_types;
-

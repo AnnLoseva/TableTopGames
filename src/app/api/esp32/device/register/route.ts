@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jsonError, readJson, toHttpError } from '@/features/esp32-oled/server/http'
 import { safeNumber } from '@/features/esp32-oled/lib/validation'
-import { hashEsp32Secret } from '@/features/esp32-oled/server/security'
+import { hashEsp32Secret, requestIp } from '@/features/esp32-oled/server/security'
 import { getEsp32ServiceClient } from '@/features/esp32-oled/server/supabase'
 
 function validDeviceUid(value: unknown): value is string {
@@ -15,6 +15,14 @@ export async function POST(request: NextRequest) {
       return jsonError('Некорректные данные устройства.', 422, 'INVALID_DEVICE')
     }
     const client = getEsp32ServiceClient()
+    const { data: allowed, error: rateError } = await client.rpc('esp32_consume_rate_limit', {
+      p_rate_key_hash: hashEsp32Secret('registration-rate', requestIp(request)),
+      p_limit: 20,
+      p_window_seconds: 3600,
+      p_block_seconds: 3600,
+    })
+    if (rateError) throw rateError
+    if (!allowed) return jsonError('Слишком много регистраций с этого адреса.', 429, 'RATE_LIMITED')
     const tokenHash = hashEsp32Secret('device-token', body.token)
     const { data: existing, error: readError } = await client
       .from('esp32_devices')

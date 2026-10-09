@@ -15,7 +15,7 @@ type FileInfo = {
 }
 
 const root = process.cwd()
-const ignoredDirs = new Set(['node_modules', '.next', '.git', '.claude', '.codex-tools', '.vercel', 'coverage', 'dist', 'out'])
+const ignoredDirs = new Set(['node_modules', '.next', '.pio', '.git', '.claude', '.codex-tools', '.vercel', 'coverage', 'dist', 'out'])
 const ignoredExactPaths = new Set([
   'public/vampires/rules.json',
   'public/vampires/rules_eng.json',

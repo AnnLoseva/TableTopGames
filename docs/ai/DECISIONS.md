@@ -17,7 +17,8 @@ unowned device can match; if two live challenges have the same four digits the
 transaction raises `PAIRING_AMBIGUOUS` instead of choosing a device. A
 user+request-IP HMAC key is rate-limited in Postgres (five attempts per ten
 minutes, then a fifteen-minute block), so Vercel instances do not carry
-security state in memory.
+security state in memory. Unauthenticated device registration is separately
+limited by request-IP HMAC to twenty attempts per hour with a one-hour block.
 
 Media conversion stays in the browser. The `OLED1` format stores SSD1306-native
 1024-byte pages with per-frame durations and byte-run RLE. Upload commands keep
