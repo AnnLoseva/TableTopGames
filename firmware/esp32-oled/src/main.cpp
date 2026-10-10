@@ -52,7 +52,7 @@ static void startPairing() {
 static void onHoldReleased(uint32_t durationMs) {
   if (durationMs >= AppConfig::WifiResetHoldMs) {
     pairingUntil = 0; commands.resetPairing(); settings.clearWifi(); wifi.startPortal();
-    oled.showMessage("SETUP WIFI", wifi.portalSsid());
+    oled.showWifiSetup(wifi.portalSsid(), wifi.portalPassword());
     Serial.println("Wi-Fi settings cleared; device identity and files preserved.");
     return;
   }
@@ -83,7 +83,7 @@ static void showConnectionDiagnostic(ConnectionState state) {
     case ConnectionState::Registered: oled.showMessage("REGISTERED", "Backend confirmed"); break;
     case ConnectionState::WaitingGiftAcceptance: oled.showMessage("GIFT PENDING", "Waiting acceptance"); break;
     case ConnectionState::Ready: oled.showMessage("DEVICE READY", "Connected"); break;
-    case ConnectionState::WifiUnset: oled.showMessage("WIFI FAILED", "Try setup again"); break;
+    case ConnectionState::WifiUnset: oled.showWifiSetup(wifi.portalSsid(), wifi.portalPassword(), "WIFI FAILED - RETRY"); break;
   }
   diagnosticUntil = millis() + 2200;
 }
@@ -142,7 +142,7 @@ void loop() {
   else if (pairingUntil) { pairingUntil = 0; commands.resetPairing(); animation.restart(); }
 
   if (wifi.portalActive()) {
-    if (!portalWasActive) { oled.showMessage("SETUP WIFI", wifi.portalSsid()); portalWasActive = true; }
+    if (!portalWasActive) { oled.showWifiSetup(wifi.portalSsid(), wifi.portalPassword()); portalWasActive = true; }
   } else portalWasActive = false;
   ConnectionState currentConnectionState = wifi.state();
   if (!pairingActive && currentConnectionState != displayedConnectionState) {

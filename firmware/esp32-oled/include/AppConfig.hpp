@@ -4,7 +4,7 @@
 
 namespace AppConfig {
 constexpr char ApiBase[] = "https://annloseva-ttg.xyz";
-constexpr char FirmwareVersion[] = "1.2.0";
+constexpr char FirmwareVersion[] = "1.2.1";
 constexpr uint8_t OledAddress = 0x3C;
 constexpr int OledSda = 0;
 constexpr int OledScl = 2;

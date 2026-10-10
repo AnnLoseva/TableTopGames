@@ -7,6 +7,7 @@ class OledRenderer {
   void setBrightness(uint8_t value);
   void showFrame(const uint8_t* buffer);
   void showMessage(const String& title, const String& line = "");
+  void showWifiSetup(const String& ssid, const String& password, const String& title = "SETUP WIFI");
   void showPairingPin(const char pin[5], uint32_t secondsLeft);
  private:
   Adafruit_SSD1306 display_{128, 64, &Wire, -1};

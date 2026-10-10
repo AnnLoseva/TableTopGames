@@ -34,8 +34,13 @@ void DeviceIdentity::begin() {
 
   uint8_t digest[32];
   mbedtls_sha256(reinterpret_cast<const unsigned char*>(token_.c_str()), token_.length(), digest, 0);
-  char setupPassword[16];
-  snprintf(setupPassword, sizeof(setupPassword), "Oled-%02X%02X%02X%02X%02X", digest[0], digest[1], digest[2], digest[3], digest[4]);
+  uint32_t seed = (static_cast<uint32_t>(digest[0]) << 24)
+    | (static_cast<uint32_t>(digest[1]) << 16)
+    | (static_cast<uint32_t>(digest[2]) << 8)
+    | static_cast<uint32_t>(digest[3]);
+  uint32_t numericPassword = 10000000UL + (seed % 90000000UL);
+  char setupPassword[9];
+  snprintf(setupPassword, sizeof(setupPassword), "%08lu", static_cast<unsigned long>(numericPassword));
   setupPassword_ = setupPassword;
 }
 

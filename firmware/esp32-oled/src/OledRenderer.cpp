@@ -15,6 +15,13 @@ void OledRenderer::showMessage(const String& title, const String& line) {
   display_.clearDisplay(); display_.setTextColor(SSD1306_WHITE); display_.setTextSize(1);
   display_.setCursor(4, 16); display_.println(title); display_.setCursor(4, 35); display_.println(line); display_.display();
 }
+void OledRenderer::showWifiSetup(const String& ssid, const String& password, const String& title) {
+  display_.clearDisplay(); display_.setTextColor(SSD1306_WHITE); display_.setTextSize(1);
+  display_.setCursor(4, 5); display_.println(title);
+  display_.setCursor(4, 25); display_.println(ssid);
+  display_.setCursor(4, 45); display_.print("PASS "); display_.println(password);
+  display_.display();
+}
 void OledRenderer::showPairingPin(const char pin[5], uint32_t secondsLeft) {
   if (secondsLeft == lastPinSecond_) return;
   lastPinSecond_ = secondsLeft;

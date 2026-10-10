@@ -37,15 +37,15 @@ PIN flow remains available for non-gift devices.
 
 The firmware uses the official GTS Root R4 trust anchor matching the production
 domain's current WE1 chain, never `setInsecure()`. Wi-Fi credentials and the
-device token live in NVS, not source. Firmware 1.2.0 decides long-hold actions
+device token live in NVS, not source. Firmware 1.2.1 decides long-hold actions
 only on release: 5–9 seconds publishes a pairing PIN and 10+ seconds clears
 only Wi-Fi and reopens the captive portal. Each device derives a unique WPA2
-setup password from its private token and reports the setup SSID/password over
+eight-digit numeric setup password from its private token and reports the setup SSID/password over
 authenticated TLS for the owner-only gift card. OLED SCL remains on requested GPIO2; because it is a C3 strapping pin,
 the deployment runbook requires repeated cold-boot verification and forbids a
 module that holds it LOW at reset.
 
-Because ESP32-C3 is single-core, firmware 1.2.0 separates work by priority
+Because ESP32-C3 is single-core, firmware 1.2.1 separates work by priority
 rather than pretending that pinning creates another CPU: the Arduino loop is a
 priority-2 render/input task, while all blocking TLS/HTTP, polling, event/ACK
 delivery and chunk downloads run in one priority-1 task. Fixed-copy FreeRTOS
